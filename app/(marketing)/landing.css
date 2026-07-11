@@ -300,13 +300,11 @@ html:has(.lp) { scroll-behavior: smooth; }
   .lp .site-header.open .mobile-menu { display: flex; }
   .lp .nav-cta .btn-ghost { padding: 10px 16px; font-size: .9rem; }
   .lp .hero { min-height: auto; }
-  /* Bottom padding reserves a band below the copy where the robot shows. */
-  .lp .hero-grid { padding-top: 104px; padding-bottom: 380px; }
-  /* On phones the full-bleed background would hide the robot behind the text
-     wash, so pin the image to its own band at the bottom of the hero instead. */
-  .lp .hero-bg { top: auto; bottom: 0; height: 400px; }
-  .lp .hero-bg img { object-position: 80% center; }
-  .lp .hero-bg::after { background: linear-gradient(180deg, var(--paper) 0%, rgba(246, 247, 251, .4) 35%, rgba(246, 247, 251, 0) 70%); }
+  .lp .hero-grid { padding-top: 104px; padding-bottom: 52px; }
+  .lp .hero-bg img { object-position: 74% center; }
+  /* Same overlay as the original design, but lighter (was .84 / .28) so the
+     robot reads through the wash instead of disappearing behind it. */
+  .lp .hero-bg::after { background: linear-gradient(180deg, var(--paper) 0%, rgba(246, 247, 251, .68) 46%, rgba(246, 247, 251, .1) 100%); }
   .lp .hero-actions { width: 100%; }
   .lp .hero-actions .btn { flex: 1 1 auto; justify-content: center; }
   .lp .plans { grid-template-columns: 1fr; max-width: 440px; }
