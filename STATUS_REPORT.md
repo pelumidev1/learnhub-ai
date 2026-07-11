@@ -1,6 +1,6 @@
 # LearnHub AI — Build Status Report
 
-_Prepared 2026-07-11. Covers what is built, what is missing, the bugs I found, and exactly what you need to do to put this in front of real users._
+_Prepared 2026-07-11; last updated 2026-07-11 after the progress page and landing were built. Covers what is built, what is missing, the bugs I found, and exactly what you need to do to put this in front of real users._
 
 ---
 
@@ -13,7 +13,7 @@ Status of the two launch blockers:
 1. ~~A production build currently fails on TypeScript errors.~~ **Fixed on 2026-07-11.** `next build` now passes cleanly and all 18 routes compile. Details in 4.1.
 2. **No real backend is connected.** The app is running on placeholder Supabase and Anthropic keys, so nothing that touches the database or the AI actually works. Supplying real credentials and running the database migrations is on your side.
 
-Honest summary (updated 2026-07-11): the build now passes, the three cost/speed rules are in, and the AI advisor chat is built. What stands between you and a working private beta is your account setup: real Supabase and Anthropic keys plus running the migrations. The only feature still stubbed is the progress page, and the landing page still needs wiring to the app root. Neither blocks a closed beta.
+Honest summary (updated 2026-07-11, second pass): the build passes, the three cost/speed rules are in, the AI advisor chat is built, the progress page is real (streaks, roadmap progress, certificates), and the marketing landing is now served at the app root. Every planned code feature for v1 is in. What stands between you and a working private beta is your account setup: real Supabase and Anthropic keys plus running the migrations. The only code items left are the two low-priority cleanups in 4.4 and 4.5.
 
 ---
 
@@ -27,9 +27,10 @@ Honest summary (updated 2026-07-11): the build now passes, the three cost/speed 
 | **AI recommendation** | Done | Uses `claude-opus-4-8`. Output is validated with Zod before saving, persisted to `career_results`, and logged to `ai_events`. Re-visiting results is a DB read, not a new AI call. Idempotent. |
 | **Roadmap generator** | Done | Uses `claude-opus-4-8`. Zod-validated, 5 to 10 steps, saved with per-step status. First completion awards an achievement and a certificate through the service-role client. |
 | **Resource library** | Done | Search, category/level/cost filters, certificate and saved toggles, bookmarking with RLS. |
+| **Progress page** | Done | Day streaks (current + best, from `progress_tracking.completed_at`), per-roadmap completion, certificates with verification codes, achievements. Pure RSC. |
 | **Database** | Done (not yet deployed) | 18 tables, RLS on every user-owned table, triggers for new-user and updated-at, plus a seed of 16 careers and about 22 resources. |
 | **Design system** | Done | Brand colors, custom fonts, UI primitives, metallic look per the spec. |
-| **Marketing landing** | Built, not wired | Lives as a static file in `marketing/index.html`. It is not served by the app yet (see issue 4.3). |
+| **Marketing landing** | Done | Ported into the app at `/` as a statically prerendered route (see 4.3). The original `marketing/index.html` stays as the design source. |
 
 File pointers: [lib/ai/recommendation.ts](lib/ai/recommendation.ts), [lib/ai/roadmap.ts](lib/ai/roadmap.ts), [app/(app)/results/actions.ts](app/(app)/results/actions.ts), [app/(app)/roadmap/actions.ts](app/(app)/roadmap/actions.ts), [lib/supabase/middleware.ts](lib/supabase/middleware.ts).
 
@@ -38,7 +39,9 @@ File pointers: [lib/ai/recommendation.ts](lib/ai/recommendation.ts), [lib/ai/roa
 ## 3. What is not built yet
 
 - ~~AI advisor chat.~~ **Built on 2026-07-11.** The "coming soon" screen is replaced with a real streaming chat. It uses `claude-haiku-4-5`, streams the reply token by token to the browser over SSE, and knows the person's top career match and their next roadmap step. It is labeled plainly as an AI coach (never a human), rate-limited, and every turn is saved to `conversations`/`messages`. Files: [app/(app)/advisor/page.tsx](app/(app)/advisor/page.tsx), [app/api/advisor/route.ts](app/api/advisor/route.ts), [components/advisor/chat.tsx](components/advisor/chat.tsx), [lib/ai/advisor.ts](lib/ai/advisor.ts). It also has its own nav entry now. Note: like the rest of the app, it needs real Anthropic and Supabase keys to actually reply.
-- **Progress page.** [app/(app)/progress/page.tsx](app/(app)/progress/page.tsx) is still a "coming soon" stub. Streaks, completed steps, and certificates across roadmaps are not shown on their own page yet (some of this already appears on the dashboard).
+- ~~Progress page.~~ **Built on 2026-07-11.** The "coming soon" stub is replaced with a real server-rendered page: current and best day streaks (computed from `progress_tracking.completed_at`, UTC-bucketed, alive if the last active day is today or yesterday), per-roadmap completion with next-step hints, earned certificates with verification codes, and achievements. Data comes from a new `getProgressData()` in [lib/dashboard/queries.ts](lib/dashboard/queries.ts) (same parallel-fetch-under-RLS pattern as the dashboard, sharing a `buildRoadmapSummaries()` helper). Files: [app/(app)/progress/page.tsx](app/(app)/progress/page.tsx), [components/progress/progress-stats.tsx](components/progress/progress-stats.tsx), [components/progress/certificate-list.tsx](components/progress/certificate-list.tsx).
+
+Nothing on the v1 feature list is still stubbed.
 
 ---
 
@@ -56,8 +59,14 @@ These were listed as non-negotiable in `CLAUDE.md`, for good reason given the au
 - **Streaming — server-side now; full browser streaming lands with the advisor.** Both AI calls now use the streaming API (`.stream().finalMessage()`), which keeps long Opus generations resilient on slow connections instead of holding one blocking request open. I did not push raw token streaming to the browser for these two, and on purpose: their output is structured JSON that has to be Zod-validated before it is stored, so streaming half-formed JSON to the screen would not help the user. True token-by-token streaming to the browser is the right fit for the advisor chat (free text), and it is built there.
 - **Per-user rate limiting — added.** A DB-backed limiter ([lib/ai/rate-limit.ts](lib/ai/rate-limit.ts)) counts each user's recent `ai_events` and blocks new AI calls past a cap (10 recommendations and 15 roadmaps per hour). It sits at the AI call sites rather than in `middleware.ts`, because an in-memory counter in middleware resets on every serverless cold start on Vercel and would not actually cap anyone. The reasoning is documented in [lib/supabase/middleware.ts](lib/supabase/middleware.ts).
 
-### 4.3 The marketing landing page is not served (MEDIUM — product gap)
-[app/page.tsx](app/page.tsx) redirects the root URL straight to `/dashboard`, which then bounces a logged-out visitor to `/login`. So a first-time visitor never sees the landing page you designed. It only exists as a separate static HTML file. Decide whether to port it into the app as the public home route.
+### 4.3 The marketing landing page is not served — FIXED (2026-07-11)
+The old `app/page.tsx` redirected the root URL straight to `/dashboard`, which bounced a logged-out visitor to `/login`, so a first-time visitor never saw the landing page. It is now ported into the app as the public home route: [app/(marketing)/page.tsx](app/(marketing)/page.tsx) is a faithful JSX port of `marketing/index.html`, statically prerendered so it is fast and cacheable on slow connections. Details worth knowing:
+
+- The stylesheet ([app/(marketing)/landing.css](app/(marketing)/landing.css)) is scoped under a single `.lp` class so nothing leaks into app routes, and its font tokens point at the `next/font` variables from the root layout — no external font requests.
+- The 1&nbsp;MB hero PNG moved to `public/marketing/` and renders through `next/image`, so phones get an optimized, resized version.
+- Interactivity (frosted header on scroll, mobile menu, scroll-reveal) is two small client components with no-JS fallbacks: [components/marketing/site-header.tsx](components/marketing/site-header.tsx), [components/marketing/reveal-init.tsx](components/marketing/reveal-init.tsx).
+- Signed-in users visiting `/` are redirected to `/dashboard` in [lib/supabase/middleware.ts](lib/supabase/middleware.ts), keeping the page itself static.
+- Two small copy decisions, easy to reverse: the Mentorship plan's "Notify me" button is a non-clickable "Coming soon" (there is no notify feature to wire it to), and the footer's dead links (Careers catalog, About, Contact, Privacy, Terms — none of those pages exist) were replaced with real routes (Log in, Create your account). Privacy and Terms pages are worth building before a public launch.
 
 ### 4.4 AI cost log is only half filled (LOW)
 The `ai_events` table has `cost_usd` and `latency_ms` columns, but the insert code only writes token counts. So you can see tokens per call but not dollar cost or latency without extra math later. Small change to compute and store both at call time.
@@ -69,9 +78,10 @@ The project's own [.claude/launch.json](.claude/launch.json) only defines the st
 
 ## 5. What needs your attention (decisions)
 
-1. **Scope for first release.** Do you launch the private beta without the AI advisor chat, or is the advisor a must-have for day one? My recommendation: fix the build, launch a closed beta with the assessment to roadmap loop, and build the advisor next. It is the single biggest missing piece.
-2. **Landing page.** Port `marketing/index.html` into the app as the public home page, or keep it separate for now and send the app root to login? For a public launch you want the landing page at the root.
-3. **The three spec rules (caching, streaming, rate limiting).** These are cheap insurance for a free product. I would do all three before opening signups to the public. Fine to skip for a small closed beta.
+1. ~~Scope for first release.~~ Resolved — the advisor is built, so the closed beta ships with the full loop.
+2. ~~Landing page.~~ Resolved — ported into the app as the public home page on 2026-07-11 (see 4.3).
+3. ~~The three spec rules (caching, streaming, rate limiting).~~ Done (see 4.2).
+4. **Privacy and Terms pages.** The footer no longer links to them (they did not exist), but a public launch that collects emails should have both. Decide whether to write them before or after the closed beta.
 
 ---
 
@@ -112,11 +122,11 @@ Once the build fix (4.1) is in and these are done, you have a working private be
 1. ~~Fix the type errors so the app builds and deploys.~~ Done.
 2. ~~Add prompt caching + server-side streaming to both AI calls, and per-user rate limiting.~~ Done.
 3. ~~Build the AI advisor chat.~~ Done.
-4. **You set up Supabase, Google, Anthropic, and the env values.** (section 6)
-5. **Run the migrations and seed, then test the full loop end to end against the real backend.** This is the one thing I cannot do without your keys, and it is worth doing before any beta, because it is the first real exercise of the AI calls and the streaming chat against live data.
-6. Build the progress page and port the landing page to the app root.
-7. Open the closed beta.
+4. ~~Build the progress page and port the landing page to the app root.~~ Done (2026-07-11).
+5. **You set up Supabase, Google, Anthropic, and the env values.** (section 6)
+6. **Run the migrations and seed, then test the full loop end to end against the real backend.** This is the one thing I cannot do without your keys, and it is worth doing before any beta, because it is the first real exercise of the AI calls and the streaming chat against live data.
+7. Open the closed beta. (Optional along the way: the 4.4 cost/latency logging and 4.5 launch-config cleanups.)
 
 ---
 
-_Ask me to start on any line here. The build fix in 4.1 is the one I would clear first, since nothing deploys until it is done._
+_All the code items are done and committed (19 routes, `tsc` and `next build` both clean). Steps 5 and 6 — accounts, keys, migrations — are yours; ask me for the 4.4/4.5 cleanups or the Privacy/Terms pages any time._
