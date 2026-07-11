@@ -37,7 +37,7 @@ export default async function DashboardPage() {
         {/* Main column */}
         <div className="space-y-6 lg:col-span-2">
           <ContinueLearning data={data} />
-          <SavedRoadmaps roadmaps={data.roadmaps} />
+          <SavedRoadmaps roadmaps={data.roadmaps} limit={4} />
           <RecommendedResources resources={data.resources} />
         </div>
 

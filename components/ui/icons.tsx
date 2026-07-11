@@ -30,6 +30,8 @@ export const Icons = {
   arrowRight: base(<><path d="M5 12h14M13 6l6 6-6 6" /></>),
   check: base(<><path d="M20 6 9 17l-5-5" /></>),
   clock: base(<><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>),
+  flame: base(<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5Z" />),
+  award: base(<><circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /></>),
   plus: base(<><path d="M12 5v14M5 12h14" /></>),
   logout: base(<><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="m16 17 5-5-5-5M21 12H9" /></>),
   menu: base(<><path d="M4 7h16M4 12h16M4 17h16" /></>),

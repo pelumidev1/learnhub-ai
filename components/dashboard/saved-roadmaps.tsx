@@ -2,10 +2,23 @@ import Link from "next/link";
 import { Card, SectionHeader, ProgressBar, EmptyState } from "@/components/dashboard/primitives";
 import type { RoadmapSummary } from "@/types/domain";
 
-export function SavedRoadmaps({ roadmaps }: { roadmaps: RoadmapSummary[] }) {
+export function SavedRoadmaps({
+  roadmaps,
+  title = "Saved roadmaps",
+  limit,
+  showNextStep = false,
+}: {
+  roadmaps: RoadmapSummary[];
+  title?: string;
+  /** Cap the list (dashboard shows 4); omit to show every roadmap. */
+  limit?: number;
+  /** Show the next step instead of the roadmap status (progress page). */
+  showNextStep?: boolean;
+}) {
+  const shown = limit ? roadmaps.slice(0, limit) : roadmaps;
   return (
     <Card>
-      <SectionHeader title="Saved roadmaps" action={roadmaps.length ? { label: "See all", href: "/roadmap" } : undefined} />
+      <SectionHeader title={title} action={roadmaps.length ? { label: "See all", href: "/roadmap" } : undefined} />
       {roadmaps.length === 0 ? (
         <EmptyState
           icon="map"
@@ -15,7 +28,7 @@ export function SavedRoadmaps({ roadmaps }: { roadmaps: RoadmapSummary[] }) {
         />
       ) : (
         <ul className="space-y-3">
-          {roadmaps.slice(0, 4).map((r) => (
+          {shown.map((r) => (
             <li key={r.id}>
               <Link
                 href={`/roadmap/${r.id}`}
@@ -28,8 +41,13 @@ export function SavedRoadmaps({ roadmaps }: { roadmaps: RoadmapSummary[] }) {
                 <div className="mt-2.5">
                   <ProgressBar value={r.progress} />
                 </div>
-                <p className="mt-2 text-xs text-muted">
-                  {r.doneSteps}/{r.totalSteps} steps · {r.status}
+                <p className="mt-2 truncate text-xs text-muted">
+                  {r.doneSteps}/{r.totalSteps} steps ·{" "}
+                  {showNextStep
+                    ? r.nextStep
+                      ? `Next: ${r.nextStep.title}`
+                      : "All steps done"
+                    : r.status}
                 </p>
               </Link>
             </li>

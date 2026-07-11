@@ -62,6 +62,28 @@ export type Achievement = {
   earnedAt: string;
 };
 
+export type CertificateItem = {
+  id: string;
+  title: string;
+  careerTitle: string | null;
+  code: string;
+  issuedAt: string;
+};
+
+export type ProgressData = {
+  roadmaps: RoadmapSummary[];
+  certificates: CertificateItem[];
+  achievements: Achievement[];
+  stats: {
+    currentStreak: number; // consecutive active days, alive if active today or yesterday
+    bestStreak: number;
+    stepsDone: number;
+    totalSteps: number;
+    overallProgress: number; // 0–100
+    certificates: number;
+  };
+};
+
 export type DashboardData = {
   profile: Profile | null;
   hasAssessment: boolean;
