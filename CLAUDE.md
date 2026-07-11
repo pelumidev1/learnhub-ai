@@ -44,6 +44,7 @@ Students, graduates, and career changers across Africa — mostly 18–35, on mi
 - **RSC by default.** Add `"use client"` only where interactivity truly requires it. Keep client bundles small.
 - **Validate at every boundary** with Zod (Server Actions and Route Handlers).
 - **Per-user rate limiting** in `middleware.ts`.
+- **Demo mode** (`AI_DEMO_MODE=true`, dev/demo only): AI calls short-circuit to canned, Zod-validated sample output in `lib/ai/demo.ts`. Sample output must always be visibly labeled as sample data.
 
 ### Folder structure (keep to it)
 `app/` route groups: `(marketing)`, `(auth)`, `(app)`. AI + external work in `app/api/`.
