@@ -48,7 +48,10 @@ html:has(.lp) { scroll-behavior: smooth; }
 .lp ::selection { background: var(--blue); color: #fff; }
 
 /* ============ Layout ============ */
-.lp .container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+/* Horizontal padding only — a `padding` shorthand here would zero out the
+   vertical padding of elements that combine .container with another class
+   (e.g. .hero-grid's top padding, which clears the fixed header). */
+.lp .container { max-width: var(--maxw); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .lp .section { padding: clamp(72px, 9vw, 120px) 0; }
 .lp .section-head { max-width: 660px; margin: 0 auto clamp(40px, 6vw, 64px); text-align: center; }
 .lp .eyebrow { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); display: inline-flex; align-items: center; gap: .55em; font-weight: 700; margin-bottom: 18px; }
@@ -309,7 +312,7 @@ html:has(.lp) { scroll-behavior: smooth; }
   .lp .faces { height: 280px; }
 }
 @media (max-width: 520px) {
-  .lp .container { padding: 0 18px; }
+  .lp .container { padding-left: 18px; padding-right: 18px; }
   .lp .hero h1 { font-size: 2.35rem; }
   .lp .hero p.lead { font-size: 1.02rem; }
   .lp .section { padding: 60px 0; }
