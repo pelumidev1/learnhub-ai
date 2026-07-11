@@ -157,16 +157,15 @@ export async function POST(req: Request) {
     async start(controller) {
       let full = "";
       let usage = { input: 0, output: 0 };
+      let model: string = MODELS.advisor;
       try {
         const ai = streamAdvisorReply({ context, history });
-        for await (const event of ai) {
-          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-            full += event.delta.text;
-            controller.enqueue(sse({ t: event.delta.text }));
-          }
+        model = ai.model;
+        for await (const chunk of ai.text) {
+          full += chunk;
+          controller.enqueue(sse({ t: chunk }));
         }
-        const finalMsg = await ai.finalMessage();
-        usage = { input: finalMsg.usage.input_tokens, output: finalMsg.usage.output_tokens };
+        usage = await ai.usage();
       } catch {
         controller.enqueue(
           sse({ error: "The coach couldn't reply just now. Please try again." }),
@@ -190,7 +189,7 @@ export async function POST(req: Request) {
           await supabase.from("ai_events").insert({
             user_id: user.id,
             call_type: "advisor",
-            model: MODELS.advisor,
+            model,
             input_tokens: usage.input,
             output_tokens: usage.output,
             related_id: conversationId,

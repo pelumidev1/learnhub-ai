@@ -1,6 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
-import { MODELS } from "./config";
+import { AI_DEMO_MODE, MODELS } from "./config";
+import { DEMO_MODEL, demoAdvisorChunks, demoDelay } from "./demo";
 
 /** What the coach knows about the person, pulled from their saved data. */
 export type AdvisorContext = {
@@ -48,10 +49,40 @@ function buildSystem(ctx: AdvisorContext): string {
   return lines.join("\n");
 }
 
-/** Start a streamed reply from the advisor model. Caller consumes the stream. */
-export function streamAdvisorReply(input: { context: AdvisorContext; history: ChatMessage[] }) {
+/**
+ * A streamed advisor reply, normalized so callers don't depend on the
+ * Anthropic stream shape (demo mode returns the same interface).
+ */
+export type AdvisorReply = {
+  model: string;
+  /** Reply text as it arrives, chunk by chunk. */
+  text: AsyncIterable<string>;
+  /** Token usage; resolves once the stream has been fully consumed. */
+  usage: () => Promise<{ input: number; output: number }>;
+};
+
+/** Start a streamed reply from the advisor model. Caller consumes `text`. */
+export function streamAdvisorReply(input: {
+  context: AdvisorContext;
+  history: ChatMessage[];
+}): AdvisorReply {
+  // Demo mode: stream a canned, clearly-labeled sample reply word by word,
+  // so the chat UI behaves exactly as it will against the live model.
+  if (AI_DEMO_MODE) {
+    return {
+      model: DEMO_MODEL,
+      text: (async function* () {
+        for (const chunk of demoAdvisorChunks()) {
+          await demoDelay(24);
+          yield chunk;
+        }
+      })(),
+      usage: async () => ({ input: 0, output: 0 }),
+    };
+  }
+
   const client = new Anthropic(); // lazy so a missing key can't crash module import
-  return client.messages.stream({
+  const stream = client.messages.stream({
     model: MODELS.advisor,
     max_tokens: 1024,
     system: [
@@ -59,4 +90,18 @@ export function streamAdvisorReply(input: { context: AdvisorContext; history: Ch
     ],
     messages: input.history.map((m) => ({ role: m.role, content: m.content })),
   });
+  return {
+    model: MODELS.advisor,
+    text: (async function* () {
+      for await (const event of stream) {
+        if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+          yield event.delta.text;
+        }
+      }
+    })(),
+    usage: async () => {
+      const finalMsg = await stream.finalMessage();
+      return { input: finalMsg.usage.input_tokens, output: finalMsg.usage.output_tokens };
+    },
+  };
 }

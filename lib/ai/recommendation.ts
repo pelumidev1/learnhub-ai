@@ -1,6 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
-import { MODELS } from "./config";
+import { AI_DEMO_MODE, MODELS } from "./config";
+import { DEMO_MODEL, demoDelay, demoRecommendation } from "./demo";
 import { extractText, parseJson } from "./parse";
 import { RecommendationSchema, type RecommendationOutput } from "./schemas";
 
@@ -40,6 +41,17 @@ export async function generateCareerRecommendation(input: {
   usage: { input: number; output: number };
   model: string;
 }> {
+  // Demo mode: no API call. Sample output goes through the same Zod gate
+  // as real model output, so nothing unvalidated can ever persist.
+  if (AI_DEMO_MODE) {
+    await demoDelay(1200);
+    return {
+      recommendation: RecommendationSchema.parse(demoRecommendation()),
+      usage: { input: 0, output: 0 },
+      model: DEMO_MODEL,
+    };
+  }
+
   const client = new Anthropic(); // lazy so a missing key can't crash module import
 
   const catalog = input.careers.length
