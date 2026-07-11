@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  min-height: 100svh;
+}
+
+/* Respect reduced motion globally. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnHub AI — Find the tech career built for you</title>
+<meta name="description" content="LearnHub AI is the AI career coach for Africa's next generation of tech talent. Take a short assessment, get a personalized career match and learning path, and a 24/7 AI coach. Free while in beta.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ Tokens (light · techy · metallic) ============ */
+  :root{
+    --ink:#0B0F1A; --ink-2:#1A2234;
+    --blue:#1F33CC; --blue-600:#182AB0; --blue-500:#2A46F0; --sky:#3B6FF0; --sky-2:#4C93F0;
+    --white:#FFFFFF; --paper:#F6F7FB; --paper-2:#EFF2F8;
+    --silver:#E7EAF1; --silver-2:#D8DEEA;
+    --muted:#5B6472; --muted-2:#8A93A6; --text:#0B0F1A;
+    --maxw:1200px;
+    --r-sm:10px; --r:14px; --r-lg:20px; --r-xl:26px;
+    --shadow-sm:0 1px 2px rgba(16,24,48,.05);
+    --shadow:0 2px 6px rgba(16,24,48,.06), 0 20px 40px -26px rgba(16,24,48,.22);
+    --shadow-lg:0 34px 80px -34px rgba(16,24,48,.34);
+    --glow:0 24px 60px -26px rgba(31,51,204,.42);
+    --f-display:'Space Grotesk',system-ui,sans-serif;
+    --f-body:'Manrope',system-ui,sans-serif;
+    --f-mono:'Space Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--f-body);color:var(--text);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:16px}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block;max-width:100%}
+  ::selection{background:var(--blue);color:#fff}
+
+  /* ============ Layout ============ */
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .section{padding:clamp(72px,9vw,120px) 0}
+  .section-head{max-width:660px;margin:0 auto clamp(40px,6vw,64px);text-align:center}
+  .eyebrow{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);display:inline-flex;align-items:center;gap:.55em;font-weight:700;margin-bottom:18px}
+  .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;border:2px solid var(--sky);position:relative}
+  h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.05;letter-spacing:-.025em;color:var(--ink)}
+  h2{font-size:clamp(2rem,4.3vw,3.05rem)}
+  h3{font-size:1.2rem;letter-spacing:-.01em;line-height:1.2}
+  .section-head p{margin-top:18px;font-size:1.08rem;color:var(--muted)}
+
+  /* ============ Buttons ============ */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-family:var(--f-body);font-weight:700;font-size:.98rem;padding:14px 24px;border-radius:999px;border:1px solid transparent;background:var(--blue);color:#fff;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s var(--ease);white-space:nowrap;isolation:isolate}
+  .btn::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.4),transparent 55%);transform:translateX(-120%);transition:transform .6s var(--ease)}
+  .btn:hover{transform:translateY(-2px)}
+  .btn:hover::after{transform:translateX(120%)}
+  .btn-primary{background:linear-gradient(180deg,var(--blue-500),var(--blue-600));box-shadow:var(--glow)}
+  .btn-ghost{background:#fff;border-color:var(--silver-2);color:var(--ink);box-shadow:var(--shadow-sm)}
+  .btn-lg{padding:16px 30px;font-size:1.05rem}
+  .btn:focus-visible,a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:8px}
+
+  /* ============ Brand mark ============ */
+  .logo{display:inline-flex;align-items:center;gap:11px;font-family:var(--f-display);font-weight:700;font-size:1.28rem;letter-spacing:-.02em;color:var(--ink)}
+  .logo .mark{width:30px;height:30px;color:var(--blue);flex:none}
+  .logo .ai{color:var(--sky)}
+
+  /* ============ Header ============ */
+  .site-header{position:fixed;top:0;left:0;right:0;z-index:60;transition:background .3s,box-shadow .3s,border-color .3s;border-bottom:1px solid transparent}
+  .site-header .bar{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .nav-links{display:flex;align-items:center;gap:30px}
+  .nav-links a{font-size:.95rem;font-weight:600;color:var(--muted);transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .nav-login{font-weight:600;font-size:.95rem;color:var(--ink)}
+  .site-header.scrolled{background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-color:var(--silver);box-shadow:var(--shadow-sm)}
+  .nav-toggle{display:none;background:none;border:0;cursor:pointer;width:44px;height:44px;color:var(--ink)}
+  /* Mobile menu is hidden at every width by default; only the hamburger reveals it on mobile. */
+  .mobile-menu{display:none;flex-direction:column;padding:8px 24px 22px}
+  .mobile-menu a{padding:14px 0;color:var(--ink);font-weight:600;border-bottom:1px solid var(--silver)}
+
+  /* ============ HERO (robot bg) ============ */
+  .hero{position:relative;min-height:94svh;display:flex;align-items:center;background:var(--paper);overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background:url("assets/robot-hero.png") no-repeat right center;background-size:cover;z-index:0}
+  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--paper) 0%,rgba(246,247,251,.86) 30%,rgba(246,247,251,.4) 52%,rgba(246,247,251,0) 70%)}
+  .hero-grid{position:relative;z-index:1;width:100%;padding-top:90px;padding-bottom:60px}
+  .hero-copy{max-width:600px}
+  .hero h1{font-size:clamp(2.7rem,5.6vw,4.4rem)}
+  .hero h1 .grad{background:linear-gradient(100deg,var(--blue),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{color:var(--muted);font-size:1.16rem;margin-top:22px;max-width:500px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:30px;font-size:.86rem;color:var(--muted-2)}
+  .hero-meta span{display:inline-flex;align-items:center;gap:8px}
+  .hero-meta span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sky)}
+  .hero-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.7);border:1px solid var(--silver);border-radius:999px;padding:7px 14px 7px 8px;font-size:.8rem;font-weight:600;color:var(--ink);margin-bottom:24px;box-shadow:var(--shadow-sm);backdrop-filter:blur(6px)}
+  .hero-badge b{background:var(--blue);color:#fff;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;padding:3px 8px;border-radius:999px}
+
+  /* ============ Logo / marquee strip ============ */
+  .strip{border-top:1px solid var(--silver);border-bottom:1px solid var(--silver);background:var(--white)}
+  .strip .container{display:flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:center;padding-top:26px;padding-bottom:26px}
+  .strip p{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2)}
+  .strip .tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .tag{font-size:.82rem;font-weight:600;color:var(--ink);background:var(--paper);border:1px solid var(--silver);border-radius:999px;padding:8px 15px}
+
+  /* ============ Feature demo rows (getfernand style) ============ */
+  .feature-row{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(36px,5vw,72px);align-items:center}
+  .feature-row + .feature-row{margin-top:clamp(72px,9vw,120px)}
+  .feature-row.reverse .fr-copy{order:2}
+  .fr-copy .eyebrow{margin-bottom:14px}
+  .fr-copy h2{font-size:clamp(1.8rem,3.4vw,2.5rem)}
+  .fr-copy p.desc{margin-top:16px;color:var(--muted);font-size:1.06rem;max-width:460px}
+  .feat-list{margin-top:30px;display:flex;flex-direction:column;gap:6px}
+  .feat-item{display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:var(--r);transition:background .2s}
+  .feat-item:hover{background:var(--paper)}
+  .feat-ico{width:38px;height:38px;flex:none;border-radius:10px;display:grid;place-items:center;color:var(--blue);background:linear-gradient(180deg,#fff,#eef2fb);border:1px solid var(--silver);box-shadow:var(--shadow-sm)}
+  .feat-ico svg{width:19px;height:19px}
+  .feat-item b{font-family:var(--f-display);font-weight:600;font-size:1rem;display:block}
+  .feat-item small{color:var(--muted);font-size:.92rem;display:block;margin-top:2px}
+
+  /* ============ Product "window" mockups ============ */
+  .window{border:1px solid var(--silver);border-radius:var(--r-xl);background:linear-gradient(180deg,#fff,#fbfcfe);box-shadow:var(--shadow-lg);overflow:hidden;position:relative}
+  .window::before{content:"";position:absolute;inset:0;border-radius:var(--r-xl);padding:1px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(216,222,234,.2));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+  .win-bar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--silver);background:linear-gradient(180deg,#f7f9fc,#eef1f7)}
+  .win-bar .dots{display:flex;gap:6px}
+  .win-bar .dots i{width:10px;height:10px;border-radius:50%;background:var(--silver-2)}
+  .win-bar .title{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;color:var(--muted);margin-left:6px}
+  .win-body{padding:20px}
+
+  /* match mock */
+  .mrow{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--silver);border-radius:var(--r);background:#fff;margin-bottom:12px;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+  .mrow:last-child{margin-bottom:0}
+  .mrow.top{border-color:var(--sky);box-shadow:0 12px 30px -18px rgba(31,51,204,.4)}
+  .ring{--p:0;width:52px;height:52px;flex:none;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--blue) calc(var(--p)*1%),var(--silver) 0)}
+  .ring span{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:.82rem;color:var(--ink)}
+  .mrow .mmeta{flex:1;min-width:0}
+  .mrow .mmeta b{font-family:var(--f-display);font-size:1rem;display:block}
+  .mrow .mmeta small{color:var(--muted);font-size:.86rem}
+  .pill{display:inline-flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+  .pill span{font-size:.72rem;font-weight:600;color:var(--blue);background:var(--paper);border:1px solid var(--silver);border-radius:999px;padding:3px 9px}
+  .mrow .go{flex:none;font-size:.8rem;font-weight:700;color:#fff;background:var(--blue);border-radius:999px;padding:8px 14px}
+  .mrow.dim{opacity:.72}
+
+  /* roadmap mock */
+  .rm-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .rm-top b{font-family:var(--f-display);font-size:1rem}
+  .rm-prog{height:8px;border-radius:999px;background:var(--paper-2);overflow:hidden;margin-bottom:20px;border:1px solid var(--silver)}
+  .rm-prog i{display:block;height:100%;width:42%;border-radius:999px;background:linear-gradient(90deg,var(--sky),var(--blue))}
+  .step{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--silver)}
+  .step:last-child{border-bottom:0}
+  .step .ck{width:24px;height:24px;flex:none;border-radius:50%;border:2px solid var(--silver-2);display:grid;place-items:center;color:#fff}
+  .step.done .ck{background:var(--blue);border-color:var(--blue)}
+  .step.now .ck{border-color:var(--sky)}
+  .step .ck svg{width:13px;height:13px;opacity:0}
+  .step.done .ck svg{opacity:1}
+  .step b{font-family:var(--f-display);font-weight:600;font-size:.96rem;display:block}
+  .step small{color:var(--muted);font-size:.84rem}
+  .step .rz{display:inline-flex;gap:6px;margin-top:6px}
+  .step .rz span{font-size:.7rem;color:var(--muted);background:var(--paper);border:1px solid var(--silver);border-radius:6px;padding:2px 7px}
+  .step .st{margin-left:auto;font-size:.7rem;font-weight:700;font-family:var(--f-mono);letter-spacing:.05em;padding:3px 9px;border-radius:999px}
+  .step.done .st{color:var(--blue);background:var(--paper)}
+  .step.now .st{color:#fff;background:var(--sky)}
+
+  /* ============ Product highlight / AI coach demo ============ */
+  .demo{background:linear-gradient(180deg,var(--paper),var(--white))}
+  .demo-frame{position:relative;max-width:1040px;margin:0 auto}
+  .demo-window{border:1px solid var(--silver);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+  .demo-window .win-bar{padding:16px 20px}
+  .demo-stage{display:grid;grid-template-columns:1fr;position:relative;min-height:380px;background:radial-gradient(700px 300px at 20% 0%,rgba(31,51,204,.06),transparent 60%),#fff;padding:34px}
+  .demo-app b.dt{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .demo-app h3{font-size:1.5rem;margin:10px 0 6px}
+  .demo-app p{color:var(--muted);max-width:420px;font-size:.98rem}
+  .demo-app .row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+  .demo-app .chip{font-size:.82rem;font-weight:600;background:var(--paper);border:1px solid var(--silver);border-radius:999px;padding:8px 14px;color:var(--ink)}
+  .demo-app .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+  /* floating AI chat card (right-side agent) */
+  .chatcard{position:absolute;right:26px;bottom:26px;width:min(340px,86%);background:#fff;border:1px solid var(--silver);border-radius:var(--r-lg);box-shadow:var(--shadow-lg);overflow:hidden}
+  .chatcard .ch-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--silver);background:linear-gradient(180deg,#f7f9fc,#eef1f7)}
+  .chatcard .ch-ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(160deg,var(--blue-500),var(--blue-600));display:grid;place-items:center;color:#fff}
+  .chatcard .ch-ava svg{width:16px;height:16px}
+  .chatcard .ch-head b{font-family:var(--f-display);font-size:.9rem}
+  .chatcard .ch-head small{display:block;color:#12b76a;font-size:.7rem;font-weight:700}
+  .chatcard .ch-body{padding:16px;display:flex;flex-direction:column;gap:10px}
+  .bub{max-width:85%;padding:10px 13px;border-radius:14px;font-size:.86rem;line-height:1.45}
+  .bub.u{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+  .bub.a{align-self:flex-start;background:var(--paper);color:var(--ink);border:1px solid var(--silver);border-bottom-left-radius:4px}
+  .typing{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;background:var(--paper);border:1px solid var(--silver);border-radius:14px;border-bottom-left-radius:4px}
+  .typing i{width:6px;height:6px;border-radius:50%;background:var(--muted-2);animation:blink 1.2s infinite}
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+  .ch-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--silver)}
+  .ch-input div{flex:1;color:var(--muted-2);font-size:.82rem}
+  .ch-input button{width:32px;height:32px;border-radius:8px;border:0;background:var(--blue);color:#fff;display:grid;place-items:center;cursor:pointer}
+  .ch-input button svg{width:15px;height:15px}
+
+  /* ============ Testimonials ============ */
+  .quotes{background:var(--paper)}
+  .quote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .quote{background:#fff;border:1px solid var(--silver);border-radius:var(--r-lg);padding:28px;display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow-sm)}
+  .quote .stars{color:var(--sky);letter-spacing:2px;font-size:.9rem}
+  .quote p{font-size:1.02rem;color:var(--ink);line-height:1.55}
+  .who{display:flex;align-items:center;gap:13px}
+  .who .ava{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;color:#fff;background:linear-gradient(160deg,var(--blue-500),var(--blue-600));flex:none}
+  .who b{font-family:var(--f-display);font-weight:600;font-size:.98rem}
+  .who small{display:block;color:var(--muted);font-size:.82rem;margin-top:2px}
+
+  /* ============ FAQ ============ */
+  .faq-wrap{max-width:760px;margin:0 auto}
+  details{border:1px solid var(--silver);border-radius:var(--r);background:#fff;margin-bottom:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+  details[open]{border-color:var(--silver-2);box-shadow:var(--shadow-sm)}
+  summary{list-style:none;cursor:pointer;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--f-display);font-weight:600;font-size:1.05rem;color:var(--ink)}
+  summary::-webkit-details-marker{display:none}
+  summary .pm{width:26px;height:26px;flex:none;position:relative;transition:transform .3s var(--ease)}
+  summary .pm::before,summary .pm::after{content:"";position:absolute;background:var(--blue);border-radius:2px}
+  summary .pm::before{top:50%;left:4px;right:4px;height:2px;transform:translateY(-50%)}
+  summary .pm::after{left:50%;top:4px;bottom:4px;width:2px;transform:translateX(-50%);transition:opacity .3s}
+  details[open] summary .pm{transform:rotate(90deg)}
+  details[open] summary .pm::after{opacity:0}
+  details .answer{padding:0 24px 24px;color:var(--muted);font-size:1rem}
+
+  /* ============ Pricing ============ */
+  .pricing{background:var(--paper)}
+  .plans{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;max-width:900px;margin:0 auto;align-items:stretch}
+  .plan{background:#fff;border:1px solid var(--silver);border-radius:var(--r-xl);padding:36px;display:flex;flex-direction:column;box-shadow:var(--shadow-sm)}
+  .plan.featured{border:2px solid var(--blue);box-shadow:var(--glow);position:relative}
+  .plan .tag{position:absolute;top:-13px;left:36px;background:var(--blue);color:#fff;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+  .plan .pname{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .plan .price{font-family:var(--f-display);font-weight:700;font-size:3rem;letter-spacing:-.03em;margin:14px 0 4px;color:var(--ink)}
+  .plan .price small{font-size:1rem;font-weight:500;color:var(--muted);letter-spacing:0}
+  .plan .sub{color:var(--muted);margin-bottom:26px;font-size:.96rem}
+  .plan ul{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:30px;flex:1}
+  .plan li{display:flex;gap:12px;align-items:flex-start;font-size:.98rem}
+  .plan li svg{width:20px;height:20px;color:var(--blue);flex:none;margin-top:1px}
+  .plan.soon{background:var(--paper);border-style:dashed;color:var(--muted)}
+  .plan.soon .price,.plan.soon li{color:var(--muted)}
+  .plan.soon li svg{color:var(--muted-2)}
+  .btn-block{width:100%}
+
+  /* ============ Pin-style faces closer ============ */
+  .closer{background:var(--white);position:relative;overflow:hidden}
+  .faces{position:relative;height:clamp(300px,42vw,470px);margin-bottom:8px}
+  .dot{position:absolute;border-radius:50%;background:var(--paper-2);border:1px solid var(--silver);transform:translate(-50%,-50%);animation:floaty 7s ease-in-out infinite}
+  .face{position:absolute;border-radius:50%;transform:translate(-50%,-50%);display:grid;place-items:center;font-family:var(--f-display);font-weight:700;color:#fff;box-shadow:var(--shadow);border:2px solid #fff;animation:floaty 6s ease-in-out infinite;z-index:2}
+  @keyframes floaty{0%,100%{margin-top:0}50%{margin-top:-10px}}
+  .closer-copy{position:relative;text-align:center;max-width:820px;margin:0 auto}
+  .closer-copy h2{font-size:clamp(1.7rem,3.6vw,2.7rem);color:var(--muted-2)}
+  .closer-copy h2 b{color:var(--ink);font-weight:700}
+  .closer-copy .btn{margin-top:30px}
+
+  /* ============ CTA band ============ */
+  .cta-band{background:radial-gradient(800px 380px at 82% 0%,rgba(76,147,240,.4),transparent),linear-gradient(120deg,var(--blue-600),var(--blue));color:#fff;text-align:center}
+  .cta-band h2{color:#fff;font-size:clamp(2.1rem,4.4vw,3.1rem);max-width:640px;margin:0 auto}
+  .cta-band p{color:rgba(255,255,255,.85);margin:18px auto 32px;max-width:480px;font-size:1.08rem}
+  .btn-white{background:#fff;color:var(--ink)}
+
+  /* ============ Footer ============ */
+  .site-footer{background:var(--paper);border-top:1px solid var(--silver);padding:70px 0 32px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:44px}
+  .foot-brand p{margin-top:16px;max-width:280px;font-size:.95rem;color:var(--muted);line-height:1.6}
+  .foot-col h4{font-family:var(--f-display);color:var(--ink);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:600}
+  .foot-col a{display:block;padding:6px 0;font-size:.95rem;color:var(--muted);transition:color .2s}
+  .foot-col a:hover{color:var(--ink)}
+  .foot-bottom{border-top:1px solid var(--silver);padding-top:24px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;font-size:.86rem;color:var(--muted)}
+  .socials{display:flex;gap:10px}
+  .socials a{width:38px;height:38px;border-radius:50%;border:1px solid var(--silver);background:#fff;display:grid;place-items:center;color:var(--muted);transition:.2s}
+  .socials a:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+  .socials svg{width:17px;height:17px}
+
+  /* ============ Reveal ============ */
+  .js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .js .reveal.in{opacity:1;transform:none}
+  .js .reveal.d1{transition-delay:.09s}.js .reveal.d2{transition-delay:.18s}.js .reveal.d3{transition-delay:.27s}
+
+  .skip{position:absolute;left:-999px;top:8px;background:#fff;color:var(--ink);padding:10px 16px;border-radius:8px;z-index:100}
+  .skip:focus{left:16px}
+
+  /* ============ Responsive ============ */
+  @media(max-width:960px){
+    .feature-row{grid-template-columns:1fr;gap:34px}
+    .feature-row.reverse .fr-copy{order:0}
+    .quote-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto}
+    .foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}
+    .hero-bg::after{background:linear-gradient(180deg,rgba(246,247,251,.6),var(--paper) 78%),linear-gradient(90deg,var(--paper),rgba(246,247,251,.5) 60%,transparent)}
+  }
+  @media(max-width:760px){
+    .nav-links,.nav-login{display:none}
+    .nav-toggle{display:grid;place-items:center}
+    .site-header.open{background:rgba(255,255,255,.97);backdrop-filter:blur(14px);box-shadow:var(--shadow-sm)}
+    .site-header.open .mobile-menu{display:flex}
+    .nav-cta .btn-ghost{padding:10px 16px;font-size:.9rem}
+    .hero{min-height:auto}
+    .hero-grid{padding-top:104px;padding-bottom:52px}
+    .hero-bg{background-position:74% center}
+    .hero-bg::after{background:linear-gradient(180deg,var(--paper) 0%,rgba(246,247,251,.84) 46%,rgba(246,247,251,.28) 100%)}
+    .hero-actions{width:100%}
+    .hero-actions .btn{flex:1 1 auto;justify-content:center}
+    .plans{grid-template-columns:1fr;max-width:440px}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .chatcard{position:relative;right:auto;bottom:auto;width:100%;margin-top:22px}
+    .demo-stage{padding:24px;min-height:auto}
+    .faces{height:280px}
+  }
+  @media(max-width:520px){
+    .container{padding:0 18px}
+    .hero h1{font-size:2.35rem}
+    .hero p.lead{font-size:1.02rem}
+    .section{padding:60px 0}
+    h2{font-size:1.72rem}
+    .fr-copy h2{font-size:1.6rem}
+    .win-body{padding:16px}
+    .mrow{padding:12px;gap:12px}
+    .ring{width:44px;height:44px}
+    .ring span{width:34px;height:34px;font-size:.74rem}
+    .mrow .go{padding:7px 11px;font-size:.72rem}
+    .demo-app h3{font-size:1.25rem}
+    .plan{padding:28px}
+    .faces{height:230px}
+    .face{transform:translate(-50%,-50%) scale(.8)}
+    .closer-copy h2{font-size:1.5rem}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition-duration:.01ms!important}
+    .js .reveal{opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="orbit-mark" viewBox="0 0 32 32"><circle cx="13.5" cy="13.5" r="9" fill="none" stroke="currentColor" stroke-width="4.2"/><circle cx="24.5" cy="24" r="4.7" fill="currentColor"/></symbol></svg>
+
+<header class="site-header" id="header">
+  <div class="container bar">
+    <a href="#" class="logo" aria-label="LearnHub AI home"><svg class="mark"><use href="#orbit-mark"/></svg>LearnHub<span class="ai">&nbsp;AI</span></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#product">Product</a>
+      <a href="#coach">AI Coach</a>
+      <a href="#stories">Stories</a>
+      <a href="#faq">FAQ</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" class="nav-login">Log in</a>
+      <a href="#" class="btn btn-ghost">Start free</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
+    <a href="#product">Product</a><a href="#coach">AI Coach</a><a href="#stories">Stories</a><a href="#faq">FAQ</a><a href="#pricing">Pricing</a><a href="#">Log in</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HERO with robot background -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="hero-badge"><b>BETA</b> Free for every learner in Africa</span>
+        <h1>Find the tech career <span class="grad">built for you.</span></h1>
+        <p class="lead">Answer a short assessment. LearnHub AI matches you to the tech careers that fit, maps your learning path, and coaches you the whole way — like an AI mentor who actually knows your goals.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-primary btn-lg">Start free assessment
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#coach" class="btn btn-ghost btn-lg">See the AI coach</a>
+        </div>
+        <div class="hero-meta">
+          <span>2-minute assessment</span><span>Free while in beta</span><span>Built for African talent</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- career strip -->
+  <div class="strip">
+    <div class="container">
+      <p>Match into</p>
+      <div class="tags">
+        <span class="tag">Software Engineering</span><span class="tag">Data & Analytics</span><span class="tag">Product Design</span><span class="tag">Cybersecurity</span><span class="tag">Cloud / DevOps</span><span class="tag">Product</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT: feature demo rows -->
+  <section class="section" id="product">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">The product</span>
+        <h2>Not a quiz result. A working plan.</h2>
+        <p>See exactly what LearnHub does the moment you finish your assessment.</p>
+      </div>
+
+      <!-- Row 1: Career match -->
+      <div class="feature-row">
+        <div class="fr-copy reveal">
+          <span class="eyebrow">Career match</span>
+          <h2>See the careers that actually fit you.</h2>
+          <p class="desc">One short assessment turns into a ranked shortlist of tech careers — each matched to your background, interests, and real constraints.</p>
+          <div class="feat-list">
+            <div class="feat-item"><span class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></span><div><b>Ranked matches</b><small>Your top 5 careers, in order of fit.</small></div></div>
+            <div class="feat-item"><span class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><div><b>Clear reasons</b><small>See why each one fits you — not just a score.</small></div></div>
+            <div class="feat-item"><span class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div><b>Local salary &amp; remote</b><small>Grounded in your market, not a US average.</small></div></div>
+          </div>
+        </div>
+        <div class="reveal d1">
+          <div class="window">
+            <div class="win-bar"><div class="dots"><i></i><i></i><i></i></div><span class="title">learnhub.ai / your matches</span></div>
+            <div class="win-body">
+              <div class="mrow top" style="--p:94">
+                <div class="ring" style="--p:94"><span>94%</span></div>
+                <div class="mmeta"><b>Data Analyst</b><small>Strong logic + you like finding patterns.</small><div class="pill"><span>$ Entry–Mid</span><span>Remote: High</span></div></div>
+                <span class="go">View path</span>
+              </div>
+              <div class="mrow" style="--p:88">
+                <div class="ring" style="--p:88"><span>88%</span></div>
+                <div class="mmeta"><b>Frontend Engineer</b><small>You enjoy building things people use.</small><div class="pill"><span>$ Entry–Mid</span><span>Remote: High</span></div></div>
+                <span class="go">View path</span>
+              </div>
+              <div class="mrow dim" style="--p:81">
+                <div class="ring" style="--p:81"><span>81%</span></div>
+                <div class="mmeta"><b>Product Designer</b><small>Visual thinker with an eye for users.</small></div>
+                <span class="go">View path</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Roadmap -->
+      <div class="feature-row reverse">
+        <div class="fr-copy reveal">
+          <span class="eyebrow">Learning path</span>
+          <h2>Follow a path, not just a label.</h2>
+          <p class="desc">Every match becomes a step-by-step roadmap you can actually follow — the right skills, in order, with free resources and progress you can track.</p>
+          <div class="feat-list">
+            <div class="feat-item"><span class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><div><b>Step-by-step roadmap</b><small>Skills in the right order, with time estimates.</small></div></div>
+            <div class="feat-item"><span class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></span><div><b>Free-first resources</b><small>Curated for your budget and your bandwidth.</small></div></div>
+            <div class="feat-item"><span class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></span><div><b>Track your progress</b><small>Check off steps and watch the path move.</small></div></div>
+          </div>
+        </div>
+        <div class="reveal d1">
+          <div class="window">
+            <div class="win-bar"><div class="dots"><i></i><i></i><i></i></div><span class="title">learnhub.ai / roadmap · data analyst</span></div>
+            <div class="win-body">
+              <div class="rm-top"><b>Your path to Data Analyst</b><small style="color:var(--muted);font-family:var(--f-mono);font-size:.72rem">42% complete</small></div>
+              <div class="rm-prog"><i></i></div>
+              <div class="step done"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div><b>Spreadsheets &amp; data thinking</b><div class="rz"><span>freeCodeCamp</span><span>2 wks</span></div></div><span class="st">Done</span></div>
+              <div class="step done"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div><b>SQL fundamentals</b><div class="rz"><span>Mode SQL</span><span>3 wks</span></div></div><span class="st">Done</span></div>
+              <div class="step now"><span class="ck"></span><div><b>Python for data</b><div class="rz"><span>Kaggle</span><span>4 wks</span></div></div><span class="st">In progress</span></div>
+              <div class="step"><span class="ck"></span><div><b>Build 2 portfolio projects</b><small>Turn skills into proof.</small></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI COACH product highlight / demo -->
+  <section class="section demo" id="coach">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Product highlight</span>
+        <h2>An AI coach that actually knows your path.</h2>
+        <p>Not a generic chatbot. Your coach already has your assessment, your match, and your roadmap — so every answer is about <em>you</em>.</p>
+      </div>
+      <div class="demo-frame reveal">
+        <div class="demo-window">
+          <div class="win-bar"><div class="dots"><i></i><i></i><i></i></div><span class="title">learnhub.ai / coach</span></div>
+          <div class="demo-stage">
+            <div class="demo-app">
+              <b class="dt">Now coaching</b>
+              <h3>Data Analyst · Week 5</h3>
+              <p>You're 42% through your roadmap. Next up: Python for data. Ask anything — your coach answers in the context of your plan.</p>
+              <div class="row"><span class="chip on">My path</span><span class="chip">Switch career</span><span class="chip">Find a job</span><span class="chip">Explain a skill</span></div>
+            </div>
+            <aside class="chatcard" aria-label="AI coach chat">
+              <div class="ch-head"><span class="ch-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></span><div><b>AI Coach</b><small>Online · knows your plan</small></div></div>
+              <div class="ch-body">
+                <div class="bub u">Is data analysis okay if I'm not great at math?</div>
+                <div class="bub a">Yes — for the analyst path you matched into, it's mostly logic and spreadsheets, not heavy math. You've already cleared SQL. Let's start Python next.</div>
+                <div class="typing" aria-label="Coach is typing"><i></i><i></i><i></i></div>
+              </div>
+              <div class="ch-input"><div>Ask your coach…</div><button aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section quotes" id="stories">
+    <div class="container">
+      <div class="section-head reveal"><span class="eyebrow">Stories</span><h2>From "where do I start?" to a plan.</h2></div>
+      <div class="quote-grid">
+        <figure class="quote reveal"><div class="stars" aria-label="5 out of 5">★★★★★</div><blockquote><p>"I went from 'I should learn tech' to a clear plan in one sitting. The salary and remote info made it real."</p></blockquote><figcaption class="who"><span class="ava">AO</span><span><b>Amara O.</b><small>Graduate · Accra</small></span></figcaption></figure>
+        <figure class="quote reveal d1"><div class="stars" aria-label="5 out of 5">★★★★★</div><blockquote><p>"It actually asked about my budget and my data. The path it built was all free resources I could start that week."</p></blockquote><figcaption class="who"><span class="ava">CE</span><span><b>Chidi E.</b><small>Student · Lagos</small></span></figcaption></figure>
+        <figure class="quote reveal d2"><div class="stars" aria-label="5 out of 5">★★★★★</div><blockquote><p>"I was a teacher. LearnHub mapped a route into data analysis I could actually do around my job."</p></blockquote><figcaption class="who"><span class="ava">KA</span><span><b>Kwame A.</b><small>Career changer · Nairobi</small></span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head reveal"><span class="eyebrow">Questions</span><h2>Good to know.</h2></div>
+      <div class="faq-wrap">
+        <details class="reveal" open><summary>Is it really free?<span class="pm" aria-hidden="true"></span></summary><div class="answer">Yes. LearnHub AI is completely free while we're in beta — the assessment, your career match, your learning path, and the AI coach.</div></details>
+        <details class="reveal"><summary>How long does the assessment take?<span class="pm" aria-hidden="true"></span></summary><div class="answer">About two minutes. Your progress saves as you go, so you can pause and pick up right where you left off.</div></details>
+        <details class="reveal"><summary>Do I need any experience?<span class="pm" aria-hidden="true"></span></summary><div class="answer">None at all. LearnHub is built for students, graduates, and career changers who are just getting started.</div></details>
+        <details class="reveal"><summary>Is the coach a real person?<span class="pm" aria-hidden="true"></span></summary><div class="answer">It's an AI coach, available any time, that already knows your assessment and your plan. Human mentorship is on our roadmap for later.</div></details>
+        <details class="reveal"><summary>Which careers does it cover?<span class="pm" aria-hidden="true"></span></summary><div class="answer">Software engineering, data, design, cybersecurity, cloud and DevOps, product, and more — with new paths added as we grow.</div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section pricing" id="pricing">
+    <div class="container">
+      <div class="section-head reveal"><span class="eyebrow">Pricing</span><h2>Free while we're in beta.</h2><p>Everything you need to find your path and start moving. No card, no catch.</p></div>
+      <div class="plans">
+        <div class="plan featured reveal">
+          <span class="tag">Beta</span><span class="pname">Learner</span>
+          <div class="price">Free <small>/ during beta</small></div>
+          <p class="sub">The full LearnHub experience.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Personalized career assessment</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>AI career match with clear reasons</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Step-by-step learning roadmap</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>24/7 AI coach &amp; progress tracking</li>
+          </ul>
+          <a href="#" class="btn btn-primary btn-block btn-lg">Start free</a>
+        </div>
+        <div class="plan soon reveal d1">
+          <span class="pname">Mentorship</span>
+          <div class="price">Coming soon</div>
+          <p class="sub">For when you want a human in your corner.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>1:1 sessions with real mentors</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Portfolio &amp; interview reviews</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Accountability check-ins</li>
+          </ul>
+          <a href="#" class="btn btn-ghost btn-block btn-lg">Notify me</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIN-STYLE FACES CLOSER (bottom) -->
+  <section class="section closer">
+    <div class="container">
+      <div class="faces reveal" aria-hidden="true">
+        <span class="dot" style="left:6%;top:20%;width:14px;height:14px"></span>
+        <span class="dot" style="left:16%;top:55%;width:26px;height:26px;animation-delay:.4s"></span>
+        <span class="dot" style="left:11%;top:82%;width:16px;height:16px;animation-delay:1s"></span>
+        <span class="dot" style="left:26%;top:12%;width:18px;height:18px;animation-delay:.2s"></span>
+        <span class="dot" style="left:30%;top:44%;width:12px;height:12px;animation-delay:.7s"></span>
+        <span class="dot" style="left:23%;top:74%;width:22px;height:22px;animation-delay:1.3s"></span>
+        <span class="dot" style="left:40%;top:24%;width:14px;height:14px;animation-delay:.9s"></span>
+        <span class="dot" style="left:44%;top:64%;width:30px;height:30px;animation-delay:.3s"></span>
+        <span class="dot" style="left:52%;top:16%;width:16px;height:16px;animation-delay:1.1s"></span>
+        <span class="dot" style="left:57%;top:50%;width:12px;height:12px;animation-delay:.5s"></span>
+        <span class="dot" style="left:60%;top:80%;width:20px;height:20px;animation-delay:1.5s"></span>
+        <span class="dot" style="left:70%;top:22%;width:24px;height:24px;animation-delay:.6s"></span>
+        <span class="dot" style="left:74%;top:60%;width:14px;height:14px;animation-delay:1.2s"></span>
+        <span class="dot" style="left:84%;top:30%;width:18px;height:18px;animation-delay:.8s"></span>
+        <span class="dot" style="left:89%;top:70%;width:16px;height:16px;animation-delay:.1s"></span>
+        <span class="dot" style="left:94%;top:48%;width:12px;height:12px;animation-delay:1.4s"></span>
+        <span class="face" style="left:9%;top:38%;width:52px;height:52px;background:linear-gradient(160deg,#2A46F0,#182AB0);font-size:.9rem">TA</span>
+        <span class="face" style="left:34%;top:78%;width:46px;height:46px;background:linear-gradient(160deg,#3B6FF0,#1F33CC);font-size:.82rem">MK</span>
+        <span class="face" style="left:38%;top:34%;width:58px;height:58px;background:linear-gradient(160deg,#4C93F0,#2A46F0);font-size:.95rem">JO</span>
+        <span class="face" style="left:53%;top:70%;width:44px;height:44px;background:linear-gradient(160deg,#1F33CC,#182AB0);font-size:.8rem">FE</span>
+        <span class="face" style="left:64%;top:38%;width:54px;height:54px;background:linear-gradient(160deg,#2A46F0,#3B6FF0);font-size:.9rem">CE</span>
+        <span class="face" style="left:80%;top:52%;width:48px;height:48px;background:linear-gradient(160deg,#182AB0,#1F33CC);font-size:.85rem">AO</span>
+        <span class="face" style="left:78%;top:16%;width:44px;height:44px;background:linear-gradient(160deg,#3B6FF0,#2A46F0);font-size:.8rem">KA</span>
+      </div>
+      <div class="closer-copy reveal">
+        <h2>LearnHub reads across every tech career path with a single assessment — <b>cutting through the noise to hand you the one that's built for you.</b></h2>
+        <a href="#" class="btn btn-primary btn-lg">Find your career — free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-band">
+    <div class="container reveal">
+      <h2>Ready to find your path in tech?</h2>
+      <p>Take the free 2-minute assessment and meet the career built for you.</p>
+      <a href="#" class="btn btn-white btn-lg">Start free assessment
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#" class="logo" aria-label="LearnHub AI home"><svg class="mark"><use href="#orbit-mark"/></svg>LearnHub<span class="ai">&nbsp;AI</span></a>
+        <p>The AI career coach for Africa's next generation of tech talent.</p>
+      </div>
+      <div class="foot-col"><h4>Product</h4><a href="#product">Features</a><a href="#coach">AI Coach</a><a href="#pricing">Pricing</a><a href="#">Careers catalog</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="#stories">Stories</a><a href="#faq">FAQ</a><a href="#">About</a><a href="#">Contact</a></div>
+      <div class="foot-col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 LearnHub AI. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.6l-5.2-6.8L5.3 22H2l7.7-8.8L1.4 2H8l4.7 6.2L18.9 2Zm-2.3 18h1.8L7.5 3.9H5.6L16.6 20Z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.2 8.65 21 10.6 21 13.3V21h-4v-6.9c0-1.65-.03-3.77-2.3-3.77-2.3 0-2.65 1.8-2.65 3.65V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.documentElement.classList.add('js');
+  var header=document.getElementById('header');
+  var onScroll=function(){header.classList.toggle('scrolled',window.scrollY>30)};
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  var toggle=document.getElementById('navToggle');
+  toggle.addEventListener('click',function(){var open=header.classList.toggle('open');toggle.setAttribute('aria-expanded',open);toggle.setAttribute('aria-label',open?'Close menu':'Open menu');});
+  document.getElementById('mobileMenu').addEventListener('click',function(e){if(e.target.tagName==='A'){header.classList.remove('open');toggle.setAttribute('aria-expanded','false');}});
+  var io=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+</script>
+</body>
+</html>
