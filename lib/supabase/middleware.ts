@@ -70,6 +70,15 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Signed-in users land in the app, not on the marketing page. The landing
+  // itself stays a static route; this redirect keeps it cacheable.
+  if (user && path === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
   // Signed-in users skip the auth pages (but /reset-password stays reachable —
   // they arrive there mid password-recovery with a live session).
   if (user && matches(path, AUTH_ROUTES)) {
