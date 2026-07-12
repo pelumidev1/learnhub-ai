@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { ProgressBar } from "@/components/dashboard/primitives";
 import { StepItem } from "@/components/roadmap/step-item";
 import { Icons } from "@/components/ui/icons";
@@ -15,9 +15,7 @@ export default async function RoadmapDetailPage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { data: roadmap } = await supabase

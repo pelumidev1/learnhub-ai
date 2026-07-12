@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -31,3 +32,18 @@ export async function createClient() {
     },
   );
 }
+
+/**
+ * The authenticated user for the current request, deduped with React cache().
+ * getUser() revalidates the session with a network round-trip to Supabase Auth;
+ * without the cache, the app layout AND the page each paid that round-trip on
+ * every navigation. Use this in Server Components instead of calling
+ * supabase.auth.getUser() directly.
+ */
+export const getAuthUser = cache(async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
+});

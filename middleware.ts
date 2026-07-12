@@ -8,9 +8,11 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Run on all paths except static assets and image files, so the session
-     * cookie is refreshed on every real navigation.
+     * Run on all page navigations, but skip static assets and /api: the auth
+     * check here is a network round-trip to Supabase, and API route handlers
+     * already do their own getUser() (and can refresh the session cookie
+     * themselves), so running middleware there doubled the auth traffic.
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { generateCareerRecommendation } from "@/lib/ai/recommendation";
+import { estimateCostUsd } from "@/lib/ai/config";
 import { checkAiRateLimit, AI_LIMITS } from "@/lib/ai/rate-limit";
 import { formatAnswers } from "@/lib/assessment/questions";
 
@@ -59,14 +60,19 @@ export async function generateRecommendation(assessmentId: string): Promise<Resu
     .eq("id", user.id)
     .maybeSingle();
 
+  // Stable order matters: the catalog is part of the prompt-cached prefix, and
+  // Postgres row order isn't guaranteed without it — a reshuffled catalog would
+  // silently miss the Anthropic prompt cache and bill full input every call.
   const { data: careers } = await supabase
     .from("careers")
     .select("id, slug, title, category")
     .eq("is_active", true)
+    .order("slug")
     .limit(60);
   const slugToId = new Map((careers ?? []).map((c) => [c.slug, c.id]));
 
   try {
+    const startedAt = Date.now();
     const { recommendation, usage, model } = await generateCareerRecommendation({
       answersText: formatAnswers(answers),
       country: profile?.country ?? null,
@@ -76,6 +82,23 @@ export async function generateRecommendation(assessmentId: string): Promise<Resu
         category: c.category,
       })),
     });
+
+    // Log the call immediately — it cost money even if persisting fails below.
+    try {
+      await supabase.from("ai_events").insert({
+        user_id: user.id,
+        call_type: "recommendation",
+        model,
+        input_tokens: usage.input,
+        output_tokens: usage.output,
+        cost_usd: estimateCostUsd(model, usage.input, usage.output),
+        latency_ms: Date.now() - startedAt,
+        related_id: assessmentId,
+        status: "ok",
+      });
+    } catch {
+      // logging is best-effort
+    }
 
     const rows = recommendation.top_careers.map((c, i) => ({
       assessment_id: assessmentId,
@@ -94,18 +117,17 @@ export async function generateRecommendation(assessmentId: string): Promise<Resu
     }));
 
     const { error: insErr } = await supabase.from("career_results").insert(rows);
-    if (insErr) return { ok: false, error: insErr.message };
+    if (insErr) {
+      // 23505 = a concurrent call already saved results for this assessment
+      // (unique on assessment_id + rank). Theirs won; treat it as success.
+      if (insErr.code === "23505") {
+        revalidatePath(`/results/${assessmentId}`);
+        return { ok: true };
+      }
+      return { ok: false, error: insErr.message };
+    }
 
     try {
-      await supabase.from("ai_events").insert({
-        user_id: user.id,
-        call_type: "recommendation",
-        model,
-        input_tokens: usage.input,
-        output_tokens: usage.output,
-        related_id: assessmentId,
-        status: "ok",
-      });
       await supabase.from("analytics_events").insert({
         user_id: user.id,
         event_name: "recommendation.generated",

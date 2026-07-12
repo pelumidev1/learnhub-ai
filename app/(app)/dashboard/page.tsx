@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { getDashboardData } from "@/lib/dashboard/queries";
 import { WelcomeSection } from "@/components/dashboard/welcome-section";
 import { ProgressOverview } from "@/components/dashboard/progress-overview";
@@ -16,10 +16,7 @@ import { SettingsCard } from "@/components/dashboard/settings-card";
 export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const data = await getDashboardData(user.id);

@@ -29,7 +29,7 @@ _Audited 2026-07-11 against commit `8c41efc`. Every "Verified" claim below was c
 | **Progress tracking page** | ✅ Working | Build; query layer shares dashboard code paths | Streaks (UTC-day based), per-roadmap progress, certificates, achievements. |
 | **Certificates** | ⚠️ Code-verified only | Schema + issuance code review | Server-issued on roadmap completion; public verification code exists in DB but **no public verification page** (see gaps). |
 | **Admin features** | ❌ None exist | Grep confirmed | Not in PRD v1 scope. Careers/resources are managed by editing seed SQL or the Supabase dashboard. |
-| **AI cost controls** | ✅ Working | E2E logged `ai_events`; limiter exercised in request path | Prompt caching, DB-backed per-user rate limits, persist-don't-regenerate, demo mode. `cost_usd`/`latency_ms` columns exist but are not populated (low-priority known gap). |
+| **AI cost controls** | ✅ Working | E2E logged `ai_events`; limiter exercised in request path | Prompt caching, DB-backed per-user rate limits, persist-don't-regenerate, demo mode. `cost_usd`/`latency_ms` populated on every call since 2026-07-12 ([SCALABILITY.md](SCALABILITY.md)). |
 | **Deployment** | ⚠️ In progress (user-side) | Repo pushed; Vercel import is on the owner | Env vars + Supabase redirect allow-list steps documented in `docs/DEPLOYMENT.md`. |
 
 ### Cross-cutting checks
@@ -46,7 +46,7 @@ _Audited 2026-07-11 against commit `8c41efc`. Every "Verified" claim below was c
 1. **(High — process, not code) The real-model path has never run.** Every AI feature has only executed in demo mode. First action after funding the Anthropic account: set `AI_DEMO_MODE=false`, run the loop once, and watch `ai_events`.
 2. **(Medium) No browser-based human pass over the authed app against live data.** The E2E script covers auth + advisor; assessment → results → roadmap → certificate needs one manual click-through.
 3. **(Medium) Certificate has no public verification page.** `certificate_code` is designed as a shareable verification token; a public `/verify/[code]` route would make certificates credible. Small, high-value.
-4. **(Low) `ai_events.cost_usd` and `latency_ms` never populated.** Compute at call time; cost dashboards need it eventually (it is the PRD's primary sustainability KPI).
+4. ~~**(Low) `ai_events.cost_usd` and `latency_ms` never populated.**~~ **Fixed 2026-07-12** in the scalability pass — every AI call now logs estimated cost and latency (see [SCALABILITY.md](SCALABILITY.md) §1.6).
 5. **(Low) `.claude/launch.json` path drift** (documented in STATUS_REPORT.md 4.5).
 6. **(Low) Careers catalog has no public browse page.** PRD lists `/careers` as P0; the catalog only feeds the AI + results today. Decide: build or de-scope for beta.
 7. **(Low) Footer legal links removed because Privacy/Terms pages don't exist.** Needed before public (not closed-beta) launch.

@@ -21,8 +21,10 @@ const matches = (path: string, list: string[]) =>
   list.some((p) => path === p || path.startsWith(p + "/"));
 
 /**
- * Refreshes the Supabase session cookie on every request (keeps users signed in)
- * and enforces route protection. Called from the root middleware.
+ * Refreshes the Supabase session cookie on every page navigation (keeps users
+ * signed in) and enforces route protection. Called from the root middleware,
+ * whose matcher excludes /api — route handlers authenticate themselves, and
+ * running this there too would double the Supabase Auth traffic.
  *
  * IMPORTANT: do not run other logic between creating the client and getUser().
  *

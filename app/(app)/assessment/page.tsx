@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { AssessmentWizard } from "@/components/assessment/wizard";
 import type { Answers } from "@/lib/assessment/questions";
 
@@ -8,9 +8,7 @@ export const metadata: Metadata = { title: "Career assessment" };
 
 export default async function AssessmentPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   // Resume the latest in-progress draft, or create a fresh one.

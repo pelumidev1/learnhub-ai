@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { getProgressData } from "@/lib/dashboard/queries";
 import { ProgressStats } from "@/components/progress/progress-stats";
 import { CertificateList } from "@/components/progress/certificate-list";
@@ -10,10 +10,7 @@ import { Achievements } from "@/components/dashboard/achievements";
 export const metadata: Metadata = { title: "Progress tracker" };
 
 export default async function ProgressPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const data = await getProgressData(user.id);

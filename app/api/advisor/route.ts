@@ -4,7 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { checkAiRateLimit } from "@/lib/ai/rate-limit";
 import { streamAdvisorReply, type AdvisorContext, type ChatMessage } from "@/lib/ai/advisor";
-import { MODELS } from "@/lib/ai/config";
+import { estimateCostUsd, MODELS } from "@/lib/ai/config";
 
 // Anthropic runs on Node, and we stream a long response, so pin the Node runtime.
 export const runtime = "nodejs";
@@ -24,42 +24,42 @@ function sse(payload: unknown): Uint8Array {
 
 /** Pull the coach's context from the person's saved profile, match, and roadmap. */
 async function loadContext(supabase: SupabaseClient, userId: string): Promise<AdvisorContext> {
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, country")
-    .eq("id", userId)
-    .maybeSingle();
-
-  const { data: career } = await supabase
-    .from("career_results")
-    .select("title, rationale")
-    .eq("user_id", userId)
-    .eq("rank", 1)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  const { data: roadmap } = await supabase
-    .from("learning_roadmaps")
-    .select("id, title")
-    .eq("user_id", userId)
-    .eq("status", "active")
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+  // Independent lookups run in parallel — each awaited query is a network
+  // round-trip to Supabase, and this runs before every single chat reply.
+  const [{ data: profile }, { data: career }, { data: roadmap }] = await Promise.all([
+    supabase.from("profiles").select("full_name, country").eq("id", userId).maybeSingle(),
+    supabase
+      .from("career_results")
+      .select("title, rationale")
+      .eq("user_id", userId)
+      .eq("rank", 1)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("learning_roadmaps")
+      .select("id, title")
+      .eq("user_id", userId)
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
 
   let nextStep: string | null = null;
   if (roadmap) {
-    const { data: steps } = await supabase
-      .from("roadmap_steps")
-      .select("id, title, step_order")
-      .eq("roadmap_id", roadmap.id)
-      .order("step_order", { ascending: true });
-    const { data: done } = await supabase
-      .from("progress_tracking")
-      .select("step_id")
-      .eq("roadmap_id", roadmap.id)
-      .eq("status", "completed");
+    const [{ data: steps }, { data: done }] = await Promise.all([
+      supabase
+        .from("roadmap_steps")
+        .select("id, title, step_order")
+        .eq("roadmap_id", roadmap.id)
+        .order("step_order", { ascending: true }),
+      supabase
+        .from("progress_tracking")
+        .select("step_id")
+        .eq("roadmap_id", roadmap.id)
+        .eq("status", "completed"),
+    ]);
     const doneIds = new Set((done ?? []).map((d) => d.step_id));
     nextStep = (steps ?? []).find((s) => !doneIds.has(s.id))?.title ?? null;
   }
@@ -118,13 +118,12 @@ export async function POST(req: Request) {
     );
   }
 
-  // Resolve the conversation up front so it's a guaranteed id from here on.
-  const conversationId = await resolveConversationId(
-    supabase,
-    user.id,
-    parsed.data.conversationId ?? null,
-    message,
-  );
+  // Resolve the conversation and load the coach's context together — they're
+  // independent, and every awaited round-trip here delays the first token.
+  const [conversationId, context] = await Promise.all([
+    resolveConversationId(supabase, user.id, parsed.data.conversationId ?? null, message),
+    loadContext(supabase, user.id),
+  ]);
   if (!conversationId) {
     return NextResponse.json({ error: "Could not start the chat." }, { status: 500 });
   }
@@ -151,13 +150,12 @@ export async function POST(req: Request) {
     content: message,
   });
 
-  const context = await loadContext(supabase, user.id);
-
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       let full = "";
       let usage = { input: 0, output: 0 };
       let model: string = MODELS.advisor;
+      const startedAt = Date.now();
       try {
         const ai = streamAdvisorReply({ context, history });
         model = ai.model;
@@ -192,6 +190,8 @@ export async function POST(req: Request) {
             model,
             input_tokens: usage.input,
             output_tokens: usage.output,
+            cost_usd: estimateCostUsd(model, usage.input, usage.output),
+            latency_ms: Date.now() - startedAt,
             related_id: conversationId,
             status: "ok",
           });

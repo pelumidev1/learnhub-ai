@@ -13,8 +13,9 @@ _Last updated 2026-07-11, end of the Fable 5 sessions. Written for a fresh Claud
 3. **[PRD.md](PRD.md)** — product scope. It wins scope arguments; CLAUDE.md wins code arguments.
 4. **[docs/PRODUCT_AUDIT.md](docs/PRODUCT_AUDIT.md)** — feature-by-feature verified status, bugs, debt, engineering + PM reviews.
 5. **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — architecture, database, AI workflow, API reference, env vars.
-6. **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — deploy guide and launch checklist.
-7. **[STATUS_REPORT.md](STATUS_REPORT.md)** / **[CHANGELOG.md](CHANGELOG.md)** — history, if you need it. [DESIGN.md](DESIGN.md) for visual language detail.
+6. **[docs/SCALABILITY.md](docs/SCALABILITY.md)** — the 2026-07-12 scalability audit: what was fixed, deferred items with their trigger thresholds, and the one pending owner action (apply the RLS migration to the live DB).
+7. **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — deploy guide and launch checklist.
+8. **[STATUS_REPORT.md](STATUS_REPORT.md)** / **[CHANGELOG.md](CHANGELOG.md)** — history, if you need it. [DESIGN.md](DESIGN.md) for visual language detail.
 
 ## State right now (all verified 2026-07-11 — see the audit for how)
 
@@ -31,6 +32,7 @@ _Last updated 2026-07-11, end of the Fable 5 sessions. Written for a fresh Claud
 2. **Never run `npx next build` while the dev server is running** — they share `.next` and corrupt each other. Stop dev, build, `rm -rf .next`, restart dev. This bit us twice.
 3. Before any commit: `npx tsc --noEmit && npx next build` must both pass. Commit to `main`; the owner asks for pushes explicitly and uses them to trigger Vercel deploys.
 4. When the owner funds Anthropic: flip `AI_DEMO_MODE=false` in `.env.local` (and in Vercel env), restart, run the full loop once, and inspect output quality + `ai_events` rows. This is task #1 in the audit's recommended order.
+5. **Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project (Dashboard → SQL Editor → paste the file → Run). Until then the RLS performance fix and the one-roadmap-per-match unique index exist only in the repo. Plain-English steps in [docs/SCALABILITY.md](docs/SCALABILITY.md) §4.
 
 ## Environment variables (`.env.local`, real values present locally; mirror to Vercel)
 

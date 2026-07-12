@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { AdvisorChat } from "@/components/advisor/chat";
 
 export const metadata: Metadata = { title: "AI coach" };
@@ -9,9 +9,7 @@ type Msg = { role: "user" | "assistant"; content: string };
 
 export default async function AdvisorPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   // Resume the most recent conversation, if any.

@@ -13,7 +13,7 @@ Next.js App Router on Vercel
    ├─ (auth)       /login /signup /forgot-password /reset-password
    ├─ (app)        /dashboard /assessment /results /roadmap /progress /resources /advisor /settings
    │                └─ React Server Components by default; client islands only for interactivity
-   ├─ middleware.ts              session refresh + route protection (every request)
+   ├─ middleware.ts              session refresh + route protection (pages only; /api routes self-authenticate)
    ├─ Server Actions             assessment autosave, recommendation, roadmap, bookmarks, settings
    └─ app/api/advisor            SSE streaming chat route (Node runtime)
         │
@@ -26,7 +26,7 @@ Next.js App Router on Vercel
 ## Authentication & sessions
 
 - Email + password and Google OAuth (Google requires a configured OAuth client — pending), plus forgot/reset password. No phone/OTP in v1.
-- `@supabase/ssr` cookie sessions. `middleware.ts` refreshes the session on every request and enforces route protection: the `PROTECTED` prefix list redirects signed-out users to `/login?redirect=…`; signed-in users are bounced off auth pages and from `/` to `/dashboard`.
+- `@supabase/ssr` cookie sessions. `middleware.ts` refreshes the session on every page navigation and enforces route protection: the `PROTECTED` prefix list redirects signed-out users to `/login?redirect=…`; signed-in users are bounced off auth pages and from `/` to `/dashboard`. `/api` is excluded from the matcher (route handlers authenticate themselves), and Server Components share one auth check per request via the React-cached `getAuthUser()` in `lib/supabase/server.ts` — see [SCALABILITY.md](SCALABILITY.md) §1.2.
 - `/auth/callback` (OAuth code exchange) and `/auth/confirm` (email link verification) complete the flows.
 
 ## Database (18 tables, all in `supabase/migrations/`, RLS everywhere)
@@ -42,7 +42,7 @@ Next.js App Router on Vercel
 | Advisor | `conversations`, `messages` | Every chat turn persisted. |
 | Library | `resources` (22 seeded), `resource_bookmarks` | |
 | Engagement | `weekly_goals`, `analytics_events` | |
-| Observability | `ai_events` | Every AI call: model, tokens, status. (`cost_usd`, `latency_ms` columns exist, not yet written.) |
+| Observability | `ai_events` | Every AI call: model, tokens, status, `cost_usd` + `latency_ms` (written since 2026-07-12; pricing table lives in `lib/ai/config.ts`). |
 
 Regenerate TS types after schema changes: `npm run db:types` → `types/database.ts` (never hand-edit).
 

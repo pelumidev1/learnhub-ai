@@ -1,16 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { Card, ProgressBar, EmptyState } from "@/components/dashboard/primitives";
 
 export const metadata: Metadata = { title: "Learning roadmaps" };
 
 export default async function RoadmapIndexPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { data: roadmaps } = await supabase

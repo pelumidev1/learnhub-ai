@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { generateRoadmap } from "@/lib/ai/roadmap";
+import { estimateCostUsd } from "@/lib/ai/config";
 import { checkAiRateLimit, AI_LIMITS } from "@/lib/ai/rate-limit";
 import { formatAnswers } from "@/lib/assessment/questions";
 
@@ -59,12 +60,30 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
 
   let roadmapId: string | null = null;
   try {
+    const startedAt = Date.now();
     const { roadmap, usage, model } = await generateRoadmap({
       careerTitle: cr.title,
       rationale: cr.rationale,
       country: profile?.country ?? null,
       constraints: formatAnswers(answers),
     });
+
+    // Log the call immediately — it cost money even if persisting fails below.
+    try {
+      await supabase.from("ai_events").insert({
+        user_id: user.id,
+        call_type: "roadmap",
+        model,
+        input_tokens: usage.input,
+        output_tokens: usage.output,
+        cost_usd: estimateCostUsd(model, usage.input, usage.output),
+        latency_ms: Date.now() - startedAt,
+        related_id: cr.id,
+        status: "ok",
+      });
+    } catch {
+      // logging is best-effort
+    }
 
     const { data: rm, error } = await supabase
       .from("learning_roadmaps")
@@ -78,56 +97,62 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
       })
       .select("id")
       .single();
-    if (error || !rm) throw new Error(error?.message ?? "Could not save your roadmap.");
-    roadmapId = rm.id;
 
-    const stepRows = roadmap.steps.map((s, i) => ({
-      roadmap_id: rm.id,
-      user_id: user.id,
-      step_order: i,
-      title: s.title,
-      description: s.description,
-      skill: s.skill,
-      estimated_weeks: s.estimated_weeks,
-      resources: s.resources,
-    }));
-    const { data: steps, error: stepErr } = await supabase
-      .from("roadmap_steps")
-      .insert(stepRows)
-      .select("id");
-    if (stepErr) throw new Error(stepErr.message);
+    if (error?.code === "23505") {
+      // A concurrent request already created the roadmap for this match
+      // (unique index on career_result_id). Reuse theirs instead of failing.
+      const { data: dup } = await supabase
+        .from("learning_roadmaps")
+        .select("id")
+        .eq("career_result_id", cr.id)
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!dup) throw new Error("Could not save your roadmap.");
+      roadmapId = dup.id;
+    } else if (error || !rm) {
+      throw new Error(error?.message ?? "Could not save your roadmap.");
+    } else {
+      roadmapId = rm.id;
 
-    const progRows = (steps ?? []).map((s) => ({
-      step_id: s.id,
-      roadmap_id: rm.id,
-      user_id: user.id,
-      status: "not_started",
-    }));
-    if (progRows.length) await supabase.from("progress_tracking").insert(progRows);
-
-    await supabase
-      .from("career_results")
-      .update({ is_selected: true })
-      .eq("id", cr.id)
-      .eq("user_id", user.id);
-
-    try {
-      await supabase.from("ai_events").insert({
+      const stepRows = roadmap.steps.map((s, i) => ({
+        roadmap_id: rm.id,
         user_id: user.id,
-        call_type: "roadmap",
-        model,
-        input_tokens: usage.input,
-        output_tokens: usage.output,
-        related_id: rm.id,
-        status: "ok",
-      });
-      await supabase.from("analytics_events").insert({
+        step_order: i,
+        title: s.title,
+        description: s.description,
+        skill: s.skill,
+        estimated_weeks: s.estimated_weeks,
+        resources: s.resources,
+      }));
+      const { data: steps, error: stepErr } = await supabase
+        .from("roadmap_steps")
+        .insert(stepRows)
+        .select("id");
+      if (stepErr) throw new Error(stepErr.message);
+
+      const progRows = (steps ?? []).map((s) => ({
+        step_id: s.id,
+        roadmap_id: rm.id,
         user_id: user.id,
-        event_name: "roadmap.created",
-        properties: { roadmap_id: rm.id },
-      });
-    } catch {
-      // logging is best-effort
+        status: "not_started",
+      }));
+      if (progRows.length) await supabase.from("progress_tracking").insert(progRows);
+
+      await supabase
+        .from("career_results")
+        .update({ is_selected: true })
+        .eq("id", cr.id)
+        .eq("user_id", user.id);
+
+      try {
+        await supabase.from("analytics_events").insert({
+          user_id: user.id,
+          event_name: "roadmap.created",
+          properties: { roadmap_id: rm.id },
+        });
+      } catch {
+        // logging is best-effort
+      }
     }
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Roadmap generation failed.";
