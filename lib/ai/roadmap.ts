@@ -10,10 +10,14 @@ export const RoadmapStepSchema = z.object({
   description: z.string(),
   skill: z.string(),
   estimated_weeks: z.number().int().min(1).max(24),
+  // Only keep http(s) links: these render as <a href>, so a javascript: URL
+  // from the model would be stored XSS. Drop bad links rather than fail the
+  // whole (already paid-for) generation over one of them.
   resources: z
     .array(z.object({ label: z.string(), url: z.string() }))
     .max(4)
-    .default([]),
+    .default([])
+    .transform((rs) => rs.filter((r) => /^https?:\/\//i.test(r.url))),
 });
 
 export const RoadmapSchema = z.object({

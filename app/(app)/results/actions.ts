@@ -1,5 +1,6 @@
 "use server";
 
+import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { generateCareerRecommendation } from "@/lib/ai/recommendation";
@@ -15,6 +16,9 @@ type Result = { ok: true } | { ok: false; error: string };
  * page (auto) and from a "try again" button.
  */
 export async function generateRecommendation(assessmentId: string): Promise<Result> {
+  if (!z.string().uuid().safeParse(assessmentId).success) {
+    return { ok: false, error: "Assessment not found." };
+  }
   const supabase = await createClient();
   const {
     data: { user },
@@ -124,7 +128,9 @@ export async function generateRecommendation(assessmentId: string): Promise<Resu
         revalidatePath(`/results/${assessmentId}`);
         return { ok: true };
       }
-      return { ok: false, error: insErr.message };
+      // Log the real error server-side; DB internals don't belong in the UI.
+      console.error("career_results insert failed", insErr);
+      return { ok: false, error: "We couldn't save your results. Please try again." };
     }
 
     try {
@@ -141,8 +147,8 @@ export async function generateRecommendation(assessmentId: string): Promise<Resu
     revalidatePath("/dashboard");
     return { ok: true };
   } catch (e) {
-    const message =
-      e instanceof Error ? e.message : "Something went wrong generating your results.";
-    return { ok: false, error: message };
+    // Log the real error server-side; API/validation internals don't belong in the UI.
+    console.error("recommendation generation failed", e);
+    return { ok: false, error: "Something went wrong generating your results. Please try again." };
   }
 }

@@ -4,16 +4,17 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { safeInternalPath } from "@/lib/utils/redirect";
 
 export type AuthState = { error?: string; message?: string } | undefined;
 
 async function siteOrigin() {
+  // Prefer the configured site URL: the Origin header is client-controlled,
+  // and this value ends up inside Supabase auth emails (password reset,
+  // signup confirm) — a spoofed header must not steer those links.
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
   const h = await headers();
-  return (
-    h.get("origin") ??
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    "http://localhost:3000"
-  );
+  return h.get("origin") ?? "http://localhost:3000";
 }
 
 /** Email + password sign-in. */
@@ -32,7 +33,7 @@ export async function signIn(
   if (error) return { error: error.message };
 
   revalidatePath("/", "layout");
-  redirect(redirectTo.startsWith("/") ? redirectTo : "/dashboard");
+  redirect(safeInternalPath(redirectTo));
 }
 
 /** Email + password sign-up. Sends a confirmation email. */
@@ -45,6 +46,8 @@ export async function signUp(
   const password = String(formData.get("password") ?? "");
 
   if (!fullName) return { error: "Tell us your name." };
+  if (fullName.length > 120)
+    return { error: "Please use a shorter name (up to 120 characters)." };
   if (password.length < 8)
     return { error: "Password must be at least 8 characters." };
 

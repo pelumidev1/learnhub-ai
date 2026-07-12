@@ -1,32 +1,42 @@
 "use server";
 
+import { z } from "zod";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { STEPS, type Answers } from "@/lib/assessment/questions";
 
+// Boundary validation (per CLAUDE.md): the wizard is a client component, so
+// nothing stops a crafted call — only known question keys and bounded values
+// may reach assessment_answers.
+const UuidSchema = z.string().uuid();
+const AnswerValueSchema = z.union([
+  z.string().min(1).max(500),
+  z.number().finite(),
+  z.array(z.string().max(200)).min(1).max(20),
+]);
+
+const QUESTION_LABELS = new Map(
+  STEPS.flatMap((s) => s.questions.map((q) => [q.key, q.label] as const)),
+);
+
 function buildRows(assessmentId: string, userId: string, answers: Answers) {
-  const labels = new Map<string, string>();
-  for (const s of STEPS) for (const q of s.questions) labels.set(q.key, q.label);
   return Object.entries(answers)
     .filter(
-      ([, v]) =>
-        v !== undefined &&
-        v !== null &&
-        v !== "" &&
-        !(Array.isArray(v) && v.length === 0),
+      ([k, v]) => QUESTION_LABELS.has(k) && AnswerValueSchema.safeParse(v).success,
     )
     .map(([question_key, value]) => ({
       assessment_id: assessmentId,
       user_id: userId,
       question_key,
-      question_text: labels.get(question_key) ?? null,
+      question_text: QUESTION_LABELS.get(question_key) ?? null,
       answer: value,
     }));
 }
 
 /** Autosave: upsert the current answers (called on every step advance). */
 export async function saveStep(assessmentId: string, answers: Answers): Promise<void> {
+  if (!UuidSchema.safeParse(assessmentId).success) return;
   const supabase = await createClient();
   const {
     data: { user },
@@ -46,6 +56,7 @@ export async function submitAssessment(
   assessmentId: string,
   answers: Answers,
 ): Promise<void> {
+  if (!UuidSchema.safeParse(assessmentId).success) redirect("/assessment");
   const supabase = await createClient();
   const {
     data: { user },

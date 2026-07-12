@@ -1,5 +1,6 @@
 "use server";
 
+import { z } from "zod";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
@@ -13,6 +14,7 @@ type Supabase = Awaited<ReturnType<typeof createClient>>;
 
 /** Generate + persist a learning roadmap for a chosen career match, then open it. */
 export async function createRoadmap(careerResultId: string): Promise<void> {
+  if (!z.string().uuid().safeParse(careerResultId).success) redirect("/dashboard");
   const supabase = await createClient();
   const {
     data: { user },
@@ -155,7 +157,9 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
       }
     }
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "Roadmap generation failed.";
+    // Log the real error server-side; internals don't belong in a user-visible URL.
+    console.error("roadmap generation failed", e);
+    const msg = "Roadmap generation failed. Please try again.";
     redirect(`/results/${cr.assessment_id}?error=${encodeURIComponent(msg)}`);
   }
 
@@ -168,6 +172,7 @@ export async function setStepStatus(
   stepId: string,
   completed: boolean,
 ): Promise<{ ok: boolean }> {
+  if (!z.string().uuid().safeParse(stepId).success) return { ok: false };
   const supabase = await createClient();
   const {
     data: { user },

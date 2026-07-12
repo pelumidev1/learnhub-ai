@@ -27,6 +27,10 @@ export function StepItem({
   const [done, setDone] = useState(completed);
   const [pending, start] = useTransition();
 
+  // Render only http(s) links — steps saved before URL validation existed
+  // could carry an unsafe scheme (e.g. javascript:).
+  const resources = (step.resources ?? []).filter((r) => /^https?:\/\//i.test(r.url));
+
   function toggle() {
     const next = !done;
     setDone(next); // optimistic
@@ -90,9 +94,9 @@ export function StepItem({
           </h3>
           {step.description && <p className="mt-1 text-sm text-muted">{step.description}</p>}
 
-          {step.resources && step.resources.length > 0 && (
+          {resources.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
-              {step.resources.map((r, i) => (
+              {resources.map((r, i) => (
                 <a
                   key={i}
                   href={r.url}

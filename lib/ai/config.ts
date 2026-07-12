@@ -11,9 +11,12 @@ export const MODELS = {
 /**
  * Demo mode: skip the Anthropic API entirely and serve canned, schema-valid
  * sample output from lib/ai/demo.ts. For demos while the API account has no
- * credits. Dev-only — never enable in production.
+ * credits. Ignored on production deployments (VERCEL_ENV === "production")
+ * so a leftover env var can never serve sample data to real users — local
+ * dev and preview deploys still work.
  */
-export const AI_DEMO_MODE = process.env.AI_DEMO_MODE === "true";
+export const AI_DEMO_MODE =
+  process.env.AI_DEMO_MODE === "true" && process.env.VERCEL_ENV !== "production";
 
 /** USD per million tokens. Keep in sync with MODELS above (demo model costs 0). */
 const PRICING_PER_MTOK: Record<string, { input: number; output: number }> = {
