@@ -4,6 +4,12 @@ All notable changes to LearnHub AI. Dates are 2026.
 
 ## [Unreleased]
 
+### Security
+- **Full-codebase security pass** (`012a1f3`), documented in [docs/SECURITY.md](docs/SECURITY.md). Critical: locked the `role` column on `profiles` — any signed-in user could self-promote to admin via the REST API and read all users' data; `assessment_answers`/`career_results` inserts now require owning the parent assessment (migration `20260712120000_security_hardening.sql`, **applied to the live DB 2026-07-12**). High: open-redirect guards on all auth redirects (`lib/utils/redirect.ts`); AI roadmap links restricted to http(s) at the Zod gate and at render. Hardening: reset-email links built from `NEXT_PUBLIC_SITE_URL` instead of the spoofable `Origin` header (production value set in Vercel 2026-07-12); browser security headers; Zod/UUID validation on all server-action inputs; generic user-facing error copy (internals to server logs); `AI_DEMO_MODE` ignored on production deployments.
+
+### Performance
+- **Scalability pass** (`0522103`), documented in [docs/SCALABILITY.md](docs/SCALABILITY.md): RLS initplan fix across all 45 policies (migration `20260712100000_scale_rls_initplan.sql`); middleware no longer double-authenticates `/api`; `getAuthUser()` dedupes per-request auth calls; advisor route parallelized (~8 sequential DB round-trips → ~5 stages); careers catalog ordered for stable prompt caching; one-roadmap-per-match unique index closes a double-spend race; AI cost + latency now logged to `ai_events`.
+
 ### Added
 - Documentation set for the Fable 5 → Opus 4.8 handoff: rewritten `HANDOFF.md`, `README.md`, `docs/ARCHITECTURE.md`, `docs/DEPLOYMENT.md`, `docs/PRODUCT_AUDIT.md` (verified audit), this changelog, and the launch content library under `content/`.
 

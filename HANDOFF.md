@@ -1,6 +1,6 @@
 # HANDOFF — resume here (written for Opus 4.8)
 
-_Last updated 2026-07-11, end of the Fable 5 sessions. Written for a fresh Claude Code session with **no access to previous conversations**. Read this file first; it links to everything else._
+_Last updated 2026-07-12 (after the scalability and security passes). Written for a fresh Claude Code session with **no access to previous conversations**. Read this file first; it links to everything else._
 
 ## What this is
 
@@ -14,8 +14,9 @@ _Last updated 2026-07-11, end of the Fable 5 sessions. Written for a fresh Claud
 4. **[docs/PRODUCT_AUDIT.md](docs/PRODUCT_AUDIT.md)** — feature-by-feature verified status, bugs, debt, engineering + PM reviews.
 5. **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — architecture, database, AI workflow, API reference, env vars.
 6. **[docs/SCALABILITY.md](docs/SCALABILITY.md)** — the 2026-07-12 scalability audit: what was fixed, deferred items with their trigger thresholds, and the one pending owner action (apply the RLS migration to the live DB).
-7. **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — deploy guide and launch checklist.
-8. **[STATUS_REPORT.md](STATUS_REPORT.md)** / **[CHANGELOG.md](CHANGELOG.md)** — history, if you need it. [DESIGN.md](DESIGN.md) for visual language detail.
+7. **[docs/SECURITY.md](docs/SECURITY.md)** — the 2026-07-12 security audit: 9 issues fixed (incl. an admin privilege-escalation hole and auth open redirects); its migration and Vercel env action are **done** — nothing pending.
+8. **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — deploy guide and launch checklist.
+9. **[STATUS_REPORT.md](STATUS_REPORT.md)** / **[CHANGELOG.md](CHANGELOG.md)** — history, if you need it. [DESIGN.md](DESIGN.md) for visual language detail.
 
 ## State right now (all verified 2026-07-11 — see the audit for how)
 
@@ -23,7 +24,8 @@ _Last updated 2026-07-11, end of the Fable 5 sessions. Written for a fresh Claud
 - **Supabase is live**: migrations + seed applied (16 careers, 22 resources), the new-user trigger fires, RLS verified blocking cross-user reads.
 - **Auth works end-to-end** (scripted test): signup → profile row → sign-in → cookie session through middleware → authenticated API call.
 - **Demo mode is ON** (`AI_DEMO_MODE=true` in `.env.local`): all three AI features (recommendation, roadmap, advisor) serve canned, Zod-validated, clearly-labeled sample output with zero Anthropic spend, because the Anthropic account has **no credits yet**. The real-model code paths (Opus 4.8 + Haiku 4.5, prompt-cached, streamed) are built but **have never executed against a live key** — that is the single most important unverified thing in the project.
-- Repo: https://github.com/pelumidev1/learnhub-ai (`main`). Owner is importing it into Vercel; deployment config is documented but not yet confirmed live.
+- Repo: https://github.com/pelumidev1/learnhub-ai (`main`). **Deployed and live**: https://learnhub-ai-alpha.vercel.app (Vercel project `learnhub-ai`, team `pelumi2`). Production has `AI_DEMO_MODE` **off** — AI features there hit the real Anthropic API, so confirm the account is funded before sending users.
+- **Security pass done (2026-07-12, `012a1f3`)** — see [docs/SECURITY.md](docs/SECURITY.md). Its migration is applied to the live DB and `NEXT_PUBLIC_SITE_URL` is set in Vercel Production; nothing pending from it.
 - The marketing landing is served at `/` (statically prerendered); two mobile bugs (header overlap, robot hidden by the wash) were found via screenshot testing and fixed.
 
 ## Do this first (in order)
@@ -32,7 +34,7 @@ _Last updated 2026-07-11, end of the Fable 5 sessions. Written for a fresh Claud
 2. **Never run `npx next build` while the dev server is running** — they share `.next` and corrupt each other. Stop dev, build, `rm -rf .next`, restart dev. This bit us twice.
 3. Before any commit: `npx tsc --noEmit && npx next build` must both pass. Commit to `main`; the owner asks for pushes explicitly and uses them to trigger Vercel deploys.
 4. When the owner funds Anthropic: flip `AI_DEMO_MODE=false` in `.env.local` (and in Vercel env), restart, run the full loop once, and inspect output quality + `ai_events` rows. This is task #1 in the audit's recommended order.
-5. **Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project (Dashboard → SQL Editor → paste the file → Run). Until then the RLS performance fix and the one-roadmap-per-match unique index exist only in the repo. Plain-English steps in [docs/SCALABILITY.md](docs/SCALABILITY.md) §4.
+5. **Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project (Dashboard → SQL Editor → paste the file → Run) — status unconfirmed; ask the owner before assuming. Until then the RLS performance fix and the one-roadmap-per-match unique index exist only in the repo. Plain-English steps in [docs/SCALABILITY.md](docs/SCALABILITY.md) §4. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` **is** applied — owner confirmed.)
 
 ## Environment variables (`.env.local`, real values present locally; mirror to Vercel)
 
@@ -40,9 +42,9 @@ _Last updated 2026-07-11, end of the Fable 5 sessions. Written for a fresh Claud
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase client (RLS enforced) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-only privileged writes (certificate/achievement issuance). Never client-side. |
-| `NEXT_PUBLIC_SITE_URL` | OAuth/email redirect base (localhost now; production URL on Vercel) |
-| `ANTHROPIC_API_KEY` | Server-only. Present but the account is unfunded. |
-| `AI_DEMO_MODE` | `true` = canned sample AI output, zero spend (see `lib/ai/demo.ts`). Flip to `false` once funded. |
+| `NEXT_PUBLIC_SITE_URL` | OAuth/email redirect base. Localhost locally; set to `https://learnhub-ai-alpha.vercel.app` in Vercel Production (2026-07-12). Takes priority over the request Origin header (security fix). |
+| `ANTHROPIC_API_KEY` | Server-only. Present locally and in Vercel — confirm funding status with the owner. |
+| `AI_DEMO_MODE` | `true` = canned sample AI output, zero spend (see `lib/ai/demo.ts`). Ignored on production deployments (`VERCEL_ENV=production`) as a safety net. |
 
 ## Remaining work (full detail + rationale in the audit)
 
