@@ -666,6 +666,8 @@ export default function LandingPage() {
               <h4>Company</h4>
               <a href="#stories">Stories</a>
               <a href="#faq">FAQ</a>
+              <Link href="/privacy">Privacy</Link>
+              <Link href="/terms">Terms</Link>
             </div>
             <div className="foot-col">
               <h4>Get started</h4>

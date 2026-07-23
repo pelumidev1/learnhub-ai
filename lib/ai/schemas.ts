@@ -14,7 +14,9 @@ export const CareerMatchSchema = z.object({
 
 export const RecommendationSchema = z.object({
   summary: z.string(),
-  top_careers: z.array(CareerMatchSchema).min(3).max(5),
+  // Exactly 2 matches: a clear best fit plus one strong alternative. Fewer,
+  // higher-conviction recommendations beat a long list the user has to triage.
+  top_careers: z.array(CareerMatchSchema).min(2).max(2),
   next_steps: z.array(z.string()),
 });
 

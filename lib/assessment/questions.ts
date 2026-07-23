@@ -19,6 +19,14 @@ export type Question = {
   maxLabel?: string;
   placeholder?: string;
   optional?: boolean;
+  /**
+   * Internal only — never shown to the user. Tags a question with the career-
+   * interest signal it measures (RIASEC / Holland type + the tech area it points
+   * to, the same model behind the US Dept. of Labor's O*NET Interest Profiler).
+   * Surfaced to the AI in formatAnswers() so it weights proven interest signals
+   * when matching, e.g. high Investigative + maths comfort → Data over Frontend.
+   */
+  signal?: string;
 };
 
 export type Step = {
@@ -67,40 +75,92 @@ export const STEPS: Step[] = [
     ],
   },
   {
+    // The interest core. Task-preference items in the O*NET Interest Profiler
+    // format — one per RIASEC type, weighted toward the types with the most
+    // roles in our catalog. `signal` (never shown) feeds the AI the mapping.
     id: "interests",
     eyebrow: "What you enjoy",
-    title: "What kind of work pulls you in?",
+    title: "How much would you enjoy each of these?",
     questions: [
       {
-        key: "interests",
-        type: "multi",
-        label: "Pick everything that sounds like you",
-        help: "Choose as many as apply.",
-        options: [
-          { value: "solving_problems", label: "Solving tricky problems" },
-          { value: "building_apps", label: "Building apps & products" },
-          { value: "working_with_data", label: "Working with data & numbers" },
-          { value: "designing", label: "Designing how things look & feel" },
-          { value: "security", label: "Protecting systems & people" },
-          { value: "automating", label: "Automating repetitive work" },
-          { value: "helping_people", label: "Helping & supporting people" },
-          { value: "leading", label: "Organising & leading projects" },
-        ],
+        key: "enjoy_data",
+        type: "scale",
+        label: "Digging through data to find why a number changed",
+        min: 1,
+        max: 5,
+        minLabel: "Not me",
+        maxLabel: "Love it",
+        signal: "Investigative → Data / Analytics",
       },
       {
-        key: "topics",
-        type: "multi",
-        label: "Which topics are you curious about?",
-        options: [
-          { value: "web", label: "Websites" },
-          { value: "mobile", label: "Mobile apps" },
-          { value: "ai_ml", label: "AI & machine learning" },
-          { value: "data", label: "Data & analytics" },
-          { value: "design_ux", label: "Design & UX" },
-          { value: "cybersecurity", label: "Cybersecurity" },
-          { value: "cloud", label: "Cloud & DevOps" },
-          { value: "product", label: "Product management" },
-        ],
+        key: "enjoy_design",
+        type: "scale",
+        label: "Designing how an app looks and feels to use",
+        min: 1,
+        max: 5,
+        minLabel: "Not me",
+        maxLabel: "Love it",
+        signal: "Artistic → Product Design / Frontend",
+      },
+      {
+        key: "enjoy_build",
+        type: "scale",
+        label: "Building something hands-on and watching it run",
+        min: 1,
+        max: 5,
+        minLabel: "Not me",
+        maxLabel: "Love it",
+        signal: "Realistic → Mobile / Cloud / Engineering",
+      },
+      {
+        key: "enjoy_security",
+        type: "scale",
+        label: "Tracking down how someone broke into a system",
+        min: 1,
+        max: 5,
+        minLabel: "Not me",
+        maxLabel: "Love it",
+        signal: "Investigative → Cybersecurity",
+      },
+      {
+        key: "enjoy_writing",
+        type: "scale",
+        label: "Explaining a tricky idea clearly, in plain writing",
+        min: 1,
+        max: 5,
+        minLabel: "Not me",
+        maxLabel: "Love it",
+        signal: "Artistic / Social → Technical Writing",
+      },
+      {
+        key: "enjoy_lead",
+        type: "scale",
+        label: "Rallying people around a plan and keeping it on track",
+        min: 1,
+        max: 5,
+        minLabel: "Not me",
+        maxLabel: "Love it",
+        signal: "Enterprising → Product Management",
+      },
+      {
+        key: "enjoy_organize",
+        type: "scale",
+        label: "Turning messy information into a clean, reliable system",
+        min: 1,
+        max: 5,
+        minLabel: "Not me",
+        maxLabel: "Love it",
+        signal: "Conventional → Data Engineering / QA",
+      },
+      {
+        key: "enjoy_help",
+        type: "scale",
+        label: "Helping someone work through a problem step by step",
+        min: 1,
+        max: 5,
+        minLabel: "Not me",
+        maxLabel: "Love it",
+        signal: "Social → UX Research / Support",
       },
     ],
   },
@@ -184,43 +244,6 @@ export const STEPS: Step[] = [
     ],
   },
   {
-    id: "workstyle",
-    eyebrow: "How you work",
-    title: "How do you like to work?",
-    questions: [
-      {
-        key: "work_pref",
-        type: "single",
-        label: "Which feels most like you?",
-        options: [
-          { value: "build", label: "I like building things" },
-          { value: "analyze", label: "I like analysing & finding answers" },
-          { value: "design", label: "I like designing & creating" },
-          { value: "organize", label: "I like organising & coordinating" },
-          { value: "protect", label: "I like securing & protecting" },
-        ],
-      },
-      {
-        key: "team_solo",
-        type: "scale",
-        label: "Solo focus, or working with a team?",
-        min: 1,
-        max: 5,
-        minLabel: "Solo",
-        maxLabel: "Team",
-      },
-      {
-        key: "detail_bigpicture",
-        type: "scale",
-        label: "Big-picture thinking, or fine detail?",
-        min: 1,
-        max: 5,
-        minLabel: "Big picture",
-        maxLabel: "Fine detail",
-      },
-    ],
-  },
-  {
     id: "constraints",
     eyebrow: "Your reality",
     title: "A few practical things",
@@ -294,7 +317,10 @@ export function formatAnswers(answers: Record<string, unknown>): string {
       else if (q.type === "multi" && Array.isArray(v))
         rendered = v.map((x) => labelOf(q, String(x))).join(", ");
       else rendered = labelOf(q, String(v));
-      lines.push(`- ${q.label} → ${rendered}`);
+      // Surface the (user-hidden) interest signal so the model can weight
+      // proven RIASEC signals when matching. Only tagged questions carry it.
+      const tag = q.signal ? ` [interest signal: ${q.signal}]` : "";
+      lines.push(`- ${q.label}${tag} → ${rendered}`);
     }
   }
   return lines.join("\n");

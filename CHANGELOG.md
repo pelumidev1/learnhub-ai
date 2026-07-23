@@ -4,6 +4,17 @@ All notable changes to LearnHub AI. Dates are 2026.
 
 ## [Unreleased]
 
+### Added
+- **Privacy Policy & Terms of Service** at `/privacy` and `/terms` (plain-English, brand tone; reusable `LegalPage` shell), linked from the landing and auth footers. Contact: `hello@learnhubworld.com`.
+- **Google Sign-In configured and tested live** (2026-07-23) — see [docs/GOOGLE_OAUTH_SETUP.md](docs/GOOGLE_OAUTH_SETUP.md). Email/password and Google now both work.
+
+### Changed
+- **Recommendations reduced to exactly 2** (a top match + one strong alternative) — prompt, Zod schema, and demo output. Sharper for users, lower AI cost.
+- **Assessment rebuilt on the RIASEC / O\*NET interest model.** Replaced the generic interest checkboxes and work-style questions with 8 validated task-preference items (one per Holland type, weighted to the catalog). Each carries a user-hidden interest signal fed to the AI for sharper, more defensible matching. Practical questions (hours, budget, device, internet) kept.
+
+### Verified
+- Anthropic account funded; full real-model loop (recommendation → roadmap → advisor, Opus 4.8 + Haiku 4.5) run live end-to-end 2026-07-23 — previously never executed against a live key. New 2-rec + RIASEC flow confirmed live; the model visibly reasons from the interest signals. `tsc` + `next build` (21 routes) pass.
+
 ### Security
 - **Full-codebase security pass** (`012a1f3`), documented in [docs/SECURITY.md](docs/SECURITY.md). Critical: locked the `role` column on `profiles` — any signed-in user could self-promote to admin via the REST API and read all users' data; `assessment_answers`/`career_results` inserts now require owning the parent assessment (migration `20260712120000_security_hardening.sql`, **applied to the live DB 2026-07-12**). High: open-redirect guards on all auth redirects (`lib/utils/redirect.ts`); AI roadmap links restricted to http(s) at the Zod gate and at render. Hardening: reset-email links built from `NEXT_PUBLIC_SITE_URL` instead of the spoofable `Origin` header (production value set in Vercel 2026-07-12); browser security headers; Zod/UUID validation on all server-action inputs; generic user-facing error copy (internals to server logs); `AI_DEMO_MODE` ignored on production deployments.
 

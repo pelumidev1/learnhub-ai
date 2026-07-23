@@ -9,6 +9,27 @@ body {
   min-height: 100svh;
 }
 
+/* Readable prose for legal/policy pages (Privacy, Terms). */
+.legal-prose a {
+  color: #1f33cc;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.legal-prose a:hover {
+  color: #182ab0;
+}
+.legal-prose ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.legal-prose ul li {
+  margin-top: 0.4rem;
+}
+.legal-prose strong {
+  font-weight: 600;
+  color: #0b0f1a;
+}
+
 /* Respect reduced motion globally. */
 @media (prefers-reduced-motion: reduce) {
   *,

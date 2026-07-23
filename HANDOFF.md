@@ -23,7 +23,7 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 - `npx tsc --noEmit` and `npx next build` pass; 19 routes.
 - **Supabase is live**: migrations + seed applied (16 careers, 22 resources), the new-user trigger fires, RLS verified blocking cross-user reads.
 - **Auth works end-to-end** (scripted test): signup → profile row → sign-in → cookie session through middleware → authenticated API call.
-- **Demo mode is ON** (`AI_DEMO_MODE=true` in `.env.local`): all three AI features (recommendation, roadmap, advisor) serve canned, Zod-validated, clearly-labeled sample output with zero Anthropic spend, because the Anthropic account has **no credits yet**. The real-model code paths (Opus 4.8 + Haiku 4.5, prompt-cached, streamed) are built but **have never executed against a live key** — that is the single most important unverified thing in the project.
+- **Anthropic account is FUNDED and the real AI loop is VERIFIED LIVE (2026-07-23).** `AI_DEMO_MODE=false` locally now. All three real-model paths were run end-to-end through the actual `lib/ai` code (real prompts, prompt caching, streaming, Zod validation) against the live key: recommendation (Opus 4.8) → roadmap (Opus 4.8) → advisor (Haiku 4.5). Output quality is beta-worthy — locally grounded (Naira + remote-USD salaries, Nigerian communities, honest timelines, free resources). **Cost ≈ $0.12 per full user journey** (~$0.055 rec + ~$0.061 roadmap + ~$0.002/advisor msg); Opus latency ~28–30s each (why streaming matters). This was previously the single biggest unverified thing in the project — it is now proven. (Demo mode still available: set `AI_DEMO_MODE=true` for zero-spend canned output; ignored on production.)
 - Repo: https://github.com/pelumidev1/learnhub-ai (`main`). **Deployed and live**: https://learnhub-ai-alpha.vercel.app (Vercel project `learnhub-ai`, team `pelumi2`). Production has `AI_DEMO_MODE` **off** — AI features there hit the real Anthropic API, so confirm the account is funded before sending users.
 - **Security pass done (2026-07-12, `012a1f3`)** — see [docs/SECURITY.md](docs/SECURITY.md). Its migration is applied to the live DB and `NEXT_PUBLIC_SITE_URL` is set in Vercel Production; nothing pending from it.
 - The marketing landing is served at `/` (statically prerendered); two mobile bugs (header overlap, robot hidden by the wash) were found via screenshot testing and fixed.
@@ -33,8 +33,8 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 1. `npm install` if needed; `npm run dev` → http://localhost:3000 (keep port 3000 — OAuth callback + `NEXT_PUBLIC_SITE_URL` are pinned to it).
 2. **Never run `npx next build` while the dev server is running** — they share `.next` and corrupt each other. Stop dev, build, `rm -rf .next`, restart dev. This bit us twice.
 3. Before any commit: `npx tsc --noEmit && npx next build` must both pass. Commit to `main`; the owner asks for pushes explicitly and uses them to trigger Vercel deploys.
-4. When the owner funds Anthropic: flip `AI_DEMO_MODE=false` in `.env.local` (and in Vercel env), restart, run the full loop once, and inspect output quality + `ai_events` rows. This is task #1 in the audit's recommended order.
-5. **Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project (Dashboard → SQL Editor → paste the file → Run) — status unconfirmed; ask the owner before assuming. Until then the RLS performance fix and the one-roadmap-per-match unique index exist only in the repo. Plain-English steps in [docs/SCALABILITY.md](docs/SCALABILITY.md) §4. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` **is** applied — owner confirmed.)
+4. ~~When the owner funds Anthropic: flip `AI_DEMO_MODE=false`, run the full loop once, inspect output.~~ **DONE 2026-07-23** — account funded, `AI_DEMO_MODE=false` locally, full real loop verified (see state note above). Still worth doing once through the browser UI with a real signup to confirm `ai_events` rows land with cost/latency.
+5. ~~**Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project.~~ **DONE — owner confirmed applied 2026-07-23.** The RLS performance fix and the one-roadmap-per-match unique index are live. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` is also applied.) No pending migrations remain.
 
 ## Environment variables (`.env.local`, real values present locally; mirror to Vercel)
 
@@ -48,9 +48,11 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 
 ## Remaining work (full detail + rationale in the audit)
 
-**Blocking the closed beta:** run the real-model loop once (needs funded key); one human browser pass over signup → assessment → results → roadmap → certificate → progress → advisor; Vercel env + Supabase redirect allow-list confirmed.
+**Blocking the closed beta:** ~~run the real-model loop once~~ (done 2026-07-23); one human browser pass over signup → assessment → results → roadmap → certificate → progress → advisor; Vercel env + Supabase redirect allow-list confirmed.
 
-**Post-beta, in order:** certificate public verification page (`/verify/[code]`); populate `ai_events.cost_usd`/`latency_ms`; public careers catalog (`/careers`, PRD P0 — or consciously de-scope); Privacy & Terms pages; recommendation feedback thumbs (PRD success metric). Google OAuth needs a Google Cloud client configured, or de-scope it for beta.
+**Google OAuth: ✅ DONE & TESTED (2026-07-23).** Google Cloud OAuth client created, provider enabled in Supabase, sign-in verified working end-to-end (lands on dashboard; `handle_new_user` trigger fills the profile row from Google's `full_name`/`avatar_url` metadata). Both email/password and Google now work.
+
+**Post-beta, in order:** certificate public verification page (`/verify/[code]`); populate `ai_events.cost_usd`/`latency_ms`; public careers catalog (`/careers`, PRD P0 — or consciously de-scope); Privacy & Terms pages; recommendation feedback thumbs (PRD success metric).
 
 **Future roadmap (PRD phases):** Phase 3 — monetize via human mentor booking, Paystack/Flutterwave. Phase 4 — localization (French, Swahili), phone/OTP auth, job-board partnerships, community, native app.
 

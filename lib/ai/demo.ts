@@ -47,18 +47,6 @@ export function demoRecommendation(): RecommendationOutput {
         remote_potential: "high",
         time_to_job_ready: "8–12 months part-time",
       },
-      {
-        career_slug: "product-manager",
-        title: "Product Manager",
-        match_score: 76,
-        rationale:
-          "You described organising people and making decisions with incomplete information. Product management rewards exactly that — though most people enter it after a first tech role, so treat it as a step-two goal.",
-        strengths_leveraged: ["Communication", "Organisation", "User empathy"],
-        gaps_to_close: ["Product thinking", "Basic analytics", "Working with engineers"],
-        salary_range_local: "$500–$1,200/month equivalent at entry level (sample figure)",
-        remote_potential: "medium",
-        time_to_job_ready: "12–18 months, usually via a first role in tech",
-      },
     ],
     next_steps: [
       "Start the free Google Data Analytics fundamentals — 30 minutes a day is enough.",
