@@ -105,7 +105,13 @@ values
    'Build real apps, sites, and automations with visual tools — fast, and without heavy coding.',
    array['Webflow or Bubble','Zapier/Make','Airtable','Logic & workflows','Design sense'],
    '{"NG":"₦200k–₦650k/mo","KE":"KSh 45k–140k/mo","GH":"GH₵3k–9k/mo","ZA":"R15k–R35k/mo","remote":"$400–$2000/mo"}'::jsonb,
-   'high', 'medium')
+   'high', 'medium'),
+
+  ('ai-product-builder', 'AI Product Builder', 'ai',
+   'Turn ideas into real AI-powered apps using AI coding assistants and no-code tools — no computer science degree needed. Build in public and ship products people use.',
+   array['AI tools (Claude, ChatGPT)','Prompt engineering','AI coding assistants (Claude Code, Cursor)','No-code & automation tools','APIs & integrations','Shipping & building in public'],
+   '{"NG":"₦250k–₦900k/mo","KE":"KSh 55k–170k/mo","GH":"GH₵4k–12k/mo","ZA":"R18k–R45k/mo","remote":"$500–$3000/mo"}'::jsonb,
+   'high', 'high')
 
 on conflict (slug) do nothing;
 
