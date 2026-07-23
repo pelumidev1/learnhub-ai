@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card, SectionHeader, EmptyState } from "@/components/dashboard/primitives";
 import { Icons } from "@/components/ui/icons";
 import type { CertificateItem } from "@/types/domain";
@@ -36,9 +37,12 @@ export function CertificateList({ certificates }: { certificates: CertificateIte
                 <p className="mt-0.5 text-xs text-muted">
                   {c.careerTitle ? `${c.careerTitle} · ` : ""}Issued {formatDate(c.issuedAt)}
                 </p>
-                <p className="mt-1 font-mono text-[0.7rem] tracking-wide text-muted">
-                  Verification code: {c.code}
-                </p>
+                <Link
+                  href={`/verify/${c.code}`}
+                  className="mt-1 inline-block font-mono text-[0.7rem] tracking-wide text-blue hover:text-blue-600"
+                >
+                  Verify / share: {c.code}
+                </Link>
               </div>
             </li>
           ))}

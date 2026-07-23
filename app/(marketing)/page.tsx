@@ -660,6 +660,7 @@ export default function LandingPage() {
               <h4>Product</h4>
               <a href="#product">Features</a>
               <a href="#coach">AI Coach</a>
+              <Link href="/careers">Careers catalog</Link>
               <a href="#pricing">Pricing</a>
             </div>
             <div className="foot-col">
