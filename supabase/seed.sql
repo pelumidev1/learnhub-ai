@@ -154,6 +154,18 @@ begin
       ('Machine Learning Crash Course', 'https://developers.google.com/machine-learning/crash-course', 'Google', 'course', 'free', 'intermediate',
        'Google''s fast, practical intro to ML concepts.', array['ml','ai'], 'ML foundations',
        (select id from public.careers where slug = 'ai-ml-engineer'), 'AI', 900, false),
+      ('Build with Claude (Anthropic Docs)', 'https://docs.anthropic.com/en/docs/intro', 'Anthropic', 'documentation', 'free', 'beginner',
+       'Anthropic''s official guide to building apps and tools with Claude.', array['ai','claude','apis'], 'Building with Claude',
+       (select id from public.careers where slug = 'ai-product-builder'), 'AI', 240, false),
+      ('Learn Prompting', 'https://learnprompting.org/', 'Learn Prompting', 'course', 'free', 'beginner',
+       'A free, practical course on prompt engineering from the basics up.', array['ai','prompting'], 'Prompt engineering',
+       (select id from public.careers where slug = 'ai-product-builder'), 'AI', 600, false),
+      ('ChatGPT Prompt Engineering for Developers', 'https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/', 'DeepLearning.AI', 'course', 'free', 'beginner',
+       'A free short course on writing effective prompts to build with LLMs.', array['ai','prompting','llm'], 'Prompt engineering',
+       (select id from public.careers where slug = 'ai-product-builder'), 'AI', 90, false),
+      ('Bubble Academy', 'https://bubble.io/academy', 'Bubble', 'course', 'freemium', 'beginner',
+       'Learn to build real web apps with no code, visually.', array['no-code','apps'], 'No-code building',
+       (select id from public.careers where slug = 'ai-product-builder'), 'AI', 480, false),
 
       -- Cloud
       ('AWS Cloud Practitioner Essentials', 'https://aws.amazon.com/training/digital/aws-cloud-practitioner-essentials/', 'AWS', 'course', 'free', 'beginner',
