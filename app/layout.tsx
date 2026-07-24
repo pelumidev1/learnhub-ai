@@ -22,8 +22,8 @@ const mono = Space_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "LearnHub AI — Find the tech career built for you",
-    template: "%s · LearnHub AI",
+    default: "LearnHub — Find the tech career built for you",
+    template: "%s · LearnHub",
   },
   description:
     "The AI career coach for Africa's next generation of tech talent.",

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalPage, LegalSection } from "@/components/marketing/legal-page";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — LearnHub AI",
+  title: "Privacy Policy — LearnHub",
   description:
-    "How LearnHub AI collects, uses, and protects your data. Plain English, no surprises.",
+    "How LearnHub collects, uses, and protects your data. Plain English, no surprises.",
 };
 
 const CONTACT_EMAIL = "hello@learnhubworld.com";
@@ -13,7 +13,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage title="Privacy Policy" lastUpdated="23 July 2026">
       <p>
-        LearnHub AI (&ldquo;LearnHub&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is an AI career
+        LearnHub (&ldquo;LearnHub&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is an AI career
         coach for people entering tech across Africa. This policy explains what we
         collect, why, and the choices you have. We keep it short and honest.
       </p>

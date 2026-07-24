@@ -4,7 +4,7 @@ import { PublicHeader, PublicFooter } from "@/components/marketing/public-shell"
 import { getCareers, categoryLabel, type CareerListItem } from "@/lib/careers/queries";
 
 export const metadata: Metadata = {
-  title: "Tech Careers Catalog — LearnHub AI",
+  title: "Tech Careers Catalog — LearnHub",
   description:
     "Explore tech careers you can build toward across Africa — what each does, the skills you'll need, and realistic local pay. Then get your personalized match.",
 };

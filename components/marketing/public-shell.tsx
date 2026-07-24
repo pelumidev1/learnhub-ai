@@ -6,7 +6,7 @@ export function PublicHeader() {
   return (
     <header className="sticky top-0 z-10 border-b border-silver bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
-        <Link href="/" aria-label="LearnHub AI home">
+        <Link href="/" aria-label="LearnHub home">
           <Logo />
         </Link>
         <div className="flex items-center gap-4 text-sm font-semibold">
@@ -41,7 +41,7 @@ export function PublicFooter() {
             Terms
           </Link>
         </div>
-        <p className="mt-4">© 2026 LearnHub AI. All rights reserved.</p>
+        <p className="mt-4">© 2026 LearnHub. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -1,705 +1,292 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { Logo } from "@/components/ui/logo";
-import { SiteHeader } from "@/components/marketing/site-header";
-import { RevealInit } from "@/components/marketing/reveal-init";
+import { LandingNav } from "@/components/marketing/landing/landing-nav";
+import { OrbitSection } from "@/components/marketing/landing/orbit";
+import { Faq } from "@/components/marketing/landing/faq";
 import "./landing.css";
 
 export const metadata: Metadata = {
   description:
-    "LearnHub AI is the AI career coach for Africa's next generation of tech talent. Take a short assessment, get a personalized career match and learning path, and a 24/7 AI coach. Free while in beta.",
+    "LearnHub is the AI career coach for Africa's next generation of tech talent. Take a 2-minute assessment, get a personalized career match and learning path, and a 24/7 AI coach. Free while in beta.",
 };
 
-/* Small inline glyphs used only on this page (feature rows, mocks, footer). */
-
-function ArrowIcon() {
+function ArrowIcon({ className = "" }: { className?: string }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
       <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
   );
 }
 
-function CheckIcon({ strokeWidth = 2.5 }: { strokeWidth?: number }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-}
-
-function FeatItem({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
-  return (
-    <div className="feat-item">
-      <span className="feat-ico">{icon}</span>
-      <div>
-        <b>{title}</b>
-        <small>{text}</small>
-      </div>
-    </div>
-  );
-}
-
-function MatchRow({
-  score,
-  title,
-  note,
-  pills,
-  top = false,
-  dim = false,
-}: {
-  score: number;
-  title: string;
-  note: string;
-  pills?: string[];
-  top?: boolean;
-  dim?: boolean;
-}) {
-  return (
-    <div className={`mrow${top ? " top" : ""}${dim ? " dim" : ""}`}>
-      <div className="ring" style={{ "--p": score } as React.CSSProperties}>
-        <span>{score}%</span>
-      </div>
-      <div className="mmeta">
-        <b>{title}</b>
-        <small>{note}</small>
-        {pills && (
-          <div className="pill">
-            {pills.map((p) => (
-              <span key={p}>{p}</span>
-            ))}
-          </div>
-        )}
-      </div>
-      <span className="go">View path</span>
-    </div>
-  );
-}
-
-const DOTS: { left: string; top: string; size: number; delay?: string }[] = [
-  { left: "6%", top: "20%", size: 14 },
-  { left: "16%", top: "55%", size: 26, delay: ".4s" },
-  { left: "11%", top: "82%", size: 16, delay: "1s" },
-  { left: "26%", top: "12%", size: 18, delay: ".2s" },
-  { left: "30%", top: "44%", size: 12, delay: ".7s" },
-  { left: "23%", top: "74%", size: 22, delay: "1.3s" },
-  { left: "40%", top: "24%", size: 14, delay: ".9s" },
-  { left: "44%", top: "64%", size: 30, delay: ".3s" },
-  { left: "52%", top: "16%", size: 16, delay: "1.1s" },
-  { left: "57%", top: "50%", size: 12, delay: ".5s" },
-  { left: "60%", top: "80%", size: 20, delay: "1.5s" },
-  { left: "70%", top: "22%", size: 24, delay: ".6s" },
-  { left: "74%", top: "60%", size: 14, delay: "1.2s" },
-  { left: "84%", top: "30%", size: 18, delay: ".8s" },
-  { left: "89%", top: "70%", size: 16, delay: ".1s" },
-  { left: "94%", top: "48%", size: 12, delay: "1.4s" },
-];
-
-const FACES: { left: string; top: string; size: number; bg: string; fontSize: string; initials: string }[] = [
-  { left: "9%", top: "38%", size: 52, bg: "linear-gradient(160deg,#2A46F0,#182AB0)", fontSize: ".9rem", initials: "TA" },
-  { left: "34%", top: "78%", size: 46, bg: "linear-gradient(160deg,#3B6FF0,#1F33CC)", fontSize: ".82rem", initials: "MK" },
-  { left: "38%", top: "34%", size: 58, bg: "linear-gradient(160deg,#4C93F0,#2A46F0)", fontSize: ".95rem", initials: "JO" },
-  { left: "53%", top: "70%", size: 44, bg: "linear-gradient(160deg,#1F33CC,#182AB0)", fontSize: ".8rem", initials: "FE" },
-  { left: "64%", top: "38%", size: 54, bg: "linear-gradient(160deg,#2A46F0,#3B6FF0)", fontSize: ".9rem", initials: "CE" },
-  { left: "80%", top: "52%", size: 48, bg: "linear-gradient(160deg,#182AB0,#1F33CC)", fontSize: ".85rem", initials: "AO" },
-  { left: "78%", top: "16%", size: 44, bg: "linear-gradient(160deg,#3B6FF0,#2A46F0)", fontSize: ".8rem", initials: "KA" },
-];
-
-const QUOTES = [
-  {
-    text: '"I went from \'I should learn tech\' to a clear plan in one sitting. The salary and remote info made it real."',
-    initials: "AO",
-    name: "Amara O.",
-    role: "Graduate · Accra",
-    delay: "",
-  },
-  {
-    text: '"It actually asked about my budget and my data. The path it built was all free resources I could start that week."',
-    initials: "CE",
-    name: "Chidi E.",
-    role: "Student · Lagos",
-    delay: " d1",
-  },
-  {
-    text: '"I was a teacher. LearnHub mapped a route into data analysis I could actually do around my job."',
-    initials: "KA",
-    name: "Kwame A.",
-    role: "Career changer · Nairobi",
-    delay: " d2",
-  },
-];
-
-const FAQS = [
-  {
-    q: "Is it really free?",
-    a: "Yes. LearnHub AI is completely free while we're in beta — the assessment, your career match, your learning path, and the AI coach.",
-    open: true,
-  },
-  {
-    q: "How long does the assessment take?",
-    a: "About two minutes. Your progress saves as you go, so you can pause and pick up right where you left off.",
-  },
-  {
-    q: "Do I need any experience?",
-    a: "None at all. LearnHub is built for students, graduates, and career changers who are just getting started.",
-  },
-  {
-    q: "Is the coach a real person?",
-    a: "It's an AI coach, available any time, that already knows your assessment and your plan. Human mentorship is on our roadmap for later.",
-  },
-  {
-    q: "Which careers does it cover?",
-    a: "Software engineering, data, design, cybersecurity, cloud and DevOps, product, and more — with new paths added as we grow.",
-  },
-];
-
 export default function LandingPage() {
   return (
-    <div className="lp" id="lp-root">
-      <RevealInit rootId="lp-root" />
-      <a className="skip" href="#main">
-        Skip to content
-      </a>
+    <div className="bg-white text-ink">
+      <LandingNav />
 
-      <SiteHeader />
+      {/* ---------------------------------------------------------------- HERO */}
+      <section className="relative overflow-hidden bg-ink">
+        {/* Students photo (drops in at /brand/students-hero.jpg; branded gradient until then) */}
+        <div
+          className="lh-photo absolute inset-0"
+          style={{ backgroundImage: "url(/brand/students-hero.jpg)" }}
+          aria-hidden
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/70 to-ink/95" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/80 to-transparent" aria-hidden />
 
-      <main id="main">
-        {/* HERO with robot background */}
-        <section className="hero">
-          <div className="hero-bg" aria-hidden="true">
-            <Image
-              src="/marketing/robot-hero.png"
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-            />
-          </div>
-          <div className="container hero-grid">
-            <div className="hero-copy">
-              <span className="hero-badge">
-                <b>BETA</b> Free for every learner in Africa
+        <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-32 sm:pb-28 sm:pt-40">
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-sky-2" /> Free while in beta
+            </span>
+            <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
+              Discover the tech career
+              <span className="mt-1 flex items-center gap-3">
+                built for you <ArrowIcon className="h-9 w-9 text-sky-2 sm:h-12 sm:w-12" />
               </span>
-              <h1>
-                Find the tech career <span className="grad">built for you.</span>
-              </h1>
-              <p className="lead">
-                Answer a short assessment. LearnHub AI matches you to the tech careers that fit,
-                maps your learning path, and coaches you the whole way — like an AI mentor who
-                actually knows your goals.
-              </p>
-              <div className="hero-actions">
-                <Link href="/signup" className="btn btn-primary btn-lg">
-                  Start free assessment
-                  <ArrowIcon />
-                </Link>
-                <a href="#coach" className="btn btn-ghost btn-lg">
-                  See the AI coach
-                </a>
-              </div>
-              <div className="hero-meta">
-                <span>2-minute assessment</span>
-                <span>Free while in beta</span>
-                <span>Built for African talent</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* career strip */}
-        <div className="strip">
-          <div className="container">
-            <p>Match into</p>
-            <div className="tags">
-              <span className="tag">Software Engineering</span>
-              <span className="tag">Data &amp; Analytics</span>
-              <span className="tag">Product Design</span>
-              <span className="tag">Cybersecurity</span>
-              <span className="tag">Cloud / DevOps</span>
-              <span className="tag">Product</span>
-            </div>
-          </div>
-        </div>
-
-        {/* PRODUCT: feature demo rows */}
-        <section className="section" id="product">
-          <div className="container">
-            <div className="section-head reveal">
-              <span className="eyebrow">The product</span>
-              <h2>Not a quiz result. A working plan.</h2>
-              <p>See exactly what LearnHub does the moment you finish your assessment.</p>
-            </div>
-
-            {/* Row 1: Career match */}
-            <div className="feature-row">
-              <div className="fr-copy reveal">
-                <span className="eyebrow">Career match</span>
-                <h2>See the careers that actually fit you.</h2>
-                <p className="desc">
-                  One short assessment turns into a ranked shortlist of tech careers — each matched
-                  to your background, interests, and real constraints.
-                </p>
-                <div className="feat-list">
-                  <FeatItem
-                    icon={
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 17l6-6 4 4 8-8" />
-                        <path d="M17 7h4v4" />
-                      </svg>
-                    }
-                    title="Ranked matches"
-                    text="Your top 5 careers, in order of fit."
-                  />
-                  <FeatItem
-                    icon={
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M9 11l3 3L22 4" />
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-                      </svg>
-                    }
-                    title="Clear reasons"
-                    text="See why each one fits you — not just a score."
-                  />
-                  <FeatItem
-                    icon={
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                      </svg>
-                    }
-                    title="Local salary & remote"
-                    text="Grounded in your market, not a US average."
-                  />
-                </div>
-              </div>
-              <div className="reveal d1">
-                <div className="window">
-                  <div className="win-bar">
-                    <div className="dots">
-                      <i></i>
-                      <i></i>
-                      <i></i>
-                    </div>
-                    <span className="title">learnhub.ai / your matches</span>
-                  </div>
-                  <div className="win-body">
-                    <MatchRow
-                      top
-                      score={94}
-                      title="Data Analyst"
-                      note="Strong logic + you like finding patterns."
-                      pills={["$ Entry–Mid", "Remote: High"]}
-                    />
-                    <MatchRow
-                      score={88}
-                      title="Frontend Engineer"
-                      note="You enjoy building things people use."
-                      pills={["$ Entry–Mid", "Remote: High"]}
-                    />
-                    <MatchRow dim score={81} title="Product Designer" note="Visual thinker with an eye for users." />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Row 2: Roadmap */}
-            <div className="feature-row reverse">
-              <div className="fr-copy reveal">
-                <span className="eyebrow">Learning path</span>
-                <h2>Follow a path, not just a label.</h2>
-                <p className="desc">
-                  Every match becomes a step-by-step roadmap you can actually follow — the right
-                  skills, in order, with free resources and progress you can track.
-                </p>
-                <div className="feat-list">
-                  <FeatItem
-                    icon={
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M4 6h16M4 12h16M4 18h10" />
-                      </svg>
-                    }
-                    title="Step-by-step roadmap"
-                    text="Skills in the right order, with time estimates."
-                  />
-                  <FeatItem
-                    icon={
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                      </svg>
-                    }
-                    title="Free-first resources"
-                    text="Curated for your budget and your bandwidth."
-                  />
-                  <FeatItem
-                    icon={
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                        <path d="M22 4L12 14.01l-3-3" />
-                      </svg>
-                    }
-                    title="Track your progress"
-                    text="Check off steps and watch the path move."
-                  />
-                </div>
-              </div>
-              <div className="reveal d1">
-                <div className="window">
-                  <div className="win-bar">
-                    <div className="dots">
-                      <i></i>
-                      <i></i>
-                      <i></i>
-                    </div>
-                    <span className="title">learnhub.ai / roadmap · data analyst</span>
-                  </div>
-                  <div className="win-body">
-                    <div className="rm-top">
-                      <b>Your path to Data Analyst</b>
-                      <small>42% complete</small>
-                    </div>
-                    <div className="rm-prog">
-                      <i></i>
-                    </div>
-                    <div className="step done">
-                      <span className="ck">
-                        <CheckIcon strokeWidth={3} />
-                      </span>
-                      <div>
-                        <b>Spreadsheets &amp; data thinking</b>
-                        <div className="rz">
-                          <span>freeCodeCamp</span>
-                          <span>2 wks</span>
-                        </div>
-                      </div>
-                      <span className="st">Done</span>
-                    </div>
-                    <div className="step done">
-                      <span className="ck">
-                        <CheckIcon strokeWidth={3} />
-                      </span>
-                      <div>
-                        <b>SQL fundamentals</b>
-                        <div className="rz">
-                          <span>Mode SQL</span>
-                          <span>3 wks</span>
-                        </div>
-                      </div>
-                      <span className="st">Done</span>
-                    </div>
-                    <div className="step now">
-                      <span className="ck"></span>
-                      <div>
-                        <b>Python for data</b>
-                        <div className="rz">
-                          <span>Kaggle</span>
-                          <span>4 wks</span>
-                        </div>
-                      </div>
-                      <span className="st">In progress</span>
-                    </div>
-                    <div className="step">
-                      <span className="ck"></span>
-                      <div>
-                        <b>Build 2 portfolio projects</b>
-                        <small>Turn skills into proof.</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* AI COACH product highlight / demo */}
-        <section className="section demo" id="coach">
-          <div className="container">
-            <div className="section-head reveal">
-              <span className="eyebrow">Product highlight</span>
-              <h2>An AI coach that actually knows your path.</h2>
-              <p>
-                Not a generic chatbot. Your coach already has your assessment, your match, and your
-                roadmap — so every answer is about <em>you</em>.
-              </p>
-            </div>
-            <div className="demo-frame reveal">
-              <div className="demo-window">
-                <div className="win-bar">
-                  <div className="dots">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                  </div>
-                  <span className="title">learnhub.ai / coach</span>
-                </div>
-                <div className="demo-stage">
-                  <div className="demo-app">
-                    <b className="dt">Now coaching</b>
-                    <h3>Data Analyst · Week 5</h3>
-                    <p>
-                      You&rsquo;re 42% through your roadmap. Next up: Python for data. Ask anything —
-                      your coach answers in the context of your plan.
-                    </p>
-                    <div className="row">
-                      <span className="chip on">My path</span>
-                      <span className="chip">Switch career</span>
-                      <span className="chip">Find a job</span>
-                      <span className="chip">Explain a skill</span>
-                    </div>
-                  </div>
-                  <aside className="chatcard" aria-label="AI coach chat">
-                    <div className="ch-head">
-                      <span className="ch-ava">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 8V4H8" />
-                          <rect x="4" y="8" width="16" height="12" rx="2" />
-                          <path d="M2 14h2M20 14h2M15 13v2M9 13v2" />
-                        </svg>
-                      </span>
-                      <div>
-                        <b>AI Coach</b>
-                        <small>Online · knows your plan</small>
-                      </div>
-                    </div>
-                    <div className="ch-body">
-                      <div className="bub u">Is data analysis okay if I&rsquo;m not great at math?</div>
-                      <div className="bub a">
-                        Yes — for the analyst path you matched into, it&rsquo;s mostly logic and
-                        spreadsheets, not heavy math. You&rsquo;ve already cleared SQL. Let&rsquo;s
-                        start Python next.
-                      </div>
-                      <div className="typing" aria-label="Coach is typing">
-                        <i></i>
-                        <i></i>
-                        <i></i>
-                      </div>
-                    </div>
-                    <div className="ch-input">
-                      <div>Ask your coach…</div>
-                      <button aria-label="Send">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                        </svg>
-                      </button>
-                    </div>
-                  </aside>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* TESTIMONIALS */}
-        <section className="section quotes" id="stories">
-          <div className="container">
-            <div className="section-head reveal">
-              <span className="eyebrow">Stories</span>
-              <h2>From &ldquo;where do I start?&rdquo; to a plan.</h2>
-            </div>
-            <div className="quote-grid">
-              {QUOTES.map((q) => (
-                <figure key={q.initials} className={`quote reveal${q.delay}`}>
-                  <div className="stars" aria-label="5 out of 5">
-                    ★★★★★
-                  </div>
-                  <blockquote>
-                    <p>{q.text}</p>
-                  </blockquote>
-                  <figcaption className="who">
-                    <span className="ava">{q.initials}</span>
-                    <span>
-                      <b>{q.name}</b>
-                      <small>{q.role}</small>
-                    </span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="section" id="faq">
-          <div className="container">
-            <div className="section-head reveal">
-              <span className="eyebrow">Questions</span>
-              <h2>Good to know.</h2>
-            </div>
-            <div className="faq-wrap">
-              {FAQS.map((f) => (
-                <details key={f.q} className="reveal" open={f.open}>
-                  <summary>
-                    {f.q}
-                    <span className="pm" aria-hidden="true"></span>
-                  </summary>
-                  <div className="answer">{f.a}</div>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* PRICING */}
-        <section className="section pricing" id="pricing">
-          <div className="container">
-            <div className="section-head reveal">
-              <span className="eyebrow">Pricing</span>
-              <h2>Free while we&rsquo;re in beta.</h2>
-              <p>Everything you need to find your path and start moving. No card, no catch.</p>
-            </div>
-            <div className="plans">
-              <div className="plan featured reveal">
-                <span className="tag">Beta</span>
-                <span className="pname">Learner</span>
-                <div className="price">
-                  Free <small>/ during beta</small>
-                </div>
-                <p className="sub">The full LearnHub experience.</p>
-                <ul>
-                  <li>
-                    <CheckIcon />
-                    Personalized career assessment
-                  </li>
-                  <li>
-                    <CheckIcon />
-                    AI career match with clear reasons
-                  </li>
-                  <li>
-                    <CheckIcon />
-                    Step-by-step learning roadmap
-                  </li>
-                  <li>
-                    <CheckIcon />
-                    24/7 AI coach &amp; progress tracking
-                  </li>
-                </ul>
-                <Link href="/signup" className="btn btn-primary btn-block btn-lg">
-                  Start free
-                </Link>
-              </div>
-              <div className="plan soon reveal d1">
-                <span className="pname">Mentorship</span>
-                <div className="price">Coming soon</div>
-                <p className="sub">For when you want a human in your corner.</p>
-                <ul>
-                  <li>
-                    <CheckIcon />
-                    1:1 sessions with real mentors
-                  </li>
-                  <li>
-                    <CheckIcon />
-                    Portfolio &amp; interview reviews
-                  </li>
-                  <li>
-                    <CheckIcon />
-                    Accountability check-ins
-                  </li>
-                </ul>
-                <span className="btn btn-ghost btn-block btn-lg" aria-disabled="true">
-                  Coming soon
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PIN-STYLE FACES CLOSER */}
-        <section className="section closer">
-          <div className="container">
-            <div className="faces reveal" aria-hidden="true">
-              {DOTS.map((d, i) => (
-                <span
-                  key={i}
-                  className="dot"
-                  style={{ left: d.left, top: d.top, width: d.size, height: d.size, animationDelay: d.delay }}
-                ></span>
-              ))}
-              {FACES.map((f) => (
-                <span
-                  key={f.initials}
-                  className="face"
-                  style={{ left: f.left, top: f.top, width: f.size, height: f.size, background: f.bg, fontSize: f.fontSize }}
-                >
-                  {f.initials}
-                </span>
-              ))}
-            </div>
-            <div className="closer-copy reveal">
-              <h2>
-                LearnHub reads across every tech career path with a single assessment —{" "}
-                <b>cutting through the noise to hand you the one that&rsquo;s built for you.</b>
-              </h2>
-              <Link href="/signup" className="btn btn-primary btn-lg">
-                Find your career — free
+            </h1>
+            <p className="mt-6 max-w-lg text-base leading-relaxed text-white/75 sm:text-lg">
+              Take a 2-minute assessment. LearnHub&rsquo;s AI matches you to the tech careers that fit,
+              builds your learning path, and coaches you 24/7 — made for Africa&rsquo;s next generation.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue px-7 py-3.5 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
+              >
+                Find your career <ArrowIcon className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/careers"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-7 py-3.5 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10"
+              >
+                Explore careers
               </Link>
             </div>
           </div>
-        </section>
 
-        {/* CTA */}
-        <section className="section cta-band">
-          <div className="container reveal">
-            <h2>Ready to find your path in tech?</h2>
-            <p>Take the free 2-minute assessment and meet the career built for you.</p>
-            <Link href="/signup" className="btn btn-white btn-lg">
-              Start free assessment
-              <ArrowIcon />
-            </Link>
-          </div>
-        </section>
-      </main>
-
-      <footer className="site-footer">
-        <div className="container">
-          <div className="foot-grid">
-            <div className="foot-brand">
-              <Logo />
-              <p>The AI career coach for Africa&rsquo;s next generation of tech talent.</p>
+          {/* Floating sample-match card */}
+          <div className="lh-float-slow pointer-events-none absolute right-5 top-40 hidden w-64 rounded-2xl border border-white/15 bg-white/95 p-4 shadow-glow backdrop-blur lg:block">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wide text-muted-2">Your top match</span>
+              <span className="rounded-full bg-blue/10 px-2 py-0.5 text-xs font-bold text-blue">92%</span>
             </div>
-            <div className="foot-col">
-              <h4>Product</h4>
-              <a href="#product">Features</a>
-              <a href="#coach">AI Coach</a>
-              <Link href="/careers">Careers catalog</Link>
-              <a href="#pricing">Pricing</a>
-            </div>
-            <div className="foot-col">
-              <h4>Company</h4>
-              <a href="#stories">Stories</a>
-              <a href="#faq">FAQ</a>
-              <Link href="/privacy">Privacy</Link>
-              <Link href="/terms">Terms</Link>
-            </div>
-            <div className="foot-col">
-              <h4>Get started</h4>
-              <Link href="/signup">Create your account</Link>
-              <Link href="/login">Log in</Link>
+            <div className="mt-2 font-display text-lg font-bold text-ink">Data Analyst</div>
+            <div className="mt-3 space-y-1.5 text-xs text-muted">
+              <div className="flex justify-between"><span>Entry pay</span><span className="font-semibold text-ink">₦250k–₦600k/mo</span></div>
+              <div className="flex justify-between"><span>Remote</span><span className="font-semibold text-ink">High</span></div>
+              <div className="flex justify-between"><span>Job-ready</span><span className="font-semibold text-ink">6–9 months</span></div>
             </div>
           </div>
-          <div className="foot-bottom">
-            <span>© 2026 LearnHub AI. All rights reserved.</span>
-            <div className="socials">
-              <a href="#" aria-label="X">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.9 2H22l-7.2 8.2L23 22h-6.6l-5.2-6.8L5.3 22H2l7.7-8.8L1.4 2H8l4.7 6.2L18.9 2Zm-2.3 18h1.8L7.5 3.9H5.6L16.6 20Z" />
-                </svg>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ MISSION */}
+      <section className="border-b border-silver bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-3xl px-5 text-center">
+          <h2 className="font-display text-2xl font-semibold leading-snug tracking-tight text-ink sm:text-[2rem]">
+            The hard part isn&rsquo;t learning tech. It&rsquo;s knowing{" "}
+            <span className="text-blue">which path is yours</span> — and having someone in your corner.
+          </h2>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------- HOW IT WORKS */}
+      <section id="how" className="bg-white py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="max-w-xl">
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">How it works</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-[2.6rem] sm:leading-[1.1]">
+              Three steps to a clear path
+            </h2>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {[
+              { n: "1", t: "Take the assessment", d: "Answer a short, proven set of questions about your background, interests, and goals. Two minutes, on your phone." },
+              { n: "2", t: "Get your AI match", d: "LearnHub matches you to the two tech careers that fit you best — with honest local pay and realistic timelines." },
+              { n: "3", t: "Follow your roadmap", d: "Get a step-by-step, free-first learning path and a 24/7 AI coach that knows your plan. Track progress to a certificate." },
+            ].map((s) => (
+              <div key={s.n} className="rounded-2xl border border-silver bg-paper/60 p-6">
+                <div className="grid h-11 w-11 place-items-center rounded-full bg-blue font-display text-lg font-bold text-white shadow-glow">
+                  {s.n}
+                </div>
+                <h3 className="mt-5 font-display text-xl font-semibold text-ink">{s.t}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- STATS */}
+      <section className="bg-white pb-8">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="grid gap-4 rounded-3xl border border-silver bg-paper/50 p-8 sm:grid-cols-3 sm:p-10">
+            {[
+              { v: "17", l: "tech careers mapped for Africa" },
+              { v: "2 min", l: "to your personalized match" },
+              { v: "Free", l: "everything, while in beta" },
+            ].map((s) => (
+              <div key={s.l} className="text-center">
+                <div className="font-display text-4xl font-bold text-blue sm:text-5xl">{s.v}</div>
+                <p className="mt-2 text-sm text-muted">{s.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --------------------------------------------------- WHAT YOU GET (orbit) */}
+      <OrbitSection />
+
+      {/* ----------------------------------------------------- FEATURES (dark) */}
+      <section className="bg-ink py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="max-w-xl">
+            <h2 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-[2.6rem] sm:leading-[1.1]">
+              Everything you need to start, in one place
+            </h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-white/70">
+              No guesswork, no expensive bootcamp. Just a clear plan and a coach that never sleeps.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { t: "AI career match", d: "Two honest, well-reasoned career fits — not a long list to triage." },
+              { t: "Free learning roadmap", d: "Step-by-step, free-first resources that work on a phone and low data." },
+              { t: "24/7 AI coach", d: "Ask anything, any time. It knows your match and your next step." },
+              { t: "Certificate", d: "Finish your roadmap and earn a shareable, verifiable certificate." },
+            ].map((f) => (
+              <div key={f.t} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-blue/20 text-sky-2">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                </div>
+                <h3 className="mt-5 font-display text-lg font-semibold text-white">{f.t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/65">{f.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------- TESTIMONIALS */}
+      <section className="overflow-hidden bg-white py-20 sm:py-24">
+        <div className="mx-auto mb-12 max-w-6xl px-5">
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">Loved by learners</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-[2.6rem] sm:leading-[1.1]">
+            Built for people like you
+          </h2>
+        </div>
+        <div className="relative">
+          <div className="lh-marquee">
+            {[0, 1].map((copy) => (
+              <div className="lh-marquee-group" key={copy} aria-hidden={copy === 1}>
+                {TESTIMONIALS.map((t, i) => (
+                  <figure key={`${copy}-${i}`} className="w-80 flex-none rounded-2xl border border-silver bg-paper/50 p-6">
+                    <blockquote className="text-[15px] leading-relaxed text-ink">&ldquo;{t.quote}&rdquo;</blockquote>
+                    <figcaption className="mt-5 flex items-center gap-3">
+                      <span className="grid h-10 w-10 place-items-center rounded-full bg-blue/10 font-display text-sm font-bold text-blue">
+                        {t.name[0]}
+                      </span>
+                      <span>
+                        <span className="block text-sm font-bold text-ink">{t.name}</span>
+                        <span className="block text-xs text-muted">{t.role}</span>
+                      </span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------- FREE BAND */}
+      <section className="bg-white px-5 pb-24">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-[28px] bg-gradient-to-br from-blue to-blue-600 px-6 py-16 text-center shadow-glow sm:px-10 sm:py-20">
+          <h2 className="mx-auto max-w-2xl font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
+            Your tech career starts with two minutes
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-white/85">
+            Take the free assessment and meet the career that fits you. No card, no catch.
+          </p>
+          <Link
+            href="/signup"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-bold text-blue transition hover:bg-white/90"
+          >
+            Get started free <ArrowIcon className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* --------------------------------------------------------------- FAQ */}
+      <section id="faq" className="border-t border-silver bg-white py-20 sm:py-24">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">FAQ</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              Questions, answered
+            </h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
+              Still curious? Reach us at{" "}
+              <a href="mailto:hello@learnhubworld.com" className="font-semibold text-blue hover:underline">
+                hello@learnhubworld.com
               </a>
-              <a href="#" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.2 8.65 21 10.6 21 13.3V21h-4v-6.9c0-1.65-.03-3.77-2.3-3.77-2.3 0-2.65 1.8-2.65 3.65V21H9V9Z" />
-                </svg>
-              </a>
-              <a href="#" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
-                </svg>
-              </a>
+              .
+            </p>
+          </div>
+          <Faq />
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ FOOTER */}
+      <footer className="bg-ink py-14 text-white/70">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="flex flex-col justify-between gap-8 border-b border-white/10 pb-10 md:flex-row">
+            <div className="max-w-xs">
+              <Logo reverse />
+              <p className="mt-4 text-sm text-white/60">
+                The AI career coach for Africa&rsquo;s next generation of tech talent.
+              </p>
             </div>
+            <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
+              <FooterCol title="Product" links={[["How it works", "#how"], ["What you get", "#what"], ["Careers", "/careers"], ["FAQ", "#faq"]]} />
+              <FooterCol title="Get started" links={[["Create account", "/signup"], ["Log in", "/login"]]} />
+              <FooterCol title="Legal" links={[["Privacy", "/privacy"], ["Terms", "/terms"]]} />
+            </div>
+          </div>
+          <div className="flex flex-col items-center justify-between gap-3 pt-8 text-sm text-white/50 sm:flex-row">
+            <span>© 2026 LearnHub. All rights reserved.</span>
+            <span>Made for Africa 🌍</span>
           </div>
         </div>
       </footer>
     </div>
   );
 }
+
+function FooterCol({ title, links }: { title: string; links: [string, string][] }) {
+  return (
+    <div>
+      <h4 className="text-sm font-bold text-white">{title}</h4>
+      <ul className="mt-4 space-y-2.5">
+        {links.map(([label, href]) => (
+          <li key={label}>
+            <Link href={href} className="text-sm text-white/60 transition hover:text-white">
+              {label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const TESTIMONIALS = [
+  { quote: "I had no idea data analysis was even an option for me. Two minutes and I had a plan I actually understood.", name: "Amara", role: "Lagos, Nigeria" },
+  { quote: "The roadmap was all free resources that worked on my phone. That mattered — I don't have a laptop yet.", name: "Kwame", role: "Accra, Ghana" },
+  { quote: "Asking the coach 'is this step worth my time?' at 1am and getting a real answer changed everything.", name: "Zainab", role: "Nairobi, Kenya" },
+  { quote: "It was honest about timelines. No hype, just what to do next. That's rare.", name: "Thabo", role: "Johannesburg, SA" },
+  { quote: "I switched from accounting into tech without wasting money on the wrong course.", name: "Chidi", role: "Abuja, Nigeria" },
+];

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalPage, LegalSection } from "@/components/marketing/legal-page";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — LearnHub AI",
+  title: "Terms of Service — LearnHub",
   description:
-    "The simple terms for using LearnHub AI. Free while in beta, provided honestly and as-is.",
+    "The simple terms for using LearnHub. Free while in beta, provided honestly and as-is.",
 };
 
 const CONTACT_EMAIL = "hello@learnhubworld.com";
@@ -13,7 +13,7 @@ export default function TermsPage() {
   return (
     <LegalPage title="Terms of Service" lastUpdated="23 July 2026">
       <p>
-        These terms cover your use of LearnHub AI (&ldquo;LearnHub&rdquo;, &ldquo;we&rdquo;,
+        These terms cover your use of LearnHub (&ldquo;LearnHub&rdquo;, &ldquo;we&rdquo;,
         &ldquo;us&rdquo;). By creating an account or using the service, you agree to them. We&rsquo;ve
         kept them plain.
       </p>

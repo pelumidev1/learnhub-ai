@@ -4,8 +4,8 @@ import { PublicHeader, PublicFooter } from "@/components/marketing/public-shell"
 import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
-  title: "Verify a certificate — LearnHub AI",
-  description: "Confirm a LearnHub AI certificate of completion.",
+  title: "Verify a certificate — LearnHub",
+  description: "Confirm a LearnHub certificate of completion.",
 };
 
 type VerifiedCertificate = {
@@ -68,7 +68,7 @@ export default async function VerifyPage({
               <span className="font-semibold text-ink">
                 {cert.career_title ?? cert.title}
               </span>{" "}
-              on LearnHub AI.
+              on LearnHub.
             </p>
             <p className="mt-4 text-sm text-muted-2">Issued {formatDate(cert.issued_at)}</p>
           </div>
@@ -101,7 +101,7 @@ export default async function VerifyPage({
           href="/"
           className="mt-8 text-sm font-semibold text-blue transition hover:text-blue-600"
         >
-          What is LearnHub AI? →
+          What is LearnHub? →
         </Link>
       </main>
 
