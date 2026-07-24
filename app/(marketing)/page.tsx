@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { LandingNav } from "@/components/marketing/landing/landing-nav";
 import { OrbitSection } from "@/components/marketing/landing/orbit";
+import { EcosystemSection } from "@/components/marketing/landing/ecosystem";
 import { Faq } from "@/components/marketing/landing/faq";
 import "./landing.css";
 
@@ -83,9 +84,9 @@ export default function LandingPage() {
       </section>
 
       {/* ------------------------------------------------------------ MISSION */}
-      <section className="border-b border-silver bg-white py-16 sm:py-20">
-        <div className="mx-auto max-w-3xl px-5 text-center">
-          <h2 className="font-display text-2xl font-semibold leading-snug tracking-tight text-ink sm:text-[2rem]">
+      <section className="border-y border-silver bg-white py-24 sm:py-36">
+        <div className="mx-auto max-w-4xl px-5 text-center">
+          <h2 className="font-display text-[2rem] font-semibold leading-[1.12] tracking-tight text-ink sm:text-[3.4rem]">
             The hard part isn&rsquo;t learning tech. It&rsquo;s knowing{" "}
             <span className="text-blue">which path is yours</span> — and having someone in your corner.
           </h2>
@@ -93,28 +94,42 @@ export default function LandingPage() {
       </section>
 
       {/* -------------------------------------------------------- HOW IT WORKS */}
-      <section id="how" className="bg-white py-20 sm:py-24">
+      <section id="how" className="bg-white py-20 sm:py-28">
         <div className="mx-auto max-w-6xl px-5">
-          <div className="max-w-xl">
-            <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">How it works</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-[2.6rem] sm:leading-[1.1]">
+          <div className="max-w-2xl">
+            <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-[2.75rem] sm:leading-[1.08]">
               Three steps to a clear path
             </h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
+              No guesswork. Answer a few questions and LearnHub does the rest — the match, the plan,
+              and a coach that knows both.
+            </p>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+
+          {/* Numbered steps, equal size and placement (Zerion finance-tab rhythm) */}
+          <div className="mt-12 grid gap-8 border-t border-silver pt-10 md:grid-cols-3 md:gap-10">
             {[
               { n: "1", t: "Take the assessment", d: "Answer a short, proven set of questions about your background, interests, and goals. Two minutes, on your phone." },
-              { n: "2", t: "Get your AI match", d: "LearnHub matches you to the two tech careers that fit you best — with honest local pay and realistic timelines." },
-              { n: "3", t: "Follow your roadmap", d: "Get a step-by-step, free-first learning path and a 24/7 AI coach that knows your plan. Track progress to a certificate." },
+              { n: "2", t: "Get your match", d: "LearnHub matches you to the two tech careers that fit you best — with honest local pay and realistic timelines." },
+              { n: "3", t: "Follow your roadmap", d: "A step-by-step, free-first learning path plus a 24/7 AI coach. Track your progress to a certificate." },
             ].map((s) => (
-              <div key={s.n} className="rounded-2xl border border-silver bg-paper/60 p-6">
-                <div className="grid h-11 w-11 place-items-center rounded-full bg-blue font-display text-lg font-bold text-white shadow-glow">
-                  {s.n}
-                </div>
-                <h3 className="mt-5 font-display text-xl font-semibold text-ink">{s.t}</h3>
+              <div key={s.n}>
+                <h3 className="font-display text-lg font-bold text-ink">
+                  <span className="text-blue">{s.n}.</span> {s.t}
+                </h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.d}</p>
               </div>
             ))}
+          </div>
+
+          {/* Big product preview (drops in at /brand/how-it-works.png; gradient until then) */}
+          <div className="mt-12 overflow-hidden rounded-3xl border border-silver">
+            <div
+              className="lh-photo aspect-[16/10] w-full sm:aspect-[16/8]"
+              style={{ backgroundImage: "url(/brand/how-it-works.png)" }}
+              role="img"
+              aria-label="A preview of your LearnHub results and roadmap"
+            />
           </div>
         </div>
       </section>
@@ -129,7 +144,7 @@ export default function LandingPage() {
               { v: "Free", l: "everything, while in beta" },
             ].map((s) => (
               <div key={s.l} className="text-center">
-                <div className="font-display text-4xl font-bold text-blue sm:text-5xl">{s.v}</div>
+                <div className="font-display text-5xl font-bold tracking-tight text-ink sm:text-6xl">{s.v}</div>
                 <p className="mt-2 text-sm text-muted">{s.l}</p>
               </div>
             ))}
@@ -144,31 +159,46 @@ export default function LandingPage() {
       <section className="bg-ink py-20 sm:py-28">
         <div className="mx-auto max-w-6xl px-5">
           <div className="max-w-xl">
-            <h2 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-[2.6rem] sm:leading-[1.1]">
-              Everything you need to start, in one place
+            <h2 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-[2.75rem] sm:leading-[1.08]">
+              A win for your future
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-white/70">
               No guesswork, no expensive bootcamp. Just a clear plan and a coach that never sleeps.
             </p>
           </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { t: "AI career match", d: "Two honest, well-reasoned career fits — not a long list to triage." },
-              { t: "Free learning roadmap", d: "Step-by-step, free-first resources that work on a phone and low data." },
-              { t: "24/7 AI coach", d: "Ask anything, any time. It knows your match and your next step." },
-              { t: "Certificate", d: "Finish your roadmap and earn a shareable, verifiable certificate." },
-            ].map((f) => (
-              <div key={f.t} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <div className="grid h-11 w-11 place-items-center rounded-xl bg-blue/20 text-sky-2">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+
+          {/* Image left + 2×2 card grid right (Zerion 'business' layout) */}
+          <div className="mt-12 grid gap-6 lg:grid-cols-2 lg:items-stretch">
+            <div className="overflow-hidden rounded-3xl">
+              <div
+                className="lh-photo h-full min-h-[360px] w-full"
+                style={{ backgroundImage: "url(/brand/win.jpg)" }}
+                role="img"
+                aria-label="A LearnHub learner on their path"
+              />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                { t: "AI career match", d: "Two honest, well-reasoned career fits — not a long list to triage." },
+                { t: "Free learning roadmap", d: "Step-by-step, free-first resources that work on a phone and low data." },
+                { t: "24/7 AI coach", d: "Ask anything, any time. It knows your match and your next step." },
+                { t: "Certificate", d: "Finish your roadmap and earn a shareable, verifiable certificate." },
+              ].map((f) => (
+                <div key={f.t} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-blue/20 text-sky-2">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                  </div>
+                  <h3 className="mt-5 font-display text-lg font-semibold text-white">{f.t}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/65">{f.d}</p>
                 </div>
-                <h3 className="mt-5 font-display text-lg font-semibold text-white">{f.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/65">{f.d}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
+
+      {/* ------------------------------------------------- ECOSYSTEM (clickhouse) */}
+      <EcosystemSection />
 
       {/* ------------------------------------------------------- TESTIMONIALS */}
       <section className="overflow-hidden bg-white py-20 sm:py-24">
