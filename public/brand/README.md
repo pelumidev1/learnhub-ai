@@ -10,7 +10,7 @@ broken image.
 | `student-1.jpg` | Orbit section floating card (Amara — Data Analyst) | Square-ish portrait, ~600×600 |
 | `student-2.jpg` | Orbit section floating card (Kwame — AI Product Builder) | Square-ish portrait, ~600×600 |
 | `student-3.jpg` | Orbit section floating card (Zainab — Product Designer) | Square-ish portrait, ~600×600 |
-| `signup.jpg` | Login / signup left panel | The "The best way to start your tech career" graphic, portrait/tall, ~1200×1600 |
+| `signup.png` | Login / signup left panel | The "The best way to start your tech career" graphic, portrait/tall, ~1200×1600 |
 
 Tips: keep files light (compress JPG/WebP) — the audience is on metered data.
 JPG or WebP both work; keep the `.jpg` name or update the paths in code.

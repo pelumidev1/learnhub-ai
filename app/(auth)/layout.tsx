@@ -17,7 +17,7 @@ export default function AuthLayout({
       <aside className="relative hidden w-[46%] max-w-[640px] shrink-0 bg-gradient-to-br from-blue to-blue-600 lg:block">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url(/brand/signup.jpg)" }}
+          style={{ backgroundImage: "url(/brand/signup.png)" }}
           aria-hidden
         />
       </aside>
