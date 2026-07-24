@@ -106,30 +106,26 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Numbered steps, equal size and placement (Zerion finance-tab rhythm) */}
-          <div className="mt-12 grid gap-8 border-t border-silver pt-10 md:grid-cols-3 md:gap-10">
+          {/* Each step in Zerion's decisions "stats card" style: heading + text on
+              top, a big counter at the bottom. No image. */}
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
             {[
-              { n: "1", t: "Take the assessment", d: "Answer a short, proven set of questions about your background, interests, and goals. Two minutes, on your phone." },
-              { n: "2", t: "Get your match", d: "LearnHub matches you to the two tech careers that fit you best — with honest local pay and realistic timelines." },
-              { n: "3", t: "Follow your roadmap", d: "A step-by-step, free-first learning path plus a 24/7 AI coach. Track your progress to a certificate." },
+              { n: "1", t: "Take the assessment", d: "Answer a short, proven set of questions about your background, interests, and goals. Two minutes, on your phone.", stat: "2 min", statLabel: "on your phone" },
+              { n: "2", t: "Get your match", d: "LearnHub matches you to the two tech careers that fit you best — with honest local pay and realistic timelines.", stat: "2", statLabel: "career matches" },
+              { n: "3", t: "Follow your roadmap", d: "A step-by-step, free-first learning path plus a 24/7 AI coach. Track your progress to a certificate.", stat: "Free", statLabel: "coach + certificate" },
             ].map((s) => (
-              <div key={s.n}>
-                <h3 className="font-display text-lg font-bold text-ink">
-                  <span className="text-blue">{s.n}.</span> {s.t}
-                </h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.d}</p>
+              <div key={s.n} className="flex flex-col justify-between rounded-3xl border border-silver bg-paper/60 p-8">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">Step {s.n}</p>
+                  <h3 className="mt-3 font-display text-xl font-bold text-ink">{s.t}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-muted">{s.d}</p>
+                </div>
+                <div className="mt-8 border-t border-silver pt-6">
+                  <div className="font-display text-4xl font-bold tracking-tight text-ink">{s.stat}</div>
+                  <p className="mt-1 text-sm text-muted">{s.statLabel}</p>
+                </div>
               </div>
             ))}
-          </div>
-
-          {/* Big product preview (drops in at /brand/how-it-works.png; gradient until then) */}
-          <div className="mt-12 overflow-hidden rounded-3xl border border-silver">
-            <div
-              className="lh-photo aspect-[16/10] w-full sm:aspect-[16/8]"
-              style={{ backgroundImage: "url(/brand/how-it-works.png)" }}
-              role="img"
-              aria-label="A preview of your LearnHub results and roadmap"
-            />
           </div>
         </div>
       </section>

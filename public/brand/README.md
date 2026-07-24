@@ -11,8 +11,7 @@ broken image.
 | `student-2.jpg` | Orbit section floating card (Kwame — AI Product Builder) | Square-ish portrait, ~600×600 |
 | `student-3.jpg` | Orbit section floating card (Zainab — Product Designer) | Square-ish portrait, ~600×600 |
 | `signup.png` | Login / signup left panel | The "The best way to start your tech career" graphic, portrait/tall, ~1200×1600 |
-| `how-it-works.png` | "Three steps" big preview image below the steps | A screenshot/mock of the results or roadmap screen, wide 16:8–16:10 |
-| `win.jpg` | "A win for your future" section (image left of the 4 cards) | Portrait-ish photo of a learner, ~1000×1200 |
+| `win.jpg` | "A win for your future" section (image left of the 4 cards, like Zerion's business photo) | Portrait-ish lifestyle photo of a learner, ~1000×1200 |
 
 Tips: keep files light (compress JPG/WebP) — the audience is on metered data.
 JPG or WebP both work; keep the `.jpg` name or update the paths in code.
