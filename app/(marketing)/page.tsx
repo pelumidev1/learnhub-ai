@@ -4,6 +4,7 @@ import { Logo } from "@/components/ui/logo";
 import { LandingNav } from "@/components/marketing/landing/landing-nav";
 import { OrbitSection } from "@/components/marketing/landing/orbit";
 import { EcosystemSection } from "@/components/marketing/landing/ecosystem";
+import { HeroCard } from "@/components/marketing/landing/hero-card";
 import { Faq } from "@/components/marketing/landing/faq";
 import "./landing.css";
 
@@ -41,10 +42,10 @@ export default function LandingPage() {
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-sky-2" /> Free while in beta
             </span>
-            <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
-              Discover the tech career
+            <h1 className="mt-6 font-display text-[2.75rem] font-bold uppercase leading-[0.98] tracking-tight text-white sm:text-[4.75rem]">
+              Discover the tech
               <span className="mt-1 flex items-center gap-3">
-                built for you <ArrowIcon className="h-9 w-9 text-sky-2 sm:h-12 sm:w-12" />
+                career built for you <ArrowIcon className="h-9 w-9 flex-none text-sky-2 sm:h-14 sm:w-14" />
               </span>
             </h1>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-white/75 sm:text-lg">
@@ -67,19 +68,8 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Floating sample-match card */}
-          <div className="lh-float-slow pointer-events-none absolute right-5 top-40 hidden w-64 rounded-2xl border border-white/15 bg-white/95 p-4 shadow-glow backdrop-blur lg:block">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-muted-2">Your top match</span>
-              <span className="rounded-full bg-blue/10 px-2 py-0.5 text-xs font-bold text-blue">92%</span>
-            </div>
-            <div className="mt-2 font-display text-lg font-bold text-ink">Data Analyst</div>
-            <div className="mt-3 space-y-1.5 text-xs text-muted">
-              <div className="flex justify-between"><span>Entry pay</span><span className="font-semibold text-ink">₦250k–₦600k/mo</span></div>
-              <div className="flex justify-between"><span>Remote</span><span className="font-semibold text-ink">High</span></div>
-              <div className="flex justify-between"><span>Job-ready</span><span className="font-semibold text-ink">6–9 months</span></div>
-            </div>
-          </div>
+          {/* Floating sample-match card (tilts with the cursor) */}
+          <HeroCard />
         </div>
       </section>
 
@@ -97,7 +87,7 @@ export default function LandingPage() {
       <section id="how" className="bg-white py-20 sm:py-28">
         <div className="mx-auto max-w-6xl px-5">
           <div className="max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-[2.75rem] sm:leading-[1.08]">
+            <h2 className="font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]">
               Three steps to a clear path
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">
@@ -155,7 +145,7 @@ export default function LandingPage() {
       <section className="bg-ink py-20 sm:py-28">
         <div className="mx-auto max-w-6xl px-5">
           <div className="max-w-xl">
-            <h2 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-[2.75rem] sm:leading-[1.08]">
+            <h2 className="font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-white sm:text-[2.9rem]">
               A win for your future
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-white/70">
@@ -200,7 +190,7 @@ export default function LandingPage() {
       <section className="overflow-hidden bg-white py-20 sm:py-24">
         <div className="mx-auto mb-12 max-w-6xl px-5">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">Loved by learners</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-[2.6rem] sm:leading-[1.1]">
+          <h2 className="mt-3 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]">
             Built for people like you
           </h2>
         </div>
@@ -231,7 +221,7 @@ export default function LandingPage() {
       {/* ---------------------------------------------------------- FREE BAND */}
       <section className="bg-white px-5 pb-24">
         <div className="mx-auto max-w-6xl overflow-hidden rounded-[28px] bg-gradient-to-br from-blue to-blue-600 px-6 py-16 text-center shadow-glow sm:px-10 sm:py-20">
-          <h2 className="mx-auto max-w-2xl font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
+          <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-white sm:text-[2.9rem]">
             Your tech career starts with two minutes
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-white/85">
@@ -251,7 +241,7 @@ export default function LandingPage() {
         <div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[0.8fr_1.2fr]">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">FAQ</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]">
               Questions, answered
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">

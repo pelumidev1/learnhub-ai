@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { LogoMark } from "@/components/ui/logo";
+import { useCursorParallax } from "./use-parallax";
 
 /** A floating node in the orbit — either a student photo tile or a labelled chip. */
 type Node = {
@@ -77,31 +78,14 @@ const NODES: Node[] = [
 
 export function OrbitSection() {
   const stageRef = useRef<HTMLDivElement>(null);
-
-  // Cursor parallax: map the pointer's offset from centre to [-1, 1] and push
-  // it onto CSS vars; each node multiplies by its own depth (see landing.css).
-  function onMove(e: React.MouseEvent) {
-    const el = stageRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
-    const my = ((e.clientY - r.top) / r.height - 0.5) * 2;
-    el.style.setProperty("--mx", mx.toFixed(3));
-    el.style.setProperty("--my", my.toFixed(3));
-  }
-  function onLeave() {
-    const el = stageRef.current;
-    if (!el) return;
-    el.style.setProperty("--mx", "0");
-    el.style.setProperty("--my", "0");
-  }
+  useCursorParallax(stageRef);
 
   return (
     <section id="what" className="bg-paper py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-2xl text-center">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">Real students, real AI</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-[2.6rem] sm:leading-[1.1]">
+          <h2 className="mt-3 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]">
             A coach in your corner, built around you
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">
@@ -113,8 +97,6 @@ export function OrbitSection() {
         {/* Parallax stage */}
         <div
           ref={stageRef}
-          onMouseMove={onMove}
-          onMouseLeave={onLeave}
           className="lh-orbit relative mx-auto mt-14 h-[440px] max-w-3xl sm:h-[520px]"
         >
           {/* Soft rings behind the mark */}

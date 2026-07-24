@@ -48,12 +48,24 @@
   --my: 0;
 }
 .lh-orbit-node {
-  transition: transform 0.25s ease-out;
+  /* No CSS transition — the rAF easing in use-parallax.ts does the smoothing,
+     which gives the buttery, trailing motion instead of a snap. */
   transform: translate3d(
     calc(var(--mx) * var(--depth, 12px)),
     calc(var(--my) * var(--depth, 12px)),
     0
   );
+}
+
+/* Hero card 3D tilt: perspective on the stage, the card tilts via a transform
+   set from JS (rotateX/rotateY + translate), eased with a short transition. */
+.lh-tilt-stage {
+  perspective: 1000px;
+}
+.lh-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.12s ease-out;
+  will-change: transform;
 }
 
 /* Photo tiles: a branded gradient shows through until the real image is added,

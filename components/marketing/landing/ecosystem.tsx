@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { LogoMark } from "@/components/ui/logo";
+import { useCursorParallax } from "./use-parallax";
 
 /**
  * The "ecosystem" diagram — LearnHub's take on Zerion's ClickHouse graphic:
@@ -34,27 +35,14 @@ const NODES: Node[] = [
 
 export function EcosystemSection() {
   const stageRef = useRef<HTMLDivElement>(null);
-
-  function onMove(e: React.MouseEvent) {
-    const el = stageRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty("--mx", (((e.clientX - r.left) / r.width - 0.5) * 2).toFixed(3));
-    el.style.setProperty("--my", (((e.clientY - r.top) / r.height - 0.5) * 2).toFixed(3));
-  }
-  function onLeave() {
-    const el = stageRef.current;
-    if (!el) return;
-    el.style.setProperty("--mx", "0");
-    el.style.setProperty("--my", "0");
-  }
+  useCursorParallax(stageRef);
 
   return (
     <section className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-2xl text-center">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">One ecosystem</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-[2.75rem] sm:leading-[1.08]">
+          <h2 className="mt-3 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]">
             Every path into tech, connected to you
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">
@@ -65,8 +53,6 @@ export function EcosystemSection() {
 
         <div
           ref={stageRef}
-          onMouseMove={onMove}
-          onMouseLeave={onLeave}
           className="lh-orbit relative mx-auto mt-16 h-[420px] max-w-3xl sm:h-[560px]"
         >
           {/* Centre mark */}
