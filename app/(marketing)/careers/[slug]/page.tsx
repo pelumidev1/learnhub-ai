@@ -24,9 +24,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const career = await getCareerBySlug(slug);
-  if (!career) return { title: "Career not found — LearnHub" };
+  if (!career) return { title: "Career not found · LearnHub" };
   return {
-    title: `${career.title} — Tech Careers | LearnHub`,
+    title: `${career.title} · Tech Careers | LearnHub`,
     description:
       career.description ??
       `What a ${career.title} does, the skills you need, and realistic pay across Africa.`,
@@ -124,7 +124,7 @@ export default async function CareerDetailPage({
           <h2 className="font-display text-xl font-semibold">Is this the right path for you?</h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-white/85">
             Take the free 2-minute assessment and get an AI-reasoned match, a learning roadmap, and
-            a 24/7 AI coach — built around your background and goals.
+            a 24/7 AI coach, built around your background and goals.
           </p>
           <Link
             href="/signup"

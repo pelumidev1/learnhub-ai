@@ -4,7 +4,7 @@ import { PublicHeader, PublicFooter } from "@/components/marketing/public-shell"
 import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
-  title: "Verify a certificate — LearnHub",
+  title: "Verify a certificate · LearnHub",
   description: "Confirm a LearnHub certificate of completion.",
 };
 

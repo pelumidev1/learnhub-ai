@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalPage, LegalSection } from "@/components/marketing/legal-page";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — LearnHub",
+  title: "Privacy Policy · LearnHub",
   description:
     "How LearnHub collects, uses, and protects your data. Plain English, no surprises.",
 };
@@ -21,23 +21,23 @@ export default function PrivacyPage() {
       <LegalSection heading="What we collect">
         <ul>
           <li>
-            <strong>Your account details</strong> — your email and name. If you sign in with
+            <strong>Your account details</strong>: your email and name. If you sign in with
             Google, we receive your name, email, and profile picture from Google.
           </li>
           <li>
-            <strong>Your assessment answers</strong> — the responses you give about your
+            <strong>Your assessment answers</strong>: the responses you give about your
             background, interests, goals, and constraints.
           </li>
           <li>
-            <strong>What we generate for you</strong> — your career recommendation, learning
+            <strong>What we generate for you</strong>: your career recommendation, learning
             roadmap, and progress.
           </li>
           <li>
-            <strong>Your messages to the AI coach</strong> — the questions you ask and the
+            <strong>Your messages to the AI coach</strong>: the questions you ask and the
             replies you receive.
           </li>
           <li>
-            <strong>Basic usage data</strong> — needed to keep the service running securely and
+            <strong>Basic usage data</strong>: needed to keep the service running securely and
             to control our AI costs while we&rsquo;re free.
           </li>
         </ul>
@@ -63,19 +63,19 @@ export default function PrivacyPage() {
         </p>
         <ul>
           <li>
-            <strong>Supabase</strong> — securely stores your account and your saved results.
+            <strong>Supabase</strong>: securely stores your account and your saved results.
           </li>
           <li>
-            <strong>Anthropic (Claude)</strong> — powers the AI. Your assessment answers and coach
+            <strong>Anthropic (Claude)</strong>: powers the AI. Your assessment answers and coach
             messages are sent to Anthropic&rsquo;s API to generate your recommendation, roadmap, and
             replies. Anthropic does not use this to train its models on API data.
           </li>
           <li>
-            <strong>Google</strong> — only if you choose to sign in with Google.
+            <strong>Google</strong>: only if you choose to sign in with Google.
           </li>
         </ul>
         <p>
-          We may also disclose data if the law requires it. That&rsquo;s the full list — we don&rsquo;t
+          We may also disclose data if the law requires it. That&rsquo;s the full list. We don&rsquo;t
           share your data with anyone else.
         </p>
       </LegalSection>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalPage, LegalSection } from "@/components/marketing/legal-page";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — LearnHub",
+  title: "Terms of Service · LearnHub",
   description:
     "The simple terms for using LearnHub. Free while in beta, provided honestly and as-is.",
 };
@@ -22,7 +22,7 @@ export default function TermsPage() {
         <p>
           LearnHub is an AI career coach. You take a short assessment and receive an AI-generated
           career match, a learning roadmap, and access to an AI coach. It&rsquo;s designed to help
-          you make decisions — it doesn&rsquo;t make them for you.
+          you make decisions, not to make them for you.
         </p>
       </LegalSection>
 
