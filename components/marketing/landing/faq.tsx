@@ -5,15 +5,15 @@ import { useState } from "react";
 const FAQS = [
   {
     q: "Is LearnHub really free?",
-    a: "Yes. While we're in beta, everything is free — the assessment, your career match, your learning path, and the AI coach. No card required.",
+    a: "Yes. While we're in beta, everything is free: the assessment, your career match, your learning path, and the coach. No card required.",
   },
   {
     q: "How does the career match work?",
-    a: "You answer a short, proven assessment. LearnHub's AI reads your background, interests, and goals and matches you to the two tech careers that fit you best — with honest local pay and timelines.",
+    a: "You answer a short, proven assessment. LearnHub's AI reads your background, interests, and goals and matches you to the two tech careers that fit you best, with honest local pay and timelines.",
   },
   {
     q: "Is the coach a real person?",
-    a: "No — the coach is an AI, and we always say so. It knows your match and your roadmap, so it can answer questions about your situation, any time, day or night.",
+    a: "No. The coach is an AI, and we always say so. It knows your match and your roadmap, so it can answer questions about your situation, any time, day or night.",
   },
   {
     q: "Do I need a laptop or fast internet?",
@@ -21,7 +21,7 @@ const FAQS = [
   },
   {
     q: "Who is LearnHub for?",
-    a: "Students, graduates, and career changers across Africa who want a clear, honest path into tech — whether you're starting from scratch or switching fields.",
+    a: "Students, graduates, and career changers across Africa who want a clear, honest path into tech, whether you're starting from scratch or switching fields.",
   },
 ];
 

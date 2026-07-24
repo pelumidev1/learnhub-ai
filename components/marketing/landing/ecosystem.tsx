@@ -46,8 +46,8 @@ export function EcosystemSection() {
             Every path into tech, connected to you
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">
-            From data to design to AI — LearnHub maps the whole landscape, then points you to the
-            corner of it that&rsquo;s yours.
+            Data, design, security, AI, and everything between. LearnHub knows the whole field, then
+            shows you the part that fits you.
           </p>
         </div>
 

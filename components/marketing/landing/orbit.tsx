@@ -90,7 +90,7 @@ export function OrbitSection() {
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">
             LearnHub reads your background and goals, matches you to the careers that fit, and pairs
-            you with an AI coach that knows your plan — all free while we&rsquo;re in beta.
+            you with an AI coach that knows your plan. All free while we&rsquo;re in beta.
           </p>
         </div>
 

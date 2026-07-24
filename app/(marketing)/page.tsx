@@ -49,8 +49,9 @@ export default function LandingPage() {
               </span>
             </h1>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-white/75 sm:text-lg">
-              Take a 2-minute assessment. LearnHub&rsquo;s AI matches you to the tech careers that fit,
-              builds your learning path, and coaches you 24/7 — made for Africa&rsquo;s next generation.
+              Take a 2-minute assessment. LearnHub&rsquo;s AI finds the tech careers that fit you,
+              builds a learning path you can follow on your phone, and stays on as your coach.
+              Built for Africa&rsquo;s next generation.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
@@ -78,7 +79,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-4xl px-5 text-center">
           <h2 className="font-display text-[2rem] font-semibold leading-[1.12] tracking-tight text-ink sm:text-[3.4rem]">
             The hard part isn&rsquo;t learning tech. It&rsquo;s knowing{" "}
-            <span className="text-blue">which path is yours</span> — and having someone in your corner.
+            <span className="text-blue">which path is yours</span>, and having someone in your corner.
           </h2>
         </div>
       </section>
@@ -91,8 +92,8 @@ export default function LandingPage() {
               Three steps to a clear path
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">
-              No guesswork. Answer a few questions and LearnHub does the rest — the match, the plan,
-              and a coach that knows both.
+              No guesswork. Answer a few questions and LearnHub handles the rest: your match, your
+              plan, and a coach that knows both.
             </p>
           </div>
 
@@ -101,7 +102,7 @@ export default function LandingPage() {
           <div className="mt-12 grid gap-5 md:grid-cols-3">
             {[
               { n: "1", t: "Take the assessment", d: "Answer a short, proven set of questions about your background, interests, and goals. Two minutes, on your phone.", stat: "2 min", statLabel: "on your phone" },
-              { n: "2", t: "Get your match", d: "LearnHub matches you to the two tech careers that fit you best — with honest local pay and realistic timelines.", stat: "2", statLabel: "career matches" },
+              { n: "2", t: "Get your match", d: "LearnHub matches you to the two tech careers that fit you best, with honest local pay and realistic timelines.", stat: "2", statLabel: "career matches" },
               { n: "3", t: "Follow your roadmap", d: "A step-by-step, free-first learning path plus a 24/7 AI coach. Track your progress to a certificate.", stat: "Free", statLabel: "coach + certificate" },
             ].map((s) => (
               <div key={s.n} className="flex flex-col justify-between rounded-3xl border border-silver bg-paper/60 p-8">
@@ -165,7 +166,7 @@ export default function LandingPage() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               {[
-                { t: "AI career match", d: "Two honest, well-reasoned career fits — not a long list to triage." },
+                { t: "AI career match", d: "Two honest, well-reasoned career fits instead of a long list to triage." },
                 { t: "Free learning roadmap", d: "Step-by-step, free-first resources that work on a phone and low data." },
                 { t: "24/7 AI coach", d: "Ask anything, any time. It knows your match and your next step." },
                 { t: "Certificate", d: "Finish your roadmap and earn a shareable, verifiable certificate." },
@@ -274,7 +275,7 @@ export default function LandingPage() {
           </div>
           <div className="flex flex-col items-center justify-between gap-3 pt-8 text-sm text-white/50 sm:flex-row">
             <span>© 2026 LearnHub. All rights reserved.</span>
-            <span>Made for Africa 🌍</span>
+            <span>Made for Africa.</span>
           </div>
         </div>
       </footer>
@@ -301,7 +302,7 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
 
 const TESTIMONIALS = [
   { quote: "I had no idea data analysis was even an option for me. Two minutes and I had a plan I actually understood.", name: "Amara", role: "Lagos, Nigeria" },
-  { quote: "The roadmap was all free resources that worked on my phone. That mattered — I don't have a laptop yet.", name: "Kwame", role: "Accra, Ghana" },
+  { quote: "The roadmap was all free resources that worked on my phone. That mattered. I don't have a laptop yet.", name: "Kwame", role: "Accra, Ghana" },
   { quote: "Asking the coach 'is this step worth my time?' at 1am and getting a real answer changed everything.", name: "Zainab", role: "Nairobi, Kenya" },
   { quote: "It was honest about timelines. No hype, just what to do next. That's rare.", name: "Thabo", role: "Johannesburg, SA" },
   { quote: "I switched from accounting into tech without wasting money on the wrong course.", name: "Chidi", role: "Abuja, Nigeria" },
