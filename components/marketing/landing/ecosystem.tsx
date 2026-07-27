@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { LogoMark } from "@/components/ui/logo";
 import { useCursorParallax } from "./use-parallax";
+import { Reveal } from "./reveal";
+import { Kicker } from "./kicker";
 
 /**
  * The "ecosystem" diagram — LearnHub's take on Zerion's ClickHouse graphic:
@@ -40,8 +42,8 @@ export function EcosystemSection() {
   return (
     <section className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">One ecosystem</p>
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <Kicker center>One ecosystem</Kicker>
           <h2 className="mt-3 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]">
             Every path into tech, connected to you
           </h2>
@@ -49,12 +51,17 @@ export function EcosystemSection() {
             Data, design, security, AI, and everything between. LearnHub knows the whole field, then
             shows you the part that fits you.
           </p>
-        </div>
+        </Reveal>
 
         <div
           ref={stageRef}
           className="lh-orbit relative mx-auto mt-16 h-[420px] max-w-3xl sm:h-[560px]"
         >
+          {/* Soft glow behind the ring */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue/10 blur-3xl"
+          />
           {/* Centre mark */}
           <div className="absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
             <div className="grid h-24 w-24 place-items-center rounded-3xl bg-gradient-to-br from-blue to-blue-600 text-white shadow-glow sm:h-28 sm:w-28">

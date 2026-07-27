@@ -11,13 +11,22 @@ const LINKS = [
   { href: "#faq", label: "FAQ" },
 ];
 
-/** Sticky landing navbar: transparent over the dark hero, frosts on scroll. */
+/** Sticky landing navbar: transparent over the dark hero, frosts to white once
+ *  the page scrolls, and steps out of the way while reading — hidden on scroll
+ *  down, back on the first scroll up. */
 export function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      setHidden(y > 160 && y > lastY);
+      lastY = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -25,9 +34,9 @@ export function LandingNav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition duration-300 ${
         scrolled || open ? "border-b border-silver bg-white/85 backdrop-blur-md" : "border-b border-transparent"
-      }`}
+      } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
         <Logo reverse={!scrolled && !open} />

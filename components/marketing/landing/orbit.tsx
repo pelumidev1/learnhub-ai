@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { LogoMark } from "@/components/ui/logo";
 import { useCursorParallax } from "./use-parallax";
+import { Reveal } from "./reveal";
+import { Kicker } from "./kicker";
 
 /** A floating node in the orbit — either a student photo tile or a labelled chip. */
 type Node = {
@@ -83,8 +85,8 @@ export function OrbitSection() {
   return (
     <section id="what" className="bg-paper py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.16em] text-blue">Real students, real AI</p>
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <Kicker center>Real students, real AI</Kicker>
           <h2 className="mt-3 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]">
             A coach in your corner, built around you
           </h2>
@@ -92,14 +94,18 @@ export function OrbitSection() {
             LearnHub reads your background and goals, matches you to the careers that fit, and pairs
             you with an AI coach that knows your plan. All free while we&rsquo;re in beta.
           </p>
-        </div>
+        </Reveal>
 
         {/* Parallax stage */}
         <div
           ref={stageRef}
           className="lh-orbit relative mx-auto mt-14 h-[440px] max-w-3xl sm:h-[520px]"
         >
-          {/* Soft rings behind the mark */}
+          {/* Soft glow + rings behind the mark */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue/10 blur-3xl"
+          />
           <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <div className="h-[280px] w-[280px] rounded-full border border-silver-2/70 sm:h-[360px] sm:w-[360px]" />
             <div className="absolute h-[190px] w-[190px] rounded-full border border-silver-2 sm:h-[240px] sm:w-[240px]" />
@@ -124,7 +130,7 @@ export function OrbitSection() {
                 <div className="w-36 overflow-hidden rounded-2xl border border-white/60 bg-white shadow-soft">
                   <div
                     className="lh-photo h-24 w-full"
-                    style={{ backgroundImage: `url(${n.src})` }}
+                    style={{ "--photo": `url(${n.src})` } as React.CSSProperties}
                     role="img"
                     aria-label={`${n.caption}, ${n.role}`}
                   />

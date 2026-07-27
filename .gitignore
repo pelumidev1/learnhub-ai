@@ -9,3 +9,6 @@ node_modules
 *.tsbuildinfo
 next-env.d.ts
 .env*
+
+# Firecrawl scrape artifacts (reference captures, not shipped)
+.firecrawl/

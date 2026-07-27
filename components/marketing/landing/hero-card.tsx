@@ -40,7 +40,7 @@ export function HeroCard() {
   }, []);
 
   return (
-    <div className="lh-tilt-stage lh-float-slow pointer-events-none absolute right-6 top-40 hidden w-64 lg:block">
+    <div className="lh-tilt-stage lh-float-slow pointer-events-none absolute bottom-8 right-6 hidden w-72 lg:block">
       {/* Offset depth layers behind the card */}
       <div className="absolute inset-0 translate-x-3 translate-y-4 rounded-2xl border border-white/10 bg-white/10" aria-hidden />
       <div className="absolute inset-0 translate-x-6 translate-y-8 rounded-2xl border border-white/5 bg-white/5" aria-hidden />
