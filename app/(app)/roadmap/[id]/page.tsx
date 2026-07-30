@@ -78,7 +78,7 @@ export default async function RoadmapDetailPage({
           <div>
             <p className="font-display font-bold text-ink">Path complete 🎉</p>
             <p className="text-sm text-muted">
-              You earned a certificate — find it on your dashboard.
+              You earned a certificate. Find it on your dashboard.
             </p>
           </div>
         </div>

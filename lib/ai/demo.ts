@@ -21,14 +21,14 @@ export function demoDelay(ms: number): Promise<void> {
 export function demoRecommendation(): RecommendationOutput {
   return {
     summary:
-      "You think in patterns, enjoy solving practical problems, and want work you can start from a phone or modest laptop — that points clearly toward data and product-focused roles. (Demo mode: this is sample data, not a live AI analysis.)",
+      "You think in patterns, enjoy solving practical problems, and want work you can start from a phone or modest laptop. That points clearly toward data and product-focused roles. (Demo mode: this is sample data, not a live AI analysis.)",
     top_careers: [
       {
         career_slug: "data-analyst",
         title: "Data Analyst",
         match_score: 92,
         rationale:
-          "You said you enjoy finding patterns and explaining them to people. Data analysis is exactly that — and it's one of the most accessible entry points into tech, with free tools and strong local demand.",
+          "You said you enjoy finding patterns and explaining them to people. Data analysis is exactly that, and it's one of the most accessible entry points into tech, with free tools and strong local demand.",
         strengths_leveraged: ["Logical thinking", "Attention to detail", "Clear communication"],
         gaps_to_close: ["Spreadsheet mastery", "SQL", "Basic Python for data"],
         salary_range_local: "$300–$800/month equivalent at entry level (sample figure)",
@@ -49,7 +49,7 @@ export function demoRecommendation(): RecommendationOutput {
       },
     ],
     next_steps: [
-      "Start the free Google Data Analytics fundamentals — 30 minutes a day is enough.",
+      "Start the free Google Data Analytics fundamentals. 30 minutes a day is enough.",
       "Open a free Kaggle account and complete one guided spreadsheet exercise this week.",
       "Generate your learning roadmap here and mark your first step done.",
     ],
@@ -68,7 +68,7 @@ export function demoRoadmap(careerTitle: string): RoadmapOutput {
         skill: "Learning habits",
         estimated_weeks: 1,
         resources: [
-          { label: "freeCodeCamp — how to learn to code", url: "https://www.freecodecamp.org/news/how-to-learn-programming/" },
+          { label: "freeCodeCamp: how to learn to code", url: "https://www.freecodecamp.org/news/how-to-learn-programming/" },
         ],
       },
       {
@@ -78,13 +78,13 @@ export function demoRoadmap(careerTitle: string): RoadmapOutput {
         skill: "Career awareness",
         estimated_weeks: 1,
         resources: [
-          { label: "Coursera — free career courses", url: "https://www.coursera.org/courses?query=free" },
+          { label: "Coursera: free career courses", url: "https://www.coursera.org/courses?query=free" },
         ],
       },
       {
         title: "Master the fundamentals",
         description:
-          "Work through the beginner track for this path. Don't rush — the fundamentals carry every step after this one.",
+          "Work through the beginner track for this path. Don't rush. The fundamentals carry every step after this one.",
         skill: "Core fundamentals",
         estimated_weeks: 6,
         resources: [
@@ -105,17 +105,17 @@ export function demoRoadmap(careerTitle: string): RoadmapOutput {
       {
         title: "Build a real project",
         description:
-          "Pick a problem from your own community and solve it end to end. One finished project teaches more than five started ones — and it becomes your first portfolio piece.",
+          "Pick a problem from your own community and solve it end to end. One finished project teaches more than five started ones, and it becomes your first portfolio piece.",
         skill: "Applied practice",
         estimated_weeks: 5,
         resources: [
-          { label: "GitHub — host your work free", url: "https://github.com" },
+          { label: "GitHub: host your work free", url: "https://github.com" },
         ],
       },
       {
         title: "Get job-ready",
         description:
-          "Polish your portfolio, write a one-page CV focused on what you built, and start applying to junior and internship roles. Apply while you keep learning — don't wait to feel ready.",
+          "Polish your portfolio, write a one-page CV focused on what you built, and start applying to junior and internship roles. Apply while you keep learning. Don't wait to feel ready.",
         skill: "Job search",
         estimated_weeks: 4,
         resources: [
@@ -127,11 +127,11 @@ export function demoRoadmap(careerTitle: string): RoadmapOutput {
 }
 
 /** Sample advisor reply, streamed word by word so the chat UI behaves as it will live. */
-export const DEMO_ADVISOR_REPLY = `Quick note before anything else: I'm running in demo mode right now, so this is a sample reply — not a live AI answer to your message. Once a funded Anthropic API key is added, I'll respond to exactly what you asked.
+export const DEMO_ADVISOR_REPLY = `Quick note before anything else: I'm running in demo mode right now, so this is a sample reply, not a live AI answer to your message. Once a funded Anthropic API key is added, I'll respond to exactly what you asked.
 
 Here's the kind of coaching you'll get from me: I already know your career match and where you are on your roadmap, so you can ask things like "is my next step worth the time?" or "how do I explain this project in an interview?" and I'll answer for your situation, not in general.
 
-Try me again once the real key is in — I'll be here.`;
+Try me again once the real key is in. I'll be here.`;
 
 /** DEMO_ADVISOR_REPLY split into word-ish chunks for simulated streaming. */
 export function demoAdvisorChunks(): string[] {

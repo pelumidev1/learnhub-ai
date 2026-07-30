@@ -91,7 +91,7 @@ export function ResourceLibrary({
           Resource library
         </h1>
         <p className="mt-1 text-muted">
-          Free-first courses, docs, and projects — filtered to what you need.
+          Free-first courses, docs, and projects, filtered to what you need.
         </p>
       </div>
 

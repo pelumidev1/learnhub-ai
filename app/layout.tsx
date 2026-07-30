@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "LearnHub — Find the tech career built for you",
+    default: "LearnHub: Find the tech career built for you",
     template: "%s · LearnHub",
   },
   description:
