@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils/cn";
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { Reveal } from "@/components/marketing/landing/reveal";
 import { SplitText } from "@/components/marketing/landing/split-text";
@@ -56,17 +57,50 @@ export function HowItWorksSection() {
             indexable copy below it — and at md the natural column order already
             lands the steps left and the clip right, so no order utilities. */}
         <div className="mt-10 grid gap-8 md:mt-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12">
-          {/* The rail lives on the wrapper, not inside the <ol> — an ordered
-              list may only contain <li>, and these are genuinely sequential
-              steps, so the semantics are worth keeping intact. */}
-          <div className="relative">
-            <span aria-hidden className="absolute bottom-12 left-1 top-12 w-px bg-silver-2" />
+          {/* The rail is drawn per step rather than as one line down the
+              wrapper, so it can arrive with its card. A single wrapper rail
+              spans the whole stack, which on a phone left a hairline running
+              350px down into the empty space where the unrevealed steps sit.
+              Each segment bridges the 12px gap to the next card, so the joined
+              result is the same continuous line as before. */}
+          <div>
             <ol className="flex list-none flex-col gap-3 pl-9">
               {STEPS.map((step, i) => (
-                <li
+                /* Phone only: the steps arrive one at a time as you scroll.
+                   Plain intersection would not do it — all three cards fit on
+                   one screen at every size we support (754px of stack in an
+                   844px viewport), so they would all trigger together, which is
+                   the thing this is meant to stop. Pulling the trigger line up
+                   to 45% of the viewport instead means a card only reveals once
+                   it has been scrolled into the upper half, and the 255px card
+                   pitch becomes 255px of scroll between reveals.
+
+                   Left alone from md up, where the steps sit beside the clip as
+                   one block and staggering them would just look like lag. */
+                <Reveal
+                  as="li"
                   key={step.title}
+                  media="(max-width: 767.98px)"
+                  rootMargin="0px 0px -55% 0px"
                   className="relative rounded-2xl border border-silver bg-white p-6 shadow-soft"
                 >
+                  {/* Rail segment. -left-8 puts the 1px line on the dot's axis.
+                      The first segment starts 48px down and the last stops 48px
+                      short, which is what gave the original single rail its
+                      inset top and bottom; the middle ones run edge to edge.
+
+                      -bottom-3.5 (14px), not -3, to close the 12px flex gap: an
+                      absolutely positioned box is placed against the padding
+                      box, so each card's 1px border sits outside the segment at
+                      both ends and a plain -12px leaves a 2px seam. */}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "absolute -left-8 w-px bg-silver-2",
+                      i === 0 ? "top-12" : "top-0",
+                      i === STEPS.length - 1 ? "bottom-12" : "-bottom-3.5",
+                    )}
+                  />
                   <span
                     aria-hidden
                     className="absolute -left-9 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full border-2 border-blue bg-blue shadow-[0_0_10px_rgba(31,51,204,0.45)]"
@@ -83,7 +117,7 @@ export function HowItWorksSection() {
                     <span className="font-display text-2xl font-bold text-ink">{step.stat}</span>
                     <span className="ml-2 text-sm text-muted">{step.statLabel}</span>
                   </p>
-                </li>
+                </Reveal>
               ))}
             </ol>
           </div>
