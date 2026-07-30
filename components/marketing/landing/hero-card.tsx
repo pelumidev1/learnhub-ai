@@ -1,38 +1,52 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { hasFinePointer } from "./motion-budget";
 
 /**
  * The hero's floating "top match" card — Zerion-style: it sits on two offset
  * depth layers and tilts toward the cursor (rotateX/rotateY), eased with a rAF
  * lerp so the motion trails with weight rather than snapping. Desktop only;
  * respects reduced motion.
+ *
+ * "Desktop only" is enforced twice on purpose. The card is `hidden lg:block`, so
+ * on a phone it is display:none — but that hides the element, not the frame
+ * loop. Left unguarded the lerp ran forever on every phone, writing a transform
+ * to a box nobody was rendering. The pointer check is what actually keeps it off
+ * mobile; the offsetParent check covers a narrow desktop window, where there is
+ * a mouse but the card is still hidden.
  */
 export function HeroCard() {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!hasFinePointer()) return;
     const card = cardRef.current;
-    if (!card) return;
+    if (!card || card.offsetParent === null) return;
 
     let raf = 0;
     const cur = { x: 0, y: 0 };
     const tgt = { x: 0, y: 0 };
-    const onMove = (e: MouseEvent) => {
-      tgt.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      tgt.y = (e.clientY / window.innerHeight - 0.5) * 2;
-    };
     const tick = () => {
       cur.x += (tgt.x - cur.x) * 0.06;
       cur.y += (tgt.y - cur.y) * 0.06;
       card.style.transform =
         `rotateX(${(-cur.y * 7).toFixed(2)}deg) rotateY(${(cur.x * 11).toFixed(2)}deg) ` +
         `translate3d(${(cur.x * 10).toFixed(1)}px, ${(cur.y * 8).toFixed(1)}px, 0)`;
+      // Settled: park the loop until the pointer moves again.
+      if (Math.abs(tgt.x - cur.x) < 0.0005 && Math.abs(tgt.y - cur.y) < 0.0005) {
+        raf = 0;
+        return;
+      }
       raf = requestAnimationFrame(tick);
     };
+    const onMove = (e: MouseEvent) => {
+      tgt.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      tgt.y = (e.clientY / window.innerHeight - 0.5) * 2;
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
     window.addEventListener("mousemove", onMove);
-    raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);

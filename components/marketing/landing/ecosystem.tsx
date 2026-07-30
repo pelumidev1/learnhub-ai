@@ -39,8 +39,13 @@ export function EcosystemSection() {
   const stageRef = useRef<HTMLDivElement>(null);
   useCursorParallax(stageRef);
 
+  // overflow-x-clip: the glow inside the stage is a fixed 420px circle centred on
+  // a stage only ~350px wide on a phone, so it hung 15px past the viewport and
+  // gave the whole page a horizontal scroll. Clipping the section keeps the glow
+  // at full size on desktop, where there is room for it. `clip` rather than
+  // `hidden` so this does not become a scroll container.
   return (
-    <section className="bg-white py-20 sm:py-28">
+    <section className="overflow-x-clip bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <Reveal className="mx-auto max-w-2xl text-center">
           <Kicker center>One ecosystem</Kicker>

@@ -204,13 +204,36 @@
 }
 
 /* ------------------------------------------------- Statement section (outline)
-   A giant centred statement. Deliberately NOT background-clip:text — the
-   letter-masks carry transforms, and a transformed child breaks the parent's
-   clip, which paints the whole heading transparent (i.e. an invisible
-   section). Solid ink with one accent clause is legible everywhere and keeps
-   the word-rise animation. */
-.lh-statement-accent {
-  color: #1f33cc;
+   Media showing through the giant letterforms, matching the reference's
+   `section_outline`.
+
+   It is a KNOCKOUT, not background-clip:text. The reference stacks a looping
+   video, a 20% black scrim, then a white block in `mix-blend-mode: lighten`
+   holding black text: lighten keeps the white surround opaque and lets the
+   footage through the black glyphs.
+
+   Why that matters here: an earlier attempt used background-clip:text and turned
+   the section blank, because .lh-split-unit declares `transform` and a
+   transformed descendant breaks an ancestor's text clip. A knockout blends the
+   element's whole rendered result, so it is completely indifferent to
+   descendant transforms. The letter-rise animation and the moving media coexist
+   with no gating, which is why this approach replaced the clip.
+
+   Legibility does not depend on JS: <StatementMedia> always paints the still
+   photo behind, so the glyphs always have something to reveal. */
+.lh-outline {
+  position: relative;
+  /* Contain the blend, or it would reach up and composite against the page. */
+  isolation: isolate;
+}
+.lh-outline-knockout {
+  position: relative;
+  background-color: #ffffff;
+  mix-blend-mode: lighten;
+  /* Pure black, not --lh-ink: under `lighten` the glyph colour is the floor the
+     footage is compared against, so #0B0F1A would lift the darkest frames. Here
+     the colour is acting as a mask, not as text colour. */
+  color: #000000;
 }
 
 /* Even out ragged last lines so section sub-copy never drops a lone orphan

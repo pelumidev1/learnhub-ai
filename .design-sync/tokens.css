@@ -1,0 +1,46 @@
+/* LearnHub design tokens.
+ *
+ * The font variables are load-bearing, not decorative: tailwind.config.ts
+ * defines fontFamily.display / .sans / .mono as var(--font-geist-sans) and
+ * var(--font-geist-mono). In the Next app `next/font` sets those. Outside it
+ * nothing does, so without this file every `font-display` / `font-sans` /
+ * `font-mono` class falls through to system-ui and the brand typography is
+ * lost with no visible error. (They can't live in fonts.css — the converter
+ * parses that file for @font-face rules only and drops everything else.)
+ *
+ * The colours mirror tailwind.config.ts exactly, under the --lh- prefix from
+ * CLAUDE.md. Tailwind utilities (bg-blue, text-ink, border-silver) remain the
+ * primary way to use the palette; these are for the cases utilities can't
+ * reach — gradients, box-shadow colours, inline SVG fills. One vocabulary,
+ * two spellings; if a value changes in tailwind.config.ts, change it here too. */
+
+:root {
+  /* Typography — required. See note above. */
+  --font-geist-sans: "Geist";
+  --font-geist-mono: "Geist Mono";
+
+  /* Ink — near-black text */
+  --lh-ink: #0b0f1a;
+  --lh-ink-2: #1a2234;
+
+  /* Royal blue — the one accent. Used deliberately, not everywhere. */
+  --lh-blue: #1f33cc;
+  --lh-blue-600: #182ab0;
+  --lh-blue-500: #2a46f0;
+
+  /* Sky — bright accent / metallic highlight */
+  --lh-sky: #3b6ff0;
+  --lh-sky-2: #4c93f0;
+
+  /* Paper — light section grounds */
+  --lh-paper: #f6f7fb;
+  --lh-paper-2: #eff2f8;
+
+  /* Silver — borders and hairlines */
+  --lh-silver: #e7eaf1;
+  --lh-silver-2: #d8deea;
+
+  /* Muted — secondary and tertiary text */
+  --lh-muted: #5b6472;
+  --lh-muted-2: #8a93a6;
+}

@@ -12,3 +12,16 @@ next-env.d.ts
 
 # Firecrawl scrape artifacts (reference captures, not shipped)
 .firecrawl/
+
+# design-sync: staged converter scripts + regenerated build output
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+
+# The design tool's own video export of the walkthrough (8.6MB). Unusable and
+# unused: it renders the full composition with the heading and step titles baked
+# in, which the section forbids. The shipped clip is captured frame by frame from
+# the sources in docs/design-source/embed/ instead. See public/media/README.md.
+docs/design-source/*.mp4

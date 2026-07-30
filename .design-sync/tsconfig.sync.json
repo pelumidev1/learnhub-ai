@@ -1,0 +1,16 @@
+{
+  "_comment": [
+    "Path map used ONLY by the design-sync converter (cfg.tsconfig). It is not",
+    "part of the app's TypeScript build. Two jobs: resolve the repo's @/ alias",
+    "for esbuild, and redirect Next-only imports to the shims in ./shims so the",
+    "bundle stays free of the Next runtime. baseUrl is the repo root, one level",
+    "up from this file."
+  ],
+  "compilerOptions": {
+    "baseUrl": "../",
+    "paths": {
+      "@/*": ["./*"],
+      "next/link": ["./.design-sync/shims/next-link.tsx"]
+    }
+  }
+}

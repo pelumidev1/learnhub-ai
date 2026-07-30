@@ -1,0 +1,36 @@
+{
+  "projectId": "e8858d2d-3276-4a73-94cb-1c46a240f19e",
+  "shape": "package",
+  "pkg": "learnhub-ai",
+  "globalName": "LearnHub",
+
+  "srcDir": "components",
+  "tsconfig": ".design-sync/tsconfig.sync.json",
+
+  "cssEntry": ".design-sync/.cache/tailwind.css",
+  "extraFonts": [".design-sync/fonts.css"],
+  "readmeHeader": ".design-sync/conventions.md",
+  "guidelinesGlob": ["DESIGN.md"],
+  "docsDir": ".design-sync/docs",
+
+  "overrides": {
+    "HeroCard": { "cardMode": "single", "viewport": "1180x520" },
+    "OrbitSection": { "cardMode": "single", "viewport": "1180x900" },
+    "StepsTabs": { "cardMode": "single", "viewport": "1180x760", "primaryStory": "Default" }
+  },
+
+  "componentSrcMap": {
+    "Alert": "components/ui/alert.tsx",
+    "Button": "components/ui/button.tsx",
+    "Spinner": "components/ui/button.tsx",
+    "Input": "components/ui/input.tsx",
+    "Logo": "components/ui/logo.tsx",
+    "LogoMark": "components/ui/logo.tsx",
+
+    "Kicker": "components/marketing/landing/kicker.tsx",
+    "HeroCard": "components/marketing/landing/hero-card.tsx",
+    "OrbitSection": "components/marketing/landing/orbit.tsx",
+    "Faq": "components/marketing/landing/faq.tsx",
+    "StepsTabs": "components/marketing/landing/steps-tabs.tsx"
+  }
+}

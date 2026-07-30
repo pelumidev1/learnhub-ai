@@ -1,17 +1,40 @@
 # Brand image slots
 
-Drop these files here (exact names) and the pages pick them up automatically.
-Until a file exists, the UI shows a clean branded gradient in its place — never a
-broken image.
+Drop these files here using the **exact names below** and the pages pick them up
+automatically — no code change, no restart. Until a file exists, the slot shows a
+clean branded blue gradient instead, never a broken image.
 
-| File | Where it shows | Recommended |
+Every slot is `background-size: cover; background-position: center` — the image
+is **cropped from the centre** to fill the space. So the shape you supply matters
+more than the exact pixel size: give a wide photo to a wide slot, or the sides
+get cut off.
+
+## Still needed
+
+| File | Where it shows | Shape to aim for | Watch out for |
+|---|---|---|---|
+| `student-1.jpg` | "Makes the choice clear" — middle card of the three-card row | Roughly **square / slight portrait**, ~800×850 | A white "Your match" card sits over the **bottom third**. Keep the face in the upper two-thirds. |
+| `student-3.jpg` | "A win for your career" — wide banner in the dark section | **Wide landscape**, ~2000×740 | Nothing sits on top of this one. It's on a near-black background, so a brighter photo reads better. |
+
+There is no `student-2.jpg` slot any more — the wide photo panel it filled under
+"How it works" was replaced by a looping video. Those assets live in
+[`public/media/`](../media/README.md).
+
+## Already in place
+
+| File | Where it shows | Notes |
 |---|---|---|
-| `students-hero.jpg` | Landing hero background | Wide photo of students, ~2000×1200, landscape. Faces off to one side so the headline (left) stays readable. |
-| `student-1.jpg` | Orbit section floating card (Amara — Data Analyst) | Square-ish portrait, ~600×600 |
-| `student-2.jpg` | Orbit section floating card (Kwame — AI Product Builder) | Square-ish portrait, ~600×600 |
-| `student-3.jpg` | Orbit section floating card (Zainab — Product Designer) | Square-ish portrait, ~600×600 |
-| `signup.png` | Login / signup left panel | The "The best way to start your tech career" graphic, portrait/tall, ~1200×1600 |
-| `win.jpg` | "A win for your future" section (image left of the 4 cards, like Zerion's business photo) | Portrait-ish lifestyle photo of a learner, ~1000×1200 |
+| `students-hero.jpg` | Landing hero background **and** the "What your match looks like" panel | Wide, ~2000×1200. Faces off to one side — the headline sits on the left. Gets a saturation/contrast lift via `.lh-hero-photo`. |
+| `signup.png` | Login / signup left panel | Portrait, ~1200×1600. Currently a 1.8 MB PNG — worth re-exporting as JPG/WebP. |
 
-Tips: keep files light (compress JPG/WebP) — the audience is on metered data.
-JPG or WebP both work; keep the `.jpg` name or update the paths in code.
+## Before you export
+
+- **Keep files light.** Under ~300 KB each. The audience is on metered mobile
+  data — a heavy photo costs them real money. Export as JPG at ~75–80% quality,
+  or WebP.
+- **Names must match exactly**, including the `.jpg` extension. If you only have
+  a PNG, either convert it or tell Claude to update the path in
+  `app/(marketing)/page.tsx`.
+- **People, not stock clichés.** Real African students and young professionals
+  working on phones and laptops. Avoid the glossy handshake-and-headset look.
+- After dropping files in, just **refresh** http://localhost:3000 to see them.

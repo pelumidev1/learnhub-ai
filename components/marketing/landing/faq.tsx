@@ -9,7 +9,7 @@ const FAQS = [
   },
   {
     q: "How does the career match work?",
-    a: "You answer a short, proven assessment. LearnHub's AI reads your background, interests, and goals and matches you to the two tech careers that fit you best, with honest local pay and timelines.",
+    a: "You answer a short set of questions. LearnHub's AI reads your background, interests, and goals, then matches you to the two tech careers that fit you best, with honest local pay and timelines.",
   },
   {
     q: "Is the coach a real person?",
@@ -25,10 +25,17 @@ const FAQS = [
   },
 ];
 
+/**
+ * The accordion for the landing page's FAQ section, which sits on `bg-ink`.
+ * Every colour here is a dark-ground token for that reason — `text-ink` on ink
+ * renders the questions perfectly invisible, and `divide-silver` reads as a
+ * harsh white rule. If this is ever reused on a light background it needs a
+ * variant, not a re-theme.
+ */
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <div className="divide-y divide-silver">
+    <div className="divide-y divide-white/10">
       {FAQS.map((f, i) => {
         const isOpen = open === i;
         return (
@@ -39,8 +46,8 @@ export function Faq() {
               aria-expanded={isOpen}
               className="flex w-full items-center justify-between gap-4 py-5 text-left"
             >
-              <span className="font-display text-lg font-semibold text-ink">{f.q}</span>
-              <span className={`flex-none text-blue transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>
+              <span className="font-display text-lg font-semibold text-white">{f.q}</span>
+              <span className={`flex-none text-sky-2 transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
                   <path d="M12 5v14M5 12h14" />
                 </svg>
@@ -48,7 +55,7 @@ export function Faq() {
             </button>
             <div className={`grid transition-all duration-300 ${isOpen ? "grid-rows-[1fr] pb-5" : "grid-rows-[0fr]"}`}>
               <div className="overflow-hidden">
-                <p className="text-[15px] leading-relaxed text-muted">{f.a}</p>
+                <p className="text-[15px] leading-relaxed text-white/60">{f.a}</p>
               </div>
             </div>
           </div>
