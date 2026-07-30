@@ -6,9 +6,9 @@ export function PublicHeader() {
   return (
     <header className="sticky top-0 z-10 border-b border-silver bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
-        <Link href="/" aria-label="LearnHub home">
-          <Logo />
-        </Link>
+        {/* Logo renders its own next/link — wrapping it in another would
+            nest an <a> inside an <a>. */}
+        <Logo />
         <div className="flex items-center gap-4 text-sm font-semibold">
           <Link href="/login" className="text-ink transition hover:text-blue">
             Log in

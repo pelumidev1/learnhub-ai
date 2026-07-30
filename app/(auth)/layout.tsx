@@ -25,9 +25,9 @@ export default function AuthLayout({
       {/* Right form column */}
       <div className="flex min-h-svh flex-1 flex-col">
         <header className="flex items-center justify-between px-6 py-5 sm:px-10">
-          <Link href="/" aria-label="LearnHub home">
-            <Logo />
-          </Link>
+          {/* Logo renders its own next/link — wrapping it in another would
+              nest an <a> inside an <a>. */}
+          <Logo />
           <Link href="/" className="text-sm font-semibold text-muted transition hover:text-ink">
             ← Back to home
           </Link>
