@@ -5,8 +5,8 @@ so they can be regenerated.
 
 | File | Purpose | Actual |
 |---|---|---|
-| `how-it-works.mp4` | The looping clip beside the three steps. H.264, no audio track. | 760×760, 23 s, 24 fps, silent, **372 KB** |
-| `how-it-works.webp` | Still from 2 s. Doubles as the video `poster` **and** the reduced-motion replacement. | 760×760, **16.1 KB** |
+| `how-it-works.mp4` | The looping clip below the three steps. H.264, no audio track. | 1428×720, 23 s, 24 fps, silent, **323 KB** |
+| `how-it-works.webp` | Still from 2 s. Doubles as the video `poster` **and** the reduced-motion replacement. | 1428×720, **19.2 KB** |
 | `statement.mp4` | The moving layer behind the statement knockout, seen only through the letterforms. | 900×394, 16.3 s, 24 fps, silent, **253 KB** |
 
 ## statement.mp4
@@ -76,7 +76,15 @@ as a folder containing `LearnHub How It Works.dc.html` plus its `.jsx` files. It
 Playwright rather than using the design tool's video export, which times out on
 this page.
 
-Three things that script gets wrong, so don't run it unmodified:
+**Geometry comes from the composition, not from the page.** `steps-video.jsx`
+opens with `const W = 1428, H = 720` — capture at exactly that and the layout
+never resamples. The v1 clip was 760×760 because the composition was then a phone
+panel and the script was pinned to a `SIZE` constant; both changed together.
+Capture at `deviceScaleFactor: 2` and encode down 2:1.
+
+Four things the shipped script gets wrong, so don't run it unmodified. The copy
+in the animation folder has all four fixed — diff against it before re-exporting
+from a fresh download.
 
 1. **`file://` does not work.** The dc-runtime `fetch()`es the `.jsx` files and
    `fetch` rejects the `file:` scheme, so `pathToFileURL(SRC)` fails with
@@ -86,6 +94,8 @@ Three things that script gets wrong, so don't run it unmodified:
    cd "<animation folder>" && python3 -m http.server 8765 --bind 127.0.0.1
    # then page.goto('http://127.0.0.1:8765/' + encodeURIComponent('LearnHub How It Works.dc.html'))
    ```
+   Poll the port before `goto`. python takes a beat to bind and the navigation
+   otherwise races it to `ERR_CONNECTION_REFUSED`.
 2. **It burns the design tool's player bar into every frame.** The tool paints a
    play/scrub/timecode bar over the stage's bottom ~37px, marked
    `data-omelette-chrome` — the same marker the tweaks panel uses, i.e. editor UI
@@ -99,47 +109,50 @@ Three things that script gets wrong, so don't run it unmodified:
    of the clip on the live page. Check the bottom of a frame, not just the middle.
 
 3. **The video encodes never downscale.** It captures at `deviceScaleFactor: 2`,
-   so frames land at 1520×1522, and only the poster gets a `scale`. Left alone it
-   emits a 1520×1522 mp4 at ~1.08 MB — 4× the intended pixels. Comment out the
-   trailing `rmSync(TMP, …)` to keep `.frames`, then encode from those yourself:
+   so frames land at 2856×1440, and only the poster gets a `scale`. Left alone it
+   emits a 2856×1440 mp4 — 4× the intended pixels. Every encode needs
+   `-vf "crop=2856:1440:0:0,scale=1428:720"`. The `crop` is a guard, not a no-op:
+   the stage has rendered a stray odd pixel taller than asked before (760×761 in
+   v1), and an off-by-one turns the downscale into a resample. Anchored at `0,0`
+   so a stray row is dropped rather than split.
+
+4. **The poster is written as JPEG.** It should be WebP — see below.
+
+Run it from the animation folder, not from here, and copy the two outputs across:
 
 ```sh
-# from the animation folder, after capture leaves .frames/ in place
-ffmpeg -framerate 24 -i ".frames/f%04d.png" \
-  -vf "crop=1520:1520,scale=760:760" \
-  -c:v libx264 -crf 31 -preset slow -pix_fmt yuv420p -movflags +faststart -an \
-  how-it-works.mp4
-
-ffmpeg -i ".frames/f0048.png" -vf "crop=1520:1520,scale=760:760" /tmp/poster.png
-cwebp -q 82 /tmp/poster.png -o how-it-works.webp
+cd "<animation folder>"
+ln -sfn <somewhere>/node_modules node_modules   # ESM ignores NODE_PATH
+node embed/capture-how-it-works.mjs
+cp public/media/how-it-works.{mp4,webp} "<repo>/public/media/"
 ```
 
-`crop=1520:1520` trims the stray odd pixel (the stage renders 760×761) so the
-downscale is an exact 2:1 with no resampling distortion. Frame 48 is t=2 s at
-24 fps, where the assessment screen is settled.
-
-crf 31 by ladder: 30 → 409 KB (over), **31 → 372 KB**, 32 → 340 KB.
-**Raise crf before touching the framerate** — this clip has no fast motion, so the
-quantiser has far more headroom than frames per second.
+crf ladder, at 1428×720 from 552 frames: **30 → 323 KB**, comfortably inside the
+~400 KB budget on the first rung. **Raise crf before touching the framerate** —
+this clip has no fast motion, so the quantiser has far more headroom than frames
+per second do. Frame 48 is t=2 s, where the assessment screen is settled; that is
+the poster.
 
 ## Why there is no webm
 
-Measured twice, on both a cropped-video source and this native render. VP9 is not
-close here: at 760×760 from the same frames, crf 40 → 1378 KB and crf 44 →
+Measured twice, on both a cropped-video source and the v1 native render. VP9 is
+not close here: at 760×760 from the same frames, crf 40 → 1378 KB and crf 44 →
 1020 KB, against 387 KB for the H.264. Pushing VP9 far enough to compete visibly
 destroys the match cards' borders and shadows.
 
 The clip is flat UI with sharp text and subtle shadows, which x264 handles well.
 Every browser this audience uses plays H.264, so a second source would be a file
-to maintain plus the risk of Chrome and Firefox picking the worse one. The capture
-script emits a `.webm` — discard it.
+to maintain plus the risk of Chrome and Firefox picking the worse one. The stock
+capture script emits a `.webm`; the fixed copy drops that encode.
 
 ## Content rules
 
-- **No copy baked into the video.** Every word of the three steps is real text in
-  the DOM. The animation's `panelOnly` tweak (saved as `true` in the `.dc.html`)
-  is what keeps its own step rail out of frame — if a future export shows the
-  heading or the step list, that toggle got switched off and the export is unusable.
+- **The clip is the whole explanation.** The section around it is a heading and
+  nothing else — the three step cards that used to sit above it were repeating
+  the app's own numbered "Your path" sidebar. So the words inside the clip now
+  matter: they are the only place the three steps are named. Re-export before
+  changing any of them, and never let the composition drift from what the
+  product actually does.
 - **Silent.** The element is `muted` (autoplay requires it) and has no controls,
   so an audio track is dead weight.
 - Delivery is gated by `components/marketing/landing/use-gated-video.ts`, which
@@ -147,10 +160,17 @@ script emits a `.webm` — discard it.
   the source only once the element is half visible. Nobody who bounces before
   scrolling pays for it, and three groups never pay at all — reduced motion, data
   saver, and 2g-class connections. Measured on a 390px phone: a full scroll of
-  the page fetches 616 KB of video normally and 0 KB in any of those three.
-- **Neither clip is oversized for a phone, and shrinking them for mobile would
-  make mobile worse.** Phones are the high-resolution case here, not the low one:
-  the "how it works" panel is 350 CSS px on a 390 px phone, which is 700 device
-  pixels at 2x and 1050 at 3x, against the 505 px the desktop layout paints it
-  at. Same for the statement clip. If you are looking to save mobile bytes, the
-  gate above is the lever, not the resolution.
+  the page fetches 576 KB of video normally and 0 KB in any of those three.
+- **Neither clip is oversized, and shrinking them for mobile would not help.**
+  Desktop paints the how-it-works clip at 1112 CSS px, so 1428 leaves almost no
+  headroom there; the phone paints it at 350 CSS px, which is 1050 device pixels
+  at 3x. Both ends land near native. The statement clip is the one where phones
+  are outright the high-resolution case. If you are looking to save mobile bytes,
+  the gate above is the lever, not the resolution.
+- **The v2 clip is a desktop app view, and a phone cannot read its text.** At
+  350 CSS px the app's body copy renders around 4.5 px. What survives at that
+  size is the shape of the product — sidebar, progress bar, cards filling in,
+  checkmarks landing — not a word of it. The clip's `aria-label` therefore
+  describes what it does rather than what it says. Since the section has no step
+  copy of its own any more, a phone gets the shape of the product and the heading
+  and nothing else. Fixing that needs a phone-shaped crop, not a smaller file.

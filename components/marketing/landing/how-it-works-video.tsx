@@ -3,9 +3,12 @@
 import { useRef } from "react";
 import { useGatedVideo } from "./use-gated-video";
 
+const LABEL =
+  "The LearnHub app moving through the assessment, your career match, and your learning roadmap.";
+
 /**
- * The looping "How it works" clip — the exported 760×760 "Phone only (square)"
- * frame from the motion source.
+ * The looping "How it works" clip — the desktop app view, exported at the
+ * composition's own 1428×720 (1.983:1).
  *
  * Delivery is gated by useGatedVideo: the source attaches only once the panel is
  * half visible, and never at all under reduced motion or on a data-saver or
@@ -13,42 +16,45 @@ import { useGatedVideo } from "./use-gated-video";
  * on screen, which is also what a refused autoplay leaves, so the fallback
  * picture is the same one either way.
  *
- * 760×760 is not oversized for a phone, despite being larger than the 505 px the
- * desktop layout paints it at: this panel is 350 CSS px on a 390 px phone, which
- * is 700 device pixels at 2x and 1050 at 3x. Phones are the high-resolution case
- * here, so shrinking this file for mobile would only make mobile worse.
+ * The wrapper reserves the box with `aspect-[1428/720]` and both children fill
+ * it absolutely, so the reserved height is identical whichever one renders and
+ * nothing moves when the poster or the clip lands. Width/height attributes are
+ * still set: they are what a no-CSS render (and any tool reading the markup)
+ * uses to size it.
  *
- * The clip carries its own rounded bezel, so it is sized by width/height
- * attributes rather than a CSS aspect ratio — that reserves the right box
- * before any stylesheet or media lands, which is what keeps the section from
- * shifting on a slow connection. 760×784 is the phone panel's own aspect, not
- * a square: it is cropped from the 1280×720 composition, where the panel is
- * 620×640.
+ * This component owns the reserved box and nothing else — the frame around it
+ * (matte, hairline, radius, shadow) belongs to the section, because it is a
+ * decision about presentation rather than about the media.
  *
- * mp4 only, deliberately. A VP9 webm of this clip is either larger than the
- * H.264 at matched quality (2-pass crf 48 → 428 KB vs 401 KB) or visibly worse
- * where it is smaller — crf 52 smears the match cards' borders and shadows
- * away. Every browser this audience uses plays H.264, so a second source would
- * cost a file to maintain and risk Chrome and Firefox picking the worse one.
+ * 1428 px is not oversized at either end. Desktop paints it at 1112 CSS px, so
+ * there is almost no headroom there; a 390 px phone paints it at 350, which is
+ * 1050 device pixels at 3x. Shrinking the file to save mobile bytes would cost
+ * desktop sharpness and save a phone nothing — the delivery gate above is the
+ * lever, not the resolution.
+ *
+ * mp4 only, deliberately. VP9 measured 2.7–3.7× larger than H.264 on these
+ * frames at matched quality, and every browser this audience uses plays H.264,
+ * so a second source would cost a file to maintain and risk Chrome and Firefox
+ * picking the worse one.
  */
 export function HowItWorksVideo() {
   const ref = useRef<HTMLVideoElement>(null);
   useGatedVideo(ref);
 
   return (
-    <>
+    <div className="relative aspect-[1428/720] w-full">
       <video
         ref={ref}
-        className="block h-auto w-full motion-reduce:hidden"
-        width={760}
-        height={760}
+        className="absolute inset-0 block h-full w-full motion-reduce:hidden"
+        width={1428}
+        height={720}
         poster="/media/how-it-works.webp"
         preload="none"
         autoPlay
         loop
         muted
         playsInline
-        aria-label="A phone showing the LearnHub assessment, career match, and learning roadmap."
+        aria-label={LABEL}
       >
         {/* src is attached by the observer above — see the note on metered data. */}
         <source data-src="/media/how-it-works.mp4" type="video/mp4" />
@@ -57,11 +63,11 @@ export function HowItWorksVideo() {
           holds with JS disabled. */}
       <img
         src="/media/how-it-works.webp"
-        alt="A phone showing the LearnHub assessment, career match, and learning roadmap."
-        width={760}
-        height={760}
-        className="hidden h-auto w-full motion-reduce:block"
+        alt={LABEL}
+        width={1428}
+        height={720}
+        className="absolute inset-0 hidden h-full w-full motion-reduce:block"
       />
-    </>
+    </div>
   );
 }

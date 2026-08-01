@@ -27,6 +27,22 @@ export function Spinner({ className }: { className?: string }) {
   );
 }
 
+/**
+ * The button's own classes, for the cases that must render as something other
+ * than a `<button>` — a `Link` that navigates, most often. Use this rather than
+ * copying the class list, so there is still one definition of what a primary
+ * button looks like.
+ */
+export function buttonClasses(variant: Variant = "primary", className?: string) {
+  return cn(
+    "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[0.98rem] font-bold transition",
+    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky",
+    "disabled:pointer-events-none disabled:opacity-60",
+    styles[variant],
+    className,
+  );
+}
+
 export function Button({
   variant = "primary",
   loading,
@@ -38,13 +54,7 @@ export function Button({
   return (
     <button
       disabled={disabled || loading}
-      className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[0.98rem] font-bold transition",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky",
-        "disabled:pointer-events-none disabled:opacity-60",
-        styles[variant],
-        className,
-      )}
+      className={buttonClasses(variant, className)}
       {...props}
     >
       {loading && <Spinner />}

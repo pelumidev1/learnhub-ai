@@ -99,11 +99,15 @@
 }
 
 /* Keyboard focus: a visible ring on every interactive element, on light and
-   dark surfaces alike (blue-500 reads on both). */
+   dark surfaces alike (blue-500 reads on both).
+
+   No `border-radius` here. It used to set 6px, which does not round the ring —
+   an outline already follows the element's own radius — it rounds the *element*,
+   so every pill button and every large-radius card snapped to 6px corners for
+   as long as it held focus. */
 .lh-landing :is(a, button):focus-visible {
   outline: 2px solid #2a46f0;
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
 /* ---------------------------------------------------------------- Scroll reveals
@@ -242,6 +246,23 @@
   text-wrap: balance;
 }
 
+/* "Three steps to a clear path" on one line at every width.
+
+   Measured in Geist bold uppercase at tracking-tight, the string is 15.1× the
+   font size wide. The container gives `100vw - 40px` up to its 1152px cap, so
+   the size that exactly fills it is `6.62vw - 2.65px`; 6.3vw leaves about 5%
+   for a desktop scrollbar, which `vw` units include but the container does not.
+   It caps at 3.2rem — the same size the other section headings reach — from
+   852px up, where 1152px of container holds 773px of text with room over.
+
+   The floor is the cost of the request: 17.7px at 320px wide, well under the
+   30px these headings take on a phone otherwise. Any shorter heading here can
+   drop this class and go back to the shared `text-3xl sm:text-[3.2rem]`. */
+.lh-oneline-heading {
+  font-size: min(3.2rem, calc(6.3vw - 2.5px));
+  white-space: nowrap;
+}
+
 /* Numbered feature row: a hairline above each item, the active one inked in. */
 .lh-rule-item {
   border-top: 1px solid #e7eaf1;
@@ -262,5 +283,76 @@
   .lh-split-unit {
     transition: none !important;
     transform: none !important;
+  }
+}
+
+/* --------------------------------------------- Career-match scroll section
+   A 16:9 stage pinned while the page scrolls, advancing through four beats.
+   Everything inside is sized in cqw/cqh against the stage, so the whole
+   composition scales as one unit and needs no media queries of its own.
+
+   The stage only ever renders on a fine pointer at >=900px. Phones get four
+   stacked cards instead (see CareerMatchSection): our users are on mid-tier
+   Android and a pinned scroll rig is not worth their battery. */
+.lh-cm-stage {
+  position: relative;
+  width: min(100%, 177.7vh);
+  aspect-ratio: 16 / 9;
+  container-type: size;
+}
+
+/* Two blue washes behind the composition. Purely decorative. */
+.lh-cm-glow {
+  background-image:
+    radial-gradient(60cqw 70cqh at 68% 42%, rgba(42, 70, 240, 0.28), transparent 62%),
+    radial-gradient(70cqw 60cqh at 18% 82%, rgba(31, 51, 204, 0.14), transparent 66%);
+}
+
+.lh-cm-ring {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+.lh-cm-ring-spin {
+  animation: lh-cm-spin 48s linear infinite;
+}
+@keyframes lh-cm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Caret on the text being typed in beat 1. */
+.lh-cm-caret {
+  animation: lh-cm-blink 1s steps(1, end) infinite;
+}
+@keyframes lh-cm-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Typing indicator in beat 3: three dots on a 1.1s loop, 0.15s apart. */
+.lh-cm-dot {
+  animation: lh-cm-bounce 1.1s ease-in-out infinite;
+}
+@keyframes lh-cm-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  30% {
+    transform: translateY(-0.55cqh);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lh-cm-ring-spin,
+  .lh-cm-caret,
+  .lh-cm-dot {
+    animation: none !important;
   }
 }

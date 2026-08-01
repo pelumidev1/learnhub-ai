@@ -25,9 +25,9 @@ one-for-one:
 | 1 | `section_hero` | Hero — full-bleed photo, split-letter headline |
 | 2 | `section_outline` | Statement — giant centred line, media through the letterforms |
 | 3 | `section_decisions` | "Makes the choice clear" — 3-card row (stats / photo / quote) |
-| 4 | `section_finance` | Steps — lead paragraph, numbered 3-col on hairlines, photo panel with floating cards |
-| 5 | `section_business` | What you get — dark, wide photo, 4-card row |
-| 6 | `section_funding` | Match preview — full-bleed photo, one floating card |
+| 4 | `section_finance` | How it works — heading, product clip full width below |
+| 5 | `section_business` | What you get — scroll-driven pinned stage, four beats (was a 4-card row) |
+| 6 | `section_funding` | Life after the match — dark panel, three outcome cards |
 | 7 | `section_clickhouse` | Ecosystem — cursor-parallax nodes |
 | 8 | `section_fair-pricing` | Pricing — "Free while in beta", 2 cards |
 | 9 | `section_expert` | Beta invitation — marquee of the careers catalog |
@@ -88,6 +88,101 @@ off or under `prefers-reduced-motion`.
   claimed that isn't true. Replace it with genuine learner stories once the
   beta produces them (and keep `CAREERS` in `page.tsx` in step with
   `supabase/seed.sql`).
+
+## "How it works": heading, then the clip
+
+The clip was rebuilt in July 2026 as a 1428×720 desktop app view (it had been a
+760×760 phone panel), and the section reduced to a heading above it:
+
+- **The md two-column split is gone.** At 1.983:1 the clip cannot live in a
+  narrow column without collapsing to a strip. It runs the section's full width
+  at every breakpoint.
+- **The three step cards are gone with it.** The rail-and-dot list said the same
+  thing as the app's own numbered "Your path" sidebar, one above the other. The
+  clip is the explanation now. The cost is real and worth knowing: the section's
+  only indexable text is the heading, so anything that has to be *read* — a
+  claim, a number, a promise — cannot live here any more. Put it in a section
+  that has words.
+- **The clip sits in a frame** — a `paper-2` matte, 12px, inside a 28px
+  hairlined panel with `shadow-soft`, with its own hairline around the clip.
+  It shipped unframed first, on the reasoning that the app view is opaque and
+  carries its own chrome, so an outer rule would double-rule against the top
+  bar's hairline. That was wrong in practice: the clip's outer edges are white,
+  so against `bg-white` they simply vanished and the app's top bar read as the
+  section's own rule. Pelumi asked for it to look like an explainer video in a
+  placeholder, which is also what makes it legible.
+
+  Two details are load-bearing. The matte is `paper-2`, not `paper`, because the
+  app's sidebar is itself pale grey and against `paper` the clip's left edge
+  disappeared into the matte — only the right half of the frame read. And the
+  radii are concentric: 28px outer minus the 12px matte is the 16px inner, so
+  the corners stay parallel.
+- **The box is reserved with `aspect-[1428/720]` on the wrapper**, with the video
+  and the reduced-motion still both filling it absolutely. Either child reserves
+  the identical height, so nothing moves whichever one renders.
+- **A phone cannot read the clip's text.** At 390px it paints 350 CSS px wide,
+  so the app's body copy is about 4.5px. What survives is the shape of the
+  product moving, not a word of it. That is a property of a desktop view at
+  phone width, not of the encode.
+
+## "Life after the match"
+
+Built to `design_handoff_match_page/README.md` (2026-08-01), replacing the photo
+card that used to explain what a match *is* — a question the two sections above
+it have already answered by then.
+
+- **The spec is written against `--lh-*` custom properties that this app does not
+  have.** Our palette lives in `tailwind.config.ts`, so every token maps to its
+  Tailwind equivalent: `ink`, `blue-500` (#2A46F0), `sky-2`. The white alphas
+  stay literals — they are compositing values, not palette entries.
+- **`<Reveal>`, not the spec's 240ms/16px reveal.** The spec itself says to
+  prefer the app's own utility, and every other block on this page rises 32px
+  over 0.8s; a single section on different timing reads as a glitch. Reveal
+  already meets the spec's hard requirements (never hides what is at or above
+  the fold, applies the hidden state from JS only, skips itself under reduced
+  motion). Only `rootMargin` is taken from the spec.
+- **The CTA is a `Link` carrying `buttonClasses()`, not `<Button>`.** Same
+  reasoning as the finale CTA below: `<Button>` is a `<button>` and cannot
+  navigate. `buttonClasses()` was added to `components/ui/button.tsx` so the two
+  render from one definition rather than a copied class list. Unmodified it
+  lands at exactly 154×48, which is what the spec asked for.
+- **The card `href`s are the closest real destinations, not final ones.** `#how`
+  and `/careers` are honest fits; `#what` under "Your proof — projects, not
+  certificates" is the weakest, because nothing on the marketing site is about
+  portfolio projects yet. Repoint it when something is.
+
+## "What you get": the scroll-driven stage
+
+Built to `docs/career-match-section-brief.md`, which is the spec as handed over.
+Three places the build departs from it, all recorded because the brief will
+outlive the memory of why:
+
+- **`layer()` fade windows.** The brief overlaps them (in from `a-0.015`, out to
+  `b+0.01`) and eases both with ease-out. That fails the brief's own acceptance
+  test: measured at p=0.27, two large white uppercase headlines sat over each
+  other at 12% and 27% opacity, which reads as double-printing, not a dissolve.
+  Abutting the windows fixed the ghosting but left one frame where both were
+  zero and the phone was empty, breaking a second acceptance line. The fade-out
+  now eases *in*, so a departing beat holds until roughly 0.005 before the
+  boundary. Measured after: second-caption opacity 0.000 at every p, and the
+  hand-off dip spans 5.6vh of scroll.
+- **Offsets are px, not cqh.** The brief gives `dist` values of 26, 20 and 190
+  without units. As cqh they are 210px and 160px on a 1440-wide stage, which
+  throws a departing caption a third of the stage away from the arriving one.
+- **The last phone screen uses `it()`, and the phone column fades as one unit.**
+  Two bugs with the same shape, both found on screen rather than in the maths.
+  `layer()` assumes every beat hands over to a successor, so it empties its
+  element at the beat boundary; the certificate screen has no successor, and it
+  went blank at .90 while the phone stayed lit until .925 — about 1000px of
+  scroll showing a white slab with the certificate card floating on nothing.
+  `it()` fades in and holds, and the phone's own exit takes it. Separately, the
+  exit fade used to sit on the phone and on the card independently, which made
+  each translucent against the other and let the phone's checklist read straight
+  through the certificate for the whole departure; it now sits on the column
+  that holds both, so they leave as one composited layer.
+- **The finale CTA is a `Link`, not `Button`.** `Button` is a `<button>` with no
+  href; this CTA navigates to /signup. It keeps the primary button's styling and
+  stays in the tab order, which is what the brief actually asked for.
 
 ## Mobile budget
 

@@ -5,8 +5,9 @@ import { LandingNav } from "@/components/marketing/landing/landing-nav";
 import { EcosystemSection } from "@/components/marketing/landing/ecosystem";
 import { Faq } from "@/components/marketing/landing/faq";
 import { Reveal } from "@/components/marketing/landing/reveal";
-import { FeatureMock, type FeatureMockKind } from "@/components/marketing/landing/feature-mock";
 import { HowItWorksSection } from "@/components/marketing/landing/how-it-works-section";
+import { CareerMatchSection } from "@/components/marketing/landing/career-match";
+import { LifeAfterMatch } from "@/components/marketing/landing/life-after-match";
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
@@ -222,98 +223,16 @@ export default function LandingPage() {
       <HowItWorksSection />
 
       {/* ========================================================= WHAT YOU GET
-          "Ink shelf": a dark band lit by a blue wash, with four cards whose
-          product screens hang past the card edge and get clipped. */}
-      <section
-        id="what"
-        className="bg-ink py-28 sm:py-40"
-        style={{
-          backgroundImage:
-            "radial-gradient(900px 340px at 46% 0%, rgba(42,70,240,.28), transparent 68%)",
-        }}
-      >
-        <div className="mx-auto max-w-6xl px-5">
-          <Reveal className="text-center">
-            <SplitText
-              as="h2"
-              text="A win for your career"
-              className="mx-auto max-w-3xl font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-white sm:text-[3.2rem]"
-            />
-            <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-white/65 sm:text-lg">
-              Everything you need to go from unsure to working in tech, and nothing you
-              don&rsquo;t.
-            </p>
-          </Reveal>
+          Scroll-driven: a pinned 16:9 stage advancing through the four beats,
+          ending on the CTA. Phones and coarse pointers get the same four beats
+          as stacked cards instead — see CareerMatchSection. */}
+      <CareerMatchSection />
 
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { k: "Your fit", t: "AI career match", d: "Two honest, well-reasoned career fits instead of a long list to triage.", mock: "match" },
-              { k: "Your plan", t: "Free learning roadmap", d: "Step-by-step, free-first resources that work on a phone and low data.", mock: "roadmap" },
-              { k: "Any time", t: "24/7 AI coach", d: "Ask anything, any time. It knows your match and your next step.", mock: "coach" },
-              { k: "Proof", t: "Certificate", d: "Finish your roadmap and earn a shareable, verifiable certificate.", mock: "certificate" },
-            ].map((f, i) => (
-              <Reveal key={f.t} delay={i * 80}>
-                {/* overflow-hidden + the mock's negative bottom margin is what
-                    crops each product screen at the card edge. */}
-                <div className="flex h-full flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(180deg,#151C2E_0%,#0D121F_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_24px_50px_rgba(0,0,0,.45)] transition duration-200 hover:-translate-y-1 hover:border-sky-2/50">
-                  <div className="flex flex-1 flex-col gap-2.5 px-5 pt-[22px]">
-                    <Kicker reverse>{f.k}</Kicker>
-                    <h3 className="font-display text-[19px] font-bold uppercase leading-[1.1] tracking-[-0.02em] text-white">
-                      {f.t}
-                    </h3>
-                    <p className="min-h-[56px] text-[12.5px] leading-[1.5] text-white/60">{f.d}</p>
-                  </div>
-                  <div className="-mb-[34px] ml-5 mt-[18px]">
-                    <FeatureMock kind={f.mock as FeatureMockKind} />
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ======================================================== MATCH PREVIEW
-          Full-bleed photography with a single product card floating over it. */}
-      <section className="bg-white px-5 py-6">
-        <div
-          className="lh-photo relative mx-auto flex max-w-[1400px] items-center justify-center overflow-hidden rounded-3xl px-5 py-16 sm:py-24"
-          style={{ "--photo": "url(/brand/students-hero.jpg)" } as React.CSSProperties}
-        >
-          <Reveal>
-            <div className="w-full max-w-md rounded-2xl bg-white p-7 shadow-soft">
-              <h3 className="font-display text-lg font-bold uppercase tracking-tight text-ink">
-                What your match looks like
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
-                Every match comes with why it fits you, what the work is really like, local pay, and
-                how long it honestly takes.
-              </p>
-              <Link
-                href="/signup"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-paper px-5 py-2.5 text-sm font-bold text-ink transition hover:bg-silver"
-              >
-                Start free
-              </Link>
-
-              <div className="mt-8 border-t border-silver pt-6">
-                <p className="text-sm text-muted">Typical starting pay</p>
-                <div className="mt-1 font-display text-3xl font-bold tracking-tight text-ink">
-                  ₦250,000
-                </div>
-                <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-paper">
-                  <div className="h-full w-3/5 rounded-full bg-blue" />
-                </div>
-                <p className="mt-3 text-sm text-muted">Mid-level range</p>
-                <p className="text-sm font-semibold text-ink">₦600,000 to ₦1,200,000</p>
-                <p className="mt-4 text-[11px] text-muted-2">
-                  Ranges vary by city, employer, and whether you work remote.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* ==================================================== LIFE AFTER MATCH
+          Replaced the old "What your match looks like" photo card, which
+          explained what a match is — a question the two sections above it have
+          already answered by this point. This one answers what follows one. */}
+      <LifeAfterMatch />
 
       {/* ============================================================ ECOSYSTEM
           The cursor-parallax section. */}
