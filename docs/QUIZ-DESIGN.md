@@ -1,0 +1,149 @@
+# Step quizzes — design for review
+
+**Status:** proposal, nothing built. Written 2026-08-02 from `master-any-skill.skill`.
+**Decision needed from Pelumi** on the five points in "Your calls" before I write code.
+
+## What it is, in one line
+
+A student can't tick a roadmap step as done until they answer five questions about it and score 80.
+
+## Why bother
+
+Right now your certificate certifies that somebody clicked six checkboxes. Nobody has to know anything to earn one. That makes it worthless to the employer it's meant to persuade, which is the whole point of issuing it.
+
+Add a pass mark and the same certificate means "this person was tested on every step and passed." That is the entire argument for this feature. Everything below is in service of it.
+
+## What the student sees
+
+```
+YOUR PATH TO DATA ANALYST
+
+  1  Excel and spreadsheets      ✓ done · scored 90
+  2  SQL fundamentals            ✓ done · scored 80
+  3  Python for data             → 5 questions · need 80 to pass
+     ┌────────────────────────────────────────────┐
+     │ 2 questions carried over from Step 2       │
+     │ (you missed these — they come back)        │
+     └────────────────────────────────────────────┘
+  4  Building dashboards         🔒 finish Step 3 first
+  5  Portfolio project           🔒
+  6  Job applications            🔒
+
+  Certificate: 2 of 6 steps verified
+```
+
+Fail (under 80)? They see which questions they got wrong, and the exact resource from that step to go re-read — not "review everything." Then they retry. No limit on retries; the point is learning, not gatekeeping.
+
+Miss a question anywhere? It comes back in the next step's quiz, and again three steps later. Get it right twice in a row and it leaves the pool. That's the spaced repetition from the skill, adapted from days to steps.
+
+## What it costs you
+
+This is the part that decides whether it's viable, so here it is first.
+
+| | Today | With quizzes |
+|---|---|---|
+| Recommendation (Opus) | $0.055 | $0.055 |
+| Roadmap (Opus) | $0.061 | $0.061 |
+| **Quiz generation (Haiku)** | — | **$0.015** |
+| **Per student, one time** | **$0.116** | **$0.131** |
+
+About **13% more per student**, paid once when the roadmap is created, never again.
+
+Three decisions get it that low:
+
+1. **Questions are generated once per step**, when the roadmap is built — not per day, not per attempt. A student who retries a quiz twenty times costs nothing extra.
+2. **Haiku writes them, not Opus.** Writing five multiple-choice questions about a topic is a much easier job than designing a career path. Opus for the same work would be roughly four times the price for no gain.
+3. **Grading is code, not AI.** Multiple choice with a known answer key. Zero AI cost to mark anything, and it works instantly on a bad connection.
+
+The version in the skill file — a fresh quiz generated every day per student — would have cost an AI call per student per day. On a free product that means your bill grows with engagement, which punishes you for succeeding. That's the main thing I changed.
+
+## The security detail that matters most
+
+**The answer key must never reach the browser.**
+
+If the page ships the correct answers so it can grade them, any student can open devtools, read the answers, and pass every quiz in the product in about four minutes. Then the certificate is worthless again and you've built the feature for nothing.
+
+So:
+
+- The questions table stores the answer key.
+- The page sends the student **only the question text and the four options**, stripped server-side.
+- Grading happens in a Server Action, on the server, against the stored key.
+- The student gets back a score and which questions were wrong — after submitting, never before.
+
+I'll write a test that fails if the answer key ever appears in what gets sent to the browser. This is the kind of thing that breaks silently in a refactor six months from now.
+
+## Database
+
+Two new tables. Both RLS-protected to the owning student, same as every other user table.
+
+```sql
+-- One quiz per roadmap step. Questions live as JSON because they are always
+-- read as a set and never queried individually; a row-per-question table would
+-- be 35 rows per student for no gain. Zod validates before insert, so nothing
+-- unvalidated from the model is ever stored.
+create table public.step_quizzes (
+  id         uuid primary key default gen_random_uuid(),
+  step_id    uuid not null unique references public.roadmap_steps(id) on delete cascade,
+  user_id    uuid not null references public.profiles(id) on delete cascade,
+  questions  jsonb not null,   -- [{ id, prompt, options[4], correct_index, explanation }]
+  created_at timestamptz not null default now()
+);
+
+-- Every attempt, kept. This is the audit trail proving the pass gate was
+-- enforced — without it, "verified" on a certificate is just a claim.
+create table public.quiz_attempts (
+  id         uuid primary key default gen_random_uuid(),
+  quiz_id    uuid not null references public.step_quizzes(id) on delete cascade,
+  step_id    uuid not null references public.roadmap_steps(id) on delete cascade,
+  user_id    uuid not null references public.profiles(id) on delete cascade,
+  score      int  not null check (score between 0 and 100),
+  passed     boolean not null,
+  answers    jsonb not null,
+  missed_ids text[] not null default '{}',   -- feeds the spaced-repetition pool
+  created_at timestamptz not null default now()
+);
+```
+
+No third table for the missed-question pool — it's derivable from `missed_ids` on recent attempts, and a table that can drift out of sync with its own source is a bug waiting to happen.
+
+## Where it plugs into existing code
+
+Small footprint. Four touch points:
+
+| File | Change |
+|---|---|
+| `lib/ai/roadmap.ts` | After the roadmap validates, one Haiku call generates a quiz per step. |
+| `lib/ai/quiz.ts` *(new)* | Prompt, Zod schema, generation. Mirrors how `roadmap.ts` works. |
+| `app/(app)/roadmap/actions.ts` → `setStepStatus` | Refuse to mark a step complete unless a passing attempt exists. **This one line is the whole gate.** |
+| `app/(app)/roadmap/[id]/page.tsx` | Render the quiz; a small client component for answering. |
+
+`awardCompletion` and the certificate logic need **no changes at all**. It already issues a certificate when every step is complete — and once steps can only be completed by passing, that certificate means something automatically.
+
+## Your calls
+
+**1. Existing roadmaps have no quizzes.** Six accounts, some with roadmaps already. Options: generate quizzes for them retroactively (costs $0.015 each, so under 10 cents total), or let old roadmaps stay ungated. I'd generate them — a product where some students are tested and some aren't makes the certificate meaningless again.
+
+**2. Certificates already issued.** Same question. I'd let them stand and note the date the gate came in. Revoking someone's certificate is a bad first impression for the sake of tidiness.
+
+**3. Retries.** I'm proposing unlimited, with the wrong answers and the relevant resource shown after each attempt. The alternative — a cooldown — punishes the exact students you're building for, the ones squeezing study into a lunch break.
+
+**4. What happens when quiz generation fails.** The roadmap is already paid for and valid at that point. I'd save the roadmap, skip the gate for steps with no quiz, and retry generation in the background. Never lose a paid-for roadmap over a failed follow-up call.
+
+**5. Weekly practical assessment.** The skill also has "submit a real deliverable, graded against a 3-criterion rubric." I left it out — it needs file uploads and AI grading, both of which cost real money per submission. It's the strongest signal for a certificate though. Later, or never?
+
+## What I'd build, in order
+
+1. Migration + RLS + types — half a day
+2. `lib/ai/quiz.ts`, generation folded into roadmap creation — half a day
+3. The gate in `setStepStatus`, plus the answer-key leak test — few hours
+4. Quiz UI on the roadmap page, phone-first — a day
+5. Backfill for existing roadmaps — an hour
+
+Roughly three days. Nothing here touches the landing page or the admin page.
+
+## What I deliberately did not take from the skill
+
+- **The daily cadence.** It assumes 60–90 minutes every day. Your steps are measured in weeks and your students are on intermittent connections. A loop that punishes a missed day fits a motivated laptop learner, not the person in your PRD.
+- **The monetization thread.** The skill coaches toward "$2K/mo freelancing." Your PRD puts monetization in Phase 3 and v1 is free. Different promise.
+- **The intake questions.** Your assessment already does this, better.
+- **Resource liveness checking.** The skill fetches every URL before including it. Worth doing, but it belongs to roadmap generation, not quizzes. Separate job.
