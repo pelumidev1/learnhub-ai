@@ -4,6 +4,7 @@ import Link from "next/link";
 import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { CareerMatchCard } from "@/components/results/career-match-card";
 import { GeneratePanel } from "@/components/results/generate-panel";
+import { FeedbackPrompt } from "@/components/feedback/feedback-prompt";
 
 export const metadata: Metadata = { title: "Your career matches" };
 
@@ -31,6 +32,16 @@ export default async function ResultsPage({
     .eq("assessment_id", id)
     .eq("user_id", user.id)
     .order("rank", { ascending: true });
+
+  /* Keyed on the assessment, not on one career card: the question is whether
+     the recommendation as a whole was useful, and one assessment produces one
+     recommendation. RLS scopes this to the signed-in user. */
+  const { data: feedback } = await supabase
+    .from("user_feedback")
+    .select("is_helpful, comment")
+    .eq("context", "recommendation")
+    .eq("context_id", id)
+    .maybeSingle();
 
   if (!results || results.length === 0) {
     return (
@@ -64,6 +75,14 @@ export default async function ResultsPage({
           <CareerMatchCard key={r.id} result={r} top={i === 0} />
         ))}
       </div>
+
+      <FeedbackPrompt
+        context="recommendation"
+        contextId={id}
+        question="Did these matches feel right for you?"
+        initialHelpful={feedback?.is_helpful ?? null}
+        initialComment={feedback?.comment ?? null}
+      />
     </div>
   );
 }

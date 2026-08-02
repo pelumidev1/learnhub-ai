@@ -1,7 +1,8 @@
 # Step quizzes — design for review
 
-**Status:** proposal, nothing built. Written 2026-08-02 from `master-any-skill.skill`.
-**Decision needed from Pelumi** on the five points in "Your calls" before I write code.
+**Status:** approved in shape, not yet built. Written 2026-08-02 from `master-any-skill.skill`.
+**Decisions:** Pelumi delegated the five open calls on 2026-08-02 ("decide for me"). They are now settled — see "Your calls", each marked **DECIDED**. Nothing below is still waiting on him.
+**Sequencing:** the feedback thumbs shipped first (commit on 2026-08-02) because they were hours rather than days and unblocked a PRD metric with no data. This is the next build.
 
 ## What it is, in one line
 
@@ -119,17 +120,17 @@ Small footprint. Four touch points:
 
 `awardCompletion` and the certificate logic need **no changes at all**. It already issues a certificate when every step is complete — and once steps can only be completed by passing, that certificate means something automatically.
 
-## Your calls
+## Your calls — all DECIDED 2026-08-02
 
-**1. Existing roadmaps have no quizzes.** Six accounts, some with roadmaps already. Options: generate quizzes for them retroactively (costs $0.015 each, so under 10 cents total), or let old roadmaps stay ungated. I'd generate them — a product where some students are tested and some aren't makes the certificate meaningless again.
+**1. Existing roadmaps have no quizzes. → DECIDED: backfill them.** Under 10 cents total across all six accounts. A product where some students are tested and some aren't makes the certificate meaningless again, which defeats the entire feature.
 
-**2. Certificates already issued.** Same question. I'd let them stand and note the date the gate came in. Revoking someone's certificate is a bad first impression for the sake of tidiness.
+**2. Certificates already issued. → DECIDED: let them stand.** Note the date the gate came in, in the certificate metadata. Revoking someone's certificate for the sake of tidiness is a bad first impression, and the numbers involved are tiny.
 
-**3. Retries.** I'm proposing unlimited, with the wrong answers and the relevant resource shown after each attempt. The alternative — a cooldown — punishes the exact students you're building for, the ones squeezing study into a lunch break.
+**3. Retries. → DECIDED: unlimited**, with the missed questions and the exact resource section shown after each attempt. A cooldown punishes precisely the students this product is for: the ones squeezing study into a lunch break. The pass mark is the gate, not the number of tries.
 
-**4. What happens when quiz generation fails.** The roadmap is already paid for and valid at that point. I'd save the roadmap, skip the gate for steps with no quiz, and retry generation in the background. Never lose a paid-for roadmap over a failed follow-up call.
+**4. Quiz generation fails. → DECIDED: save the roadmap, skip the gate for steps with no quiz, retry in the background.** The roadmap is already paid for and valid by that point. Never lose a paid-for generation over a failed follow-up call, and never leave a student staring at a locked step because our second API call timed out.
 
-**5. Weekly practical assessment.** The skill also has "submit a real deliverable, graded against a 3-criterion rubric." I left it out — it needs file uploads and AI grading, both of which cost real money per submission. It's the strongest signal for a certificate though. Later, or never?
+**5. Weekly practical assessment. → DECIDED: not now, and not never.** It needs file uploads and AI grading, so it costs real money per submission and can't be priced until we see how many students reach the end of a roadmap. Revisit once there is a completed-roadmap cohort to size it against. Recorded here so it isn't silently forgotten.
 
 ## What I'd build, in order
 

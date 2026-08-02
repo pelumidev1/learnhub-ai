@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { ProgressBar } from "@/components/dashboard/primitives";
 import { StepItem } from "@/components/roadmap/step-item";
+import { FeedbackPrompt } from "@/components/feedback/feedback-prompt";
 import { Icons } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Learning roadmap" };
@@ -38,6 +39,13 @@ export default async function RoadmapDetailPage({
     .select("step_id, status")
     .eq("roadmap_id", id)
     .eq("user_id", user.id);
+
+  const { data: feedback } = await supabase
+    .from("user_feedback")
+    .select("is_helpful, comment")
+    .eq("context", "roadmap")
+    .eq("context_id", id)
+    .maybeSingle();
 
   const statusByStep = new Map<string, string>(
     (progress ?? []).map((p) => [p.step_id, p.status]),
@@ -94,6 +102,14 @@ export default async function RoadmapDetailPage({
           />
         ))}
       </div>
+
+      <FeedbackPrompt
+        context="roadmap"
+        contextId={id}
+        question="Is this path realistic for you?"
+        initialHelpful={feedback?.is_helpful ?? null}
+        initialComment={feedback?.comment ?? null}
+      />
     </div>
   );
 }

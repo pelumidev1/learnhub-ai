@@ -39,7 +39,7 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 
 ## Tests
 
-`npm test` (Vitest, `vitest.config.ts`). 159 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
+`npm test` (Vitest, `vitest.config.ts`). 198 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
 
 What is covered, and why those and not others: each one is a place where a silent failure costs money or corrupts stored data.
 
@@ -53,6 +53,7 @@ What is covered, and why those and not others: each one is a place where a silen
 | `lib/utils/redirect.test.ts` | The open-redirect guard from the 2026-07-12 security pass. |
 | `lib/admin/queries.test.ts` | The admin page's arithmetic: PostgREST returning `bigint`/`numeric` as strings (a total that silently concatenates), UTC day bucketing, and zero-filling the days a view omits. |
 | `lib/utils/format.test.ts` | That sub-cent AI spend does not render as `$0.00` — a cost dashboard that reports zero is worse than none. |
+| `lib/validations/feedback.test.ts` | The feedback boundary: no coercion on the thumb (a coerced `"false"` would record every negative vote as positive), uuid-shaped `context_id` (the upsert conflict target), and the comment cap enforced server-side. |
 
 The suite was checked by mutation, not just by passing: ten deliberate regressions were introduced one at a time (remove the URL filter, flip `<` to `<=` at the rate-limit cap, drop the production guard on demo mode, allow `//evil.com`, remove each schema bound, stop stripping code fences) and **all ten were caught**. Re-run that check if you rewrite a test — a green suite that catches nothing is worse than none.
 
@@ -76,7 +77,17 @@ The suite was checked by mutation, not just by passing: ten deliberate regressio
 
 **Google OAuth: ✅ DONE & TESTED (2026-07-23).** Google Cloud OAuth client created, provider enabled in Supabase, sign-in verified working end-to-end (lands on dashboard; `handle_new_user` trigger fills the profile row from Google's `full_name`/`avatar_url` metadata). Both email/password and Google now work.
 
-**Post-beta, in order:** ~~certificate public verification page~~ (`app/(marketing)/verify/[code]` exists); ~~populate `ai_events.cost_usd`/`latency_ms`~~ (done — written at all three call sites via `estimateCostUsd`); ~~public careers catalog~~ (`app/(marketing)/careers` exists); ~~Privacy & Terms pages~~ (exist). **Still open: recommendation feedback thumbs** — `user_feedback` has a table, RLS policies and an `admin_feedback_summary` view, and nothing in the app writes to it, so the PRD success metric has no data. The admin page now shows that gap explicitly instead of an empty table. Also open: no timeout/retry story on the AI calls (a call that fails before the `ai_events` insert never counts against the rate limit).
+**Post-beta, in order:** ~~certificate public verification page~~ (`app/(marketing)/verify/[code]` exists); ~~populate `ai_events.cost_usd`/`latency_ms`~~ (done — written at all three call sites via `estimateCostUsd`); ~~public careers catalog~~ (`app/(marketing)/careers` exists); ~~Privacy & Terms pages~~ (exist). ~~**recommendation feedback thumbs**~~ — shipped 2026-08-02, see below. Still open: no timeout/retry story on the AI calls (a call that fails before the `ai_events` insert never counts against the rate limit).
+
+**Next build:** step quizzes as a pass gate on roadmap progress. Fully specified in `docs/QUIZ-DESIGN.md`, all open decisions settled — start there, don't redesign it.
+
+## Feedback thumbs (added 2026-08-02)
+
+Thumbs up/down on the results page (`context = 'recommendation'`, keyed on the assessment id) and the roadmap page (`context = 'roadmap'`, keyed on the roadmap id). Feeds the PRD's satisfaction metric and the Feedback card on `/admin`, both of which had no data before this.
+
+- **The vote saves on the first tap.** The comment box that follows is a bonus, not a second step. Most people never type in it, and a design where the vote only counts once you also write something loses most of the signal.
+- **Upsert, not insert.** `20260802120000_feedback_one_per_thing.sql` adds a unique index on `(user_id, context, context_id)` with `nulls not distinct`, plus the UPDATE policy the table never had. Without both, tapping twice counts as two responses and the satisfaction *percentage* is divided by a number inflated by whoever tapped the most. `nulls not distinct` matters because `context_id` is nullable for app-level feedback, and Postgres treats NULLs as distinct by default.
+- `user_id` comes from the session, never from the client payload.
 
 ## Admin page (`/admin`, added 2026-08-02)
 
