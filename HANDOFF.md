@@ -39,7 +39,7 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 
 ## Tests
 
-`npm test` (Vitest, `vitest.config.ts`). 113 tests, ~1s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
+`npm test` (Vitest, `vitest.config.ts`). 159 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
 
 What is covered, and why those and not others: each one is a place where a silent failure costs money or corrupts stored data.
 
@@ -51,6 +51,8 @@ What is covered, and why those and not others: each one is a place where a silen
 | `lib/ai/config.test.ts` | Cost maths; that every id in `MODELS` has a price (an unpriced model logs $0.00 silently); that `AI_DEMO_MODE` loses to `VERCEL_ENV=production`. |
 | `lib/ai/rate-limit.test.ts` | The cap boundary, the fail-open-on-null behaviour, and the query itself (right table, right user, right window). |
 | `lib/utils/redirect.test.ts` | The open-redirect guard from the 2026-07-12 security pass. |
+| `lib/admin/queries.test.ts` | The admin page's arithmetic: PostgREST returning `bigint`/`numeric` as strings (a total that silently concatenates), UTC day bucketing, and zero-filling the days a view omits. |
+| `lib/utils/format.test.ts` | That sub-cent AI spend does not render as `$0.00` — a cost dashboard that reports zero is worse than none. |
 
 The suite was checked by mutation, not just by passing: ten deliberate regressions were introduced one at a time (remove the URL filter, flip `<` to `<=` at the rate-limit cap, drop the production guard on demo mode, allow `//evil.com`, remove each schema bound, stop stripping code fences) and **all ten were caught**. Re-run that check if you rewrite a test — a green suite that catches nothing is worse than none.
 
@@ -74,7 +76,23 @@ The suite was checked by mutation, not just by passing: ten deliberate regressio
 
 **Google OAuth: ✅ DONE & TESTED (2026-07-23).** Google Cloud OAuth client created, provider enabled in Supabase, sign-in verified working end-to-end (lands on dashboard; `handle_new_user` trigger fills the profile row from Google's `full_name`/`avatar_url` metadata). Both email/password and Google now work.
 
-**Post-beta, in order:** ~~certificate public verification page~~ (`app/(marketing)/verify/[code]` exists); ~~populate `ai_events.cost_usd`/`latency_ms`~~ (done — written at all three call sites via `estimateCostUsd`); ~~public careers catalog~~ (`app/(marketing)/careers` exists); ~~Privacy & Terms pages~~ (exist). **Still open: recommendation feedback thumbs** — `user_feedback` has a table, RLS policies and an `admin_feedback_summary` view, and nothing in the app writes to it, so the PRD success metric has no data. Also open: no admin surface for the cost/feedback views, and no timeout/retry story on the AI calls (a call that fails before the `ai_events` insert never counts against the rate limit).
+**Post-beta, in order:** ~~certificate public verification page~~ (`app/(marketing)/verify/[code]` exists); ~~populate `ai_events.cost_usd`/`latency_ms`~~ (done — written at all three call sites via `estimateCostUsd`); ~~public careers catalog~~ (`app/(marketing)/careers` exists); ~~Privacy & Terms pages~~ (exist). **Still open: recommendation feedback thumbs** — `user_feedback` has a table, RLS policies and an `admin_feedback_summary` view, and nothing in the app writes to it, so the PRD success metric has no data. The admin page now shows that gap explicitly instead of an empty table. Also open: no timeout/retry story on the AI calls (a call that fails before the `ai_events` insert never counts against the rate limit).
+
+## Admin page (`/admin`, added 2026-08-02)
+
+Reads the five `admin_*` views that had existed unused since the init migration. Signups, assessment drop-off, roadmap activity, Anthropic spend by call type, feedback.
+
+- **Access:** `profiles.role = 'admin'`. Middleware only checks that you are signed in (a role check there would cost a `profiles` read on every navigation); the page itself calls `getAdminUser()` and returns **404** for a signed-in non-admin — a redirect to `/dashboard` would confirm the route exists.
+- **The database is the real gate, not the UI.** The views are `security_invoker = on`, so they run under the caller's RLS and every underlying policy reads `user_id = auth.uid() or is_admin()`. A non-admin who somehow reached the page would see only their own rows. `lib/admin/queries.ts` deliberately does **not** use the service-role client.
+- **To make an account an admin,** run this once in the Supabase SQL editor (there is no UI for it, on purpose):
+  ```sql
+  update public.profiles set role = 'admin' where id = (
+    select id from auth.users where email = 'you@example.com'
+  );
+  ```
+  `profiles.role` is excluded from the column-level UPDATE grant (see `20260712120000_security_hardening.sql`), so a user cannot promote themselves through the API.
+- **No charting library.** The bars are elements with inline heights, server-rendered — `/admin` ships 163 B of client JS. Adding recharts to draw thirty bars would have broken the mid-tier-Android budget for a page one person reads.
+- Totals are all-time; charts cover 30 days. Days are bucketed in **UTC**, same trade-off `computeStreaks` makes.
 
 **Future roadmap (PRD phases):** Phase 3 — monetize via human mentor booking, Paystack/Flutterwave. Phase 4 — localization (French, Swahili), phone/OTP auth, job-board partnerships, community, native app.
 

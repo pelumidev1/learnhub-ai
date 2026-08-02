@@ -18,6 +18,10 @@ const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/settings", label: "Settings", icon: "gear" },
 ];
 
+/** Appended for admins only. Kept out of NAV so the mobile bar's `slice(0, 5)`
+ *  stays the same five items for everyone. */
+const ADMIN_NAV = { href: "/admin", label: "Admin", icon: "shield" } as const;
+
 function initials(name: string | null, email: string) {
   const src = name?.trim() || email;
   const parts = src.split(/[\s@.]+/).filter(Boolean);
@@ -32,14 +36,17 @@ export function AppShell({
   name,
   avatarUrl,
   email,
+  isAdmin = false,
   children,
 }: {
   name: string | null;
   avatarUrl: string | null;
   email: string;
+  isAdmin?: boolean;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const nav = isAdmin ? [...NAV, ADMIN_NAV] : NAV;
 
   return (
     <div className="min-h-svh bg-paper">
@@ -49,7 +56,7 @@ export function AppShell({
           <Logo />
         </div>
         <nav className="mt-8 flex-1 space-y-1" aria-label="Primary">
-          {NAV.map(({ href, label, icon }) => {
+          {nav.map(({ href, label, icon }) => {
             const Icon = Icons[icon];
             const active = isActive(pathname, href);
             return (
@@ -88,9 +95,25 @@ export function AppShell({
       {/* Mobile top bar */}
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-silver bg-white/85 px-4 py-3 backdrop-blur lg:hidden">
         <Logo />
-        <Link href="/settings" aria-label="Account">
-          <Avatar name={name} email={email} avatarUrl={avatarUrl} />
-        </Link>
+        <div className="flex items-center gap-3">
+          {/* The bottom bar only has room for five items, so admins reach /admin
+              from up here rather than losing a primary nav slot. */}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              aria-label="Admin"
+              className={cn(
+                "grid h-9 w-9 place-items-center rounded-full border border-silver",
+                isActive(pathname, "/admin") ? "bg-blue text-white" : "text-muted",
+              )}
+            >
+              <Icons.shield className="h-[18px] w-[18px]" />
+            </Link>
+          )}
+          <Link href="/settings" aria-label="Account">
+            <Avatar name={name} email={email} avatarUrl={avatarUrl} />
+          </Link>
+        </div>
       </header>
 
       {/* Content */}

@@ -100,3 +100,51 @@ export type DashboardData = {
     certificates: number;
   };
 };
+
+// ---------------------------------------------------------------------------
+// Admin overview (reads the admin_* views from supabase/migrations)
+// ---------------------------------------------------------------------------
+
+/** One point in a dense daily series — every day present, zero-filled. */
+export type DayPoint = { day: string; value: number };
+
+export type AiCostRow = {
+  callType: string;
+  calls: number;
+  inputTokens: number;
+  outputTokens: number;
+  costUsd: number;
+};
+
+export type FeedbackRow = {
+  context: string;
+  responses: number;
+  avgRating: number | null;
+  helpful: number;
+  notHelpful: number;
+};
+
+export type AdminOverview = {
+  /** Days of history the charts and totals cover. */
+  windowDays: number;
+  totals: {
+    signups: number;
+    assessmentsStarted: number;
+    assessmentsCompleted: number;
+    roadmapsCreated: number;
+    roadmapsCompleted: number;
+    aiCalls: number;
+    /** All-time Anthropic spend. */
+    aiCostUsd: number;
+    /** Spend inside `windowDays` — the budget-relevant number. */
+    aiCostWindowUsd: number;
+    /** Completed ÷ started, 0–100. Null when nobody has started one. */
+    completionRate: number | null;
+  };
+  signups: DayPoint[];
+  assessmentsStarted: DayPoint[];
+  assessmentsCompleted: DayPoint[];
+  aiCost: DayPoint[];
+  aiByCallType: AiCostRow[];
+  feedback: FeedbackRow[];
+};

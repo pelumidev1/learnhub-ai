@@ -1,8 +1,15 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-/** Route prefixes that require an authenticated user. */
+/**
+ * Route prefixes that require an authenticated user.
+ *
+ * This is an auth check only — /admin additionally requires the `admin` role,
+ * which is enforced in the page itself. Checking the role here would mean a
+ * `profiles` read on every navigation in the app just to guard one route.
+ */
 const PROTECTED = [
+  "/admin",
   "/dashboard",
   "/onboarding",
   "/assessment",

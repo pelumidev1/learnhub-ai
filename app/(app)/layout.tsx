@@ -15,7 +15,7 @@ export default async function AppLayout({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, avatar_url")
+    .select("full_name, avatar_url, role")
     .eq("id", user.id)
     .single();
 
@@ -24,6 +24,9 @@ export default async function AppLayout({
       name={profile?.full_name ?? null}
       avatarUrl={profile?.avatar_url ?? null}
       email={user.email ?? ""}
+      /* Only controls whether the nav link renders. /admin gates itself — see
+         getAdminUser() in lib/admin/queries.ts. */
+      isAdmin={profile?.role === "admin"}
     >
       {children}
     </AppShell>
