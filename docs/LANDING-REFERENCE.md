@@ -27,7 +27,7 @@ one-for-one:
 | 3 | `section_decisions` | "Makes the choice clear" — 3-card row (stats / photo / quote) |
 | 4 | `section_finance` | How it works — heading, product clip full width below |
 | 5 | `section_business` | What you get — scroll-driven pinned stage, four beats (was a 4-card row) |
-| 6 | `section_funding` | Life after the match — dark panel, three outcome cards |
+| 6 | `section_funding` | Life after the match — dark band, three outcome cards |
 | 7 | `section_clickhouse` | Ecosystem — cursor-parallax nodes |
 | 8 | `section_fair-pricing` | Pricing — "Free while in beta", 2 cards |
 | 9 | `section_expert` | Beta invitation — marquee of the careers catalog |
@@ -130,6 +130,14 @@ The clip was rebuilt in July 2026 as a 1428×720 desktop app view (it had been a
 Built to `design_handoff_match_page/README.md` (2026-08-01), replacing the photo
 card that used to explain what a match *is* — a question the two sections above
 it have already answered by then.
+
+- **The spec's dark 1200px panel is now the section itself.** It was right as a
+  floating panel while its neighbours were white; once they went to ink it read
+  as a third dark rectangle inset between two full-bleed ones, with a white
+  gutter either side. It is ink edge to edge now, graph paper across the full
+  width, on the landing's own `max-w-6xl` / `px-5` container and `py-24 sm:py-32`
+  rhythm rather than the spec's 1200px and clamp padding. Nothing inside the
+  composition changed — it never depended on the panel, only on the dark ground.
 
 - **The spec is written against `--lh-*` custom properties that this app does not
   have.** Our palette lives in `tailwind.config.ts`, so every token maps to its
