@@ -118,16 +118,22 @@ export default function LandingPage() {
       </section>
 
       {/* =========================================================== DECISIONS
-          Centred heading + sub, then a three-card row: stats, photo, quote. */}
-      <section className="bg-white pb-28 pt-8 sm:pb-40 sm:pt-16">
+          Centred heading + sub, then a three-card row: stats, photo, quote.
+
+          On ink, matching "What you get" and the FAQ. It used to lean on the
+          white statement section above it for its top space (pt-8); a band with
+          its own ground has to carry its own padding. Cards are the same dark
+          surface as the "Life after the match" panel — white at 3% over a 10%
+          hairline — rather than a flat ink-2 fill, so they read as raised. */}
+      <section className="bg-ink py-24 sm:py-32">
         <div className="mx-auto max-w-6xl px-5">
           <Reveal className="text-center">
             <SplitText
               as="h2"
               text="LearnHub makes the choice clear"
-              className="mx-auto max-w-3xl font-display text-[2rem] font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[3.2rem]"
+              className="mx-auto max-w-3xl font-display text-[2rem] font-bold uppercase leading-[1.04] tracking-tight text-white sm:text-[3.2rem]"
             />
-            <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-muted sm:text-lg">
+            <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-white/60 sm:text-lg">
               Made for people who want to feel certain about their next step, not overwhelmed by it.
             </p>
           </Reveal>
@@ -135,30 +141,30 @@ export default function LandingPage() {
           <div className="mt-16 grid gap-4 md:grid-cols-3">
             {/* Stats card */}
             <Reveal>
-              <div className="flex h-full flex-col justify-between rounded-3xl bg-paper p-8">
+              <div className="flex h-full flex-col justify-between rounded-3xl border border-white/10 bg-white/[0.03] p-8">
                 <div>
-                  <h3 className="font-display text-lg font-bold uppercase tracking-tight text-ink">
+                  <h3 className="font-display text-lg font-bold uppercase tracking-tight text-white">
                     LearnHub in numbers
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted">
+                  <p className="mt-3 text-sm leading-relaxed text-white/60">
                     17 tech careers mapped for the African market, with honest local pay and
                     realistic timelines.
                   </p>
                   <Link
                     href="/careers"
-                    className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-ink transition hover:bg-white/70"
+                    className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/10"
                   >
                     Learn more
                   </Link>
                 </div>
                 <div className="mt-10 flex gap-8">
                   <div>
-                    <div className="font-display text-4xl font-bold tracking-tight text-ink">17</div>
-                    <p className="mt-1 text-sm text-muted">Careers mapped</p>
+                    <div className="font-display text-4xl font-bold tracking-tight text-white">17</div>
+                    <p className="mt-1 text-sm text-white/55">Careers mapped</p>
                   </div>
                   <div>
-                    <div className="font-display text-4xl font-bold tracking-tight text-ink">2 min</div>
-                    <p className="mt-1 text-sm text-muted">To your match</p>
+                    <div className="font-display text-4xl font-bold tracking-tight text-white">2 min</div>
+                    <p className="mt-1 text-sm text-white/55">To your match</p>
                   </div>
                 </div>
               </div>
@@ -187,16 +193,18 @@ export default function LandingPage() {
                 pre-launch, so it carries what a match actually tells you until
                 there are real learners to quote. */}
             <Reveal delay={180}>
-              <div className="flex h-full flex-col rounded-3xl bg-paper p-8">
+              <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-8">
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-blue text-white">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="9" />
                     <path d="m15.5 8.5-2.4 5.6-5.6 2.4 2.4-5.6Z" />
                   </svg>
                 </span>
-                <h3 className="mt-7 font-display text-lg font-bold uppercase tracking-tight text-ink">
+                <h3 className="mt-7 font-display text-lg font-bold uppercase tracking-tight text-white">
                   Straight answers
                 </h3>
+                {/* Bullets are sky-2, not blue: #1F33CC is barely separable
+                    from ink at 6px. Same swap Kicker makes with `reverse`. */}
                 <ul className="mt-4 flex-1 space-y-2.5">
                   {[
                     "Which careers fit you, and why",
@@ -204,14 +212,14 @@ export default function LandingPage() {
                     "What it pays where you live",
                     "How long it honestly takes",
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-ink">
-                      <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-blue" />
+                    <li key={item} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-white/85">
+                      <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-sky-2" />
                       {item}
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8 border-t border-silver pt-5">
-                  <p className="text-sm text-muted">All of it in plain language.</p>
+                <div className="mt-8 border-t border-white/10 pt-5">
+                  <p className="text-sm text-white/55">All of it in plain language.</p>
                 </div>
               </div>
             </Reveal>
