@@ -287,18 +287,75 @@
 }
 
 /* --------------------------------------------- Career-match scroll section
-   A 16:9 stage pinned while the page scrolls, advancing through four beats.
+   A stage pinned while the page scrolls, advancing through four beats.
    Everything inside is sized in cqw/cqh against the stage, so the whole
-   composition scales as one unit and needs no media queries of its own.
+   composition scales as one unit.
 
-   The stage only ever renders on a fine pointer at >=900px. Phones get four
-   stacked cards instead (see CareerMatchSection): our users are on mid-tier
-   Android and a pinned scroll rig is not worth their battery. */
+   Two shapes, switched on the viewport's aspect ratio rather than its width, so
+   a phone turned sideways gets the landscape one:
+
+   - Landscape: a 16:9 stage, caption left, phone right.
+   - Portrait: the stage fills the viewport and the composition stacks, caption
+     over phone. cqw on a 390px-wide stage is 3.9px, so every cqw-based size
+     from the landscape layout would come out roughly a quarter of its intended
+     size — hence the custom properties below. Sizes in *cqh* need no override:
+     the phone and everything inside it are cqh-based, so they stay proportional
+     on their own. Only the outer composition had landscape baked into it.
+
+   The properties are consumed from inline styles in career-match.tsx, which is
+   why they live here rather than there: an inline `font-size: 3.5cqw` cannot be
+   overridden by a media query, but `font-size: var(--cm-h)` can. */
 .lh-cm-stage {
   position: relative;
   width: min(100%, 177.7vh);
   aspect-ratio: 16 / 9;
   container-type: size;
+
+  --cm-cols: 46% 54%;
+  --cm-rows: auto;
+  --cm-pad: 0 5cqw;
+  --cm-h: 3.5cqw;
+  --cm-body: 1.15cqw;
+  --cm-body-w: 26cqw;
+  --cm-finale: 4.6cqw;
+  --cm-small: 0.95cqw;
+  --cm-scroll: 0.85cqw;
+  --cm-gap: 2cqw;
+  --cm-phone-h: 74cqh;
+  --cm-cert-w: 44cqh;
+  --cm-ring-a: 78cqh;
+  --cm-ring-b: 112cqh;
+}
+
+@media (max-aspect-ratio: 1 / 1) {
+  .lh-cm-stage {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+
+    --cm-cols: 1fr;
+    /* Caption takes what it needs; the phone gets the rest and centres in it. */
+    --cm-rows: auto 1fr;
+    --cm-pad: 7cqh 6cqw 11cqh;
+    --cm-h: 7.4cqw;
+    --cm-body: 3.6cqw;
+    --cm-body-w: 100%;
+    --cm-finale: 9cqw;
+    --cm-small: 2.5cqw;
+    --cm-scroll: 2.6cqw;
+    --cm-gap: 3cqw;
+    --cm-phone-h: 54cqh;
+    --cm-cert-w: 40cqh;
+    --cm-ring-a: 52cqh;
+    --cm-ring-b: 76cqh;
+  }
+
+  /* Four beat names will not fit across a 344px row: "AI career match" alone
+     needs about 93px of the 77px each column gets. The bars still show the
+     position, and the caption above already names the beat. */
+  .lh-cm-plabel {
+    display: none;
+  }
 }
 
 /* Two blue washes behind the composition. Purely decorative. */

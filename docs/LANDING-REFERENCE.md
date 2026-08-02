@@ -180,6 +180,28 @@ outlive the memory of why:
   each translucent against the other and let the phone's checklist read straight
   through the certificate for the whole departure; it now sits on the column
   that holds both, so they leave as one composited layer.
+- **Phones get the rig, in a portrait shape.** They originally kept the four
+  stacked cards, on the argument that a pinned scroll rig was not worth a
+  mid-tier Android's battery. The two renderings then drifted far enough apart
+  that a phone was getting a visibly lesser page, so the stage now has a second
+  shape, switched on `max-aspect-ratio: 1/1` — a phone turned sideways gets the
+  landscape one.
+
+  What made this cheap: everything inside the phone is sized in `cqh`, so it
+  stayed proportional for free. Only the outer composition had landscape baked
+  in, through eleven `cqw` values that would each have come out about a quarter
+  of their intended size on a 390px-wide stage. Those are custom properties on
+  `.lh-cm-stage` now — an inline `font-size: 3.5cqw` cannot be overridden by a
+  media query, but `font-size: var(--cm-h)` can. The four beat labels under the
+  progress bars are hidden in portrait; "AI career match" alone needs about 93px
+  of the 77px each column gets.
+
+  **Unmount what is not on screen.** The whole stage re-renders on every scroll
+  frame, and at any `p` only one caption and one phone screen are visible. With
+  all eight mounted, a 6x-throttled phone ran at 32ms a frame with half of them
+  over budget; skipping the invisible ones took it to 16.7ms median and 6%. Beat
+  0's caption is the one exception — it is the only one in normal flow, so it is
+  what gives the caption column its height.
 - **The finale CTA is a `Link`, not `Button`.** `Button` is a `<button>` with no
   href; this CTA navigates to /signup. It keeps the primary button's styling and
   stays in the tab order, which is what the brief actually asked for.

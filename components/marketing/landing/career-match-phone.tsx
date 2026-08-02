@@ -64,7 +64,7 @@ export function PhoneFrame({
       aria-hidden
       className="relative flex flex-col overflow-hidden bg-white"
       style={{
-        height: "74cqh",
+        height: "var(--cm-phone-h)",
         aspectRatio: "9 / 19",
         borderRadius: "4.6cqh",
         border: "0.18cqh solid #E7EAF1",
@@ -478,8 +478,8 @@ export function CertificateCard({ op, y, rot, scale }: { op: number; y: number; 
       className="pointer-events-none absolute left-1/2 top-1/2 bg-white"
       style={{
         opacity: op,
-        width: "44cqh",
-        marginLeft: "-22cqh",
+        width: "var(--cm-cert-w)",
+        marginLeft: "calc(var(--cm-cert-w) / -2)",
         transform: `translate3d(0, calc(-50% + ${y}px), 0) rotate(${rot}deg) scale(${scale})`,
         padding: "2.6cqh",
         borderRadius: "2.4cqh",

@@ -34,16 +34,18 @@ import {
  *
  * Three renderings, chosen once on mount:
  *   - "stacked": four static cards in normal flow. This is what the server
- *     renders and what phones and coarse pointers keep. The pinned rig is a
- *     desktop treatment and our users are on mid-tier Android, so they never
- *     receive it. It is also the no-JS rendering, since the upgrade below only
- *     happens in an effect.
- *   - "static": reduced motion on a large screen. Beat 1, settled, one screen
- *     tall, nothing bound to scroll.
+ *     renders, and the only rendering anyone without JS ever sees, since the
+ *     upgrade below happens in an effect.
+ *   - "static": reduced motion. Beat 1, settled, one screen tall, nothing bound
+ *     to scroll.
  *   - "scroll": the full rig.
  *
- * Small screens win over reduced motion when both apply: the stacked cards are
- * already motionless, so they satisfy both and read better on a phone.
+ * Phones get the rig too. They used to keep the stacked cards on the argument
+ * that a pinned scroll rig was not worth a mid-tier Android's battery, but the
+ * two renderings had drifted far enough apart that a phone was getting a
+ * visibly lesser page. The stage has a portrait shape now (see .lh-cm-stage) and
+ * the loop is opacity and transform only, so the cost is a rAF per scroll frame
+ * rather than layout work.
  */
 
 type Mode = "stacked" | "static" | "scroll";
@@ -98,12 +100,37 @@ export function CareerMatchSection({
   const [mode, setMode] = useState<Mode>("stacked");
   const [p, setP] = useState(0);
 
-  // Pick the rendering once, then keep it. Re-deciding on every resize would
-  // swap a 560vh section for a 100vh one mid-scroll and throw the reader.
+  /* Pick the rendering once, then keep it. Re-deciding on every resize would
+     swap a 560vh section for a 100vh one mid-scroll and throw the reader.
+     Orientation is deliberately not part of this: the stage handles portrait
+     and landscape in CSS, so turning the phone re-lays out without changing
+     which rendering is on screen or how far the section scrolls.
+
+     The upgrade waits until the section is within a viewport of the fold rather
+     than running on mount. Building the stage means hundreds of nodes, and doing
+     that during initial load costs the whole page: measured on mobile, upgrading
+     eagerly put Speed Index at 2740ms against 1065ms, and total blocking time at
+     110ms against 60ms, for a section nobody has scrolled to yet.
+
+     One viewport of lead time, so the section is still fully below the fold when
+     it grows from the stacked cards' height to 560vh. Nothing on screen moves,
+     so the growth costs no layout shift. */
   useEffect(() => {
-    const small = window.matchMedia("(max-width: 899px), (pointer: coarse)").matches;
-    if (small) return;
-    setMode(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "static" : "scroll");
+    const el = sectionRef.current;
+    if (!el) return;
+    const upgrade = () =>
+      setMode(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "static" : "scroll");
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        upgrade();
+      },
+      { rootMargin: "100% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
@@ -161,7 +188,11 @@ export function CareerMatchSection({
     };
   }, [mode, playback, autoDuration]);
 
-  if (mode === "stacked") return <StackedBeats />;
+  /* The ref goes on whichever section is rendered, so the gate above has an
+     element to observe while the stacked cards are still what is on screen.
+     Without it `sectionRef.current` is null in stacked mode, the effect returns
+     early, and the upgrade never fires at all. */
+  if (mode === "stacked") return <StackedBeats innerRef={sectionRef} />;
 
   // Reduced motion renders beat 1 settled; the rig renders live progress.
   const q = mode === "static" ? 0 : p;
@@ -181,6 +212,16 @@ export function CareerMatchSection({
   });
 
   const ringT = eo(S(0.715, 0.8));
+
+  /* One anim per phone screen, computed up front so the render below can skip
+     mounting the three that are not on screen. Beat 4 holds instead of fading
+     out — see the note where it is used. */
+  const screen: Anim[] = [
+    layer(q, -0.05, B[0][1], 0),
+    layer(q, B[1][0], B[1][1], 0),
+    layer(q, B[2][0], B[2][1], 0),
+    it(q, B[3][0], 0.05, 0),
+  ];
 
   /* Beat 4 clears the stage before the finale arrives, rather than dissolving
      into it. The brief fades the phone out over .90-.955 and fades the finale
@@ -207,9 +248,11 @@ export function CareerMatchSection({
       ref={sectionRef}
       id="what"
       className="relative bg-ink"
-      style={{ height: mode === "static" ? "100vh" : `${scrollLength}vh` }}
+      style={{ height: mode === "static" ? "100svh" : `${scrollLength}vh` }}
     >
-      <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
+      {/* svh, not vh: on a phone 100vh is the address-bar-hidden height, so the
+          bottom of the stage sits under the bar for as long as it is showing. */}
+      <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
         <div className="lh-cm-stage">
           <div className="lh-cm-glow absolute inset-0" aria-hidden />
 
@@ -217,14 +260,14 @@ export function CareerMatchSection({
           <span
             aria-hidden
             className="lh-cm-ring"
-            style={{ width: "78cqh", height: "78cqh", right: "6cqw", top: "8cqh" }}
+            style={{ width: "var(--cm-ring-a)", height: "var(--cm-ring-a)", right: "6cqw", top: "8cqh" }}
           />
           <span
             aria-hidden
             className="lh-cm-ring lh-cm-ring-spin"
             style={{
-              width: "112cqh",
-              height: "112cqh",
+              width: "var(--cm-ring-b)",
+              height: "var(--cm-ring-b)",
               right: "-6cqw",
               top: "-14cqh",
               borderStyle: "dashed",
@@ -233,12 +276,28 @@ export function CareerMatchSection({
 
           <div
             className="absolute inset-0 grid items-center"
-            style={{ gridTemplateColumns: "46% 54%", padding: "0 5cqw" }}
+            style={{
+              gridTemplateColumns: "var(--cm-cols)",
+              gridTemplateRows: "var(--cm-rows)",
+              padding: "var(--cm-pad)",
+            }}
           >
             {/* Caption column. Real headings, so the copy is in the outline. */}
             <div className="relative">
               {BEATS.map((b, i) => {
                 const a = caption(i);
+                /* Unmount the ones that are not on screen. The whole stage
+                   re-renders on every scroll frame, so anything mounted but
+                   invisible is reconciliation work paid 60 times a second for
+                   nothing — this and the phone screens below are what keep a
+                   mid-tier Android at frame rate.
+
+                   Beat 0 is the exception and stays mounted: it is the only
+                   caption in normal flow, so it is what gives the column its
+                   height. Unmounting it would collapse the column to zero and,
+                   in the portrait layout where the caption row is `auto`, pull
+                   the phone up the screen. */
+                if (i > 0 && a.op <= 0.002) return null;
                 return (
                   <div
                     key={b.kicker}
@@ -252,7 +311,7 @@ export function CareerMatchSection({
                     <h2
                       className="font-display font-bold uppercase text-white"
                       style={{
-                        fontSize: "3.5cqw",
+                        fontSize: "var(--cm-h)",
                         lineHeight: 1.04,
                         letterSpacing: "-0.03em",
                         marginTop: "1.6cqh",
@@ -264,11 +323,11 @@ export function CareerMatchSection({
                     </h2>
                     <p
                       style={{
-                        fontSize: "1.15cqw",
+                        fontSize: "var(--cm-body)",
                         lineHeight: 1.6,
                         color: "#b6bece",
                         marginTop: "2.4cqh",
-                        maxWidth: "26cqw",
+                        maxWidth: "var(--cm-body-w)",
                       }}
                     >
                       {b.body}
@@ -298,21 +357,29 @@ export function CareerMatchSection({
             >
               <div>
               <PhoneFrame clock={q > 0.46 ? "02:14" : "09:24"}>
+                {/* Same reason as the captions: only ever one of these is
+                    visible, and mounting the other three costs reconciliation
+                    on every scroll frame. */}
+                {screen[0].op > 0.002 && (
                 <MatchScreen
-                  a={layer(q, -0.05, B[0][1], 0)}
+                  a={screen[0]}
                   typed={typed}
                   typing={typedCount < TYPED.length}
                   bubble={it(q, 0.004, 0.02, 10)}
                   label={it(q, 0.09, 0.03, 0)}
                   cards={cards}
                 />
+                )}
+                {screen[1].op > 0.002 && (
                 <RoadmapScreen
-                  a={layer(q, B[1][0], B[1][1], 0)}
+                  a={screen[1]}
                   rows={[0.285, 0.31, 0.335, 0.36, 0.385].map((s) => it(q, s))}
                   cta={it(q, 0.415, 0.04, 12)}
                 />
+                )}
+                {screen[2].op > 0.002 && (
                 <CoachScreen
-                  a={layer(q, B[2][0], B[2][1], 0)}
+                  a={screen[2]}
                   msgs={[
                     it(q, 0.515, 0.04, 14),
                     it(q, 0.565, 0.045, 14),
@@ -320,6 +387,7 @@ export function CareerMatchSection({
                   ]}
                   dotsOp={Math.min(S(0.645, 0.665), 1 - S(0.685, 0.7))}
                 />
+                )}
                 {/* `it`, not `layer` — the last screen fades in on its beat and
                     then holds. Every other screen has a successor to hand over
                     to at its beat boundary; this one does not, and `layer` would
@@ -328,12 +396,14 @@ export function CareerMatchSection({
                     (about 1000px of scroll at the default length) with the
                     certificate card floating on nothing. The phone's own exit is
                     what takes this screen away now. */}
+                {screen[3].op > 0.002 && (
                 <CertificateScreen
-                  a={it(q, B[3][0], 0.05, 0)}
+                  a={screen[3]}
                   ringOffset={276.5 * (1 - ringT)}
                   pct={Math.round(100 * ringT)}
                   items={[0.725, 0.745, 0.765, 0.785].map((s) => it(q, s))}
                 />
+                )}
               </PhoneFrame>
               </div>
 
@@ -360,7 +430,7 @@ export function CareerMatchSection({
                 right: "5cqw",
                 bottom: "4.5cqh",
                 gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "2cqw",
+                gap: "var(--cm-gap)",
                 opacity: 1 - S(0.895, 0.925),
               }}
             >
@@ -384,9 +454,9 @@ export function CareerMatchSection({
                     />
                   </span>
                   <span
-                    className="mt-[1.2cqh] block font-mono uppercase tracking-[0.14em] text-white"
+                    className="lh-cm-plabel mt-[1.2cqh] block font-mono uppercase tracking-[0.14em] text-white"
                     style={{
-                      fontSize: "0.95cqw",
+                      fontSize: "var(--cm-small)",
                       opacity: 0.3 + 0.7 * S(B[i][0] - 0.05, B[i][0] + 0.02),
                     }}
                   >
@@ -407,7 +477,7 @@ export function CareerMatchSection({
             <p
               className="font-display font-bold uppercase text-white"
               style={{
-                fontSize: "4.6cqw",
+                fontSize: "var(--cm-finale)",
                 lineHeight: 1.04,
                 letterSpacing: "-0.03em",
                 marginTop: "3cqh",
@@ -431,7 +501,7 @@ export function CareerMatchSection({
           <p
             aria-hidden
             className="absolute left-0 right-0 text-center font-mono uppercase tracking-[0.2em] text-white"
-            style={{ bottom: "1.2cqh", fontSize: "0.85cqw", opacity: 0.5 * (1 - S(0, 0.03)) }}
+            style={{ bottom: "1.2cqh", fontSize: "var(--cm-scroll)", opacity: 0.5 * (1 - S(0, 0.03)) }}
           >
             Scroll
           </p>
@@ -447,12 +517,12 @@ export function CareerMatchSection({
  * Phones, coarse pointers, and anyone without JS: the same four beats as plain
  * stacked cards. Same copy, same order, no scroll rig, no frame loop.
  */
-function StackedBeats() {
+function StackedBeats({ innerRef }: { innerRef: React.Ref<HTMLElement> }) {
   const settled: Anim = { op: 1, y: 0 };
   const full = MATCHES.map((m) => ({ card: settled, n: m.pct, bar: m.pct }));
 
   return (
-    <section id="what" className="bg-ink py-24 sm:py-32">
+    <section ref={innerRef} id="what" className="bg-ink py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-2xl text-center">
           <Kicker center reverse>
