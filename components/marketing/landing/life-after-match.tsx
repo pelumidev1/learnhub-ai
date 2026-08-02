@@ -49,27 +49,21 @@ const STEPS = [
 
 export function LifeAfterMatch() {
   return (
-    /* The spec had this as a dark 1200px panel floating on a white page, and
-       that was right when its neighbours were white. They are ink now, so the
-       panel was reading as a third dark rectangle inset between two full-bleed
-       ones, with a white gutter on either side of it.
+    /* The spec had this as a dark 1200px panel with a 64px graph-paper backdrop,
+       floating on a white page. That was right while its neighbours were white.
+       They are ink now, so the panel read as a third dark rectangle inset
+       between two full-bleed ones with a white gutter either side, and the graph
+       paper read as texture no other dark band has.
 
-       So the panel *is* the section: ink edge to edge like "What you get" and
-       the FAQ, the graph paper running the full width, and the content on the
-       landing's own max-w-6xl / px-5 container and py-24 sm:py-32 rhythm rather
-       than the spec's 1200px and clamp padding. Nothing inside the composition
-       changed — it never depended on the panel, only on the dark ground. */
-    <section
-      className="bg-ink py-24 text-white sm:py-32"
-      style={{
-        // Graph-paper backdrop: two 1px gradients on a 64px grid. No utility
-        // covers this, and a Tailwind arbitrary value would need every comma
-        // and space escaped and would read far worse.
-        backgroundImage:
-          "linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)",
-        backgroundSize: "64px 64px",
-      }}
-    >
+       So the panel *is* the section: flat ink edge to edge like "What you get"
+       and the FAQ, on the landing's own max-w-6xl / px-5 container and
+       py-24 sm:py-32 rhythm rather than the spec's 1200px and clamp padding.
+       Nothing inside the composition changed — it never depended on the panel,
+       only on the dark ground.
+
+       To restore the graph paper: a backgroundImage of two 1px linear-gradients
+       at rgba(255,255,255,0.035), backgroundSize 64px 64px. */
+    <section className="bg-ink py-24 text-white sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
         {/* rootMargin -6% per the spec. Everything else is the landing's own
             <Reveal>: the spec asks for 16px/240ms, but this section sits in a

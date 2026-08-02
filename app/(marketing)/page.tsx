@@ -326,7 +326,7 @@ export default function LandingPage() {
           so there are no learners to quote — this slot carries an honest
           invitation instead, and the marquee scrolls the real careers catalog.
           Swap this for genuine learner stories once the beta produces them. */}
-      <section className="overflow-hidden border-t border-silver bg-white py-20 sm:py-24">
+      <section className="overflow-hidden bg-white py-20 sm:py-24">
         <div className="mx-auto mb-12 max-w-6xl px-5 text-center">
           <Reveal>
             <Kicker>Now in beta</Kicker>
@@ -349,7 +349,7 @@ export default function LandingPage() {
                 {CAREERS.map((career) => (
                   <span
                     key={career}
-                    className="flex-none rounded-full border border-silver bg-paper/60 px-6 py-3 font-display text-[15px] font-semibold text-ink sm:px-7 sm:py-3.5 sm:text-base"
+                    className="flex-none rounded-full border border-silver bg-paper px-6 py-3 font-display text-[15px] font-semibold text-ink sm:px-7 sm:py-3.5 sm:text-base"
                   >
                     {career}
                   </span>
