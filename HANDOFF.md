@@ -33,9 +33,30 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 
 1. `npm install` if needed; `npm run dev` → http://localhost:3000 (keep port 3000 — OAuth callback + `NEXT_PUBLIC_SITE_URL` are pinned to it).
 2. **Never run `npx next build` while the dev server is running** — they share `.next` and corrupt each other. Stop dev, build, `rm -rf .next`, restart dev. This bit us twice.
-3. Before any commit: `npx tsc --noEmit && npx next build` must both pass. Commit to `main`; the owner asks for pushes explicitly and uses them to trigger Vercel deploys.
+3. Before any commit: `npm test && npx tsc --noEmit && npx next build` must all pass. Commit to `main`; the owner asks for pushes explicitly and uses them to trigger Vercel deploys.
 4. ~~When the owner funds Anthropic: flip `AI_DEMO_MODE=false`, run the full loop once, inspect output.~~ **DONE 2026-07-23** — account funded, `AI_DEMO_MODE=false` locally, full real loop verified (see state note above). Still worth doing once through the browser UI with a real signup to confirm `ai_events` rows land with cost/latency.
 5. ~~**Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project.~~ **DONE — owner confirmed applied 2026-07-23.** The RLS performance fix and the one-roadmap-per-match unique index are live. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` is also applied.) No pending migrations remain.
+
+## Tests
+
+`npm test` (Vitest, `vitest.config.ts`). 113 tests, ~1s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
+
+What is covered, and why those and not others: each one is a place where a silent failure costs money or corrupts stored data.
+
+| File | Guards |
+|---|---|
+| `lib/ai/roadmap.test.ts` | The resource-URL filter, which is a stored-XSS control (`javascript:` links would render as `<a href>`); step-count and `estimated_weeks` bounds. |
+| `lib/ai/schemas.test.ts` | Exactly-two career matches, `match_score` range, the `remote_potential` enum the UI switches on. |
+| `lib/ai/parse.test.ts` | Tolerant JSON recovery from model output — this runs on a response we have already paid for, so a throw here wastes the generation. |
+| `lib/ai/config.test.ts` | Cost maths; that every id in `MODELS` has a price (an unpriced model logs $0.00 silently); that `AI_DEMO_MODE` loses to `VERCEL_ENV=production`. |
+| `lib/ai/rate-limit.test.ts` | The cap boundary, the fail-open-on-null behaviour, and the query itself (right table, right user, right window). |
+| `lib/utils/redirect.test.ts` | The open-redirect guard from the 2026-07-12 security pass. |
+
+The suite was checked by mutation, not just by passing: ten deliberate regressions were introduced one at a time (remove the URL filter, flip `<` to `<=` at the rate-limit cap, drop the production guard on demo mode, allow `//evil.com`, remove each schema bound, stop stripping code fences) and **all ten were caught**. Re-run that check if you rewrite a test — a green suite that catches nothing is worse than none.
+
+`server-only` is aliased to `test/stubs/server-only.ts`; the real package throws on import outside a Server Component, and that guard is enforced by the Next build rather than the test runner.
+
+**Not covered:** anything that needs the network or the database — the Server Actions, the route handler, RLS behaviour, the Anthropic calls themselves. Those need the human browser pass, or integration tests against a throwaway Supabase project.
 
 ## Environment variables (`.env.local`, real values present locally; mirror to Vercel)
 
@@ -53,7 +74,7 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 
 **Google OAuth: ✅ DONE & TESTED (2026-07-23).** Google Cloud OAuth client created, provider enabled in Supabase, sign-in verified working end-to-end (lands on dashboard; `handle_new_user` trigger fills the profile row from Google's `full_name`/`avatar_url` metadata). Both email/password and Google now work.
 
-**Post-beta, in order:** certificate public verification page (`/verify/[code]`); populate `ai_events.cost_usd`/`latency_ms`; public careers catalog (`/careers`, PRD P0 — or consciously de-scope); Privacy & Terms pages; recommendation feedback thumbs (PRD success metric).
+**Post-beta, in order:** ~~certificate public verification page~~ (`app/(marketing)/verify/[code]` exists); ~~populate `ai_events.cost_usd`/`latency_ms`~~ (done — written at all three call sites via `estimateCostUsd`); ~~public careers catalog~~ (`app/(marketing)/careers` exists); ~~Privacy & Terms pages~~ (exist). **Still open: recommendation feedback thumbs** — `user_feedback` has a table, RLS policies and an `admin_feedback_summary` view, and nothing in the app writes to it, so the PRD success metric has no data. Also open: no admin surface for the cost/feedback views, and no timeout/retry story on the AI calls (a call that fails before the `ai_events` insert never counts against the rate limit).
 
 **Future roadmap (PRD phases):** Phase 3 — monetize via human mentor booking, Paystack/Flutterwave. Phase 4 — localization (French, Swahili), phone/OTP auth, job-board partnerships, community, native app.
 
