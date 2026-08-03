@@ -1,6 +1,6 @@
 import "server-only";
 import { createClient, getAuthUser } from "@/lib/supabase/server";
-import type { AdminOverview, AiCostRow, DayPoint, FeedbackRow } from "@/types/domain";
+import type { AdminOverview, AiCostRow, DayPoint, FeedbackRow, QuizHealth } from "@/types/domain";
 
 /**
  * Reads the `admin_*` views declared in supabase/migrations/20260710120000_init_schema.sql.
@@ -98,6 +98,7 @@ type CostRow = {
   output_tokens: unknown;
   cost_usd: unknown;
 };
+
 type RawFeedbackRow = {
   context: string;
   responses: unknown;
@@ -117,13 +118,15 @@ type RawFeedbackRow = {
 export async function getAdminOverview(): Promise<AdminOverview> {
   const supabase = await createClient();
 
-  const [signupRows, funnelRows, roadmapRows, costRows, feedbackRows] = await Promise.all([
-    safe<SignupRow[]>(supabase.from("admin_signups_daily").select("*"), []),
-    safe<FunnelRow[]>(supabase.from("admin_funnel_daily").select("*"), []),
-    safe<RoadmapRow[]>(supabase.from("admin_roadmap_activity_daily").select("*"), []),
-    safe<CostRow[]>(supabase.from("admin_ai_cost_daily").select("*"), []),
-    safe<RawFeedbackRow[]>(supabase.from("admin_feedback_summary").select("*"), []),
-  ]);
+  const [signupRows, funnelRows, roadmapRows, costRows, feedbackRows, quizHealth] =
+    await Promise.all([
+      safe<SignupRow[]>(supabase.from("admin_signups_daily").select("*"), []),
+      safe<FunnelRow[]>(supabase.from("admin_funnel_daily").select("*"), []),
+      safe<RoadmapRow[]>(supabase.from("admin_roadmap_activity_daily").select("*"), []),
+      safe<CostRow[]>(supabase.from("admin_ai_cost_daily").select("*"), []),
+      safe<RawFeedbackRow[]>(supabase.from("admin_feedback_summary").select("*"), []),
+      getQuizHealth(),
+    ]);
 
   const signups = densify(
     signupRows.map((r) => ({ day: r.day, value: r.signups })),
@@ -190,5 +193,50 @@ export async function getAdminOverview(): Promise<AdminOverview> {
     aiCost,
     aiByCallType,
     feedback,
+    quizHealth,
+  };
+}
+
+/**
+ * How much of the product is actually gated.
+ *
+ * Quiz generation is best effort, so a step whose call failed stays completable
+ * without answering anything. That is invisible everywhere else: the student
+ * sees a normal step, and the certificate still says "verified". `ungated` is
+ * the number that matters here — anything above zero means the gate has a hole
+ * in it. The roadmap page tops these up on the next visit, so a number that
+ * does not fall over a few days is a real fault, not a backlog.
+ *
+ * Counted with head+count, so none of these rows are fetched.
+ */
+async function getQuizHealth(): Promise<QuizHealth> {
+  const supabase = await createClient();
+  const count = async (table: string, filter?: (q: never) => never) => {
+    let query = supabase.from(table).select("id", { count: "exact", head: true });
+    if (filter) query = filter(query as never);
+    const { count: n } = await query;
+    return n ?? 0;
+  };
+
+  const [steps, withQuiz, attempts, passed] = await Promise.all([
+    count("roadmap_steps"),
+    count("step_quizzes"),
+    count("quiz_attempts"),
+    (async () => {
+      const { count: n } = await supabase
+        .from("quiz_attempts")
+        .select("id", { count: "exact", head: true })
+        .eq("passed", true);
+      return n ?? 0;
+    })(),
+  ]);
+
+  return {
+    steps,
+    withQuiz,
+    ungated: Math.max(0, steps - withQuiz),
+    attempts,
+    passed,
+    passRate: attempts ? Math.round((passed / attempts) * 100) : null,
   };
 }

@@ -24,14 +24,19 @@ export function Card({
 
 export function SectionHeader({
   title,
+  subtitle,
   action,
 }: {
   title: string;
+  subtitle?: string;
   action?: { label: string; href: string };
 }) {
   return (
-    <div className="mb-4 flex items-center justify-between gap-4">
-      <h2 className="font-display text-base font-bold text-ink">{title}</h2>
+    <div className="mb-4 flex items-start justify-between gap-4">
+      <div>
+        <h2 className="font-display text-base font-bold text-ink">{title}</h2>
+        {subtitle && <p className="mt-1 text-sm text-muted">{subtitle}</p>}
+      </div>
       {action && (
         <Link
           href={action.href}

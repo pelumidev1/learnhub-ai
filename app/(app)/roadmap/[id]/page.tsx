@@ -1,10 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { ProgressBar } from "@/components/dashboard/primitives";
 import { StepItem, type StepQuizData } from "@/components/roadmap/step-item";
 import { loadRoadmapQuizzes } from "@/lib/db/quiz";
+import { generateQuizzesForSteps } from "@/lib/db/quiz-generate";
 import { toClientQuestions } from "@/lib/quiz/grade";
 import { PASS_MARK } from "@/lib/ai/quiz";
 import { FeedbackPrompt } from "@/components/feedback/feedback-prompt";
@@ -57,6 +59,36 @@ export default async function RoadmapDetailPage({
       passed: loaded.passed,
       bestScore: loaded.bestScore,
       passMark: PASS_MARK,
+    });
+  }
+
+  /* Top up any step that has no quiz. Generation at roadmap-creation time is
+     best effort, so a step whose call failed would otherwise stay ungated for
+     good — silently, since nothing surfaces it. This heals it on the next
+     visit instead of waiting for someone to remember to run the backfill.
+
+     After the response, so the page is never held up by it, and the student
+     sees the quiz next time rather than waiting for it now. Rate limited and
+     failure-logged inside generateQuizzesForSteps, which is what stops a step
+     the model cannot handle from costing money on every single page view. */
+  const missing = (steps ?? []).filter((s) => !quizByStep.has(s.id));
+  if (missing.length > 0) {
+    after(async () => {
+      try {
+        await generateQuizzesForSteps(
+          supabase,
+          user.id,
+          roadmap.title,
+          missing.map((s) => ({
+            id: s.id,
+            title: s.title,
+            description: s.description,
+            skill: s.skill,
+          })),
+        );
+      } catch (e) {
+        console.error("quiz top-up failed", e);
+      }
     });
   }
 

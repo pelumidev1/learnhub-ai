@@ -1,6 +1,7 @@
 import "server-only";
-import { estimateCostUsd } from "@/lib/ai/config";
+import { MODELS, estimateCostUsd } from "@/lib/ai/config";
 import { generateQuiz } from "@/lib/ai/quiz";
+import { AI_LIMITS, checkAiRateLimit } from "@/lib/ai/rate-limit";
 import type { createClient } from "@/lib/supabase/server";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -21,23 +22,34 @@ const CONCURRENCY = 3;
  *
  * Best-effort by design. The roadmap is already generated, paid for, and valid
  * by the time this runs, so a failure here must never cost the student their
- * roadmap — each step is caught independently and the rest continue. Steps left
- * without a quiz stay ungated until the backfill picks them up
- * (docs/QUIZ-DESIGN.md, decision 4).
+ * roadmap — each step is caught independently and the rest continue. A step
+ * left without a quiz stays ungated rather than unreachable, and the roadmap
+ * page tops it up on a later visit (docs/QUIZ-DESIGN.md, decision 4).
  *
- * Returns how many were written, for the backfill's output.
+ * Rate limited, and failures are logged. Those two together are what make the
+ * top-up safe to run on every page view: a step whose generation keeps failing
+ * burns its own quota and stops, instead of costing money on every render.
  */
 export async function generateQuizzesForSteps(
   supabase: Supabase,
   userId: string,
   careerTitle: string,
   steps: StepForQuiz[],
-): Promise<{ created: number; failed: number }> {
+): Promise<{ created: number; failed: number; skipped: number }> {
+  if (steps.length === 0) return { created: 0, failed: 0, skipped: 0 };
+
+  const limit = await checkAiRateLimit(supabase, userId, AI_LIMITS.quiz);
+  if (!limit.allowed) return { created: 0, failed: 0, skipped: steps.length };
+
+  // Never start more than the window has room for.
+  const budget = Math.min(steps.length, limit.remaining);
+  const planned = steps.slice(0, budget);
+
   let created = 0;
   let failed = 0;
 
-  for (let i = 0; i < steps.length; i += CONCURRENCY) {
-    const batch = steps.slice(i, i + CONCURRENCY);
+  for (let i = 0; i < planned.length; i += CONCURRENCY) {
+    const batch = planned.slice(i, i + CONCURRENCY);
     const results = await Promise.allSettled(
       batch.map((step) => generateOne(supabase, userId, careerTitle, step)),
     );
@@ -47,7 +59,7 @@ export async function generateQuizzesForSteps(
     }
   }
 
-  return { created, failed };
+  return { created, failed, skipped: steps.length - planned.length };
 }
 
 async function generateOne(
@@ -57,29 +69,41 @@ async function generateOne(
   step: StepForQuiz,
 ): Promise<boolean> {
   const startedAt = Date.now();
-  const { quiz, usage, model } = await generateQuiz({
-    careerTitle,
-    stepTitle: step.title,
-    stepDescription: step.description ?? step.title,
-    skill: step.skill ?? step.title,
-  });
+
+  let quiz, usage, model;
+  try {
+    ({ quiz, usage, model } = await generateQuiz({
+      careerTitle,
+      stepTitle: step.title,
+      stepDescription: step.description ?? step.title,
+      skill: step.skill ?? step.title,
+    }));
+  } catch (e) {
+    /* Log the failure so it counts against the rate limit. Without this a step
+       the model cannot produce valid JSON for would be retried on every visit
+       to the roadmap, forever, at real cost — the failure would be invisible
+       both to the limiter and to /admin. */
+    await logEvent(supabase, {
+      userId,
+      model: MODELS.quiz,
+      stepId: step.id,
+      latencyMs: Date.now() - startedAt,
+      status: "error",
+    });
+    throw e;
+  }
 
   // Logged before the insert: the call cost money whether or not the row lands.
-  try {
-    await supabase.from("ai_events").insert({
-      user_id: userId,
-      call_type: "quiz",
-      model,
-      input_tokens: usage.input,
-      output_tokens: usage.output,
-      cost_usd: estimateCostUsd(model, usage.input, usage.output),
-      latency_ms: Date.now() - startedAt,
-      related_id: step.id,
-      status: "ok",
-    });
-  } catch {
-    // logging is best-effort
-  }
+  await logEvent(supabase, {
+    userId,
+    model,
+    stepId: step.id,
+    latencyMs: Date.now() - startedAt,
+    status: "ok",
+    inputTokens: usage.input,
+    outputTokens: usage.output,
+    costUsd: estimateCostUsd(model, usage.input, usage.output),
+  });
 
   // `step_id` is unique, so a concurrent generation for the same step loses
   // here rather than creating a second quiz. Either row is equally valid.
@@ -89,4 +113,34 @@ async function generateOne(
 
   if (error && error.code !== "23505") throw new Error(error.message);
   return true;
+}
+
+async function logEvent(
+  supabase: Supabase,
+  e: {
+    userId: string;
+    model: string;
+    stepId: string;
+    latencyMs: number;
+    status: string;
+    inputTokens?: number;
+    outputTokens?: number;
+    costUsd?: number;
+  },
+): Promise<void> {
+  try {
+    await supabase.from("ai_events").insert({
+      user_id: e.userId,
+      call_type: "quiz",
+      model: e.model,
+      input_tokens: e.inputTokens ?? 0,
+      output_tokens: e.outputTokens ?? 0,
+      cost_usd: e.costUsd ?? 0,
+      latency_ms: e.latencyMs,
+      related_id: e.stepId,
+      status: e.status,
+    });
+  } catch {
+    // logging is best-effort
+  }
 }

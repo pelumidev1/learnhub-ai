@@ -147,4 +147,23 @@ export type AdminOverview = {
   aiCost: DayPoint[];
   aiByCallType: AiCostRow[];
   feedback: FeedbackRow[];
+  quizHealth: QuizHealth;
+};
+
+/**
+ * Quiz coverage and outcomes, for the admin page.
+ *
+ * `ungated` is the number that matters: quiz generation is best effort, so a
+ * step whose call failed can still be ticked complete without answering
+ * anything, and nothing else in the product surfaces that. Above zero means the
+ * pass gate has a hole in it.
+ */
+export type QuizHealth = {
+  steps: number;
+  withQuiz: number;
+  ungated: number;
+  attempts: number;
+  passed: number;
+  /** Percentage of attempts that passed, or null with no attempts yet. */
+  passRate: number | null;
 };

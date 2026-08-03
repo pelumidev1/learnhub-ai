@@ -39,7 +39,7 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 
 ## Tests
 
-`npm test` (Vitest, `vitest.config.ts`). 313 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
+`npm test` (Vitest, `vitest.config.ts`). 314 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
 
 What is covered, and why those and not others: each one is a place where a silent failure costs money or corrupts stored data.
 
@@ -92,6 +92,8 @@ A step cannot be ticked complete without a passing attempt on its quiz, so a cer
 - **The gate is one block in `setStepStatus`** (`app/(app)/roadmap/actions.ts`). Enforced in the Server Action, not the UI, because the UI is a suggestion — anyone can call the action directly. The disabled tick is only there to save a pointless round trip.
 - **The answer key never reaches the browser.** `lib/quiz/grade.ts` is the single place it is stripped; grading happens in `quiz-actions.ts` against the stored key. If `correct_index` ever ships, a student reads it in devtools and passes every quiz in the product in about four minutes, and the feature was pointless. `lib/quiz/grade.test.ts` asserts this over the serialised payload, and it was verified once against the real rendered page and RSC payload.
 - **Questions are generated once per step, by Haiku, in `after()`.** Nine calls would add ~30s to a wait that is already ~30s for the roadmap; `after()` runs them once the redirect is sent. Grading is code, not AI, so unlimited retries cost nothing. About $0.015 per student, one time — roughly 13% on top of the $0.116 journey.
+- **Coverage heals itself.** The roadmap page tops up any step with no quiz in `after()`. Safe to run on every view because generation is rate limited per user (`AI_LIMITS.quiz`) *and* failed calls are logged to `ai_events`, so they count against that limit — a step the model cannot handle gives up rather than costing money on every render. `/admin` shows the coverage; `Ungated > 0` means the gate has a hole.
+- **Sequential step locking was considered and rejected** — see `docs/QUIZ-DESIGN.md`. It adds nothing to what the certificate certifies (every step is required anyway) and can strand a student on a step they are stuck on.
 - **A step with no quiz stays ungated on purpose.** Generation is best-effort follow-up to a roadmap that is already paid for; a failed call must never leave a student stuck. `npm run quiz:backfill` (dry run by default, `--write` to generate) closes those gaps and covers roadmaps created before this shipped.
 - **Quizzes load per roadmap, in two queries** (`loadRoadmapQuizzes`). The first version loaded per step and ran the identical attempts query once per step: ~27 round trips before first paint on a 9-step roadmap, on a product built for intermittent connections.
 - **Carry-over is scoped to the roadmap.** It was scoped only to the user, so a question missed in a Data Analyst roadmap could surface in a Product Designer one.

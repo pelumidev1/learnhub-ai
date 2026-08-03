@@ -45,4 +45,10 @@ export async function checkAiRateLimit(
 export const AI_LIMITS = {
   recommendation: { windowMinutes: 60, max: 10 },
   roadmap: { windowMinutes: 60, max: 15 },
+  /* One roadmap needs up to 9 of these, and the roadmap page tops up any that
+     failed. Higher than the others because each is a cheap Haiku call, but it
+     still has to be capped: without it a step whose generation keeps failing
+     would be retried on every page view forever. Failed calls are logged too,
+     so they count against this and a broken step gives up on its own. */
+  quiz: { windowMinutes: 60, max: 40 },
 } as const;

@@ -166,3 +166,40 @@ Three things, all small, all for reasons worth keeping:
 The `ai_call_type` enum gained a `quiz` value in the migration, so quiz spend appears on `/admin` alongside recommendation and roadmap. Nothing else on the admin page was changed.
 
 The **practical assessment** (decision 5) remains deliberately unbuilt.
+
+
+## Sequential step locking: considered, not built (2026-08-03)
+
+The mockup at the top of this document shows steps 4-6 locked behind step 3.
+That is not built, and on reflection it should not be.
+
+The certificate already requires *every* step complete, and every step now
+requires a passing quiz. Locking the order does not add a single guarantee to
+what the certificate certifies — it only changes the sequence in which a
+student collects the same set of passes.
+
+What it would add is a way to strand someone. A student stuck on step 3's quiz
+would be unable to read ahead, unable to work on step 5 while a concept
+settles, and unable to make any visible progress at all. That is a real cost
+paid by exactly the person the product is for, in exchange for a guarantee we
+already have by other means.
+
+The "Up next" marker already points at the first incomplete step, which is the
+guidance the lock was standing in for.
+
+## Self-healing coverage (2026-08-03)
+
+Decision 4 said a failed quiz generation should "retry in the background". As
+first shipped it did not: a step whose generation failed stayed ungated until
+somebody remembered to run `npm run quiz:backfill`, and nothing surfaced that
+it had happened.
+
+Now the roadmap page tops up any step with no quiz, in `after()`, so it heals
+on the next visit. Two things make that safe to run on every page view:
+generation is rate limited per user (`AI_LIMITS.quiz`), and *failed* calls are
+logged to `ai_events` as well as successful ones, so they count against that
+limit. A step the model cannot produce valid JSON for gives up on its own
+instead of costing money on every render.
+
+`/admin` now carries a Quiz gate card. `Ungated` is the number that matters:
+above zero means the pass gate has a hole in it. It was invisible before.
