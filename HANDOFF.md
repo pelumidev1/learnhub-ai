@@ -39,7 +39,7 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 
 ## Tests
 
-`npm test` (Vitest, `vitest.config.ts`). 284 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
+`npm test` (Vitest, `vitest.config.ts`). 313 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
 
 What is covered, and why those and not others: each one is a place where a silent failure costs money or corrupts stored data.
 
@@ -57,6 +57,7 @@ What is covered, and why those and not others: each one is a place where a silen
 | `lib/quiz/grade.test.ts` | **The answer-key leak test.** Asserts over the serialised client payload that `correct_index` and the explanations never reach the browser, plus the pass-mark boundary (4 of 5 passes, 3 of 5 does not) and that an unanswered question counts as wrong rather than shrinking the denominator. |
 | `lib/quiz/carry-over.test.ts` | Spaced repetition: two *consecutive* correct answers retire a question, a later miss resets the streak, the carry cap holds, and the result does not depend on the order rows came back from the database. |
 | `lib/ai/quiz.test.ts` | Model output before it is stored: exactly four options, `correct_index` in range (a 4 would make a step impossible to pass), exactly five questions, and that 80 against 5 means 4 of 5. |
+| `lib/quiz/balance.test.ts` | That a quiz is never passable by picking one letter (asserted over 500 seeds), and that correct answers spread evenly across many quizzes — the test that caught the `i % 4` pool always doubling position 0. |
 
 The suite was checked by mutation, not just by passing: ten deliberate regressions were introduced one at a time (remove the URL filter, flip `<` to `<=` at the rate-limit cap, drop the production guard on demo mode, allow `//evil.com`, remove each schema bound, stop stripping code fences) and **all ten were caught**. Re-run that check if you rewrite a test — a green suite that catches nothing is worse than none.
 
@@ -93,6 +94,8 @@ A step cannot be ticked complete without a passing attempt on its quiz, so a cer
 - **Questions are generated once per step, by Haiku, in `after()`.** Nine calls would add ~30s to a wait that is already ~30s for the roadmap; `after()` runs them once the redirect is sent. Grading is code, not AI, so unlimited retries cost nothing. About $0.015 per student, one time — roughly 13% on top of the $0.116 journey.
 - **A step with no quiz stays ungated on purpose.** Generation is best-effort follow-up to a roadmap that is already paid for; a failed call must never leave a student stuck. `npm run quiz:backfill` (dry run by default, `--write` to generate) closes those gaps and covers roadmaps created before this shipped.
 - **Question keys are `stepId:questionId`.** Ids are `q1`..`q5` *within* a quiz, so carrying step 2's `q3` into step 3 would otherwise collide with step 3's own `q3` and grade against the wrong answer.
+- **Answer positions are balanced in code, not by the prompt** (`lib/quiz/balance.ts`). The prompt asked the model to vary the slot; the first 26 real quizzes came back with B correct 61% of the time, D correct in none of 130 questions, and 11 of 26 passable by tapping one letter five times. Now each quiz draws targets from a pool that uses every slot before repeating any, with the repeat picked at random — building it as `i % 4` looks balanced per quiz but makes option A correct 40% of the time forever.
+- **Two terminal scripts, both dry-run by default:** `npm run quiz:backfill` generates missing quizzes, `npm run quiz:rebalance` reshuffles stored ones. Both take `-- --write`. Rebalance verifies every question keeps its wording, its four options and the same correct answer before writing, and aborts if not. Applied 2026-08-03: 26 quizzes, gameable 11 → 0, split now 24/26/27/23.
 - `awardCompletion` and the certificate logic were not touched. They already issue a certificate when every step is complete; the gate is what makes that mean something.
 
 ## Feedback thumbs (added 2026-08-02)

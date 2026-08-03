@@ -19,6 +19,7 @@
  */
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
+import { balanceQuiz } from "./lib/balance.mjs";
 
 const WRITE = process.argv.includes("--write");
 const CONCURRENCY = 3;
@@ -149,7 +150,10 @@ Write the ${QUESTIONS_PER_QUIZ} questions for this step. Return only the JSON ob
             .filter((b) => b.type === "text")
             .map((b) => b.text)
             .join("\n");
-          const questions = validate(parseJson(text));
+          /* Balance where the correct answer sits. The prompt asks the model
+             to vary it and the model does not: the first run of this script
+             produced B-correct 61% of the time and D-correct never. */
+          const questions = balanceQuiz(validate(parseJson(text)));
 
           const { error: insErr } = await db
             .from("step_quizzes")

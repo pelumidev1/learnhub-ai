@@ -4,6 +4,7 @@ import { z } from "zod";
 import { AI_DEMO_MODE, MODELS } from "./config";
 import { DEMO_MODEL, demoDelay, demoQuiz } from "./demo";
 import { extractText, parseJson } from "./parse";
+import { balanceQuiz } from "@/lib/quiz/balance";
 
 export const QUESTIONS_PER_QUIZ = 5;
 export const PASS_MARK = 80;
@@ -122,7 +123,11 @@ Write the ${QUESTIONS_PER_QUIZ} questions for this step. Return only the JSON ob
  * came from, and short ids keep the jsonb small.
  */
 function withIds(parsed: { questions: Omit<QuizQuestion, "id">[] }): QuizOutput {
-  return {
-    questions: parsed.questions.map((q, i) => ({ ...q, id: `q${i + 1}` })),
-  };
+  const questions = parsed.questions.map((q, i) => ({ ...q, id: `q${i + 1}` }));
+  /* Balance where the correct answer sits before storing. The SYSTEM prompt
+     above asks the model to vary it, and the first 26 real quizzes came back
+     with B correct 61% of the time and D correct in none of 130 questions —
+     11 of the 26 were passable by tapping one letter five times. A model asked
+     to be random is not random, so this is enforced in code. */
+  return { questions: balanceQuiz(questions) };
 }
