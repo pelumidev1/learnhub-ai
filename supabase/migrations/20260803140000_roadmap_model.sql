@@ -20,12 +20,20 @@ alter table public.learning_roadmaps add column if not exists model text;
 comment on column public.learning_roadmaps.model is
   'Anthropic model id that generated this roadmap, or ''demo'' for canned sample output. Read by the UI to label sample data.';
 
--- Backfill from the AI call log. Every roadmap generation wrote an ai_events row
--- with related_id = career_result_id, so the model is recoverable for anything
--- created before this column existed.
+-- Backfill from the career result the roadmap was built from.
+--
+-- Not from ai_events, which was the obvious source and is wrong: the three demo
+-- rows there carry related_ids that match no career_result now in the table, so
+-- joining on them silently backfills nothing and leaves exactly the roadmaps
+-- this column exists to label sitting at null. career_results.model has been
+-- populated since the schema was created and is on the row the roadmap points
+-- at, so it is both authoritative and actually joinable.
+--
+-- A roadmap built from a demo recommendation is demo output: the demo path
+-- produced both in the same session.
 update public.learning_roadmaps lr
-set model = e.model
-from public.ai_events e
-where e.call_type = 'roadmap'
-  and e.related_id = lr.career_result_id
-  and lr.model is null;
+set model = cr.model
+from public.career_results cr
+where cr.id = lr.career_result_id
+  and lr.model is null
+  and cr.model is not null;

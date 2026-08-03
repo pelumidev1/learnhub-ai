@@ -103,6 +103,18 @@ A step cannot be ticked complete without a passing attempt on its quiz, so a cer
 - **Two terminal scripts, both dry-run by default:** `npm run quiz:backfill` generates missing quizzes, `npm run quiz:rebalance` reshuffles stored ones. Both take `-- --write`. Rebalance verifies every question keeps its wording, its four options and the same correct answer before writing, and aborts if not. Applied 2026-08-03: 26 quizzes, gameable 11 → 0, split now 24/26/27/23.
 - `awardCompletion` and the certificate logic were not touched. They already issue a certificate when every step is complete; the gate is what makes that mean something.
 
+## Sample-data labelling (added 2026-08-03)
+
+CLAUDE.md has always said "sample output must always be visibly labeled as sample data". Nothing did. `career_results` carried a `model` column nothing read; `learning_roadmaps` had no equivalent. The cost was concrete: the owner read a demo roadmap from 2026-07-11 (twelve days before the Anthropic account was funded) and reasonably concluded the AI produced generic, mismatched resources. It was `lib/ai/demo.ts` verbatim.
+
+- `learning_roadmaps.model`, backfilled **from `career_results.model`** — not from `ai_events`, which was the obvious source and silently matches nothing for the demo rows.
+- `SampleBanner` on the results and roadmap pages when `model = 'demo'`.
+- The roadmap prompt now requires step-matched resources, with the review test stated: *could this exact resource sit unchanged under a different step?* Bare homepages named as the failure case.
+
+**The three demo roadmaps were deleted on 2026-08-03** at the owner's instruction, along with 18 steps, 18 quizzes and 18 progress rows. Nine demo `career_results` remain — they are recommendations, not roadmaps, and the results page now labels them.
+
+**Certificates do not cascade.** `certificates.roadmap_id` is `on delete set null`, so deleting those roadmaps left two certificates verifying publicly at `/verify/[code]` — "Verified, Your path to Data Analyst" — for sample data that no longer existed and on which no quiz was ever passed. Both were deleted, and `verify_certificate()` now inner-joins the roadmap so a certificate stops verifying once the work behind it is gone. The row is deliberately kept as a record; it just stops being a public claim.
+
 ## Feedback thumbs (added 2026-08-02)
 
 Thumbs up/down on the results page (`context = 'recommendation'`, keyed on the assessment id) and the roadmap page (`context = 'roadmap'`, keyed on the roadmap id). Feeds the PRD's satisfaction metric and the Feedback card on `/admin`, both of which had no data before this.
