@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { setStepStatus } from "@/app/(app)/roadmap/actions";
 import { Icons } from "@/components/ui/icons";
 import { StepQuiz } from "@/components/roadmap/step-quiz";
@@ -38,8 +39,11 @@ export function StepItem({
   isNext: boolean;
   quiz: StepQuizData | null;
 }) {
+  const router = useRouter();
   const [done, setDone] = useState(completed);
-  const [gateError, setGateError] = useState<string | null>(null);
+  // `calm` is for the case where nothing went wrong for the student — the quiz
+  // simply arrived after the page did.
+  const [gateError, setGateError] = useState<{ text: string; calm: boolean } | null>(null);
   const [pending, start] = useTransition();
 
   // The tick is disabled until the quiz is passed, but the server is what
@@ -58,7 +62,18 @@ export function StepItem({
       const res = await setStepStatus(step.id, next);
       if (!res.ok) {
         setDone(!next);
-        setGateError(res.error ?? "That didn't work. Please try again.");
+        /* The gate refused but this step is showing no quiz, so the quiz landed
+           after the page was rendered — it is generated in the background. Pull
+           it in rather than telling the student to pass a quiz they cannot see. */
+        if (res.error && !quiz) {
+          router.refresh();
+          setGateError({ text: "Your quiz is ready. It is on this step now.", calm: true });
+        } else {
+          setGateError({
+            text: res.error ?? "That didn't work. Please try again.",
+            calm: false,
+          });
+        }
       }
     });
   }
@@ -155,8 +170,11 @@ export function StepItem({
           )}
 
           {gateError && (
-            <p role="alert" className="mt-2 text-sm text-red-600">
-              {gateError}
+            <p
+              role="alert"
+              className={cn("mt-2 text-sm", gateError.calm ? "text-muted" : "text-red-600")}
+            >
+              {gateError.text}
             </p>
           )}
         </div>

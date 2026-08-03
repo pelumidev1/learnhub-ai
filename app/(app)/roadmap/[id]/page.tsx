@@ -5,6 +5,7 @@ import { after } from "next/server";
 import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { ProgressBar } from "@/components/dashboard/primitives";
 import { StepItem, type StepQuizData } from "@/components/roadmap/step-item";
+import { QuizPending } from "@/components/roadmap/quiz-pending";
 import { loadRoadmapQuizzes } from "@/lib/db/quiz";
 import { generateQuizzesForSteps } from "@/lib/db/quiz-generate";
 import { toClientQuestions } from "@/lib/quiz/grade";
@@ -14,6 +15,10 @@ import { Icons } from "@/components/ui/icons";
 import { SampleBanner } from "@/components/ui/sample-banner";
 
 export const metadata: Metadata = { title: "Learning roadmap" };
+
+/** How long after a roadmap is created the top-up stays out of the way. Long
+ *  enough for a 9-step creation run (about 35 seconds) plus room to spare. */
+const CREATION_GRACE_MS = 2 * 60_000;
 
 export default async function RoadmapDetailPage({
   params,
@@ -27,7 +32,7 @@ export default async function RoadmapDetailPage({
 
   const { data: roadmap } = await supabase
     .from("learning_roadmaps")
-    .select("id, title, status, model")
+    .select("id, title, status, model, created_at")
     .eq("id", id)
     .eq("user_id", user.id)
     .maybeSingle();
@@ -73,7 +78,17 @@ export default async function RoadmapDetailPage({
      failure-logged inside generateQuizzesForSteps, which is what stops a step
      the model cannot handle from costing money on every single page view. */
   const missing = (steps ?? []).filter((s) => !quizByStep.has(s.id));
-  if (missing.length > 0) {
+
+  /* A roadmap this new is still being filled in by the action that created it,
+     which started its run before this page was even requested. Both runs would
+     read the same empty table and generate every quiz twice — this is not
+     hypothetical, it happened to all 8 steps of the first roadmap created after
+     the top-up shipped. Leave the creation run to finish; QuizPending refreshes
+     the page while it works, and this heals anything still missing on a later
+     visit. */
+  const isFresh = Date.now() - new Date(roadmap.created_at).getTime() < CREATION_GRACE_MS;
+
+  if (missing.length > 0 && !isFresh) {
     after(async () => {
       try {
         await generateQuizzesForSteps(
@@ -146,6 +161,8 @@ export default async function RoadmapDetailPage({
           </div>
         </div>
       )}
+
+      {missing.length > 0 && <QuizPending count={missing.length} />}
 
       <div className="space-y-3">
         {list.map((s) => (
