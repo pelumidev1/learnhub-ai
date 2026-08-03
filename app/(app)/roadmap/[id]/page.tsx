@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { ProgressBar } from "@/components/dashboard/primitives";
 import { StepItem, type StepQuizData } from "@/components/roadmap/step-item";
-import { loadQuizItems } from "@/lib/db/quiz";
+import { loadRoadmapQuizzes } from "@/lib/db/quiz";
 import { toClientQuestions } from "@/lib/quiz/grade";
 import { PASS_MARK } from "@/lib/ai/quiz";
 import { FeedbackPrompt } from "@/components/feedback/feedback-prompt";
@@ -43,45 +43,22 @@ export default async function RoadmapDetailPage({
     .eq("roadmap_id", id)
     .eq("user_id", user.id);
 
-  /* One quiz set per step, built server-side so the answer key never leaves
-     here. Loaded in parallel: each step needs its own carry-over pool, and a
-     9-step roadmap serialised would be nine round trips before first paint. */
-  const quizByStep = new Map<string, StepQuizData>();
+  /* Every step's quiz, in two queries for the whole roadmap. The answer key is
+     stripped here, server-side, and never reaches the browser. */
   const stepIds = (steps ?? []).map((s) => s.id);
+  const quizzesByStep = await loadRoadmapQuizzes(supabase, user.id, stepIds);
 
-  const [loadedQuizzes, { data: attemptRows }] = await Promise.all([
-    Promise.all(stepIds.map((sid) => loadQuizItems(supabase, user.id, sid))),
-    supabase
-      .from("quiz_attempts")
-      .select("step_id, score, passed")
-      .eq("user_id", user.id)
-      .in("step_id", stepIds.length ? stepIds : ["00000000-0000-0000-0000-000000000000"]),
-  ]);
-
-  /* Best score and "ever passed" are tracked separately on purpose: a student
-     who passed and then retook the quiz for practice has still passed, whatever
-     the later attempt scored. */
-  const best = new Map<string, { passed: boolean; score: number }>();
-  for (const a of attemptRows ?? []) {
-    const prior = best.get(a.step_id) ?? { passed: false, score: 0 };
-    best.set(a.step_id, {
-      passed: prior.passed || a.passed,
-      score: Math.max(prior.score, a.score),
-    });
-  }
-
-  stepIds.forEach((sid, i) => {
-    const loaded = loadedQuizzes[i];
-    if (!loaded || loaded.items.length === 0) return;
-    const b = best.get(sid);
+  const quizByStep = new Map<string, StepQuizData>();
+  for (const [sid, loaded] of quizzesByStep) {
+    if (loaded.items.length === 0) continue;
     quizByStep.set(sid, {
       questions: toClientQuestions(loaded.items),
       carriedCount: loaded.items.filter((it) => it.stepId !== sid).length,
-      passed: b?.passed ?? false,
-      bestScore: b?.score ?? null,
+      passed: loaded.passed,
+      bestScore: loaded.bestScore,
       passMark: PASS_MARK,
     });
-  });
+  }
 
   const { data: feedback } = await supabase
     .from("user_feedback")

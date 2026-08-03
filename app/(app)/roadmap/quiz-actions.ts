@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { loadQuizItems } from "@/lib/db/quiz";
+import { loadStepQuiz } from "@/lib/db/quiz";
 import { gradeAttempt, type GradedQuestion } from "@/lib/quiz/grade";
 
 /**
@@ -51,12 +51,18 @@ export async function submitQuizAttempt(raw: unknown): Promise<Result> {
 
   // Rebuilt from the database, not taken from the request: the client does not
   // get to say which questions it was asked.
-  const loaded = await loadQuizItems(supabase, user.id, stepId);
+  const loaded = await loadStepQuiz(supabase, user.id, stepId);
   if (!loaded || loaded.items.length === 0) {
     return { ok: false, error: "This step has no quiz yet." };
   }
 
   const { score, passed, missedKeys, graded } = gradeAttempt(loaded.items, answers);
+
+  /* Store only the questions actually asked, not the raw request body. The
+     stored keys are the roll call the repetition pool reads back, so junk in
+     here becomes junk in the pool — and without this a client could post a
+     megabyte of nonsense and we would write it to the row verbatim. */
+  const recorded = Object.fromEntries(graded.map((g) => [g.key, g.chosenIndex]));
 
   const { error } = await supabase.from("quiz_attempts").insert({
     quiz_id: loaded.quizId,
@@ -64,7 +70,7 @@ export async function submitQuizAttempt(raw: unknown): Promise<Result> {
     user_id: user.id,
     score,
     passed,
-    answers,
+    answers: recorded,
     missed_ids: missedKeys,
   });
   // A failed insert means the attempt was not recorded, so the gate would not
