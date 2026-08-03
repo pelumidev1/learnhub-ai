@@ -5,6 +5,7 @@ import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { CareerMatchCard } from "@/components/results/career-match-card";
 import { GeneratePanel } from "@/components/results/generate-panel";
 import { FeedbackPrompt } from "@/components/feedback/feedback-prompt";
+import { SampleBanner } from "@/components/ui/sample-banner";
 
 export const metadata: Metadata = { title: "Your career matches" };
 
@@ -69,6 +70,8 @@ export default async function ResultsPage({
           Retake assessment
         </Link>
       </div>
+
+      {results.some((r) => r.model === "demo") && <SampleBanner what="result" />}
 
       <div className="space-y-4">
         {results.map((r, i) => (

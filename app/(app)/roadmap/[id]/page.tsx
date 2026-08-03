@@ -11,6 +11,7 @@ import { toClientQuestions } from "@/lib/quiz/grade";
 import { PASS_MARK } from "@/lib/ai/quiz";
 import { FeedbackPrompt } from "@/components/feedback/feedback-prompt";
 import { Icons } from "@/components/ui/icons";
+import { SampleBanner } from "@/components/ui/sample-banner";
 
 export const metadata: Metadata = { title: "Learning roadmap" };
 
@@ -26,7 +27,7 @@ export default async function RoadmapDetailPage({
 
   const { data: roadmap } = await supabase
     .from("learning_roadmaps")
-    .select("id, title, status")
+    .select("id, title, status, model")
     .eq("id", id)
     .eq("user_id", user.id)
     .maybeSingle();
@@ -129,6 +130,8 @@ export default async function RoadmapDetailPage({
           </div>
         </div>
       </div>
+
+      {roadmap.model === "demo" && <SampleBanner what="roadmap" />}
 
       {roadmap.status === "completed" && (
         <div className="flex items-center gap-3 rounded-2xl border border-blue bg-blue/5 p-4 shadow-glow">

@@ -98,6 +98,8 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
         career_id: cr.career_id,
         title: roadmap.title,
         status: "active",
+        // Recorded so the UI can label demo output as sample data (CLAUDE.md).
+        model,
       })
       .select("id")
       .single();
