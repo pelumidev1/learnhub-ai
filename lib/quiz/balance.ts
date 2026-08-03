@@ -7,7 +7,7 @@ import type { QuizQuestion } from "@/lib/ai/quiz";
  * Why this is code and not a line in the prompt: the prompt already said "vary
  * which position the correct answer sits in". The first 26 real quizzes came
  * back with B correct 61% of the time and D correct in none of 130 questions,
- * and 11 of those 26 could be passed by picking one letter every time. A model
+ * and 9 of those 26 could be passed by picking one letter every time. A model
  * asked to be random is not random. A pass gate that a student beats by tapping
  * B five times is not a gate.
  *

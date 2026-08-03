@@ -127,7 +127,7 @@ function withIds(parsed: { questions: Omit<QuizQuestion, "id">[] }): QuizOutput 
   /* Balance where the correct answer sits before storing. The SYSTEM prompt
      above asks the model to vary it, and the first 26 real quizzes came back
      with B correct 61% of the time and D correct in none of 130 questions —
-     11 of the 26 were passable by tapping one letter five times. A model asked
+     9 of the 26 were passable by tapping one letter five times. A model asked
      to be random is not random, so this is enforced in code. */
   return { questions: balanceQuiz(questions) };
 }
