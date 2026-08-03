@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react";
 import { setStepStatus } from "@/app/(app)/roadmap/actions";
 import { Icons } from "@/components/ui/icons";
+import { StepQuiz } from "@/components/roadmap/step-quiz";
+import type { ClientQuestion } from "@/lib/quiz/grade";
 import { cn } from "@/lib/utils/cn";
 
 type Step = {
@@ -15,17 +17,34 @@ type Step = {
   resources: { label: string; url: string }[] | null;
 };
 
+/** Null when the step has no quiz — generation is best-effort, so a step can
+ *  legitimately be ungated. */
+export type StepQuizData = {
+  questions: ClientQuestion[];
+  carriedCount: number;
+  passed: boolean;
+  bestScore: number | null;
+  passMark: number;
+};
+
 export function StepItem({
   step,
   completed,
   isNext,
+  quiz,
 }: {
   step: Step;
   completed: boolean;
   isNext: boolean;
+  quiz: StepQuizData | null;
 }) {
   const [done, setDone] = useState(completed);
+  const [gateError, setGateError] = useState<string | null>(null);
   const [pending, start] = useTransition();
+
+  // The tick is disabled until the quiz is passed, but the server is what
+  // actually enforces it — this only saves the student a pointless round trip.
+  const locked = Boolean(quiz && !quiz.passed && !done);
 
   // Render only http(s) links — steps saved before URL validation existed
   // could carry an unsafe scheme (e.g. javascript:).
@@ -34,9 +53,13 @@ export function StepItem({
   function toggle() {
     const next = !done;
     setDone(next); // optimistic
+    setGateError(null);
     start(async () => {
       const res = await setStepStatus(step.id, next);
-      if (!res.ok) setDone(!next);
+      if (!res.ok) {
+        setDone(!next);
+        setGateError(res.error ?? "That didn't work. Please try again.");
+      }
     });
   }
 
@@ -51,14 +74,23 @@ export function StepItem({
         <button
           type="button"
           onClick={toggle}
-          disabled={pending}
+          disabled={pending || locked}
           aria-pressed={done}
-          aria-label={done ? "Mark step incomplete" : "Mark step complete"}
+          aria-label={
+            locked
+              ? "Pass this step's quiz to mark it complete"
+              : done
+                ? "Mark step incomplete"
+                : "Mark step complete"
+          }
+          title={locked ? "Pass this step's quiz first" : undefined}
           className={cn(
             "mt-0.5 grid h-7 w-7 flex-none place-items-center rounded-full border-2 transition disabled:opacity-60",
             done
               ? "border-blue bg-blue text-white"
-              : "border-silver-2 text-transparent hover:border-blue",
+              : locked
+                ? "cursor-not-allowed border-silver-2 text-transparent"
+                : "border-silver-2 text-transparent hover:border-blue",
           )}
         >
           <Icons.check className="h-4 w-4" />
@@ -109,6 +141,23 @@ export function StepItem({
                 </a>
               ))}
             </div>
+          )}
+
+          {quiz && (
+            <StepQuiz
+              stepId={step.id}
+              questions={quiz.questions}
+              passMark={quiz.passMark}
+              carriedCount={quiz.carriedCount}
+              passed={quiz.passed}
+              bestScore={quiz.bestScore}
+            />
+          )}
+
+          {gateError && (
+            <p role="alert" className="mt-2 text-sm text-red-600">
+              {gateError}
+            </p>
           )}
         </div>
       </div>

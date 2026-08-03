@@ -39,7 +39,7 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 
 ## Tests
 
-`npm test` (Vitest, `vitest.config.ts`). 198 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
+`npm test` (Vitest, `vitest.config.ts`). 284 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
 
 What is covered, and why those and not others: each one is a place where a silent failure costs money or corrupts stored data.
 
@@ -54,6 +54,9 @@ What is covered, and why those and not others: each one is a place where a silen
 | `lib/admin/queries.test.ts` | The admin page's arithmetic: PostgREST returning `bigint`/`numeric` as strings (a total that silently concatenates), UTC day bucketing, and zero-filling the days a view omits. |
 | `lib/utils/format.test.ts` | That sub-cent AI spend does not render as `$0.00` — a cost dashboard that reports zero is worse than none. |
 | `lib/validations/feedback.test.ts` | The feedback boundary: no coercion on the thumb (a coerced `"false"` would record every negative vote as positive), uuid-shaped `context_id` (the upsert conflict target), and the comment cap enforced server-side. |
+| `lib/quiz/grade.test.ts` | **The answer-key leak test.** Asserts over the serialised client payload that `correct_index` and the explanations never reach the browser, plus the pass-mark boundary (4 of 5 passes, 3 of 5 does not) and that an unanswered question counts as wrong rather than shrinking the denominator. |
+| `lib/quiz/carry-over.test.ts` | Spaced repetition: two *consecutive* correct answers retire a question, a later miss resets the streak, the carry cap holds, and the result does not depend on the order rows came back from the database. |
+| `lib/ai/quiz.test.ts` | Model output before it is stored: exactly four options, `correct_index` in range (a 4 would make a step impossible to pass), exactly five questions, and that 80 against 5 means 4 of 5. |
 
 The suite was checked by mutation, not just by passing: ten deliberate regressions were introduced one at a time (remove the URL filter, flip `<` to `<=` at the rate-limit cap, drop the production guard on demo mode, allow `//evil.com`, remove each schema bound, stop stripping code fences) and **all ten were caught**. Re-run that check if you rewrite a test — a green suite that catches nothing is worse than none.
 
@@ -79,7 +82,18 @@ The suite was checked by mutation, not just by passing: ten deliberate regressio
 
 **Post-beta, in order:** ~~certificate public verification page~~ (`app/(marketing)/verify/[code]` exists); ~~populate `ai_events.cost_usd`/`latency_ms`~~ (done — written at all three call sites via `estimateCostUsd`); ~~public careers catalog~~ (`app/(marketing)/careers` exists); ~~Privacy & Terms pages~~ (exist). ~~**recommendation feedback thumbs**~~ — shipped 2026-08-02, see below. Still open: no timeout/retry story on the AI calls (a call that fails before the `ai_events` insert never counts against the rate limit).
 
-**Next build:** step quizzes as a pass gate on roadmap progress. Fully specified in `docs/QUIZ-DESIGN.md`, all open decisions settled — start there, don't redesign it.
+~~**Next build: step quizzes**~~ — shipped 2026-08-03, see below.
+
+## Step quizzes (added 2026-08-03)
+
+A step cannot be ticked complete without a passing attempt on its quiz, so a certificate now certifies that someone was tested on every step and passed. Design and the five settled decisions: `docs/QUIZ-DESIGN.md`.
+
+- **The gate is one block in `setStepStatus`** (`app/(app)/roadmap/actions.ts`). Enforced in the Server Action, not the UI, because the UI is a suggestion — anyone can call the action directly. The disabled tick is only there to save a pointless round trip.
+- **The answer key never reaches the browser.** `lib/quiz/grade.ts` is the single place it is stripped; grading happens in `quiz-actions.ts` against the stored key. If `correct_index` ever ships, a student reads it in devtools and passes every quiz in the product in about four minutes, and the feature was pointless. `lib/quiz/grade.test.ts` asserts this over the serialised payload, and it was verified once against the real rendered page and RSC payload.
+- **Questions are generated once per step, by Haiku, in `after()`.** Nine calls would add ~30s to a wait that is already ~30s for the roadmap; `after()` runs them once the redirect is sent. Grading is code, not AI, so unlimited retries cost nothing. About $0.015 per student, one time — roughly 13% on top of the $0.116 journey.
+- **A step with no quiz stays ungated on purpose.** Generation is best-effort follow-up to a roadmap that is already paid for; a failed call must never leave a student stuck. `npm run quiz:backfill` (dry run by default, `--write` to generate) closes those gaps and covers roadmaps created before this shipped.
+- **Question keys are `stepId:questionId`.** Ids are `q1`..`q5` *within* a quiz, so carrying step 2's `q3` into step 3 would otherwise collide with step 3's own `q3` and grade against the wrong answer.
+- `awardCompletion` and the certificate logic were not touched. They already issue a certificate when every step is complete; the gate is what makes that mean something.
 
 ## Feedback thumbs (added 2026-08-02)
 

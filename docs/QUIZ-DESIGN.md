@@ -1,6 +1,7 @@
 # Step quizzes — design for review
 
-**Status:** approved in shape, not yet built. Written 2026-08-02 from `master-any-skill.skill`.
+**Status:** BUILT and shipped 2026-08-03. Written 2026-08-02 from `master-any-skill.skill`.
+This document is now a record of intent, not a plan. Where the build diverged from it, the divergence is noted inline and the reason given.
 **Decisions:** Pelumi delegated the five open calls on 2026-08-02 ("decide for me"). They are now settled — see "Your calls", each marked **DECIDED**. Nothing below is still waiting on him.
 **Sequencing:** the feedback thumbs shipped first (commit on 2026-08-02) because they were hours rather than days and unblocked a PRD metric with no data. This is the next build.
 
@@ -52,7 +53,7 @@ About **13% more per student**, paid once when the roadmap is created, never aga
 
 Three decisions get it that low:
 
-1. **Questions are generated once per step**, when the roadmap is built — not per day, not per attempt. A student who retries a quiz twenty times costs nothing extra.
+1. **Questions are generated once per step**, when the roadmap is built — not per day, not per attempt. *(As built: in `after()`, so generation runs once the redirect has been sent rather than making the student wait another ~30s on top of the roadmap's own generation.)* A student who retries a quiz twenty times costs nothing extra.
 2. **Haiku writes them, not Opus.** Writing five multiple-choice questions about a topic is a much easier job than designing a career path. Opus for the same work would be roughly four times the price for no gain.
 3. **Grading is code, not AI.** Multiple choice with a known answer key. Zero AI cost to mark anything, and it works instantly on a bad connection.
 
@@ -148,3 +149,20 @@ Roughly three days. Nothing here touches the landing page or the admin page.
 - **The monetization thread.** The skill coaches toward "$2K/mo freelancing." Your PRD puts monetization in Phase 3 and v1 is free. Different promise.
 - **The intake questions.** Your assessment already does this, better.
 - **Resource liveness checking.** The skill fetches every URL before including it. Worth doing, but it belongs to roadmap generation, not quizzes. Separate job.
+
+
+## What changed during the build
+
+Three things, all small, all for reasons worth keeping:
+
+1. **Generation moved into `after()`.** The design said "when the roadmap is built", which read as "before the student sees it". Nine Haiku calls at ~3s each would have added roughly half a minute to a wait that is already ~30s, for questions the student does not need until they reach that step. `after()` runs them once the response has gone out. The student lands on step one at the same speed as before.
+
+2. **Question keys became `stepId:questionId`.** The design's `missed_ids` implied a bare question id was enough. It is not: ids are `q1`..`q5` *within* a quiz, so carrying step 2's `q3` into step 3's quiz would collide with step 3's own `q3` and grade the student against the wrong answer key. Everything is keyed by step and question together.
+
+3. **Carried questions are capped at three, oldest miss first.** Not in the design, which had no cap. Without one, a student who had a bad week meets a 20-question quiz on the step after it, which punishes exactly the person spaced repetition is meant to help.
+
+## What is not built
+
+The `ai_call_type` enum gained a `quiz` value in the migration, so quiz spend appears on `/admin` alongside recommendation and roadmap. Nothing else on the admin page was changed.
+
+The **practical assessment** (decision 5) remains deliberately unbuilt.

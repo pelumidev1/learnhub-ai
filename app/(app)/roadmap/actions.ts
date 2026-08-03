@@ -3,12 +3,14 @@
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { generateRoadmap } from "@/lib/ai/roadmap";
 import { estimateCostUsd } from "@/lib/ai/config";
 import { checkAiRateLimit, AI_LIMITS } from "@/lib/ai/rate-limit";
 import { formatAnswers } from "@/lib/assessment/questions";
+import { generateQuizzesForSteps } from "@/lib/db/quiz-generate";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
 
@@ -129,8 +131,23 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
       const { data: steps, error: stepErr } = await supabase
         .from("roadmap_steps")
         .insert(stepRows)
-        .select("id");
+        .select("id, title, description, skill");
       if (stepErr) throw new Error(stepErr.message);
+
+      /* Quizzes are generated after the response, not before it. Nine Haiku
+         calls would add roughly half a minute to a wait that is already ~30s
+         for the roadmap itself, and the student has no reason to sit through it
+         — they land on step one, and the quiz they need is the one for step one.
+         `after()` runs this once the redirect has been sent. If it fails, the
+         roadmap is still theirs; those steps stay ungated until the backfill. */
+      const stepsForQuiz = steps ?? [];
+      after(async () => {
+        try {
+          await generateQuizzesForSteps(supabase, user.id, cr.title, stepsForQuiz);
+        } catch (e) {
+          console.error("quiz generation failed", e);
+        }
+      });
 
       const progRows = (steps ?? []).map((s) => ({
         step_id: s.id,
@@ -171,13 +188,48 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
 export async function setStepStatus(
   stepId: string,
   completed: boolean,
-): Promise<{ ok: boolean }> {
+): Promise<{ ok: boolean; error?: string }> {
   if (!z.string().uuid().safeParse(stepId).success) return { ok: false };
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { ok: false };
+
+  /**
+   * THE GATE. A step cannot be ticked complete without a passing attempt on its
+   * quiz, so a certificate certifies that someone was tested on every step and
+   * passed, not that they clicked six checkboxes.
+   *
+   * Enforced here rather than in the UI because the UI is a suggestion — this
+   * is a Server Action and anyone can call it directly.
+   *
+   * A step with no quiz row passes through. Quiz generation is a best-effort
+   * follow-up to a roadmap that is already paid for and valid, so a failed
+   * generation must never leave a student staring at a step they cannot
+   * complete (docs/QUIZ-DESIGN.md, decision 4). The backfill closes those gaps.
+   */
+  if (completed) {
+    const { data: quiz } = await supabase
+      .from("step_quizzes")
+      .select("id")
+      .eq("step_id", stepId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (quiz) {
+      const { count } = await supabase
+        .from("quiz_attempts")
+        .select("id", { count: "exact", head: true })
+        .eq("step_id", stepId)
+        .eq("user_id", user.id)
+        .eq("passed", true);
+
+      if (!count) {
+        return { ok: false, error: "Pass this step's quiz first." };
+      }
+    }
+  }
 
   const now = new Date().toISOString();
   const { data: prog } = await supabase

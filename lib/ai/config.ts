@@ -6,6 +6,11 @@ export const MODELS = {
   recommendation: "claude-opus-4-8",
   roadmap: "claude-opus-4-8",
   advisor: "claude-haiku-4-5",
+  // Writing five multiple-choice questions about a topic is a far easier job
+  // than designing a career path. Opus here would be roughly four times the
+  // price for no gain, and quiz generation runs once per step — the volume that
+  // decides whether the feature is affordable at all. See docs/QUIZ-DESIGN.md.
+  quiz: "claude-haiku-4-5",
 } as const;
 
 /**

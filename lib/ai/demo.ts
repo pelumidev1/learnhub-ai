@@ -1,6 +1,7 @@
 import "server-only";
 import type { RecommendationOutput } from "./schemas";
 import type { RoadmapOutput } from "./roadmap";
+import type { QuizQuestion } from "./quiz";
 
 /**
  * Canned AI output for demo mode (AI_DEMO_MODE=true in .env.local).
@@ -136,4 +137,78 @@ Try me again once the real key is in. I'll be here.`;
 /** DEMO_ADVISOR_REPLY split into word-ish chunks for simulated streaming. */
 export function demoAdvisorChunks(): string[] {
   return DEMO_ADVISOR_REPLY.match(/\S+\s*/g) ?? [];
+}
+
+/**
+ * Sample quiz for any step. Five schema-valid questions with the correct answer
+ * in a different slot each time, so demo mode exercises the same "is the key
+ * ever in the same place" behaviour a real quiz has.
+ *
+ * Returned without ids; generateQuiz assigns them, exactly as it does for real
+ * model output, so the demo path and the live path stay identical after this
+ * point.
+ */
+export function demoQuiz(
+  stepTitle: string,
+  skill: string,
+): { questions: Omit<QuizQuestion, "id">[] } {
+  return {
+    questions: [
+      {
+        prompt: `Sample question. In "${stepTitle}", what is ${skill} mainly used for?`,
+        options: [
+          "Nothing in particular",
+          "Solving a specific kind of problem in this role",
+          "Passing interviews only",
+          "Decorating your CV",
+        ],
+        correct_index: 1,
+        explanation: "This is sample data. A real quiz asks about what the skill is actually for.",
+      },
+      {
+        prompt: "Sample question. You get stuck on this step for two days. What is the best move?",
+        options: [
+          "Ask your AI coach and check the step's resources again",
+          "Skip to the last step",
+          "Start a different roadmap",
+          "Wait a month",
+        ],
+        correct_index: 0,
+        explanation: "This is sample data. Getting unstuck beats starting over.",
+      },
+      {
+        prompt: `Sample question. How much of ${skill} do you need before moving on?`,
+        options: [
+          "Every advanced feature",
+          "None of it",
+          "Enough to finish this step's practical work",
+          "Only the theory",
+        ],
+        correct_index: 2,
+        explanation: "This is sample data. Steps are sized to be useful, not exhaustive.",
+      },
+      {
+        prompt: "Sample question. Which of these is the strongest evidence you learned this step?",
+        options: [
+          "You watched every video",
+          "You bookmarked the resources",
+          "You read the descriptions",
+          "You built something small that works",
+        ],
+        correct_index: 3,
+        explanation: "This is sample data. Building beats watching.",
+      },
+      {
+        prompt: "Sample question. What happens if you miss a question on this quiz?",
+        options: [
+          "It comes back in a later quiz until you get it right twice",
+          "You are locked out",
+          "Nothing at all",
+          "Your roadmap resets",
+        ],
+        correct_index: 0,
+        explanation: "This is sample data, but that part is true of the real product.",
+      },
+    ],
+  };
 }
