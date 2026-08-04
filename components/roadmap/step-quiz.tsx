@@ -1,8 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { submitQuizAttempt, type QuizResult } from "@/app/(app)/roadmap/quiz-actions";
+import {
+  getAttemptReview,
+  submitQuizAttempt,
+  type QuizResult,
+} from "@/app/(app)/roadmap/quiz-actions";
 import type { ClientQuestion } from "@/lib/quiz/grade";
+import { QuizReview } from "@/components/roadmap/quiz-review";
 import { Icons } from "@/components/ui/icons";
 import { cn } from "@/lib/utils/cn";
 
@@ -14,6 +19,16 @@ import { cn } from "@/lib/utils/cn";
  * grade an answer, because anything it could do, a student reading the bundle
  * could do too.
  */
+/**
+ * Closed until they open it, then either taking the quiz or looking at an
+ * attempt — this one or the last one.
+ */
+type View =
+  | { kind: "closed" }
+  | { kind: "taking" }
+  | { kind: "result"; result: QuizResult }
+  | { kind: "past"; result: QuizResult };
+
 export function StepQuiz({
   stepId,
   questions,
@@ -21,6 +36,7 @@ export function StepQuiz({
   carriedCount,
   passed,
   bestScore,
+  lastAttempt,
 }: {
   stepId: string;
   questions: ClientQuestion[];
@@ -28,10 +44,10 @@ export function StepQuiz({
   carriedCount: number;
   passed: boolean;
   bestScore: number | null;
+  lastAttempt: { score: number; missed: number; total: number } | null;
 }) {
-  const [open, setOpen] = useState(false);
+  const [view, setView] = useState<View>({ kind: "closed" });
   const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [result, setResult] = useState<QuizResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
 
@@ -42,110 +58,139 @@ export function StepQuiz({
     setError(null);
     start(async () => {
       const res = await submitQuizAttempt({ stepId, answers });
-      if (res.ok) setResult(res);
+      if (res.ok) setView({ kind: "result", result: res });
       else setError(res.error);
     });
   }
 
   function retry() {
-    setResult(null);
+    setView({ kind: "taking" });
     setAnswers({});
     setError(null);
   }
 
-  if (passed && !open) {
+  /** Pull the last attempt back from the server. It is not sent with the page:
+   *  most of them are never opened, and each one is a lot of text. */
+  function openPast() {
+    setError(null);
+    start(async () => {
+      const res = await getAttemptReview(stepId);
+      if (res.ok) setView({ kind: "past", result: res });
+      else setError(res.error);
+    });
+  }
+
+  const seeAnswers = lastAttempt && (
+    <button
+      type="button"
+      onClick={openPast}
+      disabled={pending}
+      className="text-muted underline transition hover:text-ink disabled:opacity-60"
+    >
+      {pending
+        ? "Opening…"
+        : lastAttempt.missed > 0
+          ? `See what you missed (${lastAttempt.missed} of ${lastAttempt.total})`
+          : "See your answers"}
+    </button>
+  );
+
+  if (view.kind === "closed") {
     return (
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-        <span className="inline-flex items-center gap-1.5 font-semibold text-blue">
-          <Icons.check className="h-4 w-4" />
-          Quiz passed{bestScore !== null && ` · scored ${bestScore}`}
-        </span>
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="text-muted underline transition hover:text-ink"
-        >
-          Take it again
-        </button>
+      <div className="mt-3">
+        {passed ? (
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
+            <span className="inline-flex items-center gap-1.5 font-semibold text-blue">
+              <Icons.check className="h-4 w-4" />
+              Quiz passed{bestScore !== null && ` · scored ${bestScore}`}
+            </span>
+            {seeAnswers}
+            <button
+              type="button"
+              onClick={() => setView({ kind: "taking" })}
+              className="text-muted underline transition hover:text-ink"
+            >
+              Take it again
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+            <button
+              type="button"
+              onClick={() => setView({ kind: "taking" })}
+              className="inline-flex items-center gap-2 rounded-full border border-blue bg-blue/5 px-4 py-2 font-bold text-blue transition hover:bg-blue/10"
+            >
+              <Icons.check className="h-4 w-4" />
+              {lastAttempt ? "Try the quiz again" : `${questions.length} questions`} · need{" "}
+              {passMark} to pass
+            </button>
+            {seeAnswers}
+          </div>
+        )}
+        {error && (
+          <p role="alert" className="mt-2 text-sm text-red-600">
+            {error}
+          </p>
+        )}
       </div>
     );
   }
 
-  if (!open) {
+  if (view.kind === "past") {
     return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="mt-3 inline-flex items-center gap-2 rounded-full border border-blue bg-blue/5 px-4 py-2 text-sm font-bold text-blue transition hover:bg-blue/10"
-      >
-        <Icons.check className="h-4 w-4" />
-        {questions.length} questions · need {passMark} to pass
-      </button>
+      <QuizReview
+        label="Your last try"
+        score={view.result.score}
+        passed={view.result.passed}
+        passMark={passMark}
+        review={view.result.review}
+        stepId={stepId}
+        action={
+          <button
+            type="button"
+            onClick={retry}
+            className="rounded-full bg-blue px-4 py-2 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
+          >
+            {view.result.passed ? "Take it again" : "Try again"}
+          </button>
+        }
+        onClose={() => setView({ kind: "closed" })}
+      />
     );
   }
 
   /* After grading. Shows exactly which questions were wrong and why, because
      "you scored 60" tells a student nothing they can act on. */
-  if (result) {
+  if (view.kind === "result") {
+    const { result } = view;
     return (
-      <div
-        className={cn(
-          "mt-3 rounded-2xl border p-4",
-          result.passed ? "border-blue bg-blue/5" : "border-silver bg-paper",
-        )}
-      >
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="font-display font-bold text-ink">
-            {result.passed ? "Passed" : "Not yet"} · scored {result.score}
-          </p>
-          {!result.passed && (
-            <button
-              type="button"
-              onClick={retry}
-              className="rounded-full bg-blue px-4 py-2 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
-            >
-              Try again
-            </button>
-          )}
-        </div>
-        <p className="mt-1 text-sm text-muted">
-          {result.passed
-            ? "You can mark this step complete now."
-            : `You need ${passMark} to pass. Nothing is lost, and there is no limit on tries.`}
-        </p>
-
-        <ul className="mt-4 space-y-3">
-          {result.review
-            .filter((r) => !r.correct)
-            .map((r) => (
-              <li key={r.key} className="rounded-xl border border-silver bg-white p-3">
-                <p className="text-sm font-semibold text-ink">{r.prompt}</p>
-                {r.chosenIndex !== null && (
-                  <p className="mt-1.5 text-sm text-muted">
-                    You said: <span className="text-ink">{r.options[r.chosenIndex]}</span>
-                  </p>
-                )}
-                <p className="mt-1 text-sm text-muted">
-                  Answer: <span className="font-semibold text-blue">{r.options[r.correctIndex]}</span>
-                </p>
-                <p className="mt-1.5 text-sm text-muted">{r.explanation}</p>
-              </li>
-            ))}
-        </ul>
-
+      <>
         {result.passed && (
-          <button
-            type="button"
-            onClick={() => {
-              setOpen(false);
-              setResult(null);
-            }}
-            className="mt-4 text-sm text-muted underline transition hover:text-ink"
-          >
-            Close
-          </button>
+          <p className="mt-3 text-sm font-semibold text-blue">
+            You can mark this step complete now.
+          </p>
         )}
-      </div>
+        <QuizReview
+          label={result.passed ? "Passed" : "Not yet"}
+          score={result.score}
+          passed={result.passed}
+          passMark={passMark}
+          review={result.review}
+          stepId={stepId}
+          action={
+            !result.passed && (
+              <button
+                type="button"
+                onClick={retry}
+                className="rounded-full bg-blue px-4 py-2 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
+              >
+                Try again
+              </button>
+            )
+          }
+          onClose={() => setView({ kind: "closed" })}
+        />
+      </>
     );
   }
 
@@ -157,7 +202,7 @@ export function StepQuiz({
         </p>
         <button
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={() => setView({ kind: "closed" })}
           className="text-sm text-muted underline transition hover:text-ink"
         >
           Close

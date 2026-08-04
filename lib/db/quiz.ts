@@ -1,7 +1,7 @@
 import "server-only";
 import { QuizQuestionSchema, type QuizQuestion } from "@/lib/ai/quiz";
 import { carryOverKeys, type AttemptRecord } from "@/lib/quiz/carry-over";
-import { qkey } from "@/lib/quiz/grade";
+import { gradeQuestion, qkey, type GradedQuestion } from "@/lib/quiz/grade";
 import type { createClient } from "@/lib/supabase/server";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -16,6 +16,17 @@ export type StepQuiz = {
   passed: boolean;
   /** Highest score across attempts, or null if never attempted. */
   bestScore: number | null;
+  /** Counts from the most recent attempt, for the "you missed 2 of 5" line.
+   *  Counts only: the questions and the answer key are fetched on demand, so a
+   *  roadmap page does not carry a review nobody has asked to see. */
+  lastAttempt: { score: number; missed: number; total: number } | null;
+};
+
+/** One past attempt, re-marked so a student can see it again later. */
+export type AttemptReview = {
+  score: number;
+  passed: boolean;
+  review: GradedQuestion[];
 };
 
 /**
@@ -102,6 +113,21 @@ export async function loadRoadmapQuizzes(
     });
   }
 
+  /* The most recent attempt per step. `attemptRows` is newest first, so the
+     first one seen for a step is it. */
+  const latest = new Map<string, { score: number; missed: number; total: number }>();
+  for (const a of attemptRows ?? []) {
+    if (latest.has(a.step_id)) continue;
+    const asked = a.answers && typeof a.answers === "object" && !Array.isArray(a.answers)
+      ? Object.keys(a.answers as Record<string, unknown>).length
+      : 0;
+    latest.set(a.step_id, {
+      score: a.score,
+      missed: Array.isArray(a.missed_ids) ? a.missed_ids.length : 0,
+      total: asked,
+    });
+  }
+
   const records: AttemptRecord[] = (attemptRows ?? []).map((a) => ({
     stepId: a.step_id,
     createdAt: a.created_at,
@@ -128,10 +154,81 @@ export async function loadRoadmapQuizzes(
       items: [...own.questions.map((question) => ({ stepId, question })), ...carried],
       passed: b?.passed ?? false,
       bestScore: b?.score ?? null,
+      lastAttempt: latest.get(stepId) ?? null,
     });
   }
 
   return byStep;
+}
+
+/**
+ * Re-mark a student's most recent attempt on one step, so they can see what
+ * they got right and what they missed after the result has left the screen.
+ *
+ * Rebuilt from the stored answers rather than kept in the browser: a reload, a
+ * dropped connection, or coming back tomorrow all have to show the same thing.
+ * Only the questions that attempt actually asked are returned, resolved across
+ * the whole roadmap, so a carried-over question that has since left the pool is
+ * still shown rather than silently dropped from their review.
+ *
+ * This is the one place a student is sent the answer key, and only for
+ * questions they have already answered — the same key the result screen showed
+ * them the moment they submitted. Nothing here reveals an unattempted quiz.
+ */
+export async function loadAttemptReview(
+  supabase: Supabase,
+  userId: string,
+  stepId: string,
+): Promise<AttemptReview | null> {
+  const { data: step } = await supabase
+    .from("roadmap_steps")
+    .select("roadmap_id")
+    .eq("id", stepId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (!step) return null;
+
+  const { data: attempt } = await supabase
+    .from("quiz_attempts")
+    .select("answers, score, passed")
+    .eq("step_id", stepId)
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const answers =
+    attempt?.answers && typeof attempt.answers === "object" && !Array.isArray(attempt.answers)
+      ? (attempt.answers as Record<string, unknown>)
+      : null;
+  if (!attempt || !answers) return null;
+
+  const { data: siblings } = await supabase
+    .from("roadmap_steps")
+    .select("id")
+    .eq("roadmap_id", step.roadmap_id)
+    .eq("user_id", userId);
+
+  const { data: quizRows } = await supabase
+    .from("step_quizzes")
+    .select("step_id, questions")
+    .eq("user_id", userId)
+    .in("step_id", (siblings ?? []).map((s) => s.id));
+
+  const questionByKey = new Map<string, QuizQuestion>();
+  for (const row of quizRows ?? []) {
+    for (const question of parseQuestions(row.questions)) {
+      questionByKey.set(qkey(row.step_id, question.id), question);
+    }
+  }
+
+  const review = Object.entries(answers).flatMap(([key, chosen]) => {
+    const question = questionByKey.get(key);
+    return question ? [gradeQuestion(key, question, chosen)] : [];
+  });
+  if (review.length === 0) return null;
+
+  return { score: attempt.score, passed: attempt.passed, review };
 }
 
 /**

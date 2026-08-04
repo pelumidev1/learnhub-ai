@@ -26,6 +26,9 @@ export type StepQuizData = {
   passed: boolean;
   bestScore: number | null;
   passMark: number;
+  /** Counts from the last attempt. The attempt itself is fetched only if the
+   *  student opens it. */
+  lastAttempt: { score: number; missed: number; total: number } | null;
 };
 
 export function StepItem({
@@ -166,6 +169,7 @@ export function StepItem({
               carriedCount={quiz.carriedCount}
               passed={quiz.passed}
               bestScore={quiz.bestScore}
+              lastAttempt={quiz.lastAttempt}
             />
           )}
 

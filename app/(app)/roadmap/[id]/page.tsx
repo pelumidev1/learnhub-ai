@@ -65,6 +65,7 @@ export default async function RoadmapDetailPage({
       passed: loaded.passed,
       bestScore: loaded.bestScore,
       passMark: PASS_MARK,
+      lastAttempt: loaded.lastAttempt,
     });
   }
 

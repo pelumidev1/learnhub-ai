@@ -64,6 +64,36 @@ export type GradeResult = {
 };
 
 /**
+ * Mark one answer against its question.
+ *
+ * Exported so a stored attempt can be re-marked later — when a student comes
+ * back to see what they missed — by the same code that marked it live. Two
+ * markers would eventually disagree, and the one the student remembers is the
+ * one that decided whether they passed.
+ */
+export function gradeQuestion(
+  key: string,
+  question: QuizQuestion,
+  raw: unknown,
+): GradedQuestion {
+  // Anything that is not a valid option index counts as unanswered. The client
+  // sends numbers, but this runs on whatever arrives at the action.
+  const chosenIndex =
+    typeof raw === "number" && Number.isInteger(raw) && raw >= 0 && raw < question.options.length
+      ? raw
+      : null;
+  return {
+    key,
+    prompt: question.prompt,
+    options: [...question.options],
+    chosenIndex,
+    correctIndex: question.correct_index,
+    correct: chosenIndex === question.correct_index,
+    explanation: question.explanation,
+  };
+}
+
+/**
  * Mark an attempt on the server, against the stored key.
  *
  * Code, not AI: the answers are known, so grading costs nothing and works
@@ -80,22 +110,7 @@ export function gradeAttempt(
 ): GradeResult {
   const graded: GradedQuestion[] = items.map(({ stepId, question }) => {
     const key = qkey(stepId, question.id);
-    const raw = answers[key];
-    // Anything that is not a valid option index counts as unanswered. The
-    // client sends numbers, but this runs on whatever arrives at the action.
-    const chosenIndex =
-      typeof raw === "number" && Number.isInteger(raw) && raw >= 0 && raw < question.options.length
-        ? raw
-        : null;
-    return {
-      key,
-      prompt: question.prompt,
-      options: [...question.options],
-      chosenIndex,
-      correctIndex: question.correct_index,
-      correct: chosenIndex === question.correct_index,
-      explanation: question.explanation,
-    };
+    return gradeQuestion(key, question, answers[key]);
   });
 
   const total = graded.length;

@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { loadStepQuiz } from "@/lib/db/quiz";
+import { loadAttemptReview, loadStepQuiz } from "@/lib/db/quiz";
 import { gradeAttempt, type GradedQuestion } from "@/lib/quiz/grade";
 
 /**
@@ -91,4 +91,29 @@ export async function submitQuizAttempt(raw: unknown): Promise<Result> {
   revalidatePath("/roadmap", "layout");
 
   return { ok: true, score, passed, review: graded };
+}
+
+/**
+ * The student's most recent attempt on a step, marked again.
+ *
+ * Fetched when they ask for it rather than shipped with the roadmap page. A
+ * roadmap carries up to nine of these, and most of the time nobody opens one;
+ * on a metered connection that is a lot of question text and explanation to
+ * send on the chance it gets read.
+ */
+export async function getAttemptReview(stepId: unknown): Promise<Result> {
+  if (!z.string().uuid().safeParse(stepId).success) {
+    return { ok: false, error: "That didn't look right. Please try again." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "You're not signed in." };
+
+  const found = await loadAttemptReview(supabase, user.id, stepId as string);
+  if (!found) return { ok: false, error: "We couldn't find that attempt." };
+
+  return { ok: true, ...found };
 }
