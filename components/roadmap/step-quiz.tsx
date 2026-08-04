@@ -12,14 +12,6 @@ import { Icons } from "@/components/ui/icons";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * The quiz a student answers to unlock a step.
- *
- * `questions` arrives already stripped of the answer key — see
- * lib/quiz/grade.ts. There is deliberately nothing in this component that could
- * grade an answer, because anything it could do, a student reading the bundle
- * could do too.
- */
-/**
  * Closed until they open it, then either taking the quiz or looking at an
  * attempt — this one or the last one.
  */
@@ -29,11 +21,18 @@ type View =
   | { kind: "result"; result: QuizResult }
   | { kind: "past"; result: QuizResult };
 
+/**
+ * The quiz a student answers to unlock a step.
+ *
+ * `questions` arrives already stripped of the answer key — see
+ * lib/quiz/grade.ts. There is deliberately nothing in this component that could
+ * grade an answer, because anything it could do, a student reading the bundle
+ * could do too.
+ */
 export function StepQuiz({
   stepId,
   questions,
   passMark,
-  carriedCount,
   passed,
   bestScore,
   lastAttempt,
@@ -41,7 +40,6 @@ export function StepQuiz({
   stepId: string;
   questions: ClientQuestion[];
   passMark: number;
-  carriedCount: number;
   passed: boolean;
   bestScore: number | null;
   lastAttempt: { score: number; missed: number; total: number } | null;
@@ -144,7 +142,6 @@ export function StepQuiz({
         passed={view.result.passed}
         passMark={passMark}
         review={view.result.review}
-        stepId={stepId}
         action={
           <button
             type="button"
@@ -176,7 +173,6 @@ export function StepQuiz({
           passed={result.passed}
           passMark={passMark}
           review={result.review}
-          stepId={stepId}
           action={
             !result.passed && (
               <button
@@ -208,15 +204,6 @@ export function StepQuiz({
           Close
         </button>
       </div>
-
-      {carriedCount > 0 && (
-        <p className="mt-2 rounded-xl border border-silver bg-white px-3 py-2 text-sm text-muted">
-          {carriedCount} question{carriedCount > 1 ? "s" : ""} carried over from an earlier step. You
-          missed {carriedCount > 1 ? "them" : "it"} before, so {carriedCount > 1 ? "they" : "it"}{" "}
-          come{carriedCount > 1 ? "" : "s"} back until you get {carriedCount > 1 ? "them" : "it"}{" "}
-          right twice.
-        </p>
-      )}
 
       <ol className="mt-4 space-y-5">
         {questions.map((q, qi) => (

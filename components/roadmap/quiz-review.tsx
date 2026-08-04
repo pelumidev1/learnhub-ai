@@ -22,7 +22,6 @@ export function QuizReview({
   passed,
   passMark,
   review,
-  stepId,
   action,
   onClose,
 }: {
@@ -32,8 +31,6 @@ export function QuizReview({
   passed: boolean;
   passMark: number;
   review: GradedQuestion[];
-  /** The step being reviewed, so questions carried in from earlier ones can say so. */
-  stepId: string;
   action?: ReactNode;
   onClose: () => void;
 }) {
@@ -78,9 +75,6 @@ export function QuizReview({
 
       <ul className="mt-4 space-y-3">
         {review.map((r, i) => {
-          // A question the student missed on an earlier step, back for another
-          // go. Saying so stops it reading as a mistake in this step's quiz.
-          const carried = !r.key.startsWith(`${stepId}:`);
           return (
             <li
               key={r.key}
@@ -91,11 +85,6 @@ export function QuizReview({
             >
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-mono text-xs text-muted-2">Question {i + 1}</span>
-                {carried && (
-                  <span className="rounded-full border border-silver bg-paper px-2 py-0.5 text-[0.62rem] font-semibold text-muted">
-                    From an earlier step
-                  </span>
-                )}
                 <span
                   className={cn(
                     "ml-auto inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[0.68rem] font-bold",

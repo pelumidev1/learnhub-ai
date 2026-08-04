@@ -22,8 +22,9 @@ export type ClientQuestion = {
 
 /**
  * Questions are identified by `q1`..`q5` *within* a quiz, so an id alone is
- * ambiguous once a missed question from an earlier step is carried into a later
- * quiz. Everything the student answers is keyed by step and question together.
+ * ambiguous across a roadmap: every step has a `q3`. Everything the student
+ * answers is keyed by step and question together, which is also what makes a
+ * stored attempt readable years after the quiz it came from.
  */
 export function qkey(stepId: string, questionId: string): string {
   return `${stepId}:${questionId}`;

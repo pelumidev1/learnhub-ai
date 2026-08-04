@@ -22,7 +22,6 @@ type Step = {
  *  legitimately be ungated. */
 export type StepQuizData = {
   questions: ClientQuestion[];
-  carriedCount: number;
   passed: boolean;
   bestScore: number | null;
   passMark: number;
@@ -166,7 +165,6 @@ export function StepItem({
               stepId={step.id}
               questions={quiz.questions}
               passMark={quiz.passMark}
-              carriedCount={quiz.carriedCount}
               passed={quiz.passed}
               bestScore={quiz.bestScore}
               lastAttempt={quiz.lastAttempt}

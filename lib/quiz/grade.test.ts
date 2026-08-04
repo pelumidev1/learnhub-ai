@@ -35,9 +35,8 @@ describe("qkey / parseQkey", () => {
 
   /**
    * Question ids are `q1`..`q5` *within* a quiz, so the step has to be part of
-   * the key. Without it, carrying step 2's `q3` into step 3's quiz would
-   * collide with step 3's own `q3` and grade the student against the wrong
-   * answer.
+   * the key. Every step has a `q3`; without the step in the key, one step's
+   * stored answers would read as another's.
    */
   it("keeps two steps' q1 apart", () => {
     expect(qkey("step-a", "q1")).not.toBe(qkey("step-b", "q1"));
@@ -198,10 +197,10 @@ describe("gradeAttempt", () => {
   });
 
   /**
-   * Grading a carried question against its own step, not the quiz it appeared
-   * in. Both questions are `q1`; only the step tells them apart.
+   * Two steps' `q1` graded against their own keys. Only the step tells them
+   * apart, which is what keeps a stored attempt readable per step.
    */
-  it("grades a carried question against its own step's key", () => {
+  it("grades each step's q1 against its own key", () => {
     const items = [
       { stepId: "step-b", question: q({ id: "q1", correct_index: 2 }) },
       { stepId: "step-a", question: q({ id: "q1", correct_index: 0 }) },
@@ -214,7 +213,7 @@ describe("gradeAttempt", () => {
     expect(r.missedKeys).toEqual([]);
   });
 
-  it("reports the missed keys, which feed the repetition pool", () => {
+  it("reports the missed keys, which the review reads back", () => {
     const items = five();
     const answers = allCorrect(items);
     delete answers[qkey("step-a", "q2")];

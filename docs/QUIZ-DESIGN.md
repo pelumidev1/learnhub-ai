@@ -23,10 +23,6 @@ YOUR PATH TO DATA ANALYST
   1  Excel and spreadsheets      ✓ done · scored 90
   2  SQL fundamentals            ✓ done · scored 80
   3  Python for data             → 5 questions · need 80 to pass
-     ┌────────────────────────────────────────────┐
-     │ 2 questions carried over from Step 2       │
-     │ (you missed these — they come back)        │
-     └────────────────────────────────────────────┘
   4  Building dashboards         🔒 finish Step 3 first
   5  Portfolio project           🔒
   6  Job applications            🔒
@@ -36,7 +32,7 @@ YOUR PATH TO DATA ANALYST
 
 Fail (under 80)? They see which questions they got wrong, and the exact resource from that step to go re-read — not "review everything." Then they retry. No limit on retries; the point is learning, not gatekeeping.
 
-Miss a question anywhere? It comes back in the next step's quiz, and again three steps later. Get it right twice in a row and it leaves the pool. That's the spaced repetition from the skill, adapted from days to steps.
+Miss a question anywhere? ~~It comes back in the next step's quiz, and again three steps later. Get it right twice in a row and it leaves the pool.~~ **Built, then removed on 2026-08-04 — see "Carry-over: built, then removed" below.** A quiz is now its own step's five questions and nothing else.
 
 ## What it costs you
 
@@ -101,7 +97,7 @@ create table public.quiz_attempts (
   score      int  not null check (score between 0 and 100),
   passed     boolean not null,
   answers    jsonb not null,
-  missed_ids text[] not null default '{}',   -- feeds the spaced-repetition pool
+  missed_ids text[] not null default '{}',   -- what they got wrong, for their review
   created_at timestamptz not null default now()
 );
 ```
@@ -159,7 +155,7 @@ Three things, all small, all for reasons worth keeping:
 
 2. **Question keys became `stepId:questionId`.** The design's `missed_ids` implied a bare question id was enough. It is not: ids are `q1`..`q5` *within* a quiz, so carrying step 2's `q3` into step 3's quiz would collide with step 3's own `q3` and grade the student against the wrong answer key. Everything is keyed by step and question together.
 
-3. **Carried questions are capped at three, oldest miss first.** Not in the design, which had no cap. Without one, a student who had a bad week meets a 20-question quiz on the step after it, which punishes exactly the person spaced repetition is meant to help.
+3. **Carried questions are capped at three, oldest miss first.** Not in the design, which had no cap. Without one, a student who had a bad week meets a 20-question quiz on the step after it, which punishes exactly the person spaced repetition is meant to help. *(Moot as of 2026-08-04: carry-over is gone entirely. See below.)*
 
 ## What is not built
 
@@ -203,3 +199,29 @@ instead of costing money on every render.
 
 `/admin` now carries a Quiz gate card. `Ungated` is the number that matters:
 above zero means the pass gate has a hole in it. It was invisible before.
+
+## Carry-over: built, then removed (2026-08-04)
+
+Missed questions used to follow a student. Miss `q5` on step 1 and it joined
+every later step's quiz until answered right twice in a row, capped at three
+carried at once. Pelumi hit it on his own roadmap the day the review screen
+shipped — he missed one question on step 1, opened step 2, and found six
+questions where the button had promised five. He asked for it out.
+
+Removed rather than explained better. The signal was there in the UI (a note
+above the questions, a "From an earlier step" chip in the review) and it still
+read as a bug to the person it happened to, which is the answer to whether the
+mechanic was worth its confusion. A quiz is now its own step's five questions,
+full stop.
+
+Nothing lost from the record: `missed_ids` is still written on every attempt,
+and the review screen still shows exactly what was missed and why. The
+repetition is now the student's to do — they can retake any quiz, unlimited,
+and the misses are there to read.
+
+`lib/quiz/carry-over.ts` and its 15 tests are deleted, not left dangling.
+`loadStepQuiz` no longer resolves a step's siblings first (carry-over was the
+only reason it needed roadmap scope), which takes two queries off every quiz
+submission. Question keys stay `stepId:questionId`: they are what stored
+attempts are keyed by, and a bare `q3` is ambiguous across a roadmap whether or
+not anything is carried.

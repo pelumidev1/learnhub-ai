@@ -59,8 +59,8 @@ export async function submitQuizAttempt(raw: unknown): Promise<Result> {
   const { score, passed, missedKeys, graded } = gradeAttempt(loaded.items, answers);
 
   /* Store only the questions actually asked, not the raw request body. The
-     stored keys are the roll call the repetition pool reads back, so junk in
-     here becomes junk in the pool — and without this a client could post a
+     stored keys are the roll call the review reads back later, so junk in here
+     becomes junk in their review — and without this a client could post a
      megabyte of nonsense and we would write it to the row verbatim. */
   const recorded = Object.fromEntries(graded.map((g) => [g.key, g.chosenIndex]));
 

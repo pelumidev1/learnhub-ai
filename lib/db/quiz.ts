@@ -1,6 +1,5 @@
 import "server-only";
 import { QuizQuestionSchema, type QuizQuestion } from "@/lib/ai/quiz";
-import { carryOverKeys, type AttemptRecord } from "@/lib/quiz/carry-over";
 import { gradeQuestion, qkey, type GradedQuestion } from "@/lib/quiz/grade";
 import type { createClient } from "@/lib/supabase/server";
 
@@ -43,8 +42,13 @@ function parseQuestions(raw: unknown): QuizQuestion[] {
 }
 
 /**
- * Build the question set for every step in one roadmap: each step's own
- * questions, plus up to three previously-missed ones due for repetition.
+ * Build the question set for every step in one roadmap: the five questions
+ * written for each step, and nothing else.
+ *
+ * A quiz is its own step's quiz. Missed questions used to be carried into later
+ * steps until answered right twice, which meant a student who slipped once on
+ * step 1 met a six-question quiz on every step after it — removed at Pelumi's
+ * instruction on 2026-08-04 (docs/QUIZ-DESIGN.md).
  *
  * Loaded for the whole roadmap at once, in two queries. Doing it per step meant
  * three round trips each — and the attempts query was identical every time, so
@@ -52,15 +56,9 @@ function parseQuestions(raw: unknown): QuizQuestion[] {
  * before first paint. This product is built for intermittent connections; that
  * is exactly the cost that shows up there.
  *
- * Carry-over is scoped to this roadmap. Repetition is meant to reinforce the
- * path the student is on, so a question missed in a Data Analyst roadmap has no
- * business appearing in a Product Designer one. Scoping it here also means
- * every carried question resolves from the quizzes already loaded below, with
- * no further queries.
- *
  * Both the page and the grader call this, so the set is derived from the
  * database in both places rather than trusted from the browser. A client that
- * omitted its carried questions to shrink the denominator would have no effect.
+ * dropped questions to shrink the denominator would have no effect.
  *
  * Every query is scoped by `user_id` on top of RLS. RLS is the thing actually
  * enforcing it; the filter is there so a policy regression shows up as missing
@@ -89,16 +87,9 @@ export async function loadRoadmapQuizzes(
       .limit(200),
   ]);
 
-  /** Every question this roadmap has, addressable by `stepId:questionId`. */
-  const questionByKey = new Map<string, QuizItem>();
   const ownByStep = new Map<string, { quizId: string; questions: QuizQuestion[] }>();
-
   for (const row of quizRows ?? []) {
-    const questions = parseQuestions(row.questions);
-    ownByStep.set(row.step_id, { quizId: row.id, questions });
-    for (const question of questions) {
-      questionByKey.set(qkey(row.step_id, question.id), { stepId: row.step_id, question });
-    }
+    ownByStep.set(row.step_id, { quizId: row.id, questions: parseQuestions(row.questions) });
   }
 
   /* Best score and "ever passed" come from the same rows, so they cost nothing
@@ -128,30 +119,11 @@ export async function loadRoadmapQuizzes(
     });
   }
 
-  const records: AttemptRecord[] = (attemptRows ?? []).map((a) => ({
-    stepId: a.step_id,
-    createdAt: a.created_at,
-    missedKeys: Array.isArray(a.missed_ids) ? a.missed_ids : [],
-    // `answers` is keyed by qkey, so its keys are the roll call of what the
-    // attempt actually asked.
-    askedKeys:
-      a.answers && typeof a.answers === "object" && !Array.isArray(a.answers)
-        ? Object.keys(a.answers as Record<string, unknown>)
-        : [],
-  }));
-
   for (const [stepId, own] of ownByStep) {
-    // A carried key with no surviving question (its step was deleted, or the
-    // question failed validation) is skipped rather than faked.
-    const carried = carryOverKeys(records, stepId).flatMap((key) => {
-      const item = questionByKey.get(key);
-      return item ? [item] : [];
-    });
-
     const b = best.get(stepId);
     byStep.set(stepId, {
       quizId: own.quizId,
-      items: [...own.questions.map((question) => ({ stepId, question })), ...carried],
+      items: own.questions.map((question) => ({ stepId, question })),
       passed: b?.passed ?? false,
       bestScore: b?.score ?? null,
       lastAttempt: latest.get(stepId) ?? null,
@@ -167,9 +139,7 @@ export async function loadRoadmapQuizzes(
  *
  * Rebuilt from the stored answers rather than kept in the browser: a reload, a
  * dropped connection, or coming back tomorrow all have to show the same thing.
- * Only the questions that attempt actually asked are returned, resolved across
- * the whole roadmap, so a carried-over question that has since left the pool is
- * still shown rather than silently dropped from their review.
+ * A stored answer whose question no longer exists is dropped rather than faked.
  *
  * This is the one place a student is sent the answer key, and only for
  * questions they have already answered — the same key the result screen showed
@@ -180,22 +150,22 @@ export async function loadAttemptReview(
   userId: string,
   stepId: string,
 ): Promise<AttemptReview | null> {
-  const { data: step } = await supabase
-    .from("roadmap_steps")
-    .select("roadmap_id")
-    .eq("id", stepId)
-    .eq("user_id", userId)
-    .maybeSingle();
-  if (!step) return null;
-
-  const { data: attempt } = await supabase
-    .from("quiz_attempts")
-    .select("answers, score, passed")
-    .eq("step_id", stepId)
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+  const [{ data: attempt }, { data: quizRow }] = await Promise.all([
+    supabase
+      .from("quiz_attempts")
+      .select("answers, score, passed")
+      .eq("step_id", stepId)
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("step_quizzes")
+      .select("questions")
+      .eq("step_id", stepId)
+      .eq("user_id", userId)
+      .maybeSingle(),
+  ]);
 
   const answers =
     attempt?.answers && typeof attempt.answers === "object" && !Array.isArray(attempt.answers)
@@ -203,24 +173,9 @@ export async function loadAttemptReview(
       : null;
   if (!attempt || !answers) return null;
 
-  const { data: siblings } = await supabase
-    .from("roadmap_steps")
-    .select("id")
-    .eq("roadmap_id", step.roadmap_id)
-    .eq("user_id", userId);
-
-  const { data: quizRows } = await supabase
-    .from("step_quizzes")
-    .select("step_id, questions")
-    .eq("user_id", userId)
-    .in("step_id", (siblings ?? []).map((s) => s.id));
-
-  const questionByKey = new Map<string, QuizQuestion>();
-  for (const row of quizRows ?? []) {
-    for (const question of parseQuestions(row.questions)) {
-      questionByKey.set(qkey(row.step_id, question.id), question);
-    }
-  }
+  const questionByKey = new Map<string, QuizQuestion>(
+    parseQuestions(quizRow?.questions).map((q) => [qkey(stepId, q.id), q]),
+  );
 
   const review = Object.entries(answers).flatMap(([key, chosen]) => {
     const question = questionByKey.get(key);
@@ -232,35 +187,15 @@ export async function loadAttemptReview(
 }
 
 /**
- * The question set for a single step, built exactly as the page builds it.
- *
- * Resolves the step's roadmap first so carry-over sees the same scope in both
- * places. If the grader used a different set from the one rendered, a student
- * could be marked wrong on a question they were never shown.
+ * The question set for a single step, built exactly as the page builds it —
+ * the same function, so the grader can never mark against a set the student was
+ * not shown.
  */
 export async function loadStepQuiz(
   supabase: Supabase,
   userId: string,
   stepId: string,
 ): Promise<StepQuiz | null> {
-  const { data: step } = await supabase
-    .from("roadmap_steps")
-    .select("roadmap_id")
-    .eq("id", stepId)
-    .eq("user_id", userId)
-    .maybeSingle();
-  if (!step) return null;
-
-  const { data: siblings } = await supabase
-    .from("roadmap_steps")
-    .select("id")
-    .eq("roadmap_id", step.roadmap_id)
-    .eq("user_id", userId);
-
-  const byStep = await loadRoadmapQuizzes(
-    supabase,
-    userId,
-    (siblings ?? []).map((s) => s.id),
-  );
+  const byStep = await loadRoadmapQuizzes(supabase, userId, [stepId]);
   return byStep.get(stepId) ?? null;
 }

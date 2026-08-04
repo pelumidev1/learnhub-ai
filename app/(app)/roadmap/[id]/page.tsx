@@ -61,7 +61,6 @@ export default async function RoadmapDetailPage({
     if (loaded.items.length === 0) continue;
     quizByStep.set(sid, {
       questions: toClientQuestions(loaded.items),
-      carriedCount: loaded.items.filter((it) => it.stepId !== sid).length,
       passed: loaded.passed,
       bestScore: loaded.bestScore,
       passMark: PASS_MARK,
