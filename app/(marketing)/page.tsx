@@ -29,6 +29,36 @@ function ArrowIcon({ className = "" }: { className?: string }) {
 /** Staggered hero load-in delay (CSS var read by .lh-hero-in). */
 const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 
+/**
+ * The three cards under "LearnHub makes the choice clear".
+ *
+ * `photo` is a CSS url() for .lh-slot. `/brand/choice-1.jpg` and
+ * `/brand/choice-3.jpg` are not in the repo yet: those two slots show the
+ * neutral placeholder surface until the files land, so adding a photo is
+ * dropping a file at that path and nothing else. 4:3 crops, and a face reads
+ * best about a third down.
+ */
+const DECISION_CARDS = [
+  {
+    photo: "url(/brand/choice-1.jpg)",
+    alt: "A student at a laptop, working through a career assessment",
+    title: "17 careers, mapped for here",
+    body: "Every path is written for the African market: honest local pay, the skills that actually get hired, and timelines you can plan a year around.",
+  },
+  {
+    photo: "url(/brand/student-1.jpg)",
+    alt: "A student smiling, holding a laptop",
+    title: "A match, with the reasons",
+    body: "Not just a job title. You see how well each career fits you, what it pays where you live, and why the AI put it in front of you.",
+  },
+  {
+    photo: "url(/brand/choice-3.jpg)",
+    alt: "A student following a learning roadmap on a phone",
+    title: "Straight answers",
+    body: "Which careers fit you and why, what the work is really like day to day, and how long it honestly takes. All of it in plain language.",
+  },
+];
+
 export default function LandingPage() {
   return (
     <div className="lh-landing bg-white text-ink">
@@ -67,7 +97,7 @@ export default function LandingPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-sky-2" /> Free while in beta
             </span>
 
-            <h1 className="mt-5 font-display text-[2.75rem] font-bold uppercase leading-[0.98] tracking-tight text-white sm:mt-6 sm:text-[5rem]">
+            <h1 className="mt-5 font-display text-[2.75rem] font-bold leading-[1.02] tracking-[-0.035em] text-white sm:mt-6 sm:text-[5rem]">
               <SplitText text="Discover the" delay={80} stagger={16} />
               <SplitText text="tech career" delay={210} stagger={16} className="text-sky-2" />
               <SplitText text="built for you" delay={340} stagger={16} />
@@ -108,7 +138,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl px-5">
           <div className="lh-outline">
             <StatementMedia />
-            <h2 className="lh-outline-knockout lh-balance text-center font-display text-[1.9rem] font-bold uppercase leading-[1.08] tracking-tight sm:text-[4.25rem]">
+            <h2 className="lh-outline-knockout lh-balance text-center font-display text-[1.9rem] font-bold leading-[1.1] tracking-[-0.03em] sm:text-[4.25rem]">
               <SplitText by="word" stagger={42} text="Learn what fits you," />
               <SplitText by="word" stagger={42} delay={120} text="build the skills that pay," />
               <SplitText by="word" stagger={42} delay={240} text="and step into work you want." />
@@ -118,112 +148,69 @@ export default function LandingPage() {
       </section>
 
       {/* =========================================================== DECISIONS
-          Centred heading + sub, then a three-card row: stats, photo, quote.
+          Built to shopaza.africa's features band, which Pelumi brought as the
+          reference: a centred eyebrow and headline over three equal columns,
+          each an image that carries the width, then a title, then two lines of
+          plain text. The cards used to be three different shapes — a stats
+          block, a photo, a bullet list — so the row never read as one thing and
+          each card left space it did not use. Parallel cards are what make the
+          images occupy the band.
 
-          On ink, matching "What you get" and the FAQ. It used to lean on the
-          white statement section above it for its top space (pt-8); a band with
-          its own ground has to carry its own padding. Cards are the same dark
-          surface as the "Life after the match" panel — white at 3% over a 10%
-          hairline — rather than a flat ink-2 fill, so they read as raised. */}
+          Mixed case, weight 600, -0.03em: the reference's headline voice, which
+          every heading on the page now shares. It replaced the uppercase the
+          landing used to set headings in.
+
+          Still on ink. The band's ground does not move (see CareerMatchSection,
+          which was the one that did). */}
       <section className="bg-ink py-24 sm:py-32">
         <div className="mx-auto max-w-6xl px-5">
           <Reveal className="text-center">
+            <Kicker center reverse>
+              What you get
+            </Kicker>
             <SplitText
               as="h2"
               text="LearnHub makes the choice clear"
-              className="mx-auto max-w-3xl font-display text-[2rem] font-bold uppercase leading-[1.04] tracking-tight text-white sm:text-[3.2rem]"
+              className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[3.5rem]"
             />
             <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-white/60 sm:text-lg">
               Made for people who want to feel certain about their next step, not overwhelmed by it.
             </p>
           </Reveal>
 
-          <div className="mt-16 grid gap-4 md:grid-cols-3">
-            {/* Stats card */}
-            <Reveal>
-              <div className="flex h-full flex-col justify-between rounded-3xl border border-white/10 bg-white/[0.03] p-8">
-                <div>
-                  <h3 className="font-display text-lg font-bold uppercase tracking-tight text-white">
-                    LearnHub in numbers
+          {/* 4:3 images, 24px gutters, title and text left-aligned under each —
+              the reference's proportions. A slot with no photo yet falls back to
+              the brand gradient inside .lh-photo rather than a broken image, so
+              dropping a file at the named path is the whole change. */}
+          <div className="mt-14 grid gap-6 sm:mt-16 md:grid-cols-3">
+            {DECISION_CARDS.map((card, i) => (
+              <Reveal key={card.title} delay={i * 90}>
+                <article className="flex h-full flex-col">
+                  <div
+                    className="lh-slot aspect-[4/3] w-full overflow-hidden rounded-3xl"
+                    style={{ "--photo": card.photo } as React.CSSProperties}
+                    role="img"
+                    aria-label={card.alt}
+                  />
+                  <h3 className="mt-6 font-display text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl">
+                    {card.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">
-                    17 tech careers mapped for the African market, with honest local pay and
-                    realistic timelines.
+                  <p className="mt-2.5 text-[15px] leading-relaxed text-white/60 sm:text-base">
+                    {card.body}
                   </p>
-                  <Link
-                    href="/careers"
-                    className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/10"
-                  >
-                    Learn more
-                  </Link>
-                </div>
-                <div className="mt-10 flex gap-8">
-                  <div>
-                    <div className="font-display text-4xl font-bold tracking-tight text-white">17</div>
-                    <p className="mt-1 text-sm text-white/55">Careers mapped</p>
-                  </div>
-                  <div>
-                    <div className="font-display text-4xl font-bold tracking-tight text-white">2 min</div>
-                    <p className="mt-1 text-sm text-white/55">To your match</p>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Photo card with the match chip floating over it */}
-            <Reveal delay={90}>
-              <div
-                className="lh-photo relative h-full min-h-[380px] overflow-hidden rounded-3xl"
-                style={{ "--photo": "url(/brand/student-1.jpg)" } as React.CSSProperties}
-              >
-                {/* shadow-soft keeps the chip's edges readable — the photo behind
-                    it is a near-white wall, so a flat white card would dissolve. */}
-                <div className="absolute inset-x-4 bottom-4 rounded-2xl bg-white/95 p-4 shadow-soft backdrop-blur">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted">Your match</p>
-                  <p className="mt-1 font-display text-lg font-bold text-ink">Data Analyst</p>
-                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-silver">
-                    <div className="h-full w-[86%] rounded-full bg-blue" />
-                  </div>
-                  <p className="mt-2 text-xs text-muted">86% fit &middot; ₦250k–₦600k / month</p>
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Straight-answers card. This slot held a learner quote; LearnHub is
-                pre-launch, so it carries what a match actually tells you until
-                there are real learners to quote. */}
-            <Reveal delay={180}>
-              <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-8">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-blue text-white">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="m15.5 8.5-2.4 5.6-5.6 2.4 2.4-5.6Z" />
-                  </svg>
-                </span>
-                <h3 className="mt-7 font-display text-lg font-bold uppercase tracking-tight text-white">
-                  Straight answers
-                </h3>
-                {/* Bullets are sky-2, not blue: #1F33CC is barely separable
-                    from ink at 6px. Same swap Kicker makes with `reverse`. */}
-                <ul className="mt-4 flex-1 space-y-2.5">
-                  {[
-                    "Which careers fit you, and why",
-                    "What the work is really like",
-                    "What it pays where you live",
-                    "How long it honestly takes",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-white/85">
-                      <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-sky-2" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8 border-t border-white/10 pt-5">
-                  <p className="text-sm text-white/55">All of it in plain language.</p>
-                </div>
-              </div>
-            </Reveal>
+                </article>
+              </Reveal>
+            ))}
           </div>
+
+          <Reveal className="mt-12 text-center">
+            <Link
+              href="/careers"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+            >
+              See all 17 careers
+            </Link>
+          </Reveal>
         </div>
       </section>
 
@@ -253,7 +240,7 @@ export default function LandingPage() {
             <SplitText
               as="h2"
               text="Free while in beta"
-              className="mx-auto max-w-3xl font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[3.2rem]"
+              className="mx-auto max-w-3xl font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.2rem]"
             />
             <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-muted sm:text-lg">
               No card, no catch. Everything below is free while LearnHub is in beta.
@@ -263,7 +250,7 @@ export default function LandingPage() {
           <div className="mt-14 grid gap-4 md:grid-cols-2">
             <Reveal>
               <div className="h-full rounded-3xl bg-paper p-8">
-                <h3 className="font-display text-lg font-bold uppercase tracking-tight text-ink">
+                <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-ink">
                   Everything included
                 </h3>
                 <div className="mt-2 font-display text-5xl font-bold tracking-tight text-ink">Free</div>
@@ -295,7 +282,7 @@ export default function LandingPage() {
             <Reveal delay={100}>
               <div className="flex h-full flex-col justify-between rounded-3xl bg-ink p-8">
                 <div>
-                  <h3 className="font-display text-lg font-bold uppercase tracking-tight text-white">
+                  <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-white">
                     Why it&rsquo;s free
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-white/65">
@@ -333,7 +320,7 @@ export default function LandingPage() {
             <SplitText
               as="h2"
               text="Be one of the first"
-              className="mx-auto mt-3 max-w-3xl font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]"
+              className="mx-auto mt-3 max-w-3xl font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.9rem]"
             />
             <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-muted sm:text-lg">
               We&rsquo;re new, so we have no learner stories to show you yet. What we do have is
@@ -367,7 +354,7 @@ export default function LandingPage() {
             <SplitText
               as="h2"
               text="Your tech career starts with two minutes"
-              className="mx-auto max-w-2xl font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-white sm:text-[2.9rem]"
+              className="mx-auto max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[2.9rem]"
             />
             <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-white/85">
               Take the free assessment and meet the career that fits you. It takes two minutes
@@ -392,7 +379,7 @@ export default function LandingPage() {
             <SplitText
               as="h2"
               text="Questions, answered"
-              className="mt-3 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-white sm:text-[2.9rem]"
+              className="mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[2.9rem]"
             />
             <p className="mt-4 text-[15px] leading-relaxed text-white/60">
               Still stuck? Ask us at{" "}

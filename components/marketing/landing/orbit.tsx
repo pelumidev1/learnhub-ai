@@ -87,7 +87,7 @@ export function OrbitSection() {
       <div className="mx-auto max-w-6xl px-5">
         <Reveal className="mx-auto max-w-2xl text-center">
           <Kicker center>Real students, real AI</Kicker>
-          <h2 className="mt-3 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-ink sm:text-[2.9rem]">
+          <h2 className="mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.9rem]">
             A coach in your corner, built around you
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">

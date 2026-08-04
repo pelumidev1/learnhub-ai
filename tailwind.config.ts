@@ -13,10 +13,12 @@ export default {
         muted: { DEFAULT: "#5B6472", 2: "#8A93A6" },
       },
       fontFamily: {
-        // Unified on Geist — one clean, neutral geometric family, weights carry
-        // the hierarchy (Zerion-style). Geist is the CLAUDE.md-approved face.
-        display: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        // Switzer for display, General Sans for text — see app/fonts.ts for why
+        // these two. Mono stays Geist Mono: it carries the small technical
+        // labels (step counters, beat names) and the reference has no mono at
+        // all, so there is nothing to match it against.
+        display: ["var(--font-display)", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
       },
       borderRadius: { xl: "16px", "2xl": "22px" },

@@ -254,7 +254,11 @@ export function CareerMatchSection({
           bottom of the stage sits under the bar for as long as it is showing. */}
       <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
         <div className="lh-cm-stage">
-          <div className="lh-cm-glow absolute inset-0" aria-hidden />
+          {/* No wash on the ground. Two blue radial gradients used to sit here,
+              which made this the one ink band that was not the same ink as the
+              others — you could see the colour change scrolling between it and
+              "LearnHub makes the choice clear". The rings below are hairlines
+              on the same ground, so they decorate without tinting it. */}
 
           {/* Orbit rings, echoing the brand mark. One turns. */}
           <span
@@ -309,7 +313,7 @@ export function CareerMatchSection({
                   >
                     <Kicker reverse>{b.kicker}</Kicker>
                     <h2
-                      className="font-display font-bold uppercase text-white"
+                      className="font-display font-semibold text-white"
                       style={{
                         fontSize: "var(--cm-h)",
                         lineHeight: 1.04,
@@ -475,7 +479,7 @@ export function CareerMatchSection({
           >
             <Logo reverse className="pointer-events-auto" />
             <p
-              className="font-display font-bold uppercase text-white"
+              className="font-display font-semibold text-white"
               style={{
                 fontSize: "var(--cm-finale)",
                 lineHeight: 1.04,
@@ -528,7 +532,7 @@ function StackedBeats({ innerRef }: { innerRef: React.Ref<HTMLElement> }) {
           <Kicker center reverse>
             What you get
           </Kicker>
-          <h2 className="mt-4 font-display text-3xl font-bold uppercase leading-[1.04] tracking-tight text-white">
+          <h2 className="mt-4 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-white">
             Find your tech career. Free.
           </h2>
         </div>
@@ -538,7 +542,7 @@ function StackedBeats({ innerRef }: { innerRef: React.Ref<HTMLElement> }) {
             <div key={b.kicker} className="grid gap-6 sm:grid-cols-[1fr_auto] sm:items-center">
               <div>
                 <Kicker reverse>{b.kicker}</Kicker>
-                <h3 className="mt-3 font-display text-2xl font-bold uppercase leading-[1.06] tracking-tight text-white">
+                <h3 className="mt-3 font-display text-2xl font-semibold leading-[1.12] tracking-[-0.03em] text-white">
                   {b.head[0]} {b.head[1]}
                 </h3>
                 <p className="mt-3 text-[15px] leading-relaxed" style={{ color: "#b6bece" }}>

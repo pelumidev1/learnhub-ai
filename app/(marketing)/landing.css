@@ -92,6 +92,20 @@
   background-position: center;
 }
 
+/* An image slot in a card row on a dark band.
+   Same job as .lh-photo, but what shows through a missing photo is a neutral
+   surface instead of the brand gradient. Three cards side by side with two
+   still waiting on their assets, and a saturated blue block reads as a design
+   element rather than as a photo that has not arrived yet — which is also how
+   the reference does it: a flat #F6F6F6 block under every image. */
+.lh-slot {
+  background-color: rgba(255, 255, 255, 0.045);
+  background-image: var(--photo, none);
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
 /* Hero photo grade: lift saturation and contrast so the image reads vivid
    through the dark scrims (Zerion-style color-graded photography). */
 .lh-hero-photo {
@@ -356,13 +370,6 @@
   .lh-cm-plabel {
     display: none;
   }
-}
-
-/* Two blue washes behind the composition. Purely decorative. */
-.lh-cm-glow {
-  background-image:
-    radial-gradient(60cqw 70cqh at 68% 42%, rgba(42, 70, 240, 0.28), transparent 62%),
-    radial-gradient(70cqw 60cqh at 18% 82%, rgba(31, 51, 204, 0.14), transparent 66%);
 }
 
 .lh-cm-ring {

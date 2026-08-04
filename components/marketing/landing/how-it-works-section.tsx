@@ -30,7 +30,7 @@ export function HowItWorksSection() {
           <SplitText
             as="h2"
             text="Three steps to a clear path"
-            className="lh-oneline-heading mt-5 font-display font-bold uppercase leading-[1.04] tracking-tight text-ink"
+            className="lh-oneline-heading mt-5 font-display font-semibold leading-[1.1] tracking-[-0.03em] text-ink"
           />
         </Reveal>
 

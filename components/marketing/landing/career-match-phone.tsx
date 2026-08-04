@@ -507,7 +507,7 @@ export function CertificateCard({ op, y, rot, scale }: { op: number; y: number; 
         Certificate of completion
       </p>
       <p
-        className="font-display font-bold uppercase tracking-tight text-ink"
+        className="font-display font-semibold tracking-[-0.02em] text-ink"
         style={{ fontSize: "2.8cqh", lineHeight: 1.1, marginTop: "0.6cqh" }}
       >
         Data Analyst Path
