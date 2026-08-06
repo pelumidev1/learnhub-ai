@@ -129,6 +129,15 @@
   transform: none;
 }
 
+/* Opacity only, 200ms. After .lh-reveal so it wins on source order, and
+   doubled up on .lh-reveal-hidden to beat that rule's transform. */
+.lh-reveal-fade {
+  transition: opacity 0.2s ease-out;
+}
+.lh-reveal-fade.lh-reveal-hidden {
+  transform: none;
+}
+
 /* Hero load-in: a staggered rise on the badge / headline / copy / buttons.
    Pure CSS, gated behind no-preference so reduced-motion users see it static. */
 @media (prefers-reduced-motion: no-preference) {

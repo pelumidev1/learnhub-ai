@@ -460,7 +460,11 @@ function StackedBeats({ innerRef }: { innerRef: React.Ref<HTMLElement> }) {
             once, and this branch owns four phones by design. */}
         <div data-device-mock="phone" className="mt-12 flex flex-col gap-12">
           {BEATS.map((b, i) => (
-            <Reveal key={b.kicker} className="grid gap-6 sm:grid-cols-[1fr_auto] sm:items-center">
+            <Reveal
+              key={b.kicker}
+              fade
+              className="grid gap-6 sm:grid-cols-[1fr_auto] sm:items-center"
+            >
               <div>
                 <Kicker reverse>{b.kicker}</Kicker>
                 <h3 className="mt-3 font-display text-2xl font-semibold leading-[1.12] tracking-[-0.03em] text-white">

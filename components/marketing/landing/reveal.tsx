@@ -14,6 +14,7 @@ export function Reveal({
   children,
   delay = 0,
   image = false,
+  fade = false,
   as: Tag = "div",
   media,
   rootMargin = "0px 0px -10% 0px",
@@ -24,6 +25,13 @@ export function Reveal({
   delay?: number;
   /** image variant: adds a subtle scale-down on reveal */
   image?: boolean;
+  /**
+   * Opacity only, over 200ms. The page's default is a 32px rise over 0.8s,
+   * which is right for a band arriving once; in a stack of cards a reader
+   * scrolls through, the previous card's rise is still running as the next one
+   * starts, and the whole section reads as lag.
+   */
+  fade?: boolean;
   /**
    * Element to render. `li` exists so steps inside an <ol> can reveal
    * individually — an ordered list may only contain <li>, so they cannot be
@@ -79,6 +87,7 @@ export function Reveal({
       className={cn(
         "lh-reveal",
         image && "lh-reveal-img",
+        fade && "lh-reveal-fade",
         state === "hidden" && "lh-reveal-hidden",
         state === "shown" && "lh-reveal-in",
         className,
