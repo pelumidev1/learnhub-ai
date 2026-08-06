@@ -191,9 +191,15 @@ outlive the memory of why:
 - **Two device mocks, one mounted at a time.** The brief has one phone at every
   size. A phone mock inside a 16:9 stage on a 1440px laptop is a tall sliver in
   a wide frame, and it tells a desktop reader the product is a phone app; it is
-  both. From 768px up the beats are told through a browser window instead —
-  chrome, URL, the app's own sidebar — and below that through the phone, as four
-  stacked cards in normal flow.
+  both. From 768px up the beats are told through a browser window — chrome, URL,
+  the app's own sidebar — and below that through the phone.
+
+  Both are the same rig on the same scroll. Mobile was briefly four stacked
+  static cards, one phone each, which is what the brief's wording described;
+  what Pelumi meant was the desktop scroll effect with the phone in the frame,
+  and four separate mockups was not it. The stacked cards remain only as the
+  server render and the no-JS fallback, replaced a viewport before the section
+  is reached.
 
   The branch is chosen with `matchMedia` in `useBreakpoint()`, never with
   `display: none`: rendering the hidden tree would double the animated DOM and
@@ -206,6 +212,12 @@ outlive the memory of why:
   `career-match-content.ts`. Two derivations of the same timings is how a beat
   ends up arriving a few frames apart on a laptop and a phone; two copies of the
   same claim is how they end up quoting different numbers.
+
+  A phone keeps two shapes, switched on the viewport's aspect rather than its
+  width, so a phone turned sideways gets a composition built for a short wide
+  stage instead of a stacked one crushed into 360px of height. Sizes in cqh need
+  no override between them — the phone and its screens are cqh-based — so only
+  the outer composition carries an orientation.
 
   A tablet keeps the rig but stacks it: caption centred above the window, the
   orbit rings dropped (they crowd at that width), and 440vh of scroll instead of

@@ -22,23 +22,28 @@ import { AdvisorWindowMock, CertificateCard } from "./career-match-window";
  * four beats (AI career match, free roadmap, 24/7 coach, certificate) and ends
  * on a call to action.
  *
- * Two device treatments of the same four beats, one mounted at a time:
+ * Every size gets the same rig. What changes is the device in it, and how the
+ * stage is laid out around it — one mock is mounted at a time:
  *
  *   - 1024px and up: a browser window, caption column on the left.
  *   - 768-1023px: the same window, caption stacked above it, both centred.
  *   - below 768px, and any coarse pointer under a tablet's width: the phone,
- *     as four stacked cards in normal flow. No pinning, no scroll rig.
+ *     caption above it, the stage filling the pinned viewport.
+ *
+ * A phone is not a different page. It is the same four beats, advancing on the
+ * same scroll, with the device that phone readers actually hold in the frame
+ * instead of a laptop window.
  *
  * The branch is chosen with matchMedia, never with `display: none`. Rendering
  * the hidden tree would double the animated DOM and cost frames on a mid-tier
  * Android for something nobody can see.
  *
- * Three renderings sit behind those branches:
+ * Two renderings sit behind the rig:
  *   - "stacked": four static cards in normal flow. This is what the server
- *     renders, what anyone without JS sees, and what phones keep.
+ *     renders and what anyone without JS keeps, and it is replaced by the rig
+ *     a viewport before the section is scrolled to.
  *   - "static": reduced motion. Beat 1, settled, one screen tall, nothing bound
  *     to scroll.
- *   - "scroll": the full rig.
  */
 
 type Mode = "stacked" | "static" | "scroll";
@@ -57,7 +62,9 @@ type Props = {
 
 /* A tablet gets less scroll for the same four beats: the stage is shorter
    there, so a beat covers less of the screen, and the desktop length made each
-   one take two or three flicks to clear. */
+   one take two or three flicks to clear. A phone keeps the full length — the
+   stage is a whole viewport tall there, so a beat has as much room as it does
+   on a laptop. */
 const TABLET_SCROLL = 440;
 
 export function CareerMatchSection({
@@ -100,7 +107,7 @@ export function CareerMatchSection({
   /* `bp` is null until the first effect runs, so the server and the first
      client render agree on the stacked cards and hydration has nothing to
      mismatch on. */
-  const rig = armed && (bp === "tablet" || bp === "desktop");
+  const rig = armed && bp !== null;
   const mode: Mode = !rig ? "stacked" : reduced ? "static" : "scroll";
 
   useEffect(() => {
@@ -167,6 +174,7 @@ export function CareerMatchSection({
   // Reduced motion renders beat 1 settled; the rig renders live progress.
   const scene = deriveScene(mode === "static" ? 0 : p);
   const tablet = bp === "tablet";
+  const phone = bp === "mobile";
   const length = tablet ? TABLET_SCROLL : scrollLength;
 
   return (
@@ -292,10 +300,14 @@ export function CareerMatchSection({
                 visibility: scene.deviceOp <= 0.002 ? "hidden" : "visible",
               }}
             >
-              <AdvisorWindowMock scene={scene} />
+              {phone ? (
+                <AdvisorPhoneMock scene={scene} />
+              ) : (
+                <AdvisorWindowMock scene={scene} />
+              )}
 
-              {/* Flies up over the window, not inside it, so it is not clipped
-                  by the window's rounded body. Its opacity is only the arrival
+              {/* Flies up over the device, not inside it, so it is not clipped
+                  by the device's rounded body. Its opacity is only the arrival
                   — the column above owns the departure. */}
               {scene.cert > 0.002 && <CertificateCard scene={scene} />}
             </div>
@@ -334,7 +346,7 @@ export function CareerMatchSection({
                     />
                   </span>
                   <span
-                    className="mt-[1.2cqh] block font-mono uppercase tracking-[0.14em] text-white"
+                    className="lh-cm-plabel mt-[1.2cqh] block font-mono uppercase tracking-[0.14em] text-white"
                     style={{
                       fontSize: "var(--cm-small)",
                       opacity: scene.progress[i].label,

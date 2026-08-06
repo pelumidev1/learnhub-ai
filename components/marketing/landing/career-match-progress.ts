@@ -140,6 +140,8 @@ export type Scene = {
   progressOp: number;
   /** The "scroll" hint, which leaves on the first pixel of it. */
   hintOp: number;
+  /** True from just before the coach beat: the phone's clock reads 2am. */
+  night: boolean;
 };
 
 export function deriveScene(q: number): Scene {
@@ -205,6 +207,7 @@ export function deriveScene(q: number): Scene {
     })),
     progressOp: 1 - S(0.895, 0.925),
     hintOp: 0.5 * (1 - S(0, 0.03)),
+    night: q > 0.46,
   };
 }
 
@@ -239,5 +242,6 @@ export function settledScene(): Scene {
     progress: B.map(() => ({ bar: 1, label: 1 })),
     progressOp: 1,
     hintOp: 0,
+    night: false,
   };
 }

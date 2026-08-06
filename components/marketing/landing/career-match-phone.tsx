@@ -12,19 +12,22 @@ import {
 import { anim, type Anim, type Scene } from "./career-match-progress";
 
 /**
- * The phone treatment of the four beats: a phone mock and its four screens.
+ * The phone treatment of the four beats: one phone mock and its four screens.
  *
  * This is what runs below 768px, and on any coarse-pointer device under a
  * tablet's width. From 768px up the same beats are told through a browser
  * window instead — see career-match-window.tsx. The two are siblings: same
- * props, same `Scene`, one mounted at a time.
+ * props, same `Scene`, one mounted at a time, and both advance through the
+ * beats on the same pinned scroll rig. A phone is not a different page; it is
+ * the same page with a different device in the frame.
  *
  * Everything here is decorative: the section's real copy lives in the caption
  * column as headings and paragraphs, so the whole phone is aria-hidden and the
  * screens are never the only place a claim is made.
  *
- * Sizing is in cqh/cqw against the frame's container, never px, so the phone
- * scales with whatever it is dropped into.
+ * Sizing is in cqh/cqw, never px, so the phone scales with the stage it sits
+ * in. The screens stack absolutely and cross-fade, which is why each takes its
+ * own opacity/offset rather than being mounted and unmounted per beat.
  */
 
 /* ------------------------------------------------------------------ chrome */
@@ -34,6 +37,7 @@ function PhoneFrame({ clock, children }: { clock: string; children: React.ReactN
     <div
       className="relative flex flex-col overflow-hidden bg-white"
       style={{
+        height: "var(--cm-phone-h)",
         aspectRatio: "9 / 19",
         borderRadius: "4.6cqh",
         border: "0.18cqh solid #E7EAF1",
@@ -429,33 +433,49 @@ function CertificateScreen({ scene }: { scene: Scene }) {
 /* ------------------------------------------------------------------- mount */
 
 /**
- * One phone, showing one beat.
+ * The phone, with the beats cross-fading inside it.
  *
- * `beat` rather than a cross-fade because the phone only ever appears in the
- * stacked mobile rendering, where each beat has its own card and its own phone
- * beside it. The screens still take their state from the shared `Scene`, so a
- * phone renders exactly what a browser window would at the same progress.
+ * Two callers, one component. On the scroll rig it takes the whole scene and
+ * hands over from screen to screen as `p` advances — the same thing the window
+ * does on a laptop. `beat` is for the stacked rendering that the server sends
+ * and no-JS keeps, where each beat has its own card and its own settled phone;
+ * there it also brings its own container, since there is no stage to size
+ * against.
  *
- * The frame carries its own container so cqh resolves against the phone rather
- * than against whatever it was dropped into.
+ * Screens below the visibility threshold are unmounted rather than hidden: the
+ * whole stage re-renders on every scroll frame, so a mounted invisible screen
+ * is reconciliation work paid 60 times a second for nothing.
  */
-export function AdvisorPhoneMock({ beat, scene }: { beat: number; scene: Scene }) {
+export function AdvisorPhoneMock({ scene, beat }: { scene: Scene; beat?: number }) {
+  const only = (i: number) => (beat === undefined ? scene.screen[i].op > 0.002 : beat === i);
+
+  const phone = (
+    <PhoneFrame clock={(beat === undefined ? scene.night : beat === 2) ? "02:14" : "09:24"}>
+      {only(0) && <MatchScreen scene={scene} />}
+      {only(1) && <RoadmapScreen scene={scene} />}
+      {only(2) && <CoachScreen scene={scene} />}
+      {only(3) && <CertificateScreen scene={scene} />}
+    </PhoneFrame>
+  );
+
+  if (beat === undefined) {
+    return (
+      <div aria-hidden data-device-mock="phone">
+        {phone}
+      </div>
+    );
+  }
+
+  /* Its own mini stage: --cm-phone-h belongs to the scroll rig's stage, and
+     without one the frame takes its height from its aspect against this box's
+     width instead. */
   return (
     <div
       aria-hidden
       className="justify-self-center"
-      style={{
-        width: "232px",
-        height: "460px",
-        containerType: "size",
-      }}
+      style={{ width: "232px", height: "460px", containerType: "size" }}
     >
-      <PhoneFrame clock={beat === 2 ? "02:14" : "09:24"}>
-        {beat === 0 && <MatchScreen scene={scene} />}
-        {beat === 1 && <RoadmapScreen scene={scene} />}
-        {beat === 2 && <CoachScreen scene={scene} />}
-        {beat === 3 && <CertificateScreen scene={scene} />}
-      </PhoneFrame>
+      {phone}
     </div>
   );
 }
