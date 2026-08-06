@@ -286,28 +286,30 @@
    Everything inside is sized in cqw/cqh against the stage, so the whole
    composition scales as one unit.
 
-   Two shapes, switched on the viewport's aspect ratio rather than its width, so
-   a phone turned sideways gets the landscape one:
+   Two layouts, switched on `data-bp` — the breakpoint the section itself
+   resolved in JS — rather than on a media query. The device mock is chosen in
+   JS anyway (only one of the two is ever mounted), and driving the layout from
+   the same decision is what stops the two from disagreeing at the edge of a
+   range:
 
-   - Landscape: a 16:9 stage, caption left, phone right.
-   - Portrait: the stage fills the viewport and the composition stacks, caption
-     over phone. cqw on a 390px-wide stage is 3.9px, so every cqw-based size
-     from the landscape layout would come out roughly a quarter of its intended
-     size — hence the custom properties below. Sizes in *cqh* need no override:
-     the phone and everything inside it are cqh-based, so they stay proportional
-     on their own. Only the outer composition had landscape baked into it.
+   - desktop (>=1024px): caption left at 37%, window right at 63%.
+   - tablet (768-1023px): one column, caption centred above the window.
+
+   Phones never reach this stage at all; they get the stacked cards.
 
    The properties are consumed from inline styles in career-match.tsx, which is
    why they live here rather than there: an inline `font-size: 3.5cqw` cannot be
-   overridden by a media query, but `font-size: var(--cm-h)` can. */
+   overridden by a selector, but `font-size: var(--cm-h)` can. */
 .lh-cm-stage {
   position: relative;
   width: min(100%, 177.7vh);
   aspect-ratio: 16 / 9;
   container-type: size;
 
-  --cm-cols: 46% 54%;
+  --cm-cols: 37% 63%;
   --cm-rows: auto;
+  --cm-row-gap: 0;
+  --cm-align: normal;
   --cm-pad: 0 5cqw;
   --cm-h: 3.5cqw;
   --cm-body: 1.15cqw;
@@ -316,41 +318,87 @@
   --cm-small: 0.95cqw;
   --cm-scroll: 0.85cqw;
   --cm-gap: 2cqw;
-  --cm-phone-h: 74cqh;
-  --cm-cert-w: 44cqh;
+  /* Sized off the window, not the stage: the card is a thing laid over the
+     app, and a fraction of the stage makes it two-thirds of the window on a
+     portrait tablet and half of it on a desktop. */
+  --cm-cert-w: calc(var(--cm-win-w) * 0.48);
   --cm-ring-a: 78cqh;
   --cm-ring-b: 112cqh;
+  /* The window is bounded on both axes: by the column it sits in, and by the
+     stage's height, so a short, wide viewport shortens it rather than pushing
+     it through the progress row. 1.6 is the window's own aspect. */
+  --cm-win-w: min(58cqw, calc(70cqh * 1.6));
 }
 
+/* A portrait tablet. Holding 16:9 here would letterbox the stage into the top
+   third of the screen and leave the window about 320px wide — too small to
+   read as a browser. The stage takes the pinned viewport instead, and the
+   cq-based sizes below carry over unchanged. */
 @media (max-aspect-ratio: 1 / 1) {
   .lh-cm-stage {
     width: 100%;
     height: 100%;
     aspect-ratio: auto;
-
-    --cm-cols: 1fr;
-    /* Caption takes what it needs; the phone gets the rest and centres in it. */
-    --cm-rows: auto 1fr;
-    --cm-pad: 7cqh 6cqw 11cqh;
-    --cm-h: 7.4cqw;
-    --cm-body: 3.6cqw;
-    --cm-body-w: 100%;
-    --cm-finale: 9cqw;
-    --cm-small: 2.5cqw;
-    --cm-scroll: 2.6cqw;
-    --cm-gap: 3cqw;
-    --cm-phone-h: 54cqh;
-    --cm-cert-w: 40cqh;
-    --cm-ring-a: 52cqh;
-    --cm-ring-b: 76cqh;
   }
+}
 
-  /* Four beat names will not fit across a 344px row: "AI career match" alone
-     needs about 93px of the 77px each column gets. The bars still show the
-     position, and the caption above already names the beat. */
-  .lh-cm-plabel {
-    display: none;
-  }
+/* A tablet takes the whole pinned viewport rather than a 16:9 letterbox. Held
+   sideways at 1023x768 the letterbox is only 575px tall, and a caption stacked
+   above a window inside it leaves the window about 330px wide — a browser mock
+   too small to read as one, with empty ink above and below it. Filling the
+   viewport gives the window back 200px of height and loses nothing: the stage
+   is still pinned, and every size inside it is relative to the stage either
+   way. */
+.lh-cm-stage[data-bp="tablet"] {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+
+  --cm-cols: 1fr;
+  /* The caption and the window are one block, centred together. Left to
+     stretch, the two auto rows split the height evenly and open a gap between
+     the copy and the thing it describes. */
+  --cm-align: center;
+  --cm-rows: auto auto;
+  --cm-row-gap: 4cqh;
+  --cm-pad: 4cqh 6cqw 13cqh;
+  --cm-h: 4.4cqw;
+  --cm-body: 1.9cqw;
+  --cm-body-w: 60cqw;
+  --cm-finale: 6cqw;
+  --cm-small: 1.5cqw;
+  --cm-scroll: 1.3cqw;
+  --cm-gap: 2.5cqw;
+  --cm-cert-w: calc(var(--cm-win-w) * 0.6);
+  --cm-win-w: min(84cqw, calc(42cqh * 1.6));
+}
+
+/* Caption centres over the window when it sits above it, not beside it. */
+.lh-cm-stage[data-bp="tablet"] .lh-cm-cap {
+  text-align: center;
+}
+.lh-cm-stage[data-bp="tablet"] .lh-cm-cap p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* The browser window. A size container in its own right, so everything inside
+   is sized against the window rather than against the stage — one set of
+   numbers then holds from a 330px window on a portrait tablet to a 950px one
+   on a desktop. */
+.lh-cm-win {
+  display: flex;
+  flex-direction: column;
+  width: var(--cm-win-w);
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid #e7eaf1;
+  border-radius: 1.6cqh;
+  background: #ffffff;
+  box-shadow:
+    0 2cqh 6cqh rgba(0, 0, 0, 0.35),
+    0 8cqh 24cqh rgba(0, 0, 0, 0.45);
+  container-type: size;
 }
 
 .lh-cm-ring {

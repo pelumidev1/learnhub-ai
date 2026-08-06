@@ -188,21 +188,38 @@ outlive the memory of why:
   each translucent against the other and let the phone's checklist read straight
   through the certificate for the whole departure; it now sits on the column
   that holds both, so they leave as one composited layer.
-- **Phones get the rig, in a portrait shape.** They originally kept the four
-  stacked cards, on the argument that a pinned scroll rig was not worth a
-  mid-tier Android's battery. The two renderings then drifted far enough apart
-  that a phone was getting a visibly lesser page, so the stage now has a second
-  shape, switched on `max-aspect-ratio: 1/1` — a phone turned sideways gets the
-  landscape one.
+- **Two device mocks, one mounted at a time.** The brief has one phone at every
+  size. A phone mock inside a 16:9 stage on a 1440px laptop is a tall sliver in
+  a wide frame, and it tells a desktop reader the product is a phone app; it is
+  both. From 768px up the beats are told through a browser window instead —
+  chrome, URL, the app's own sidebar — and below that through the phone, as four
+  stacked cards in normal flow.
 
-  What made this cheap: everything inside the phone is sized in `cqh`, so it
-  stayed proportional for free. Only the outer composition had landscape baked
-  in, through eleven `cqw` values that would each have come out about a quarter
-  of their intended size on a 390px-wide stage. Those are custom properties on
-  `.lh-cm-stage` now — an inline `font-size: 3.5cqw` cannot be overridden by a
-  media query, but `font-size: var(--cm-h)` can. The four beat labels under the
-  progress bars are hidden in portrait; "AI career match" alone needs about 93px
-  of the 77px each column gets.
+  The branch is chosen with `matchMedia` in `useBreakpoint()`, never with
+  `display: none`: rendering the hidden tree would double the animated DOM and
+  cost frames on a mid-tier Android for something nobody can see. A coarse
+  pointer under 1024px resolves to the phone whatever the viewport reports, so a
+  phone held sideways at 800px does not inherit the pinned rig.
+
+  Both mocks read one `Scene` — the object `deriveScene(p)` returns — rather than
+  each deriving its own values from `p`, and every string either shows lives in
+  `career-match-content.ts`. Two derivations of the same timings is how a beat
+  ends up arriving a few frames apart on a laptop and a phone; two copies of the
+  same claim is how they end up quoting different numbers.
+
+  A tablet keeps the rig but stacks it: caption centred above the window, the
+  orbit rings dropped (they crowd at that width), and 440vh of scroll instead of
+  560 so each beat still lands in one comfortable flick. It also drops the 16:9
+  letterbox. Held sideways at 1023x768 the letterbox is only 575px tall, and a
+  caption above a window inside it leaves the window about 330px wide — too
+  small to read as a browser, with empty ink above and below it. Filling the
+  pinned viewport gives the window back 200px of height and costs nothing, since
+  every size inside is relative to the stage either way.
+
+  The layouts switch on a `data-bp` attribute, not a media query, so the layout
+  and the mock come from the same decision and cannot disagree at the edge of a
+  range. The window is its own size container, so one set of `cqh` numbers holds
+  from a 330px window on a portrait tablet to a 950px one on a desktop.
 
   **Unmount what is not on screen.** The whole stage re-renders on every scroll
   frame, and at any `p` only one caption and one phone screen are visible. With
@@ -217,7 +234,7 @@ outlive the memory of why:
 ## Mobile budget
 
 The reference is a desktop-first crypto site; our audience is on mid-tier Android
-over metered data, so three rules apply to anything ported from it. All three are
+over metered data, so four rules apply to anything ported from it. All four are
 enforced in code, not by convention:
 
 1. **No cursor effect starts without a cursor.** `hasFinePointer()` in
@@ -228,7 +245,15 @@ enforced in code, not by convention:
 2. **Decorative video is optional.** `useGatedVideo` skips the fetch entirely
    under reduced motion, data saver, or a 2g-class `effectiveType`. Every video
    slot must therefore have a still behind it that stands on its own.
-3. **No horizontal scroll at 320px.** Fixed-size decoration centred on a
+3. **No loop runs off screen.** `hasFinePointer()` only catches loops that
+   follow a pointer. The career map's ring follows nothing — it just turns — so
+   it slipped past that rule and ran 60 frames a second for the whole session on
+   a page 12,000px tall, for a section that is off screen almost all of it.
+   Measured on a 360px phone parked in "What you get": 120 rAF callbacks per two
+   idle seconds, now 0. It is gated on an IntersectionObserver with 25% of lead
+   time, and under reduced motion it parks itself once a selection's scale has
+   settled, since nothing else in it moves.
+4. **No horizontal scroll at 320px.** Fixed-size decoration centred on a
    percentage-width stage is the usual cause; the ecosystem glow is a 420px
    circle and needed `overflow-x-clip` on its section. Check 320 and 360, not
    just 390.

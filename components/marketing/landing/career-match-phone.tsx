@@ -1,70 +1,40 @@
 "use client";
 
 import { LogoMark } from "@/components/ui/logo";
-import type { Anim } from "./career-match-progress";
+import {
+  CERT_ITEMS,
+  COACH_TURNS,
+  GREETING,
+  MATCHES,
+  ROADMAP_META,
+  STEPS,
+} from "./career-match-content";
+import { anim, type Anim, type Scene } from "./career-match-progress";
 
 /**
- * The phone mock for the career-match section, plus its four screens.
+ * The phone treatment of the four beats: a phone mock and its four screens.
+ *
+ * This is what runs below 768px, and on any coarse-pointer device under a
+ * tablet's width. From 768px up the same beats are told through a browser
+ * window instead — see career-match-window.tsx. The two are siblings: same
+ * props, same `Scene`, one mounted at a time.
  *
  * Everything here is decorative: the section's real copy lives in the caption
  * column as headings and paragraphs, so the whole phone is aria-hidden and the
  * screens are never the only place a claim is made.
  *
- * Sizing is in cqh/cqw against the stage, never px, so the phone scales with
- * the composition. The screens are stacked absolutely and cross-faded, which is
- * why each takes its own opacity/translate rather than being mounted and
- * unmounted: mounting on scroll would rebuild the DOM every beat.
+ * Sizing is in cqh/cqw against the frame's container, never px, so the phone
+ * scales with whatever it is dropped into.
  */
-
-/**
- * Applies one of the section's computed opacity/offset pairs.
- *
- * The offset is in px, not cqh. These are short "rise into place" distances
- * (26 for a whole beat, 20 for an item); as cqh they would be 210px and 160px
- * on a 1440-wide stage, which pushes a departing beat a third of the stage away
- * from the arriving one and turns the cross-fade into two stacked blocks.
- */
-export const anim = (a: Anim): React.CSSProperties => ({
-  opacity: a.op,
-  transform: `translate3d(0, ${a.y}px, 0)`,
-});
-
-export const MATCHES = [
-  { role: "Data analyst", pct: 92, card: 0.105, count: [0.11, 0.18] },
-  { role: "Frontend developer", pct: 84, card: 0.14, count: [0.145, 0.215] },
-  { role: "QA tester", pct: 71, card: 0.175, count: [0.18, 0.25] },
-] as const;
-
-export const STEPS = [
-  { t: "Spreadsheets that do the work", m: "2 weeks · low data" },
-  { t: "SQL basics", m: "3 weeks · free course" },
-  { t: "Charts people understand", m: "2 weeks · free course" },
-  { t: "Python for analysis", m: "4 weeks · free course" },
-  { t: "A project for your portfolio", m: "3 weeks · guided" },
-] as const;
-
-export const CERT_ITEMS = [
-  "5 of 5 steps complete",
-  "Portfolio project reviewed",
-  "Skills recorded",
-  "Certificate issued",
-] as const;
 
 /* ------------------------------------------------------------------ chrome */
 
-export function PhoneFrame({
-  clock,
-  children,
-}: {
-  clock: string;
-  children: React.ReactNode;
-}) {
+function PhoneFrame({ clock, children }: { clock: string; children: React.ReactNode }) {
   return (
     <div
-      aria-hidden
       className="relative flex flex-col overflow-hidden bg-white"
       style={{
-        height: "var(--cm-phone-h)",
+        height: "100cqh",
         aspectRatio: "9 / 19",
         borderRadius: "4.6cqh",
         border: "0.18cqh solid #E7EAF1",
@@ -74,18 +44,22 @@ export function PhoneFrame({
       {/* Status bar */}
       <div
         className="flex flex-none items-center justify-between font-mono text-muted-2"
-        style={{ padding: "1.6cqh 2.4cqh 0.4cqh", fontSize: "1.05cqh" }}
+        style={{ padding: "2.16cqh 3.24cqh 0.54cqh", fontSize: "1.42cqh" }}
       >
         <span>{clock}</span>
-        <span className="flex items-center" style={{ gap: "0.6cqh" }}>
+        <span className="flex items-center" style={{ gap: "0.81cqh" }}>
           LTE
           <span
             className="inline-block border border-current"
-            style={{ width: "2.2cqh", height: "1.1cqh", borderRadius: "0.3cqh" }}
+            style={{
+              width: "2.97cqh",
+              height: "1.49cqh",
+              borderRadius: "0.41cqh",
+            }}
           >
             <span
               className="block h-full bg-current"
-              style={{ width: "70%", borderRadius: "0.2cqh" }}
+              style={{ width: "70%", borderRadius: "0.27cqh" }}
             />
           </span>
         </span>
@@ -94,18 +68,18 @@ export function PhoneFrame({
       {/* App header */}
       <div
         className="flex flex-none items-center border-b border-silver"
-        style={{ gap: "0.9cqh", padding: "0.9cqh 2.4cqh 1.3cqh" }}
+        style={{ gap: "1.22cqh", padding: "1.22cqh 3.24cqh 1.76cqh" }}
       >
-        <LogoMark className="h-[2.4cqh] w-[2.4cqh] text-blue" />
+        <LogoMark className="h-[3.24cqh] w-[3.24cqh] text-blue" />
         <span
           className="font-mono uppercase tracking-[0.14em] text-ink"
-          style={{ fontSize: "1.05cqh" }}
+          style={{ fontSize: "1.42cqh" }}
         >
           LearnHub
         </span>
       </div>
 
-      {/* Screen ground. Screens stack here and cross-fade. */}
+      {/* Screen ground. */}
       <div className="relative flex-1 overflow-hidden bg-paper">{children}</div>
     </div>
   );
@@ -116,7 +90,11 @@ function Screen({ a, children }: { a: Anim; children: React.ReactNode }) {
   return (
     <div
       className="absolute inset-0 flex flex-col"
-      style={{ ...anim(a), padding: "1.8cqh", visibility: a.op <= 0.002 ? "hidden" : "visible" }}
+      style={{
+        ...anim(a),
+        padding: "2.43cqh",
+        visibility: a.op <= 0.002 ? "hidden" : "visible",
+      }}
     >
       {children}
     </div>
@@ -125,33 +103,19 @@ function Screen({ a, children }: { a: Anim; children: React.ReactNode }) {
 
 /* ------------------------------------------------------- beat 1: the match */
 
-export function MatchScreen({
-  a,
-  typed,
-  typing,
-  bubble,
-  label,
-  cards,
-}: {
-  a: Anim;
-  typed: string;
-  typing: boolean;
-  bubble: Anim;
-  label: Anim;
-  cards: { card: Anim; n: number; bar: number }[];
-}) {
+function MatchScreen({ scene }: { scene: Scene }) {
   return (
-    <Screen a={a}>
+    <Screen a={scene.screen[0]}>
       {/* Settled at p=0: the advisor has already said hello. Only the reply,
           the label and the cards animate, so the screen is never empty. */}
-      <div className="flex items-center" style={{ gap: "0.7cqh", marginBottom: "1.2cqh" }}>
+      <div className="flex items-center" style={{ gap: "0.94cqh", marginBottom: "1.62cqh" }}>
         <span
           className="block flex-none rounded-full bg-blue-500"
-          style={{ width: "0.7cqh", height: "0.7cqh" }}
+          style={{ width: "0.94cqh", height: "0.94cqh" }}
         />
         <span
           className="font-mono uppercase tracking-[0.12em] text-muted-2"
-          style={{ fontSize: "0.95cqh" }}
+          style={{ fontSize: "1.28cqh" }}
         >
           AI advisor
         </span>
@@ -160,70 +124,76 @@ export function MatchScreen({
       <p
         className="bg-white text-ink"
         style={{
-          fontSize: "1.15cqh",
+          fontSize: "1.55cqh",
           lineHeight: 1.45,
-          padding: "1.1cqh 1.3cqh",
-          borderRadius: "1.6cqh",
-          borderTopLeftRadius: "0.5cqh",
-          border: "0.12cqh solid #E7EAF1",
+          padding: "1.49cqh 1.76cqh",
+          borderRadius: "2.16cqh",
+          borderTopLeftRadius: "0.68cqh",
+          border: "0.16cqh solid #E7EAF1",
         }}
       >
-        Hi. Tell me what you enjoy and how many hours a week you have, and I&rsquo;ll find
-        tech roles that fit you.
+        {GREETING}
       </p>
 
-      <div className="flex justify-end" style={{ marginTop: "1cqh" }} >
+      <div className="flex justify-end" style={{ marginTop: "1.35cqh" }}>
         <p
           className="bg-blue text-white"
           style={{
-            ...anim(bubble),
-            fontSize: "1.15cqh",
+            ...anim(scene.bubble),
+            fontSize: "1.55cqh",
             lineHeight: 1.45,
-            padding: "1.1cqh 1.3cqh",
-            borderRadius: "1.6cqh",
-            borderTopRightRadius: "0.5cqh",
+            padding: "1.49cqh 1.76cqh",
+            borderRadius: "2.16cqh",
+            borderTopRightRadius: "0.68cqh",
             maxWidth: "84%",
           }}
         >
-          {typed}
-          {typing && <span className="lh-cm-caret">|</span>}
+          {scene.typed}
+          {scene.typing && <span className="lh-cm-caret">|</span>}
         </p>
       </div>
 
       <p
         className="font-mono uppercase tracking-[0.12em] text-muted-2"
-        style={{ ...anim(label), fontSize: "0.9cqh", margin: "1.6cqh 0 0.9cqh" }}
+        style={{
+          ...anim(scene.label),
+          fontSize: "1.22cqh",
+          margin: "2.16cqh 0 1.22cqh",
+        }}
       >
         AI advisor · sample results
       </p>
 
-      <div className="flex flex-col" style={{ gap: "0.8cqh" }}>
+      <div className="flex flex-col" style={{ gap: "1.08cqh" }}>
         {MATCHES.map((m, i) => (
           <div
             key={m.role}
             className="bg-white"
             style={{
-              ...anim(cards[i].card),
-              padding: "1.1cqh 1.2cqh",
-              borderRadius: "1.4cqh",
-              border: "0.12cqh solid #E7EAF1",
+              ...anim(scene.cards[i].card),
+              padding: "1.49cqh 1.62cqh",
+              borderRadius: "1.89cqh",
+              border: "0.16cqh solid #E7EAF1",
             }}
           >
             <div className="flex items-baseline justify-between">
-              <span className="font-semibold text-ink" style={{ fontSize: "1.15cqh" }}>
+              <span className="font-semibold text-ink" style={{ fontSize: "1.55cqh" }}>
                 {m.role}
               </span>
-              <span className="font-mono font-bold text-blue" style={{ fontSize: "1.15cqh" }}>
-                {cards[i].n}%
+              <span className="font-mono font-bold text-blue" style={{ fontSize: "1.55cqh" }}>
+                {scene.cards[i].n}%
               </span>
             </div>
             <span
-              className="mt-[0.7cqh] block overflow-hidden bg-silver"
-              style={{ height: "0.5cqh", borderRadius: "999px" }}
+              className="mt-[0.94cqh] block overflow-hidden bg-silver"
+              style={{ height: "0.68cqh", borderRadius: "999px" }}
             >
               <span
                 className="block h-full bg-blue-500"
-                style={{ width: `${cards[i].bar}%`, borderRadius: "999px" }}
+                style={{
+                  width: `${scene.cards[i].bar}%`,
+                  borderRadius: "999px",
+                }}
               />
             </span>
           </div>
@@ -235,10 +205,10 @@ export function MatchScreen({
       <p
         className="bg-white text-muted-2"
         style={{
-          fontSize: "1.05cqh",
-          padding: "1cqh 1.4cqh",
+          fontSize: "1.42cqh",
+          padding: "1.35cqh 1.89cqh",
           borderRadius: "999px",
-          border: "0.12cqh solid #E7EAF1",
+          border: "0.16cqh solid #E7EAF1",
         }}
       >
         Ask the AI advisor anything
@@ -249,58 +219,62 @@ export function MatchScreen({
 
 /* ----------------------------------------------------- beat 2: the roadmap */
 
-export function RoadmapScreen({
-  a,
-  rows,
-  cta,
-}: {
-  a: Anim;
-  rows: Anim[];
-  cta: Anim;
-}) {
+function RoadmapScreen({ scene }: { scene: Scene }) {
   return (
-    <Screen a={a}>
+    <Screen a={scene.screen[1]}>
       <div className="flex items-center justify-between">
-        <span className="font-bold text-ink" style={{ fontSize: "1.5cqh" }}>
+        <span className="font-bold text-ink" style={{ fontSize: "2.03cqh" }}>
           Your roadmap
         </span>
         <span
           className="bg-blue font-mono uppercase tracking-[0.1em] text-white"
-          style={{ fontSize: "0.9cqh", padding: "0.4cqh 1cqh", borderRadius: "999px" }}
+          style={{
+            fontSize: "1.22cqh",
+            padding: "0.54cqh 1.35cqh",
+            borderRadius: "999px",
+          }}
         >
           Free
         </span>
       </div>
-      <p className="text-muted-2" style={{ fontSize: "1.05cqh", marginTop: "0.5cqh" }}>
-        Data analyst · 14 weeks · 6 hrs a week
+      <p className="text-muted-2" style={{ fontSize: "1.42cqh", marginTop: "0.68cqh" }}>
+        {ROADMAP_META}
       </p>
 
-      <div className="flex flex-col" style={{ gap: "0.7cqh", marginTop: "1.4cqh" }}>
+      <div className="flex flex-col" style={{ gap: "0.94cqh", marginTop: "1.89cqh" }}>
         {STEPS.map((s, i) => (
           <div
             key={s.t}
             className="flex items-center bg-white"
             style={{
-              ...anim(rows[i]),
-              gap: "1cqh",
-              padding: "1cqh 1.1cqh",
-              borderRadius: "1.4cqh",
-              border: "0.12cqh solid #E7EAF1",
+              ...anim(scene.rows[i]),
+              gap: "1.35cqh",
+              padding: "1.35cqh 1.49cqh",
+              borderRadius: "1.89cqh",
+              border: "0.16cqh solid #E7EAF1",
             }}
           >
             <span
               className={`flex flex-none items-center justify-center font-mono font-bold ${
                 i === 0 ? "bg-blue text-white" : "bg-paper-2 text-muted-2"
               }`}
-              style={{ width: "2.4cqh", height: "2.4cqh", borderRadius: "999px", fontSize: "1cqh" }}
+              style={{
+                width: "3.24cqh",
+                height: "3.24cqh",
+                borderRadius: "999px",
+                fontSize: "1.35cqh",
+              }}
             >
               {i + 1}
             </span>
             <span className="min-w-0">
-              <span className="block truncate font-semibold text-ink" style={{ fontSize: "1.1cqh" }}>
+              <span
+                className="block truncate font-semibold text-ink"
+                style={{ fontSize: "1.49cqh" }}
+              >
                 {s.t}
               </span>
-              <span className="block text-muted-2" style={{ fontSize: "0.95cqh" }}>
+              <span className="block text-muted-2" style={{ fontSize: "1.28cqh" }}>
                 {s.m}
               </span>
             </span>
@@ -312,9 +286,9 @@ export function RoadmapScreen({
       <p
         className="bg-blue text-center font-bold text-white"
         style={{
-          ...anim(cta),
-          fontSize: "1.15cqh",
-          padding: "1.1cqh",
+          ...anim(scene.cta),
+          fontSize: "1.55cqh",
+          padding: "1.49cqh",
           borderRadius: "999px",
         }}
       >
@@ -326,63 +300,56 @@ export function RoadmapScreen({
 
 /* ------------------------------------------------------- beat 3: the coach */
 
-export function CoachScreen({
-  a,
-  msgs,
-  dotsOp,
-}: {
-  a: Anim;
-  msgs: Anim[];
-  dotsOp: number;
-}) {
-  const bubble = (side: "user" | "coach"): React.CSSProperties => ({
-    fontSize: "1.15cqh",
+function CoachScreen({ scene }: { scene: Scene }) {
+  const bubble = (from: string): React.CSSProperties => ({
+    fontSize: "1.55cqh",
     lineHeight: 1.45,
-    padding: "1.1cqh 1.3cqh",
-    borderRadius: "1.6cqh",
+    padding: "1.49cqh 1.76cqh",
+    borderRadius: "2.16cqh",
     maxWidth: "86%",
-    ...(side === "user"
-      ? { borderTopRightRadius: "0.5cqh" }
-      : { borderTopLeftRadius: "0.5cqh", border: "0.12cqh solid #E7EAF1" }),
+    ...(from === "user"
+      ? { borderTopRightRadius: "0.68cqh" }
+      : { borderTopLeftRadius: "0.68cqh", border: "0.16cqh solid #E7EAF1" }),
   });
 
   return (
-    <Screen a={a}>
+    <Screen a={scene.screen[2]}>
       {/* Bottom-aligned: a late-night chat reads from the bottom up. */}
       <div className="flex-1" />
-      <div className="flex flex-col" style={{ gap: "1cqh" }}>
-        <div className="flex justify-end">
-          <p className="bg-blue text-white" style={{ ...anim(msgs[0]), ...bubble("user") }}>
-            I don&rsquo;t get JOIN. My class is tomorrow.
-          </p>
-        </div>
-        <div className="flex justify-start">
-          <p className="bg-white text-ink" style={{ ...anim(msgs[1]), ...bubble("coach") }}>
-            Think of two lists of names. A JOIN keeps only the people who show up on both.
-            Want to try one with your own data?
-          </p>
-        </div>
-        <div className="flex justify-end">
-          <p className="bg-blue text-white" style={{ ...anim(msgs[2]), ...bubble("user") }}>
-            Yes please
-          </p>
-        </div>
-        <div className="flex justify-start" style={{ opacity: dotsOp }}>
+      <div className="flex flex-col" style={{ gap: "1.35cqh" }}>
+        {COACH_TURNS.map((turn, i) => (
+          <div
+            key={turn.text}
+            className={`flex ${turn.from === "user" ? "justify-end" : "justify-start"}`}
+          >
+            <p
+              className={turn.from === "user" ? "bg-blue text-white" : "bg-white text-ink"}
+              style={{ ...anim(scene.msgs[i]), ...bubble(turn.from) }}
+            >
+              {turn.text}
+            </p>
+          </div>
+        ))}
+        <div className="flex justify-start" style={{ opacity: scene.dotsOp }}>
           <span
             className="flex items-center bg-white"
             style={{
-              gap: "0.5cqh",
-              padding: "1.2cqh 1.4cqh",
-              borderRadius: "1.6cqh",
-              borderTopLeftRadius: "0.5cqh",
-              border: "0.12cqh solid #E7EAF1",
+              gap: "0.68cqh",
+              padding: "1.62cqh 1.89cqh",
+              borderRadius: "2.16cqh",
+              borderTopLeftRadius: "0.68cqh",
+              border: "0.16cqh solid #E7EAF1",
             }}
           >
             {[0, 1, 2].map((i) => (
               <span
                 key={i}
                 className="lh-cm-dot block rounded-full bg-muted-2"
-                style={{ width: "0.7cqh", height: "0.7cqh", animationDelay: `${i * 0.15}s` }}
+                style={{
+                  width: "0.94cqh",
+                  height: "0.94cqh",
+                  animationDelay: `${i * 0.15}s`,
+                }}
               />
             ))}
           </span>
@@ -394,21 +361,11 @@ export function CoachScreen({
 
 /* ------------------------------------------------- beat 4: the certificate */
 
-export function CertificateScreen({
-  a,
-  ringOffset,
-  pct,
-  items,
-}: {
-  a: Anim;
-  ringOffset: number;
-  pct: number;
-  items: Anim[];
-}) {
+function CertificateScreen({ scene }: { scene: Scene }) {
   return (
-    <Screen a={a}>
+    <Screen a={scene.screen[3]}>
       <div className="flex flex-1 flex-col items-center justify-center">
-        <span className="relative block" style={{ width: "18cqh", height: "18cqh" }}>
+        <span className="relative block" style={{ width: "24.3cqh", height: "24.3cqh" }}>
           <svg viewBox="0 0 100 100" className="block h-full w-full">
             <circle cx="50" cy="50" r="44" fill="none" stroke="#E7EAF1" strokeWidth="7" />
             <circle
@@ -420,36 +377,36 @@ export function CertificateScreen({
               strokeWidth="7"
               strokeLinecap="round"
               strokeDasharray="276.5"
-              strokeDashoffset={ringOffset}
+              strokeDashoffset={276.5 * (1 - scene.ring)}
               transform="rotate(-90 50 50)"
             />
           </svg>
           <span className="absolute inset-0 flex items-center justify-center">
-            <span className="font-display font-bold text-ink" style={{ fontSize: "3.4cqh" }}>
-              {pct}%
+            <span className="font-display font-bold text-ink" style={{ fontSize: "4.59cqh" }}>
+              {Math.round(100 * scene.ring)}%
             </span>
           </span>
         </span>
       </div>
 
-      <div className="flex flex-col" style={{ gap: "0.8cqh" }}>
+      <div className="flex flex-col" style={{ gap: "1.08cqh" }}>
         {CERT_ITEMS.map((t, i) => (
           <div
             key={t}
             className="flex items-center bg-white"
             style={{
-              ...anim(items[i]),
-              gap: "0.9cqh",
-              padding: "0.9cqh 1.1cqh",
-              borderRadius: "1.4cqh",
-              border: "0.12cqh solid #E7EAF1",
+              ...anim(scene.items[i]),
+              gap: "1.22cqh",
+              padding: "1.22cqh 1.49cqh",
+              borderRadius: "1.89cqh",
+              border: "0.16cqh solid #E7EAF1",
             }}
           >
             <span
               className="flex flex-none items-center justify-center rounded-full bg-blue text-white"
-              style={{ width: "2cqh", height: "2cqh" }}
+              style={{ width: "2.7cqh", height: "2.7cqh" }}
             >
-              <svg viewBox="0 0 24 24" style={{ width: "1.2cqh", height: "1.2cqh" }} fill="none">
+              <svg viewBox="0 0 24 24" style={{ width: "1.62cqh", height: "1.62cqh" }} fill="none">
                 <path
                   d="M5 13l4 4L19 7"
                   stroke="currentColor"
@@ -459,7 +416,7 @@ export function CertificateScreen({
                 />
               </svg>
             </span>
-            <span className="font-semibold text-ink" style={{ fontSize: "1.1cqh" }}>
+            <span className="font-semibold text-ink" style={{ fontSize: "1.49cqh" }}>
               {t}
             </span>
           </div>
@@ -470,51 +427,36 @@ export function CertificateScreen({
   );
 }
 
-/** The certificate that flies up over the phone at the end of beat 4. */
-export function CertificateCard({ op, y, rot, scale }: { op: number; y: number; rot: number; scale: number }) {
+/* ------------------------------------------------------------------- mount */
+
+/**
+ * One phone, showing one beat.
+ *
+ * `beat` rather than a cross-fade because the phone only ever appears in the
+ * stacked mobile rendering, where each beat has its own card and its own phone
+ * beside it. The screens still take their state from the shared `Scene`, so a
+ * phone renders exactly what a browser window would at the same progress.
+ *
+ * The frame carries its own container so cqh resolves against the phone rather
+ * than against whatever it was dropped into.
+ */
+export function AdvisorPhoneMock({ beat, scene }: { beat: number; scene: Scene }) {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute left-1/2 top-1/2 bg-white"
+      className="justify-self-center"
       style={{
-        opacity: op,
-        width: "var(--cm-cert-w)",
-        marginLeft: "calc(var(--cm-cert-w) / -2)",
-        transform: `translate3d(0, calc(-50% + ${y}px), 0) rotate(${rot}deg) scale(${scale})`,
-        padding: "2.6cqh",
-        borderRadius: "2.4cqh",
-        boxShadow: "0 4cqh 12cqh rgba(0,0,0,.35), 0 16cqh 40cqh rgba(0,0,0,.45)",
+        width: "min(288px, 76vw)",
+        aspectRatio: "9 / 19",
+        containerType: "size",
       }}
     >
-      <div className="flex items-center" style={{ gap: "1cqh" }}>
-        <LogoMark className="h-[2.6cqh] w-[2.6cqh] text-blue" />
-        <span className="font-display font-bold tracking-tight text-ink" style={{ fontSize: "1.7cqh" }}>
-          LearnHub
-        </span>
-        {/* Sample data must always be visibly labelled. */}
-        <span
-          className="ml-auto bg-paper-2 font-mono uppercase tracking-[0.12em] text-muted-2"
-          style={{ fontSize: "0.95cqh", padding: "0.35cqh 0.9cqh", borderRadius: "999px" }}
-        >
-          Sample
-        </span>
-      </div>
-
-      <p
-        className="font-mono uppercase tracking-[0.14em] text-muted-2"
-        style={{ fontSize: "1cqh", marginTop: "2.2cqh" }}
-      >
-        Certificate of completion
-      </p>
-      <p
-        className="font-display font-semibold tracking-[-0.02em] text-ink"
-        style={{ fontSize: "2.8cqh", lineHeight: 1.1, marginTop: "0.6cqh" }}
-      >
-        Data Analyst Path
-      </p>
-      <p className="text-muted" style={{ fontSize: "1.15cqh", marginTop: "1.4cqh" }}>
-        Amina Bello · 14 weeks · verifiable at learnhub.africa/c/8QK2
-      </p>
+      <PhoneFrame clock={beat === 2 ? "02:14" : "09:24"}>
+        {beat === 0 && <MatchScreen scene={scene} />}
+        {beat === 1 && <RoadmapScreen scene={scene} />}
+        {beat === 2 && <CoachScreen scene={scene} />}
+        {beat === 3 && <CertificateScreen scene={scene} />}
+      </PhoneFrame>
     </div>
   );
 }

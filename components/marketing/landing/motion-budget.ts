@@ -1,5 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+/**
+ * True when the reader has asked for less motion. Watched, not read once: the
+ * setting can change while the page is open, and a scroll rig or a turning ring
+ * has to stop when it does.
+ */
+export function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReduced(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+  return reduced;
+}
+
 /**
  * Shared "is this effect worth running here" checks for the landing page.
  *

@@ -6,8 +6,24 @@
  * reasoned about (and checked) without rendering anything.
  */
 
-/** An animated element's computed state: opacity, plus a vertical offset in cqh. */
+import { CERT_ITEMS, COACH_TURNS, MATCHES, STEPS, TYPED } from "./career-match-content";
+
+/** An animated element's computed state: opacity, plus a vertical offset. */
 export type Anim = { op: number; y: number };
+
+/**
+ * Applies a computed opacity/offset pair. Shared by both device mocks, so the
+ * phone and the window move the same way.
+ *
+ * The offset is in px, not cqh. These are short "rise into place" distances
+ * (26 for a whole beat, 20 for an item); as cqh they would be 210px and 160px
+ * on a 1440-wide stage, which pushes a departing beat a third of the stage away
+ * from the arriving one and turns the cross-fade into two stacked blocks.
+ */
+export const anim = (a: Anim): React.CSSProperties => ({
+  opacity: a.op,
+  transform: `translate3d(0, ${a.y}px, 0)`,
+});
 
 declare global {
   interface Window {
@@ -80,4 +96,148 @@ export const it = (p: number, a: number, d = 0.05, dist = 20): Anim => {
 export function progressFromRect(top: number, height: number, viewportH: number) {
   const span = height - viewportH;
   return span > 8 ? clamp(-top / span) : 0;
+}
+
+/* --------------------------------------------------------------- the scene */
+
+/**
+ * Everything the section's `p` implies, computed once per frame.
+ *
+ * The section has two device treatments of the same four beats — a browser
+ * window from 768px up, a phone below it — and both render from this one
+ * object rather than each deriving its own values from `p`. Two derivations of
+ * the same timings is how a beat ends up arriving a few frames apart on a
+ * laptop and a phone, and that is not the kind of drift anyone catches until it
+ * is everywhere.
+ */
+export type Scene = {
+  /** One per beat: the caption block, and the device screen behind it. */
+  caption: Anim[];
+  screen: Anim[];
+  /** Beat 1. */
+  typed: string;
+  typing: boolean;
+  bubble: Anim;
+  label: Anim;
+  cards: { card: Anim; n: number; bar: number }[];
+  /** Beat 2. */
+  rows: Anim[];
+  cta: Anim;
+  /** Beat 3. */
+  msgs: Anim[];
+  dotsOp: number;
+  /** Beat 4. */
+  ring: number;
+  items: Anim[];
+  /** The certificate that flies up over the device at the end of beat 4. */
+  cert: number;
+  /** The device's own departure, and the finale that replaces it. */
+  deviceOp: number;
+  deviceScale: number;
+  finale: number;
+  /** The four-column progress row: bar fill, label opacity, and the row's own. */
+  progress: { bar: number; label: number }[];
+  progressOp: number;
+  /** The "scroll" hint, which leaves on the first pixel of it. */
+  hintOp: number;
+};
+
+export function deriveScene(q: number): Scene {
+  const S = (a: number, b: number) => sub(q, a, b);
+
+  const typedCount = Math.round(TYPED.length * S(0.015, 0.085));
+
+  /* The device clears the stage before the finale arrives rather than
+     dissolving into it: two large headlines crossing over each other in the
+     middle of the stage read as a collision. The exit eases *in* for the same
+     reason the captions' does — an ease-out fade would drop the device to
+     near-nothing in the first third of its window, so it would look like it
+     vanished rather than left. */
+  const exit = ei(S(0.895, 0.925));
+
+  return {
+    /* Beat 1 is already settled at p=0, so its layer opens before the section
+       does rather than fading in from nothing on the first pixel of scroll. */
+    caption: B.map((b, i) => (i === 0 ? layer(q, -0.05, b[1]) : layer(q, b[0], b[1]))),
+
+    /* Beat 4's screen uses `it`, not `layer`: the last screen fades in on its
+       beat and then holds. Every other screen has a successor to hand over to
+       at its beat boundary; this one does not, and `layer` would empty it at
+       .90 while the device itself stays lit until .925 — a blank white slab on
+       screen for 25 progress units with the certificate floating on nothing.
+       The device's own exit is what takes this screen away. */
+    screen: [
+      layer(q, -0.05, B[0][1], 0),
+      layer(q, B[1][0], B[1][1], 0),
+      layer(q, B[2][0], B[2][1], 0),
+      it(q, B[3][0], 0.05, 0),
+    ],
+
+    typed: TYPED.slice(0, typedCount),
+    typing: typedCount < TYPED.length,
+    bubble: it(q, 0.004, 0.02, 10),
+    label: it(q, 0.09, 0.03, 0),
+    cards: MATCHES.map((m) => {
+      const t = eo(sub(q, m.count[0], m.count[1]));
+      return { card: it(q, m.card), n: Math.round(m.pct * t), bar: m.pct * t };
+    }),
+
+    rows: [0.285, 0.31, 0.335, 0.36, 0.385].map((s) => it(q, s)),
+    cta: it(q, 0.415, 0.04, 12),
+
+    msgs: [it(q, 0.515, 0.04, 14), it(q, 0.565, 0.045, 14), it(q, 0.625, 0.035, 14)],
+    dotsOp: Math.min(S(0.645, 0.665), 1 - S(0.685, 0.7)),
+
+    ring: eo(S(0.715, 0.8)),
+    items: [0.725, 0.745, 0.765, 0.785].map((s) => it(q, s)),
+
+    // Arrives by .865 and holds. Its departure is the device's, which fades the
+    // two of them out together as one composited layer.
+    cert: eo(S(0.805, 0.865)),
+
+    deviceOp: 1 - exit,
+    deviceScale: 1 - 0.1 * S(0.895, 1),
+    finale: eo(S(0.925, 0.955)),
+
+    progress: B.map((b) => ({
+      bar: eo(S(b[0], b[1] - 0.02)),
+      label: 0.3 + 0.7 * S(b[0] - 0.05, b[0] + 0.02),
+    })),
+    progressOp: 1 - S(0.895, 0.925),
+    hintOp: 0.5 * (1 - S(0, 0.03)),
+  };
+}
+
+/**
+ * Every beat at rest: what the stacked mobile cards and the reduced-motion
+ * rendering show. Not any value of `p` — at p=0 only beat 1 has arrived.
+ */
+export function settledScene(): Scene {
+  const on: Anim = { op: 1, y: 0 };
+  const four = [on, on, on, on];
+
+  return {
+    caption: four,
+    screen: four,
+    typed: TYPED,
+    typing: false,
+    bubble: on,
+    label: on,
+    cards: MATCHES.map((m) => ({ card: on, n: m.pct, bar: m.pct })),
+    rows: STEPS.map(() => on),
+    cta: on,
+    msgs: COACH_TURNS.map(() => on),
+    dotsOp: 1,
+    ring: 1,
+    items: CERT_ITEMS.map(() => on),
+    // No fly-up certificate and no finale outside the scroll rig: both are
+    // moments in a sequence, and a card at rest has no sequence to be in.
+    cert: 0,
+    deviceOp: 1,
+    deviceScale: 1,
+    finale: 0,
+    progress: B.map(() => ({ bar: 1, label: 1 })),
+    progressOp: 1,
+    hintOp: 0,
+  };
 }

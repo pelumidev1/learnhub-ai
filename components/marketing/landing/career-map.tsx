@@ -5,6 +5,7 @@ import Link from "next/link";
 import { buttonClasses } from "@/components/ui/button";
 import { LogoMark } from "@/components/ui/logo";
 import { Kicker } from "./kicker";
+import { usePrefersReducedMotion } from "./motion-budget";
 import { Reveal } from "./reveal";
 
 /**
@@ -104,16 +105,41 @@ export function CareerMapSection() {
   selectedRef.current = selected;
 
   const reduced = usePrefersReducedMotion();
+  const [onScreen, setOnScreen] = useState(false);
 
+  /* The ring turns only while it is on screen. Without this the loop ran 60
+     frames a second for the whole session on a page 12,000px tall, spinning a
+     ring that is off screen for almost all of it — a battery cost paid by the
+     mid-tier Androids this is built for, for nothing anyone can see. A quarter
+     of a viewport of lead time, so the tiles are already in position before the
+     ring is scrolled to rather than snapping out from the centre. */
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
+    const io = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), {
+      rootMargin: "25% 0px",
+    });
+    io.observe(stage);
+    return () => io.disconnect();
+  }, []);
+
+  /* Under reduced motion nothing moves on its own, so the loop has work only
+     while a selection's scale is still easing — it parks itself as soon as that
+     settles, and this is what wakes it again. With motion allowed the ring is
+     always turning, so the value is held at null and the loop is never torn
+     down mid-spin. */
+  const rearm = reduced ? selected : null;
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || !onScreen) return;
 
     let raf = 0;
     const start = performance.now();
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
+      let moving = !reduced;
 
       const rect = stage.getBoundingClientRect();
       // Recomputed per frame rather than on resize: it is two reads of a rect we
@@ -149,6 +175,7 @@ export function CareerMapSection() {
         const target = selectedRef.current === i ? SELECTED_SCALE : 1;
         const scales = scalesRef.current;
         scales[i] += (target - scales[i]) * EASE;
+        if (Math.abs(target - scales[i]) > 0.001) moving = true;
         const tile = el.firstElementChild as HTMLElement | null;
         if (tile) tile.style.transform = `scale(${scales[i].toFixed(3)})`;
 
@@ -159,11 +186,14 @@ export function CareerMapSection() {
           beamRef.current.style.transform = `translateY(-50%) rotate(${deg}deg)`;
         }
       }
+
+      // Nothing left to ease and nothing turning: stop until `rearm` changes.
+      if (!moving) cancelAnimationFrame(raf);
     };
 
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [reduced]);
+  }, [reduced, onScreen, rearm]);
 
   const toggle = useCallback((i: number) => {
     setSelected((prev) => (prev === i ? null : i));
@@ -316,20 +346,6 @@ export function CareerMapSection() {
       </div>
     </section>
   );
-}
-
-/** True when the reader has asked for less motion. Watched, not read once: the
- *  setting can change while the page is open. */
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => setReduced(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-  return reduced;
 }
 
 /* ---- icons (stroke, inherit white) ---- */
