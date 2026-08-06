@@ -12,14 +12,13 @@
  * True only on a device that actually has a hovering, fine pointer — a mouse or
  * trackpad.
  *
- * Every cursor-driven effect here (the ecosystem and orbit parallax, the hero
- * card tilt) runs a requestAnimationFrame loop that eases a value toward the
- * pointer. On a touch screen `mousemove` never fires, so the target stays at 0
- * and the loop spends every frame, forever, writing a value that never changes.
- * Measured on a 390px phone before this guard: 60 callbacks a second for the
- * life of the session, from <EcosystemSection> alone. Two more components carry
- * the same pattern and are simply not mounted today, so guard the hooks rather
- * than the call sites.
+ * The hero card tilt runs a requestAnimationFrame loop that eases a value
+ * toward the pointer. On a touch screen `mousemove` never fires, so the target
+ * stays at 0 and the loop spends every frame, forever, writing a value that
+ * never changes. Measured on a 390px phone before this guard: 60 callbacks a
+ * second for the life of the session, from the ecosystem ring that used to sit
+ * where the career map is now. The guard lives in the hook rather than the call
+ * site so anything added later cannot reintroduce it.
  */
 export function hasFinePointer(): boolean {
   return window.matchMedia("(hover: hover) and (pointer: fine)").matches;

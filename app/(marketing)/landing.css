@@ -52,22 +52,6 @@
   mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
-/* Cursor-parallax orbit. The section sets --mx / --my in the range [-1, 1];
-   each node shifts by its own depth so nearer cards move more than far ones. */
-.lh-orbit {
-  --mx: 0;
-  --my: 0;
-}
-.lh-orbit-node {
-  /* No CSS transition — the rAF easing in use-parallax.ts does the smoothing,
-     which gives the buttery, trailing motion instead of a snap. */
-  transform: translate3d(
-    calc(var(--mx) * var(--depth, 12px)),
-    calc(var(--my) * var(--depth, 12px)),
-    0
-  );
-}
-
 /* Hero card 3D tilt: perspective on the stage, the card tilts via a transform
    set from JS (rotateX/rotateY + translate), eased with a short transition. */
 .lh-tilt-stage {
@@ -290,9 +274,6 @@
   .lh-float-slow,
   .lh-marquee {
     animation: none !important;
-  }
-  .lh-orbit-node {
-    transform: none !important;
   }
   .lh-split-unit {
     transition: none !important;

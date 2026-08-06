@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { LandingNav } from "@/components/marketing/landing/landing-nav";
-import { EcosystemSection } from "@/components/marketing/landing/ecosystem";
+import { CareerMapSection } from "@/components/marketing/landing/career-map";
 import { Faq } from "@/components/marketing/landing/faq";
 import { Reveal } from "@/components/marketing/landing/reveal";
 import { HowItWorksSection } from "@/components/marketing/landing/how-it-works-section";
@@ -32,16 +32,18 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 /**
  * The three cards under "LearnHub makes the choice clear".
  *
- * `photo` is a CSS url() for .lh-slot. `/brand/choice-1.jpg` and
- * `/brand/choice-3.jpg` are not in the repo yet: those two slots show the
- * neutral placeholder surface until the files land, so adding a photo is
- * dropping a file at that path and nothing else. 4:3 crops, and a face reads
- * best about a third down.
+ * `photo` is a CSS url() for .lh-slot, which falls back to a neutral surface if
+ * a file is ever missing rather than breaking.
+ *
+ * Ship them cropped to 4:3 and no wider than 1200px, as WebP. The slot renders
+ * about 370px across on a laptop, so anything larger is bytes a student on
+ * metered data pays for and never sees — the two here are 24KB and 59KB, from
+ * 1.6MB and 176KB originals.
  */
 const DECISION_CARDS = [
   {
-    photo: "url(/brand/choice-1.jpg)",
-    alt: "A student at a laptop, working through a career assessment",
+    photo: "url(/brand/choice-1.webp)",
+    alt: "The LearnHub matches screen, with Data Analyst at 92 percent fit",
     title: "17 careers, mapped for here",
     body: "Every path is written for the African market: honest local pay, the skills that actually get hired, and timelines you can plan a year around.",
   },
@@ -52,8 +54,8 @@ const DECISION_CARDS = [
     body: "Not just a job title. You see how well each career fits you, what it pays where you live, and why the AI put it in front of you.",
   },
   {
-    photo: "url(/brand/choice-3.jpg)",
-    alt: "A student following a learning roadmap on a phone",
+    photo: "url(/brand/choice-3.webp)",
+    alt: "A woman at a laptop, celebrating with both fists raised",
     title: "Straight answers",
     body: "Which careers fit you and why, what the work is really like day to day, and how long it honestly takes. All of it in plain language.",
   },
@@ -163,7 +165,11 @@ export default function LandingPage() {
           Still on ink. The band's ground does not move (see CareerMatchSection,
           which was the one that did). */}
       <section className="bg-ink py-24 sm:py-32">
-        <div className="mx-auto max-w-6xl px-5">
+        {/* Wider than the page's usual max-w-6xl, on purpose: the reference runs
+            this band to 1340 of 1440, leaving 50px either side, and at max-w-6xl
+            our cards came out 21% smaller than its. The width is most of what
+            makes the images carry the band. */}
+        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-[50px]">
           <Reveal className="text-center">
             <Kicker center reverse>
               What you get
@@ -173,16 +179,13 @@ export default function LandingPage() {
               text="LearnHub makes the choice clear"
               className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[3.5rem]"
             />
-            <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-white/60 sm:text-lg">
-              Made for people who want to feel certain about their next step, not overwhelmed by it.
-            </p>
           </Reveal>
 
-          {/* 4:3 images, 24px gutters, title and text left-aligned under each —
-              the reference's proportions. A slot with no photo yet falls back to
-              the brand gradient inside .lh-photo rather than a broken image, so
-              dropping a file at the named path is the whole change. */}
-          <div className="mt-14 grid gap-6 sm:mt-16 md:grid-cols-3">
+          {/* Every measurement here is the reference's, taken off its rendered
+              page: 4:3 images at 24px radius, 24px gutters, 20px from image to
+              title, 8px from title to text, 1.55 line height on the text, and
+              64px from the headline to the row. */}
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
             {DECISION_CARDS.map((card, i) => (
               <Reveal key={card.title} delay={i * 90}>
                 <article className="flex h-full flex-col">
@@ -192,25 +195,18 @@ export default function LandingPage() {
                     role="img"
                     aria-label={card.alt}
                   />
-                  <h3 className="mt-6 font-display text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl">
+                  <h3 className="mt-5 font-display text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl">
                     {card.title}
                   </h3>
-                  <p className="mt-2.5 text-[15px] leading-relaxed text-white/60 sm:text-base">
+                  {/* Size and leading as one pair: `sm:text-base` alone would
+                      reset the line height to Tailwind's 1.5 at that breakpoint. */}
+                  <p className="mt-2 text-[15px]/[1.55] text-white/60 sm:text-base/[1.55]">
                     {card.body}
                   </p>
                 </article>
               </Reveal>
             ))}
           </div>
-
-          <Reveal className="mt-12 text-center">
-            <Link
-              href="/careers"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
-            >
-              See all 17 careers
-            </Link>
-          </Reveal>
         </div>
       </section>
 
@@ -229,9 +225,10 @@ export default function LandingPage() {
           already answered by this point. This one answers what follows one. */}
       <LifeAfterMatch />
 
-      {/* ============================================================ ECOSYSTEM
-          The cursor-parallax section. */}
-      <EcosystemSection />
+      {/* =========================================================== CAREER MAP
+          Eight paths orbiting a hub card, each one selectable. Replaced the
+          static parallax ring, which had no labels and nothing to do. */}
+      <CareerMapSection />
 
       {/* ============================================================== PRICING */}
       <section className="bg-white py-28 sm:py-40">
