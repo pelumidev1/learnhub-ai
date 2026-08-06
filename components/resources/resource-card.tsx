@@ -74,6 +74,11 @@ export function ResourceCard({
   const costLabel =
     resource.cost === "free" ? "Free" : resource.cost === "freemium" ? "Free / Paid" : "Paid";
 
+  // A video is the one type where the link goes somewhere you watch rather than
+  // read, and the card shows nothing else that would tell you that: it carries
+  // category, cost, level and length, but never the type.
+  const isVideo = resource.resource_type === "video";
+
   return (
     <article className="flex flex-col rounded-2xl border border-silver bg-white p-5 shadow-soft transition hover:border-silver-2">
       <div className="flex items-start justify-between gap-3">
@@ -120,8 +125,8 @@ export function ResourceCard({
         rel="noopener noreferrer"
         className="mt-4 inline-flex items-center justify-center gap-2 rounded-full border border-silver-2 bg-white px-4 py-2.5 text-sm font-bold text-ink shadow-soft transition hover:bg-paper"
       >
-        Open resource
-        <Icons.external className="h-4 w-4" />
+        {isVideo ? "Watch video" : "Open resource"}
+        {isVideo ? <Icons.play className="h-4 w-4" /> : <Icons.external className="h-4 w-4" />}
       </a>
     </article>
   );
