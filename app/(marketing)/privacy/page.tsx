@@ -3,8 +3,7 @@ import { LegalPage, LegalSection } from "@/components/marketing/legal-page";
 
 export const metadata: Metadata = {
   title: "Privacy Policy · LearnHub",
-  description:
-    "How LearnHub collects, uses, and protects your data. Plain English, no surprises.",
+  description: "How LearnHub collects, uses, and protects your data. Plain English, no surprises.",
 };
 
 const CONTACT_EMAIL = "hello@learnhubworld.com";
@@ -13,32 +12,32 @@ export default function PrivacyPage() {
   return (
     <LegalPage title="Privacy Policy" lastUpdated="23 July 2026">
       <p>
-        LearnHub (&ldquo;LearnHub&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is an AI career
-        coach for people entering tech across Africa. This policy explains what we
-        collect, why, and the choices you have. We keep it short and honest.
+        LearnHub (&ldquo;LearnHub&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is an AI career coach
+        for people entering tech across Africa. This policy explains what we collect, why, and the
+        choices you have. We keep it short and honest.
       </p>
 
       <LegalSection heading="What we collect">
         <ul>
           <li>
-            <strong>Your account details</strong>: your email and name. If you sign in with
-            Google, we receive your name, email, and profile picture from Google.
+            <strong>Your account details</strong>: your email and name. If you sign in with Google,
+            we receive your name, email, and profile picture from Google.
           </li>
           <li>
-            <strong>Your assessment answers</strong>: the responses you give about your
-            background, interests, goals, and constraints.
+            <strong>Your assessment answers</strong>: the responses you give about your background,
+            interests, goals, and constraints.
           </li>
           <li>
-            <strong>What we generate for you</strong>: your career recommendation, learning
-            roadmap, and progress.
+            <strong>What we generate for you</strong>: your career recommendation, learning roadmap,
+            and progress.
           </li>
           <li>
-            <strong>Your messages to the AI coach</strong>: the questions you ask and the
-            replies you receive.
+            <strong>Your messages to the AI coach</strong>: the questions you ask and the replies
+            you receive.
           </li>
           <li>
-            <strong>Basic usage data</strong>: needed to keep the service running securely and
-            to control our AI costs while we&rsquo;re free.
+            <strong>Basic usage data</strong>: needed to keep the service running securely and to
+            control our AI costs while we&rsquo;re free.
           </li>
         </ul>
         <p>We do not ask for your phone number, payment details, or any government ID.</p>
@@ -58,8 +57,8 @@ export default function PrivacyPage() {
 
       <LegalSection heading="Who we share it with">
         <p>
-          We use a small number of trusted providers to run LearnHub, and share only what each
-          one needs:
+          We use a small number of trusted providers to run LearnHub, and share only what each one
+          needs:
         </p>
         <ul>
           <li>
@@ -75,8 +74,8 @@ export default function PrivacyPage() {
           </li>
         </ul>
         <p>
-          We may also disclose data if the law requires it. That&rsquo;s the full list. We don&rsquo;t
-          share your data with anyone else.
+          We may also disclose data if the law requires it. That&rsquo;s the full list. We
+          don&rsquo;t share your data with anyone else.
         </p>
       </LegalSection>
 
@@ -106,8 +105,17 @@ export default function PrivacyPage() {
 
       <LegalSection heading="Cookies">
         <p>
-          We use a small number of cookies that are necessary to keep you signed in and to keep
-          the service secure. We don&rsquo;t use advertising or tracking cookies.
+          We use a small number of cookies that are necessary to keep you signed in and to keep the
+          service secure. We don&rsquo;t use advertising or tracking cookies.
+        </p>
+      </LegalSection>
+
+      <LegalSection heading="Analytics">
+        <p>
+          We count page views so we can see which parts of LearnHub are useful and which are not.
+          This uses Vercel Analytics, which sets no cookies and does not follow you across other
+          websites. It records the page, the country, and the kind of device — never your name, your
+          email, or anything you typed.
         </p>
       </LegalSection>
 

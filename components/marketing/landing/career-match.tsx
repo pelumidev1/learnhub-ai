@@ -64,11 +64,20 @@ type Props = {
    there, so a beat covers less of the screen, and the desktop length made each
    one take two or three flicks to clear. A phone keeps the full length — the
    stage is a whole viewport tall there, so a beat has as much room as it does
-   on a laptop. */
-const TABLET_SCROLL = 440;
+   on a laptop. Kept at the same fraction of the desktop length as before.
+
+   Both came down: 560/440 to 380/300. The section is the tallest thing on the
+   page and was 5040px on a laptop — five and a half screens for four beats and
+   a CTA. The pinned span is `height - viewport`, so at 380vh on a 900px screen
+   the beats get 706 / 529 / 529 / 504px: each one is about half a screen of
+   scroll, which is a flick or two for copy that takes four seconds to read.
+   Below about 360 the shortest beat drops under 470px and starts to flicker
+   past. Nothing about the animation changed — progress is normalised over the
+   section either way, so every beat, fade and percentage is identical. */
+const TABLET_SCROLL = 300;
 
 export function CareerMatchSection({
-  scrollLength = 560,
+  scrollLength = 380,
   showProgress = true,
   playback = "scroll",
   autoDuration = 22,
@@ -87,7 +96,7 @@ export function CareerMatchSection({
      at 110ms against 60ms, for a section nobody has scrolled to yet.
 
      One viewport of lead time, so the section is still fully below the fold
-     when it grows from the stacked cards' height to 560vh. Nothing on screen
+     when it grows from the stacked cards' height to 380vh. Nothing on screen
      moves, so the growth costs no layout shift. */
   useEffect(() => {
     const el = sectionRef.current;
