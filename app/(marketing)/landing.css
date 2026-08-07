@@ -42,13 +42,7 @@
   animation-play-state: paused;
 }
 .lh-marquee-mask {
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 8%,
-    black 92%,
-    transparent
-  );
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
@@ -70,7 +64,8 @@
    tile, never a black hole or broken image. */
 .lh-photo {
   background-color: #0b0f1a;
-  background-image: var(--photo, none),
+  background-image:
+    var(--photo, none),
     radial-gradient(120% 110% at 22% 0%, #2a46f0 0%, #182ab0 34%, #101733 68%, #0b0f1a 100%);
   background-size: cover;
   background-position: center;
@@ -502,5 +497,55 @@
   .lh-cm-caret,
   .lh-cm-dot {
     animation: none !important;
+  }
+}
+
+/* ------------------------------------------ After the match: the card stack
+   Three cards that pin near the top in turn, each shrinking as the next one
+   rides over it — a deck being dealt onto itself.
+
+   Sticky does the stacking, so the layering costs nothing and works everywhere.
+   The shrink is a scroll-driven animation: `view-timeline` on the container,
+   and each card animates over its own slice of that timeline. It runs off the
+   main thread, which is the whole reason to use it here — the same effect in
+   JavaScript is a scroll handler doing layout maths on every frame, on phones
+   that are already paying for a pinned rig two sections up.
+
+   Every card is sticky within .lh-stack, not within a wrapper of its own: a
+   sticky element can only travel inside its containing block, so a wrapper the
+   height of the card would give it nowhere to stick. */
+.lh-stack-card {
+  position: sticky;
+  /* Each card lands slightly lower than the one before, so the deck shows its
+     edges instead of hiding each card completely behind the next. */
+  top: calc(var(--stack-top) + var(--i) * 14px);
+  transform-origin: 50% 0%;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .lh-stack {
+      view-timeline-name: --lh-stack;
+      view-timeline-axis: block;
+    }
+
+    /* The last card has nothing riding over it, so it never shrinks. */
+    .lh-stack-card:not(:last-child) {
+      animation: lh-stack-shrink both;
+      animation-timeline: --lh-stack;
+      /* Its own slice of the container's exit: card 1 shrinks over the first
+         third, card 2 over the second. */
+      animation-range: exit-crossing calc(var(--i) / var(--n) * 100%) exit-crossing
+        calc((var(--i) + 1) / var(--n) * 100%);
+      /* Spring, not a slide: the overshoot past 0.8 and back is what makes a
+         card read as settling into the stack rather than being resized. */
+      animation-timing-function: cubic-bezier(0.34, 1.44, 0.64, 1);
+    }
+  }
+}
+
+@keyframes lh-stack-shrink {
+  to {
+    transform: scale(0.8);
   }
 }

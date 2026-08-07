@@ -16,15 +16,26 @@ get cut off.
 | `student-1.jpg` | "Makes the choice clear" — middle card of the three-card row | Roughly **square / slight portrait**, ~800×850 | A white "Your match" card sits over the **bottom third**. Keep the face in the upper two-thirds. |
 | `student-3.jpg` | "A win for your career" — wide banner in the dark section | **Wide landscape**, ~2000×740 | Nothing sits on top of this one. It's on a near-black background, so a brighter photo reads better. |
 
+
 There is no `student-2.jpg` slot any more — the wide photo panel it filled under
 "How it works" was replaced by a looping video. Those assets live in
 [`public/media/`](../media/README.md).
 
 ## Already in place
 
+Replacing an `after-*` card: **3:2 landscape**, and larger than what is there now
+if you have it — the cards render 1120px wide, and these three sources are
+734–1014px, so they are soft on a high-density screen. A scrim covers the top 78%
+at 62% ink, so a mid-tone photograph holds the white type better than a very
+bright or very dark one; the bottom 22% fades clear, which is the part that
+actually shows.
+
 | File | Where it shows | Notes |
 |---|---|---|
 | `students-hero.jpg` | Landing hero background **and** the "What your match looks like" panel | Wide, ~2000×1200. Faces off to one side — the headline sits on the left. Gets a saturation/contrast lift via `.lh-hero-photo`. |
+| `after-plan.webp` | "After the match" — card 01, *Your plan* | 1014×676. A man writing beside a laptop, cropped to the cards' 3:2 from a 16:9 original. |
+| `after-proof.webp` | "After the match" — card 02, *Your proof* | 734×490. Two people high-fiving over a laptop, cropped from a portrait original — the band keeps both faces, the clasped hands and the laptop lid. |
+| `after-role.webp` | "After the match" — card 03, *Your first role* | 746×498. A handshake across a desk. |
 | `signup.png` | Login / signup left panel | Portrait, ~1200×1600. Currently a 1.8 MB PNG — worth re-exporting as JPG/WebP. |
 
 ## Before you export
