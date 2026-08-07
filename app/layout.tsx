@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GeistMono } from "geist/font/mono";
 import { displayFont, sansFont } from "./fonts";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,7 +23,10 @@ export default function RootLayout({
       lang="en"
       className={`${displayFont.variable} ${sansFont.variable} ${GeistMono.variable}`}
     >
-      <body className="bg-white font-sans text-ink antialiased">{children}</body>
+      <body className="bg-white font-sans text-ink antialiased">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
