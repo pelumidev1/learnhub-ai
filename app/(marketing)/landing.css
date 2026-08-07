@@ -57,6 +57,23 @@
   will-change: transform;
 }
 
+/* A primary blue surface, lit. The design system asks for "subtle blue
+   gradients on primary surfaces with a faint top highlight"; the gradient was
+   there and the highlight was not, so the card read as flat blue with a drop
+   shadow — the generic version of itself.
+
+   Three insets, no pseudo-element and no second colour: a hairline of white
+   along the top edge where light would catch, a wide ink vignette falling into
+   the bottom so the face is not evenly lit, and the brand glow underneath. It
+   owns the whole box-shadow rather than layering over `shadow-glow`, which two
+   stylesheets would otherwise race to set. */
+.lh-metal {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -70px 90px -70px rgba(11, 15, 26, 0.4),
+    0 24px 60px -28px rgba(31, 51, 204, 0.55);
+}
+
 /* Photo tiles: a branded gradient shows through until the real image is added,
    so a missing file reads as an intentional tile, never a broken image. */
 /* Call sites pass the image as --photo (not background-image), so the branded

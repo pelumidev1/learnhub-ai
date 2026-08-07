@@ -34,6 +34,48 @@ one-for-one:
 | 10 | `section_accordian` | FAQ — dark, heading left, accordion right |
 | 11 | footer | footer |
 
+## The scales
+
+Small, closed sets. The page had grown nine white alphas for body copy, five
+card radii and five section paddings, none of which anyone chose — each one was
+picked for one component and never compared to the others. That is what makes a
+page read as assembled rather than designed. Add a value only with a reason
+worth writing down here.
+
+**Ground.** `white → ink` alternating, with `paper` as the one soft step
+between two whites. Never three of the same in a row: the career map, pricing,
+the beta band and the CTA were four white sections and 3200px with nothing
+marking the joins. Pricing carries `paper` now.
+
+**Text on dark.** Three steps, plus one exception:
+
+| | Where |
+|---|---|
+| `text-white` | headings |
+| `text-white/70` | body on flat ink — the default |
+| `text-white/50` | meta, fine print, sub-labels |
+| `text-white/80` | body over photography or on blue: busier and lighter grounds need more |
+
+The one outlier is `text-white/75` on the "After the match" cards, which is the
+value the brief for that section specified. Nothing is a raw hex — `#b6bece`
+was hardcoded in the career-match captions and is now the same `/70`.
+
+**Edges on dark.** `white/10` for hairlines and dividers, `white/20` for the
+edge of something you can click. (`hero-card.tsx` keeps a `/15`–`/5` depth ramp
+for its stacked layers; it is not on the live page, only in `.design-sync`.)
+
+**Radius.** `16` inside a card, `22` for medium surfaces, `28` for large ones —
+set in `tailwind.config.ts`, including an override of Tailwind's `3xl` from its
+default 24. Pills are `rounded-full`. See the config comment for why 28 won.
+
+**Section padding.** `py-24 sm:py-32` is the default and covers almost
+everything. `py-20 sm:py-24` for a tight strip (the marquee band). The
+statement's `py-28 sm:py-48` is the single showpiece, and it is the only one.
+
+**Section header.** Every section opens the same way: `<Kicker>` (the orbit mark
+plus a mono label), then the `h2`, then optional body. Pricing was the one
+without an eyebrow and the beta band's was left-aligned inside a centred block.
+
 ## Motion
 
 Two signature effects, both driven on scroll-into-view:
@@ -125,123 +167,89 @@ The clip was rebuilt in July 2026 as a 1428×720 desktop app view (it had been a
   product moving, not a word of it. That is a property of a desktop view at
   phone width, not of the encode.
 
-## "Life after the match"
+## "After the match"
 
-Built to `design_handoff_match_page/README.md` (2026-08-01), replacing the photo
-card that used to explain what a match *is* — a question the two sections above
-it have already answered by then.
+Three full-bleed image cards, stacked: plan, proof, first role. It replaced a
+two-column panel that made the same three points as small bordered rows, which
+in turn replaced a photo card explaining what a match *is* — a question the two
+sections above it have already answered by then.
 
-- **The spec's dark 1200px panel is now the section itself.** It was right as a
-  floating panel while its neighbours were white; once they went to ink it read
-  as a third dark rectangle inset between two full-bleed ones, with a white
-  gutter either side. It is ink edge to edge now, graph paper across the full
-  width, on the landing's own `max-w-6xl` / `px-5` container and `py-24 sm:py-32`
-  rhythm rather than the spec's 1200px and clamp padding. Nothing inside the
-  composition changed — it never depended on the panel, only on the dark ground.
+- **The photographs go through `<Image>`, over a `.lh-photo` gradient.** The
+  section is well below the fold, so lazy loading keeps ~150KB off the initial
+  load, and a 360px phone fetches a 640px variant instead of the full file. The
+  gradient underneath means a missing file reads as a deliberate blue card
+  rather than a hole. Files: `after-plan.webp`, `after-proof.webp`,
+  `after-role.webp` in `public/brand/`.
 
-- **The spec is written against `--lh-*` custom properties that this app does not
-  have.** Our palette lives in `tailwind.config.ts`, so every token maps to its
-  Tailwind equivalent: `ink`, `blue-500` (#2A46F0), `sky-2`. The white alphas
-  stay literals — they are compositing values, not palette entries.
-- **`<Reveal>`, not the spec's 240ms/16px reveal.** The spec itself says to
-  prefer the app's own utility, and every other block on this page rises 32px
-  over 0.8s; a single section on different timing reads as a glitch. Reveal
-  already meets the spec's hard requirements (never hides what is at or above
-  the fold, applies the hidden state from JS only, skips itself under reduced
-  motion). Only `rootMargin` is taken from the spec.
-- **The CTA is a `Link` carrying `buttonClasses()`, not `<Button>`.** Same
-  reasoning as the finale CTA below: `<Button>` is a `<button>` and cannot
-  navigate. `buttonClasses()` was added to `components/ui/button.tsx` so the two
-  render from one definition rather than a copied class list. Unmodified it
-  lands at exactly 154×48, which is what the spec asked for.
-- **The card `href`s are the closest real destinations, not final ones.** `#how`
-  and `/careers` are honest fits; `#what` under "Your proof — projects, not
-  certificates" is the weakest, because nothing on the marketing site is about
-  portfolio projects yet. Repoint it when something is.
+- **1120 needs a 1160 container.** Tailwind's `max-w` sizes the border box, so
+  `max-w-[1120px] px-5` left the cards 40px narrow. The header shares the
+  container, which is what puts it on the cards' own left edge rather than the
+  page's usual 1152.
 
-## "What you get": the scroll-driven stage
+- **3:2 is a floor below 640px, not a fixed shape.** At 360px the ratio gives
+  240px of height, and the card needs about 300 for a 36px display heading over
+  three lines plus its label and body. `min-height: 66.7vw` is the same 3:2, and
+  the card grows past it only as far as the copy needs — so nothing is ever
+  clipped and the shape still reads as the same card.
 
-Built to `docs/career-match-section-brief.md`, which is the spec as handed over.
-Three places the build departs from it, all recorded because the brief will
-outlive the memory of why:
+- **The cards stack, they do not reveal.** Each one pins near the top in turn
+  and shrinks to 0.8 as the next rides over it. Sticky does the layering, and
+  the shrink is a scroll-driven CSS animation — `view-timeline` on the
+  container, each card animating over its own slice of it. That runs off the
+  main thread, which is the point: the same effect as a scroll handler is
+  layout maths on every frame, on phones already paying for a pinned rig two
+  sections up. The easing overshoots 0.8 and comes back, which is what makes a
+  card read as settling into the stack rather than being resized.
 
-- **`layer()` fade windows.** The brief overlaps them (in from `a-0.015`, out to
-  `b+0.01`) and eases both with ease-out. That fails the brief's own acceptance
-  test: measured at p=0.27, two large white uppercase headlines sat over each
-  other at 12% and 27% opacity, which reads as double-printing, not a dissolve.
-  Abutting the windows fixed the ghosting but left one frame where both were
-  zero and the phone was empty, breaking a second acceptance line. The fade-out
-  now eases *in*, so a departing beat holds until roughly 0.005 before the
-  boundary. Measured after: second-caption opacity 0.000 at every p, and the
-  hand-off dip spans 5.6vh of scroll.
-- **Offsets are px, not cqh.** The brief gives `dist` values of 26, 20 and 190
-  without units. As cqh they are 210px and 160px on a 1440-wide stage, which
-  throws a departing caption a third of the stage away from the arriving one.
-- **The last phone screen uses `it()`, and the phone column fades as one unit.**
-  Two bugs with the same shape, both found on screen rather than in the maths.
-  `layer()` assumes every beat hands over to a successor, so it empties its
-  element at the beat boundary; the certificate screen has no successor, and it
-  went blank at .90 while the phone stayed lit until .925 — about 1000px of
-  scroll showing a white slab with the certificate card floating on nothing.
-  `it()` fades in and holds, and the phone's own exit takes it. Separately, the
-  exit fade used to sit on the phone and on the card independently, which made
-  each translucent against the other and let the phone's checklist read straight
-  through the certificate for the whole departure; it now sits on the column
-  that holds both, so they leave as one composited layer.
-- **Two device mocks, one mounted at a time.** The brief has one phone at every
-  size. A phone mock inside a 16:9 stage on a 1440px laptop is a tall sliver in
-  a wide frame, and it tells a desktop reader the product is a phone app; it is
-  both. From 768px up the beats are told through a browser window — chrome, URL,
-  the app's own sidebar — and below that through the phone.
+  Every card is sticky within `.lh-stack`, never within a wrapper of its own: a
+  sticky element only travels inside its containing block, so a wrapper the
+  height of the card gives it nowhere to stick. The last card never shrinks —
+  nothing rides over it. Where `animation-timeline` is unsupported the cards
+  still stack, just without the shrink, and reduced motion gets the same.
 
-  Both are the same rig on the same scroll. Mobile was briefly four stacked
-  static cards, one phone each, which is what the brief's wording described;
-  what Pelumi meant was the desktop scroll effect with the phone in the frame,
-  and four separate mockups was not it. The stacked cards remain only as the
-  server render and the no-JS fallback, replaced a viewport before the section
-  is reached.
+- **Nothing in the section is interactive.** The old panel had a "Get my match"
+  button; the brief for this one specifies a header and three cards and no CTA,
+  and the page carries CTAs in the hero, the career map, pricing and the FAQ.
 
-  The branch is chosen with `matchMedia` in `useBreakpoint()`, never with
-  `display: none`: rendering the hidden tree would double the animated DOM and
-  cost frames on a mid-tier Android for something nobody can see. A coarse
-  pointer under 1024px resolves to the phone whatever the viewport reports, so a
-  phone held sideways at 800px does not inherit the pinned rig.
+## The career map
 
-  Both mocks read one `Scene` — the object `deriveScene(p)` returns — rather than
-  each deriving its own values from `p`, and every string either shows lives in
-  `career-match-content.ts`. Two derivations of the same timings is how a beat
-  ends up arriving a few frames apart on a laptop and a phone; two copies of the
-  same claim is how they end up quoting different numbers.
+Eight paths orbiting a hub card. Tapping one puts what that work actually is
+into the hub, draws a beam out to it, and dims the other seven.
 
-  A phone keeps two shapes, switched on the viewport's aspect rather than its
-  width, so a phone turned sideways gets a composition built for a short wide
-  stage instead of a stacked one crushed into 360px of height. Sizes in cqh need
-  no override between them — the phone and its screens are cqh-based — so only
-  the outer composition carries an orientation.
+- **The tiles are miniature product screens, not icons.** A glyph on a blue
+  square said "data" twice — once in the icon, once in the label under it — and
+  eight of them made the ring one shape repeated eight times. Each tile is now a
+  little app window: a chart being read, a canvas with something selected, a
+  pipeline two stages through. Same footprint, and the section stops being a
+  field of blue. They live in `career-map-mocks.tsx`.
 
-  A tablet keeps the rig but stacks it: caption centred above the window, the
-  orbit rings dropped (they crowd at that width), and 440vh of scroll instead of
-  560 so each beat still lands in one comfortable flick. It also drops the 16:9
-  letterbox. Held sideways at 1023x768 the letterbox is only 575px tall, and a
-  caption above a window inside it leaves the window about 330px wide — too
-  small to read as a browser, with empty ink above and below it. Filling the
-  pinned viewport gives the window back 200px of height and costs nothing, since
-  every size inside is relative to the stage either way.
+  Everything inside a mock is in `cqw` and each tile declares
+  `container-type: size`, so one component draws correctly at 68px on a phone
+  and 124px on a laptop with no breakpoints of its own. No type in them — at
+  68px it is noise — so they are pure shape, and the path's name is carried by
+  the label and the button's `aria-label`. One accent: grey is structure, blue
+  marks the one thing the screen is about.
 
-  The layouts switch on a `data-bp` attribute, not a media query, so the layout
-  and the mock come from the same decision and cannot disagree at the edge of a
-  range. The window is its own size container, so one set of `cqh` numbers holds
-  from a 330px window on a portrait tablet to a 950px one on a desktop.
+- **The orbit is an ellipse.** The stage is 1180 wide and 740 tall, and a circle
+  sized off the smaller of the two left roughly a third of the width empty on
+  either side — which is what "make it wider" was about. `rx` and `ry` are read
+  from the stage independently. The dashed ring is inset by the same two numbers
+  the orbit reserves (`PAD` in `career-map.tsx`), so it runs through the tile
+  centres instead of beside them; before, the ring was already an ellipse while
+  the tiles rode a circle inside it.
 
-  **Unmount what is not on screen.** The whole stage re-renders on every scroll
-  frame, and at any `p` only one caption and one phone screen are visible. With
-  all eight mounted, a 6x-throttled phone ran at 32ms a frame with half of them
-  over budget; skipping the invisible ones took it to 16.7ms median and 6%. Beat
-  0's caption is the one exception — it is the only one in normal flow, so it is
-  what gives the caption column its height.
-- **The finale CTA is a `Link`, not `Button`.** `Button` is a `<button>` with no
-  href; this CTA navigates to /signup. It keeps the primary button's styling and
-  stays in the tab order, which is what the brief actually asked for.
+- **On an ellipse the beam cannot use the placement angle.** A tile placed at
+  45° does not sit at 45° from the centre, so the beam takes its length and
+  direction from `hypot(x, y)` and `atan2(y, x)` — the point itself.
+
+- **The `sm:` switch is on the stage's width, not the viewport's.** At Tailwind's
+  `sm` the container is 640 less its 40px of gutters, so the loop's 600 and the
+  markup's `sm:` classes are the same line. Get these out of step and the tiles
+  jump off the dashed ring for one breakpoint.
+
+- **1280, not the page's 1152.** The ring is the one thing on the page that wants
+  the extra width; the copy above and below keeps its own narrow measure inside
+  it.
 
 ## Mobile budget
 

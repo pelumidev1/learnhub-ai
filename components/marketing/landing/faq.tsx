@@ -47,15 +47,27 @@ export function Faq() {
               className="flex w-full items-center justify-between gap-4 py-5 text-left"
             >
               <span className="font-display text-lg font-semibold text-white">{f.q}</span>
-              <span className={`flex-none text-sky-2 transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+              <span
+                className={`flex-none text-sky-2 transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}
+              >
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                >
                   <path d="M12 5v14M5 12h14" />
                 </svg>
               </span>
             </button>
-            <div className={`grid transition-all duration-300 ${isOpen ? "grid-rows-[1fr] pb-5" : "grid-rows-[0fr]"}`}>
+            <div
+              className={`grid transition-all duration-300 ${isOpen ? "grid-rows-[1fr] pb-5" : "grid-rows-[0fr]"}`}
+            >
               <div className="overflow-hidden">
-                <p className="text-[15px] leading-relaxed text-white/60">{f.a}</p>
+                <p className="text-[15px] leading-relaxed text-white/70">{f.a}</p>
               </div>
             </div>
           </div>

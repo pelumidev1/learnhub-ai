@@ -21,7 +21,12 @@ export default {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
       },
-      borderRadius: { xl: "16px", "2xl": "22px" },
+      // 16 / 22 / 28. Tailwind's own 3xl is 24, which is the value every
+      // generic card in the world uses; the page's large surfaces were split
+      // between it and a hand-written 28 that had a reason (the how-it-works
+      // frame's 28 outer minus its 12 matte gives a concentric 16 inner). One
+      // scale, and 28 is the one with the argument behind it.
+      borderRadius: { xl: "16px", "2xl": "22px", "3xl": "28px" },
       boxShadow: {
         soft: "0 2px 6px rgba(16,24,48,.06), 0 20px 40px -26px rgba(16,24,48,.22)",
         glow: "0 20px 50px -24px rgba(31,51,204,.42)",

@@ -35,7 +35,9 @@ export function LandingNav() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition duration-300 ${
-        scrolled || open ? "border-b border-silver bg-white/85 backdrop-blur-md" : "border-b border-transparent"
+        scrolled || open
+          ? "border-b border-silver bg-white/85 backdrop-blur-md"
+          : "border-b border-transparent"
       } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
@@ -47,7 +49,7 @@ export function LandingNav() {
               key={l.href}
               href={l.href}
               className={`text-sm font-semibold transition ${
-                scrolled ? "text-gray-700 hover:text-blue" : "text-white/80 hover:text-white"
+                scrolled ? "text-muted hover:text-blue" : "text-white/80 hover:text-white"
               }`}
             >
               {l.label}
@@ -59,7 +61,7 @@ export function LandingNav() {
           <Link
             href="/login"
             className={`text-sm font-semibold transition ${
-              scrolled ? "text-ink hover:text-blue" : "text-white/90 hover:text-white"
+              scrolled ? "text-ink hover:text-blue" : "text-white"
             }`}
           >
             Log in
@@ -80,8 +82,24 @@ export function LandingNav() {
           aria-expanded={open}
           className={`md:hidden ${scrolled || open ? "text-ink" : "text-white"}`}
         >
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-            {open ? <path d="M6 6l12 12M6 18L18 6" /> : <><path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h16" /></>}
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          >
+            {open ? (
+              <path d="M6 6l12 12M6 18L18 6" />
+            ) : (
+              <>
+                <path d="M4 7h16" />
+                <path d="M4 12h16" />
+                <path d="M4 17h16" />
+              </>
+            )}
           </svg>
         </button>
       </div>
@@ -102,10 +120,18 @@ export function LandingNav() {
             ))}
           </nav>
           <div className="mt-5 flex flex-col gap-3">
-            <Link href="/login" onClick={() => setOpen(false)} className="rounded-full border border-silver-2 py-3 text-center text-sm font-bold text-ink">
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="rounded-full border border-silver-2 py-3 text-center text-sm font-bold text-ink"
+            >
               Log in
             </Link>
-            <Link href="/signup" onClick={() => setOpen(false)} className="rounded-full bg-blue py-3 text-center text-sm font-bold text-white shadow-glow">
+            <Link
+              href="/signup"
+              onClick={() => setOpen(false)}
+              className="rounded-full bg-blue py-3 text-center text-sm font-bold text-white shadow-glow"
+            >
               Get started
             </Link>
           </div>

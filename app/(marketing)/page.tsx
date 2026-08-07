@@ -20,7 +20,17 @@ export const metadata: Metadata = {
 
 function ArrowIcon({ className = "" }: { className?: string }) {
   return (
-    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
   );
@@ -86,8 +96,14 @@ export default function LandingPage() {
         />
         {/* Scrims are deliberately light in the middle and right so the photograph
             stays vivid; the text side and the bottom hand-off carry the weight. */}
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/10 to-ink" aria-hidden />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/40 to-transparent sm:via-ink/20" aria-hidden />
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/10 to-ink"
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/40 to-transparent sm:via-ink/20"
+          aria-hidden
+        />
         <div className="lh-noise pointer-events-none absolute inset-0" aria-hidden />
 
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-28 sm:pb-24 sm:pt-32">
@@ -106,14 +122,17 @@ export default function LandingPage() {
             </h1>
 
             <p
-              className="lh-hero-in mt-6 max-w-lg text-[17px] leading-relaxed text-white/85 sm:text-lg"
+              className="lh-hero-in mt-6 max-w-lg text-[17px] leading-relaxed text-white/80 sm:text-lg"
               style={d(520)}
             >
               Take a 2-minute assessment. LearnHub&rsquo;s AI finds the tech careers that fit you,
               builds a learning path you can follow on your phone, and stays on as your coach.
             </p>
 
-            <div className="lh-hero-in mt-8 flex flex-col gap-3 sm:flex-row sm:items-center" style={d(640)}>
+            <div
+              className="lh-hero-in mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
+              style={d(640)}
+            >
               <Link
                 href="/signup"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-blue px-8 py-4 text-sm font-bold text-white shadow-glow transition hover:-translate-y-0.5 hover:brightness-110"
@@ -122,7 +141,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/careers"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/10"
               >
                 Explore careers
               </Link>
@@ -200,7 +219,7 @@ export default function LandingPage() {
                   </h3>
                   {/* Size and leading as one pair: `sm:text-base` alone would
                       reset the line height to Tailwind's 1.5 at that breakpoint. */}
-                  <p className="mt-2 text-[15px]/[1.55] text-white/60 sm:text-base/[1.55]">
+                  <p className="mt-2 text-[15px]/[1.55] text-white/70 sm:text-base/[1.55]">
                     {card.body}
                   </p>
                 </article>
@@ -219,10 +238,10 @@ export default function LandingPage() {
           as stacked cards instead — see CareerMatchSection. */}
       <CareerMatchSection />
 
-      {/* ==================================================== LIFE AFTER MATCH
-          Replaced the old "What your match looks like" photo card, which
-          explained what a match is — a question the two sections above it have
-          already answered by this point. This one answers what follows one. */}
+      {/* ===================================================== AFTER THE MATCH
+          Three full-bleed image cards: plan, proof, first role. Answers what
+          follows a match, which is the question the two sections above it
+          leave open. */}
       <LifeAfterMatch />
 
       {/* =========================================================== CAREER MAP
@@ -230,27 +249,41 @@ export default function LandingPage() {
           static parallax ring, which had no labels and nothing to do. */}
       <CareerMapSection />
 
-      {/* ============================================================== PRICING */}
-      <section className="bg-white py-28 sm:py-40">
+      {/* ============================================================== PRICING
+          On `paper`, not white. The career map, pricing, the beta band and the
+          CTA were four white sections in a row — 3200px with nothing to mark
+          where one ended and the next began, which is what made the bottom
+          half of the page read as one long scroll rather than as sections.
+          `paper` is the palette's own off-white, so the band separates without
+          introducing a colour, and the page's ground alternates the whole way
+          down again. Its cards had to change with it — see below. */}
+      <section className="bg-paper py-24 sm:py-32">
         <div className="mx-auto max-w-6xl px-5">
           <Reveal className="text-center">
+            <Kicker center>What it costs</Kicker>
             <SplitText
               as="h2"
               text="Free while in beta"
-              className="mx-auto max-w-3xl font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.2rem]"
+              className="mx-auto mt-5 max-w-3xl font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.2rem]"
             />
             <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-muted sm:text-lg">
               No card, no catch. Everything below is free while LearnHub is in beta.
             </p>
           </Reveal>
 
-          <div className="mt-14 grid gap-4 md:grid-cols-2">
+          <div className="mt-16 grid gap-6 md:grid-cols-2">
             <Reveal>
-              <div className="h-full rounded-3xl bg-paper p-8">
+              {/* White on the band's paper ground, hairlined and lifted —
+                  the same card the career map's hub and the how-it-works frame
+                  use. It was a borderless `bg-paper` block, which is now the
+                  section's own ground and would have vanished into it. */}
+              <div className="h-full rounded-3xl border border-silver bg-white p-8 shadow-soft">
                 <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-ink">
                   Everything included
                 </h3>
-                <div className="mt-2 font-display text-5xl font-bold tracking-tight text-ink">Free</div>
+                <div className="mt-2 font-display text-5xl font-bold tracking-tight text-ink">
+                  Free
+                </div>
                 <ul className="mt-7 space-y-3">
                   {[
                     "AI career assessment and match",
@@ -261,7 +294,18 @@ export default function LandingPage() {
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm text-ink">
                       <span className="mt-0.5 grid h-4 w-4 flex-none place-items-center rounded-full bg-blue text-white">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5L20 7" /></svg>
+                        <svg
+                          width="10"
+                          height="10"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="m5 12 5 5L20 7" />
+                        </svg>
                       </span>
                       {item}
                     </li>
@@ -282,9 +326,9 @@ export default function LandingPage() {
                   <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-white">
                     Why it&rsquo;s free
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/65">
-                    LearnHub is in beta and we&rsquo;re learning from everyone who uses it. Your honest
-                    feedback is worth more to us right now than your money.
+                  <p className="mt-3 text-sm leading-relaxed text-white/70">
+                    LearnHub is in beta and we&rsquo;re learning from everyone who uses it. Your
+                    honest feedback is worth more to us right now than your money.
                   </p>
                 </div>
                 <div className="mt-10 space-y-4">
@@ -295,7 +339,7 @@ export default function LandingPage() {
                   ].map(([t, sub]) => (
                     <div key={t} className="border-t border-white/10 pt-4">
                       <p className="text-sm font-bold text-white">{t}</p>
-                      <p className="mt-1 text-sm text-white/55">{sub}</p>
+                      <p className="mt-1 text-sm text-white/50">{sub}</p>
                     </div>
                   ))}
                 </div>
@@ -313,16 +357,16 @@ export default function LandingPage() {
       <section className="overflow-hidden bg-white py-20 sm:py-24">
         <div className="mx-auto mb-12 max-w-6xl px-5 text-center">
           <Reveal>
-            <Kicker>Now in beta</Kicker>
+            <Kicker center>Now in beta</Kicker>
             <SplitText
               as="h2"
               text="Be one of the first"
               className="mx-auto mt-3 max-w-3xl font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.9rem]"
             />
             <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-muted sm:text-lg">
-              We&rsquo;re new, so we have no learner stories to show you yet. What we do have is
-              17 tech careers mapped for the African market and an AI coach ready to walk you
-              through them. Join the beta and tell us honestly what works.
+              We&rsquo;re new, so we have no learner stories to show you yet. What we do have is 17
+              tech careers mapped for the African market and an AI coach ready to walk you through
+              them. Join the beta and tell us honestly what works.
             </p>
           </Reveal>
         </div>
@@ -345,17 +389,21 @@ export default function LandingPage() {
       </section>
 
       {/* ================================================================= CTA */}
-      <section className="bg-white px-5 pb-24 pt-4">
+      <section className="bg-white px-5 pb-24 pt-4 sm:pb-32">
         <Reveal>
-          <div className="mx-auto max-w-6xl overflow-hidden rounded-[28px] bg-gradient-to-br from-blue to-blue-600 px-6 py-16 text-center shadow-glow sm:px-10 sm:py-20">
+          {/* The one metallic surface on the page: the brand gradient, a faint
+              highlight along the top edge and a soft glow under it, which is
+              what the design system asks a primary surface to look like. Flat
+              blue with a drop shadow was the generic version of the same card. */}
+          <div className="lh-metal mx-auto max-w-6xl overflow-hidden rounded-3xl bg-gradient-to-br from-blue to-blue-600 px-6 py-16 text-center sm:px-10 sm:py-20">
             <SplitText
               as="h2"
               text="Your tech career starts with two minutes"
               className="mx-auto max-w-2xl font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[2.9rem]"
             />
-            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-white/85">
-              Take the free assessment and meet the career that fits you. It takes two minutes
-              and costs nothing.
+            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-white/80">
+              Take the free assessment and meet the career that fits you. It takes two minutes and
+              costs nothing.
             </p>
             <Link
               href="/signup"
@@ -369,7 +417,7 @@ export default function LandingPage() {
 
       {/* ================================================================= FAQ
           Dark section, heading on the left, accordion on the right. */}
-      <section id="faq" className="bg-ink py-20 sm:py-28">
+      <section id="faq" className="bg-ink py-24 sm:py-32">
         <div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[0.8fr_1.2fr]">
           <Reveal>
             <Kicker reverse>FAQ</Kicker>
@@ -378,9 +426,12 @@ export default function LandingPage() {
               text="Questions, answered"
               className="mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[2.9rem]"
             />
-            <p className="mt-4 text-[15px] leading-relaxed text-white/60">
+            <p className="mt-4 text-[15px] leading-relaxed text-white/70">
               Still stuck? Ask us at{" "}
-              <a href="mailto:hello@learnhub.africa" className="text-sky-2 underline underline-offset-4">
+              <a
+                href="mailto:hello@learnhub.africa"
+                className="text-sky-2 underline underline-offset-4"
+              >
                 hello@learnhub.africa
               </a>
               .
@@ -396,14 +447,34 @@ export default function LandingPage() {
           <div className="flex flex-col justify-between gap-8 border-b border-white/10 pb-10 md:flex-row">
             <div className="max-w-xs">
               <Logo reverse />
-              <p className="mt-4 text-sm text-white/60">
+              <p className="mt-4 text-sm text-white/70">
                 The AI career coach for Africa&rsquo;s next generation of tech talent.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
-              <FooterCol title="Product" links={[["How it works", "#how"], ["What you get", "#what"], ["Careers", "/careers"], ["FAQ", "#faq"]]} />
-              <FooterCol title="Get started" links={[["Create account", "/signup"], ["Log in", "/login"]]} />
-              <FooterCol title="Legal" links={[["Privacy", "/privacy"], ["Terms", "/terms"]]} />
+              <FooterCol
+                title="Product"
+                links={[
+                  ["How it works", "#how"],
+                  ["What you get", "#what"],
+                  ["Careers", "/careers"],
+                  ["FAQ", "#faq"],
+                ]}
+              />
+              <FooterCol
+                title="Get started"
+                links={[
+                  ["Create account", "/signup"],
+                  ["Log in", "/login"],
+                ]}
+              />
+              <FooterCol
+                title="Legal"
+                links={[
+                  ["Privacy", "/privacy"],
+                  ["Terms", "/terms"],
+                ]}
+              />
             </div>
           </div>
           <div className="flex flex-col items-center justify-between gap-3 pt-8 text-sm text-white/50 sm:flex-row">
@@ -423,7 +494,7 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
       <ul className="mt-4 space-y-2.5">
         {links.map(([label, href]) => (
           <li key={label}>
-            <Link href={href} className="text-sm text-white/60 transition hover:text-white">
+            <Link href={href} className="text-sm text-white/70 transition hover:text-white">
               {label}
             </Link>
           </li>

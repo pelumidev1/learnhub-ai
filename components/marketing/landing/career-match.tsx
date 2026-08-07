@@ -270,7 +270,7 @@ export function CareerMatchSection({
                       style={{
                         fontSize: "var(--cm-body)",
                         lineHeight: 1.6,
-                        color: "#b6bece",
+                        color: "rgba(255,255,255,.7)",
                         marginTop: "2.4cqh",
                         maxWidth: "var(--cm-body-w)",
                       }}
@@ -300,11 +300,7 @@ export function CareerMatchSection({
                 visibility: scene.deviceOp <= 0.002 ? "hidden" : "visible",
               }}
             >
-              {phone ? (
-                <AdvisorPhoneMock scene={scene} />
-              ) : (
-                <AdvisorWindowMock scene={scene} />
-              )}
+              {phone ? <AdvisorPhoneMock scene={scene} /> : <AdvisorWindowMock scene={scene} />}
 
               {/* Flies up over the device, not inside it, so it is not clipped
                   by the device's rounded body. Its opacity is only the arrival
@@ -482,7 +478,10 @@ function StackedBeats({ innerRef }: { innerRef: React.Ref<HTMLElement> }) {
                 <h3 className="mt-3 font-display text-2xl font-semibold leading-[1.12] tracking-[-0.03em] text-white">
                   {b.head[0]} {b.head[1]}
                 </h3>
-                <p className="mt-3 text-[15px] leading-relaxed" style={{ color: "#b6bece" }}>
+                <p
+                  className="mt-3 text-[15px] leading-relaxed"
+                  style={{ color: "rgba(255,255,255,.7)" }}
+                >
                   {b.body}
                 </p>
               </div>
