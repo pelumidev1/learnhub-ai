@@ -169,9 +169,10 @@ export default function LandingPage() {
           <div className="lh-outline">
             <StatementMedia />
             <h2 className="lh-outline-knockout lh-balance text-center font-display text-[1.9rem] font-bold leading-[1.1] tracking-[-0.03em] sm:text-[4.25rem]">
-              <SplitText by="word" stagger={42} text="Learn what fits you," />
-              <SplitText by="word" stagger={42} delay={120} text="build the skills that pay," />
-              <SplitText by="word" stagger={42} delay={240} text="and step into work you want." />
+              <SplitText by="word" stagger={42} text="You can guess" />
+              <SplitText by="word" stagger={42} delay={120} text="which tech job fits you." />
+              <SplitText by="word" stagger={42} delay={240} text="Or you can" />
+              <SplitText by="word" stagger={42} delay={360} text="find out." />
             </h2>
           </div>
         </div>
