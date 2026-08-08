@@ -13,7 +13,6 @@ import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
 import { CONTACT_EMAIL } from "@/lib/site";
-import { cn } from "@/lib/utils/cn";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -43,54 +42,30 @@ function ArrowIcon({ className = "" }: { className?: string }) {
 const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 
 /**
- * The three cards under "LearnHub makes the choice clear".
+ * The three steps under "LearnHub makes the choice clear".
  *
- * `photo` is a CSS url() for .lh-slot, which falls back to a neutral surface if
- * a file is ever missing rather than breaking.
+ * Written as a sequence rather than as three benefits, which is what the band
+ * held before. The numbers are the product's: two recommendations, not a
+ * shortlist, because that is what the recommendation schema returns.
  *
- * Each card carries its title inside the image now, and the paragraph under it
- * is gone. The three paragraphs were the section's whole argument, so this is a
- * real trade: the band is quieter and reads as one row of images, and the
- * claims it used to make (local pay, hiring demand, plain-language answers)
- * live nowhere on the page unless another section picks them up.
- *
- * Card one keeps the mockup, which prints "17 PATHS / Mapped for here" into the
- * image. Its overlaid title says close to the same thing, so the words appear
- * twice on that card. That is deliberate and was Pelumi's call after seeing it
- * both ways; leave it unless he says otherwise.
- *
- * Ship them no wider than 1200px, as WebP. The slot renders about 407px across
- * on a laptop, so anything larger is bytes a student on metered data pays for
- * and never sees.
+ * See docs/DESIGN-shopaza-steps.md for the layout this follows and for what was
+ * deliberately not carried over from it.
  */
-const DECISION_CARDS = [
+const DECISION_STEPS = [
   {
-    photo: "url(/brand/choice-1.webp)",
-    /* The reference's own placeholder treatment: a flat #f6f6f6 ground with the
-       artwork sitting on it whole, rather than a photograph bled to the edges.
-       `contain` is what makes the crop problem disappear instead of being
-       managed — a 4:3 mockup in a 4:5 box no longer loses 449px off its sides,
-       so nothing has to be nudged past the "YOUR MATCHES" label.
-
-       30%, not the top: the mockup carries its own pale backdrop, which ends 12
-       RGB levels off #f6f6f6 and leaves a faint edge where the two meet. Set
-       high, that edge reads as a band across the card; with grey on both sides
-       of the artwork it reads as padding. */
-    ground: "#f6f6f6",
-    size: "contain",
-    pos: "center 30%",
-    alt: "The LearnHub matches screen, with Data Analyst at 92 percent fit",
-    title: "17 careers, mapped for here",
+    step: "Step 1",
+    title: "Answer a few questions",
+    body: "Two minutes on your phone. No CV, and nothing to revise for.",
   },
   {
-    photo: "url(/brand/student-1.jpg)",
-    alt: "A student smiling, holding a stack of books",
-    title: "A match, with the reasons",
+    step: "Step 2",
+    title: "See your matches",
+    body: "Two careers that fit you, with the reasons, what they pay where you live, and how long each takes.",
   },
   {
-    photo: "url(/brand/choice-3.webp)",
-    alt: "A woman at a laptop, celebrating with both fists raised",
-    title: "Straight answers",
+    step: "Step 3",
+    title: "Follow your path",
+    body: "A week-by-week plan you can follow on your phone, and an AI coach for when you get stuck.",
   },
 ];
 
@@ -200,81 +175,73 @@ export default function LandingPage() {
       </section>
 
       {/* =========================================================== DECISIONS
-          A centred eyebrow and headline over three equal columns, each a
-          portrait image carrying its own title inside it. The cards once were
-          three different shapes (a stats block, a photo, a bullet list), so the
-          row never read as one thing; parallel cards are what make the images
-          occupy the band.
+          Three steps, laid out the way shopaza.africa's "How It Works" does it:
+          a dark ground, a centred header, one wide photograph, and three white
+          step cards sitting over the photograph's lower half. The overlap is
+          the point — it makes the section read as one object rather than as a
+          picture with a list underneath. Geometry, and the list of what was
+          deliberately not copied, are in docs/DESIGN-shopaza-steps.md.
 
-          The geometry is now the reference's section_decisions rather than
-          shopaza.africa's features band: portrait 407x500 instead of landscape
-          4:3, and the copy inside the card instead of stacked beneath it.
-
-          Mixed case, weight 600, -0.03em: the reference's headline voice, which
-          every heading on the page now shares. It replaced the uppercase the
-          landing used to set headings in.
-
-          On white. It sat on ink until now, which is why the kicker, the
-          heading, the body and the photo slots all had to flip with it. */}
-      <section className="bg-white py-24 sm:py-32">
-        {/* The reference runs this band to 1240 of 1440 — the same 100px gutter
-            its header and hero use, which is now ours too. Wider than the
-            page's usual max-w-6xl on purpose: the width is most of what makes
-            the images carry the band. */}
+          Dark, where this band used to be white. That is not only the
+          reference: the statement, this band and "How it works" were three
+          whites in a row, which docs/LANDING-REFERENCE.md flags as the thing
+          that makes 3200px of page read as one undifferentiated block. */}
+      <section className="bg-ink py-24 sm:py-32">
+        {/* 1240 of 1440 — the same 100px gutter the header, the hero and this
+            band already share. */}
         <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-[100px]">
           <Reveal className="text-center">
-            <Kicker center>What you get</Kicker>
+            <Kicker center reverse>
+              What you get
+            </Kicker>
             <SplitText
               as="h2"
               text="LearnHub makes the choice clear"
-              className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.5rem]"
+              className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[3.5rem]"
             />
+            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/70">
+              Three steps, and you can start the first one now.
+            </p>
           </Reveal>
 
-          {/* The reference's card geometry, measured off its rendered page at
-              1440: three 407x500 cards on a 10px gap, at 30px radius with 20px
-              of padding. 407/500 is the aspect; on a 1240 row the three columns
-              and two gaps resolve to exactly 406.67 each, so the height lands
-              on 500 without being asked for. */}
-          <div className="mt-16 grid gap-[10px] md:grid-cols-3">
-            {DECISION_CARDS.map((card, i) => {
-              /* A card sitting on a flat ground needs neither the scrim nor
-                 white type: the scrim exists to hold white type off a
-                 photograph, and on #f6f6f6 it would only grey the card out. */
-              const onGround = Boolean(card.ground);
-              return (
-                <Reveal key={card.title} delay={i * 90}>
-                  <article className="relative aspect-[407/500] w-full overflow-hidden rounded-[30px]">
-                    {/* The photo is its own element rather than the article's
-                        background: role="img" makes everything inside it
-                        presentational, so a title nested in the photo would be
-                        invisible to a screen reader. */}
-                    <div
-                      className="lh-slot absolute inset-0"
-                      style={
-                        {
-                          "--photo": card.photo,
-                          "--photo-ground": card.ground,
-                          "--photo-size": card.size,
-                          "--photo-pos": card.pos,
-                        } as React.CSSProperties
-                      }
-                      role="img"
-                      aria-label={card.alt}
-                    />
-                    {!onGround && <div className="lh-decision-scrim absolute inset-0" aria-hidden />}
-                    <h3
-                      className={cn(
-                        "absolute inset-x-5 bottom-5 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-[1.75rem]",
-                        onGround ? "text-ink" : "text-white",
-                      )}
-                    >
-                      {card.title}
+          <div className="relative mt-12 sm:mt-16">
+            {/* 2.31:1 is the reference's photo. students-hero.jpg is the only
+                asset wide enough to fill 1240 at that crop without upscaling;
+                the position keeps faces in the band rather than torsos. */}
+            <div
+              className="lh-slot aspect-[1240/537] w-full overflow-hidden rounded-[30px]"
+              style={
+                {
+                  "--photo": "url(/brand/students-hero.jpg)",
+                  "--photo-pos": "center 32%",
+                } as React.CSSProperties
+              }
+              role="img"
+              aria-label="Four students sitting together on a campus step, talking"
+            />
+
+            {/* Overlaid from lg up, stacked under the photo below it. At 393px
+                a third of 1240 is 110px, which no card survives — and three
+                cards laid over a 153px-tall band would cover the photograph
+                entirely, so there would be nothing to overlap. */}
+            <div className="mt-6 grid gap-4 md:grid-cols-3 lg:absolute lg:inset-x-8 lg:bottom-8 lg:mt-0 lg:gap-8">
+              {DECISION_STEPS.map((s, i) => (
+                <Reveal key={s.step} delay={i * 90}>
+                  <article className="h-full rounded-[24px] bg-white p-6">
+                    <span className="inline-flex items-center rounded-full bg-blue px-4 py-1.5 text-xs font-bold text-white">
+                      {s.step}
+                    </span>
+                    <h3 className="mt-5 font-display text-xl font-semibold tracking-[-0.02em] text-ink">
+                      {s.title}
                     </h3>
+                    {/* Size and leading as one pair: `sm:text-base` alone would
+                        reset the line height to Tailwind's 1.5 at that
+                        breakpoint. */}
+                    <p className="mt-2 text-[15px]/[1.55] text-muted">{s.body}</p>
                   </article>
                 </Reveal>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </section>
