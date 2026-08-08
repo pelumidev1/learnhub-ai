@@ -13,6 +13,7 @@ import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
 import { CONTACT_EMAIL } from "@/lib/site";
+import { cn } from "@/lib/utils/cn";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -65,14 +66,19 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 const DECISION_CARDS = [
   {
     photo: "url(/brand/choice-1.webp)",
-    /* The only card that needs an off-centre crop, and the crop travels with
-       the mockup rather than with the position in the row. It is 1100x800; a
-       4:5 box at cover renders it 687 wide and drops 449 source px off the
-       sides, and centred that cut lands halfway through the "YOUR MATCHES"
-       label. A lower percentage shows more of the left: 26% opens the window at
-       source x=117, clearing the label, and closes it at 768, past the last of
-       the percentages on the right. */
-    pos: "26% center",
+    /* The reference's own placeholder treatment: a flat #f6f6f6 ground with the
+       artwork sitting on it whole, rather than a photograph bled to the edges.
+       `contain` is what makes the crop problem disappear instead of being
+       managed — a 4:3 mockup in a 4:5 box no longer loses 449px off its sides,
+       so nothing has to be nudged past the "YOUR MATCHES" label.
+
+       30%, not the top: the mockup carries its own pale backdrop, which ends 12
+       RGB levels off #f6f6f6 and leaves a faint edge where the two meet. Set
+       high, that edge reads as a band across the card; with grey on both sides
+       of the artwork it reads as padding. */
+    ground: "#f6f6f6",
+    size: "contain",
+    pos: "center 30%",
     alt: "The LearnHub matches screen, with Data Analyst at 92 percent fit",
     title: "17 careers, mapped for here",
   },
@@ -231,28 +237,44 @@ export default function LandingPage() {
               and two gaps resolve to exactly 406.67 each, so the height lands
               on 500 without being asked for. */}
           <div className="mt-16 grid gap-[10px] md:grid-cols-3">
-            {DECISION_CARDS.map((card, i) => (
-              <Reveal key={card.title} delay={i * 90}>
-                <article className="relative aspect-[407/500] w-full overflow-hidden rounded-[30px]">
-                  {/* The photo is its own element rather than the article's
-                      background: role="img" makes everything inside it
-                      presentational, so a title nested in the photo would be
-                      invisible to a screen reader. */}
-                  <div
-                    className="lh-slot absolute inset-0"
-                    style={
-                      { "--photo": card.photo, "--photo-pos": card.pos } as React.CSSProperties
-                    }
-                    role="img"
-                    aria-label={card.alt}
-                  />
-                  <div className="lh-decision-scrim absolute inset-0" aria-hidden />
-                  <h3 className="absolute inset-x-5 bottom-5 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.02em] text-white sm:text-[1.75rem]">
-                    {card.title}
-                  </h3>
-                </article>
-              </Reveal>
-            ))}
+            {DECISION_CARDS.map((card, i) => {
+              /* A card sitting on a flat ground needs neither the scrim nor
+                 white type: the scrim exists to hold white type off a
+                 photograph, and on #f6f6f6 it would only grey the card out. */
+              const onGround = Boolean(card.ground);
+              return (
+                <Reveal key={card.title} delay={i * 90}>
+                  <article className="relative aspect-[407/500] w-full overflow-hidden rounded-[30px]">
+                    {/* The photo is its own element rather than the article's
+                        background: role="img" makes everything inside it
+                        presentational, so a title nested in the photo would be
+                        invisible to a screen reader. */}
+                    <div
+                      className="lh-slot absolute inset-0"
+                      style={
+                        {
+                          "--photo": card.photo,
+                          "--photo-ground": card.ground,
+                          "--photo-size": card.size,
+                          "--photo-pos": card.pos,
+                        } as React.CSSProperties
+                      }
+                      role="img"
+                      aria-label={card.alt}
+                    />
+                    {!onGround && <div className="lh-decision-scrim absolute inset-0" aria-hidden />}
+                    <h3
+                      className={cn(
+                        "absolute inset-x-5 bottom-5 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-[1.75rem]",
+                        onGround ? "text-ink" : "text-white",
+                      )}
+                    >
+                      {card.title}
+                    </h3>
+                  </article>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
