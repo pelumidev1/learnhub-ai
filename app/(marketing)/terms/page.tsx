@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { LegalPage, LegalSection } from "@/components/marketing/legal-page";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service · LearnHub",
   description:
     "The simple terms for using LearnHub. Free while in beta, provided honestly and as-is.",
 };
-
-const CONTACT_EMAIL = "hello@learnhubworld.com";
 
 export default function TermsPage() {
   return (

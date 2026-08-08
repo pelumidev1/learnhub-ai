@@ -5,10 +5,11 @@ All notable changes to LearnHub AI. Dates are 2026.
 ## [Unreleased]
 
 ### Added
-- **Privacy Policy & Terms of Service** at `/privacy` and `/terms` (plain-English, brand tone; reusable `LegalPage` shell), linked from the landing and auth footers. Contact: `hello@learnhubworld.com`.
+- **Privacy Policy & Terms of Service** at `/privacy` and `/terms` (plain-English, brand tone; reusable `LegalPage` shell), linked from the landing and auth footers. Contact: `hello@learnhub.africa`.
 - **Google Sign-In configured and tested live** (2026-07-23) — see [docs/GOOGLE_OAUTH_SETUP.md](docs/GOOGLE_OAUTH_SETUP.md). Email/password and Google now both work.
 
 ### Changed
+- **One contact address, in one place** (`lib/site.ts`). It was hardcoded in four files and had drifted into two domains — the nav and FAQ offered `hello@learnhub.africa`, the legal pages `hello@learnhubworld.com`. The latter has no nameservers and does not resolve, so anyone who wrote to a legal page bounced. ⚠️ `learnhub.africa` has no MX record either; Cloudflare Email Routing still needs turning on before any of these reach an inbox.
 - **Recommendations reduced to exactly 2** (a top match + one strong alternative) — prompt, Zod schema, and demo output. Sharper for users, lower AI cost.
 - **Assessment rebuilt on the RIASEC / O\*NET interest model.** Replaced the generic interest checkboxes and work-style questions with 8 validated task-preference items (one per Holland type, weighted to the catalog). Each carries a user-hidden interest signal fed to the AI for sharper, more defensible matching. Practical questions (hours, budget, device, internet) kept.
 

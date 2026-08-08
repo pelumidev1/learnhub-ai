@@ -12,6 +12,7 @@ import { HeroExploreCard } from "@/components/marketing/landing/hero-explore-car
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
+import { CONTACT_EMAIL } from "@/lib/site";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -435,10 +436,10 @@ export default function LandingPage() {
             <p className="mt-4 text-[15px] leading-relaxed text-white/70">
               Still stuck? Ask us at{" "}
               <a
-                href="mailto:hello@learnhub.africa"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="text-sky-2 underline underline-offset-4"
               >
-                hello@learnhub.africa
+                {CONTACT_EMAIL}
               </a>
               .
             </p>

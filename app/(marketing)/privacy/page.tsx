@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { LegalPage, LegalSection } from "@/components/marketing/legal-page";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy · LearnHub",
   description: "How LearnHub collects, uses, and protects your data. Plain English, no surprises.",
 };
-
-const CONTACT_EMAIL = "hello@learnhubworld.com";
 
 export default function PrivacyPage() {
   return (

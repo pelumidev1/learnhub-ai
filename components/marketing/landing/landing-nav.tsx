@@ -3,10 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
-
-/* Same address the FAQ gives. Note privacy/page.tsx uses
-   hello@learnhubworld.com — one of the two is wrong and they should agree. */
-const CONTACT_EMAIL = "hello@learnhub.africa";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 const LINKS = [
   { href: "#how", label: "How it works" },
