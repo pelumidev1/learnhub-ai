@@ -88,18 +88,24 @@
   background-position: center;
 }
 
-/* An image slot in a card row on a dark band.
+/* An image slot in a card row.
    Same job as .lh-photo, but what shows through a missing photo is a neutral
    surface instead of the brand gradient. Three cards side by side with two
    still waiting on their assets, and a saturated blue block reads as a design
    element rather than as a photo that has not arrived yet — which is also how
-   the reference does it: a flat #F6F6F6 block under every image. */
+   the reference does it: a flat #F6F6F6 block under every image.
+
+   The surface and its hairline used to be white at low alpha, which is the
+   only thing that works on a dark band and the only thing that cannot work on
+   a light one — an empty slot would have been invisible against the section,
+   and every photograph would have lost its edge. Both are now opaque palette
+   values, so the slot reads the same whichever ground it lands on. */
 .lh-slot {
-  background-color: rgba(255, 255, 255, 0.045);
+  background-color: #eff2f8; /* paper-2 */
   background-image: var(--photo, none);
   background-size: cover;
   background-position: center;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(11, 15, 26, 0.08);
 }
 
 /* Hero photo grade: lift saturation and contrast so the image reads vivid

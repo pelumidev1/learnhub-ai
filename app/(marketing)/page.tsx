@@ -181,22 +181,20 @@ export default function LandingPage() {
           every heading on the page now shares. It replaced the uppercase the
           landing used to set headings in.
 
-          Still on ink. The band's ground does not move (see CareerMatchSection,
-          which was the one that did). */}
-      <section className="bg-ink py-24 sm:py-32">
+          On white. It sat on ink until now, which is why the kicker, the
+          heading, the body and the photo slots all had to flip with it. */}
+      <section className="bg-white py-24 sm:py-32">
         {/* Wider than the page's usual max-w-6xl, on purpose: the reference runs
             this band to 1340 of 1440, leaving 50px either side, and at max-w-6xl
             our cards came out 21% smaller than its. The width is most of what
             makes the images carry the band. */}
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-[50px]">
           <Reveal className="text-center">
-            <Kicker center reverse>
-              What you get
-            </Kicker>
+            <Kicker center>What you get</Kicker>
             <SplitText
               as="h2"
               text="LearnHub makes the choice clear"
-              className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[3.5rem]"
+              className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.5rem]"
             />
           </Reveal>
 
@@ -214,12 +212,12 @@ export default function LandingPage() {
                     role="img"
                     aria-label={card.alt}
                   />
-                  <h3 className="mt-5 font-display text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl">
+                  <h3 className="mt-5 font-display text-xl font-semibold tracking-[-0.02em] text-ink sm:text-2xl">
                     {card.title}
                   </h3>
                   {/* Size and leading as one pair: `sm:text-base` alone would
                       reset the line height to Tailwind's 1.5 at that breakpoint. */}
-                  <p className="mt-2 text-[15px]/[1.55] text-white/70 sm:text-base/[1.55]">
+                  <p className="mt-2 text-[15px]/[1.55] text-muted sm:text-base/[1.55]">
                     {card.body}
                   </p>
                 </article>

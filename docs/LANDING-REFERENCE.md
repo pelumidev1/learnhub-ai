@@ -47,6 +47,13 @@ between two whites. Never three of the same in a row: the career map, pricing,
 the beta band and the CTA were four white sections and 3200px with nothing
 marking the joins. Pricing carries `paper` now.
 
+⚠️ **The top of the page currently breaks that rule.** The 3-card band was
+moved from `ink` to `white` on request, which makes the statement, the band and
+"How it works" three whites in a row — the same 3200px problem the rule exists
+to prevent, now at the top instead of the bottom. The one-line fix is `paper` on
+the statement section, which restores `ink → paper → white → white`. Not applied:
+it changes a section nobody asked to change.
+
 **Text on dark.** Three steps, plus one exception:
 
 | | Where |
