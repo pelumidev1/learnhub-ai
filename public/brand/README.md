@@ -32,7 +32,30 @@ actually shows.
 
 | File | Where it shows | Notes |
 |---|---|---|
-| `students-hero.jpg` | Landing hero background **and** the "What your match looks like" panel | Wide, ~2000×1200. Faces off to one side — the headline sits on the left. Gets a saturation/contrast lift via `.lh-hero-photo`. |
+| `students-hero.jpg` | Landing hero background **and** the "What your match looks like" panel | Wide, ~2000×1200. Faces off to one side — the headline sits on the left. Gets a saturation/contrast lift via `.lh-hero-photo`. **⚠️ The file in the repo is 735×490 and needs replacing — see below.** |
+
+### The hero photograph is too small
+
+`students-hero.jpg` is **735×490 and 81KB**. The hero is full-bleed, so on a
+retina laptop it paints 2880×1800 device pixels — the file is being enlarged
+about **4× on each edge, 15× by area**. That is the entire reason the hero
+looks soft, and no CSS filter can fix it: the detail was never in the file.
+
+What to replace it with:
+
+- **2400×1600 or larger**, same framing and crop.
+- WebP, quality ~78. At that size expect 250–400KB, which is fine: it is the
+  one image on the page worth spending bytes on, it is preloaded, and the
+  budget it replaces is only 81KB.
+- Keep the faces right-of-centre — the headline sits on the left, and the
+  scrim is heaviest on that side.
+
+Drop it in at the same path and nothing else needs to change. If the filename
+changes, update **both** the `--photo` url in `app/(marketing)/page.tsx` **and**
+the `<link rel="preload">` above it, or the preload fetches a file nothing uses.
+
+The grade and the grain (`.lh-hero-photo`, `.lh-noise` in `landing.css`) are
+already tuned and should stay as they are once the bigger file lands.
 | `after-plan.webp` | "After the match" — card 01, *Your plan* | 1014×676. A man writing beside a laptop, cropped to the cards' 3:2 from a 16:9 original. |
 | `after-proof.webp` | "After the match" — card 02, *Your proof* | 734×490. Two people high-fiving over a laptop, cropped from a portrait original — the band keeps both faces, the clasped hands and the laptop lid. |
 | `after-role.webp` | "After the match" — card 03, *Your first role* | 746×498. A handshake across a desk. |

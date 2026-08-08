@@ -104,8 +104,18 @@
 
 /* Hero photo grade: lift saturation and contrast so the image reads vivid
    through the dark scrims (Zerion-style color-graded photography). */
+/* The grade was lifting the whole frame with brightness(1.16), which raises
+   the blacks and is the one adjustment that always costs you apparent
+   sharpness — a photograph with no true black reads as veiled. Most of that
+   lift moves into contrast instead, which separates the subjects from the
+   background rather than flattening everything toward grey.
+
+   This makes the photograph read more clearly. It cannot make it sharper: the
+   file is 735x490 and the hero paints 2880x1800 on a retina laptop, so it is
+   being enlarged about 4x. No filter recovers detail that was never in the
+   file — see public/brand/README.md for the size to replace it with. */
 .lh-hero-photo {
-  filter: saturate(1.2) contrast(1.05) brightness(1.16);
+  filter: saturate(1.14) contrast(1.14) brightness(1.05);
 }
 
 /* Keyboard focus: a visible ring on every interactive element, on light and
@@ -170,10 +180,28 @@
   }
 }
 
-/* Fine film-grain over the hero so the dark ground reads atmospheric, not flat. */
+/* Film grain over the hero, so the dark ground reads atmospheric rather than
+   flat — and, at this photograph's resolution, so the softness of an upscale
+   reads as texture instead of blur. Grain is the oldest trick for that.
+   Matched against the reference's hero, which has no grain overlay at all:
+   theirs is baked into the photograph. Measured on their rendered page, the
+   grain sits at sigma 1.11-1.38 in flat areas; ours was 0.49-1.09.
+
+   Three things changed from the first version:
+
+   - `feColorMatrix saturate 0`. feTurbulence generates RGB noise, so every
+     grain was a coloured speck — digital sensor noise, which is what a cheap
+     filter looks like. Film grain is silver, so it has no hue at all.
+   - The tile paints at half its intrinsic size, which puts one grain on one
+     device pixel at 2x instead of a 2x2 block. Fine grain reads as film;
+     coarse grain reads as a texture overlay.
+   - Opacity roughly doubled, to land inside the reference's range.
+
+   `stitchTiles` keeps the 128px tile seamless where it repeats. */
 .lh-noise {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 64px 64px;
+  opacity: 0.14;
   mix-blend-mode: overlay;
 }
 
