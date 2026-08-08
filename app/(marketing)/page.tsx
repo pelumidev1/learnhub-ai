@@ -53,9 +53,10 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  * claims it used to make (local pay, hiring demand, plain-language answers)
  * live nowhere on the page unless another section picks them up.
  *
- * The first two photos are swapped from where they started. The mockup has
- * "17 PATHS / Mapped for here" printed into the image, so it cannot sit under
- * an overlaid title without saying the same words twice.
+ * Card one keeps the mockup, which prints "17 PATHS / Mapped for here" into the
+ * image. Its overlaid title says close to the same thing, so the words appear
+ * twice on that card. That is deliberate and was Pelumi's call after seeing it
+ * both ways; leave it unless he says otherwise.
  *
  * Ship them no wider than 1200px, as WebP. The slot renders about 407px across
  * on a laptop, so anything larger is bytes a student on metered data pays for
@@ -63,13 +64,9 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  */
 const DECISION_CARDS = [
   {
-    photo: "url(/brand/student-1.jpg)",
-    alt: "A student smiling, holding a stack of books",
-    title: "17 careers, mapped for here",
-  },
-  {
     photo: "url(/brand/choice-1.webp)",
-    /* The only card that needs an off-centre crop. The mockup is 1100x800; a
+    /* The only card that needs an off-centre crop, and the crop travels with
+       the mockup rather than with the position in the row. It is 1100x800; a
        4:5 box at cover renders it 687 wide and drops 449 source px off the
        sides, and centred that cut lands halfway through the "YOUR MATCHES"
        label. A lower percentage shows more of the left: 26% opens the window at
@@ -77,6 +74,11 @@ const DECISION_CARDS = [
        the percentages on the right. */
     pos: "26% center",
     alt: "The LearnHub matches screen, with Data Analyst at 92 percent fit",
+    title: "17 careers, mapped for here",
+  },
+  {
+    photo: "url(/brand/student-1.jpg)",
+    alt: "A student smiling, holding a stack of books",
     title: "A match, with the reasons",
   },
   {
