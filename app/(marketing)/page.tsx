@@ -47,29 +47,42 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  * `photo` is a CSS url() for .lh-slot, which falls back to a neutral surface if
  * a file is ever missing rather than breaking.
  *
- * Ship them cropped to 4:3 and no wider than 1200px, as WebP. The slot renders
- * about 370px across on a laptop, so anything larger is bytes a student on
- * metered data pays for and never sees — the two here are 24KB and 59KB, from
- * 1.6MB and 176KB originals.
+ * Each card carries its title inside the image now, and the paragraph under it
+ * is gone. The three paragraphs were the section's whole argument, so this is a
+ * real trade: the band is quieter and reads as one row of images, and the
+ * claims it used to make (local pay, hiring demand, plain-language answers)
+ * live nowhere on the page unless another section picks them up.
+ *
+ * The first two photos are swapped from where they started. The mockup has
+ * "17 PATHS / Mapped for here" printed into the image, so it cannot sit under
+ * an overlaid title without saying the same words twice.
+ *
+ * Ship them no wider than 1200px, as WebP. The slot renders about 407px across
+ * on a laptop, so anything larger is bytes a student on metered data pays for
+ * and never sees.
  */
 const DECISION_CARDS = [
   {
-    photo: "url(/brand/choice-1.webp)",
-    alt: "The LearnHub matches screen, with Data Analyst at 92 percent fit",
+    photo: "url(/brand/student-1.jpg)",
+    alt: "A student smiling, holding a stack of books",
     title: "17 careers, mapped for here",
-    body: "Every path is written for the African market: honest local pay, the skills that actually get hired, and timelines you can plan a year around.",
   },
   {
-    photo: "url(/brand/student-1.jpg)",
-    alt: "A student smiling, holding a laptop",
+    photo: "url(/brand/choice-1.webp)",
+    /* The only card that needs an off-centre crop. The mockup is 1100x800; a
+       4:5 box at cover renders it 687 wide and drops 449 source px off the
+       sides, and centred that cut lands halfway through the "YOUR MATCHES"
+       label. A lower percentage shows more of the left: 26% opens the window at
+       source x=117, clearing the label, and closes it at 768, past the last of
+       the percentages on the right. */
+    pos: "26% center",
+    alt: "The LearnHub matches screen, with Data Analyst at 92 percent fit",
     title: "A match, with the reasons",
-    body: "Not just a job title. You see how well each career fits you, what it pays where you live, and why the AI put it in front of you.",
   },
   {
     photo: "url(/brand/choice-3.webp)",
     alt: "A woman at a laptop, celebrating with both fists raised",
     title: "Straight answers",
-    body: "Which careers fit you and why, what the work is really like day to day, and how long it honestly takes. All of it in plain language.",
   },
 ];
 
@@ -179,13 +192,15 @@ export default function LandingPage() {
       </section>
 
       {/* =========================================================== DECISIONS
-          Built to shopaza.africa's features band, which Pelumi brought as the
-          reference: a centred eyebrow and headline over three equal columns,
-          each an image that carries the width, then a title, then two lines of
-          plain text. The cards used to be three different shapes — a stats
-          block, a photo, a bullet list — so the row never read as one thing and
-          each card left space it did not use. Parallel cards are what make the
-          images occupy the band.
+          A centred eyebrow and headline over three equal columns, each a
+          portrait image carrying its own title inside it. The cards once were
+          three different shapes (a stats block, a photo, a bullet list), so the
+          row never read as one thing; parallel cards are what make the images
+          occupy the band.
+
+          The geometry is now the reference's section_decisions rather than
+          shopaza.africa's features band: portrait 407x500 instead of landscape
+          4:3, and the copy inside the card instead of stacked beneath it.
 
           Mixed case, weight 600, -0.03em: the reference's headline voice, which
           every heading on the page now shares. It replaced the uppercase the
@@ -194,11 +209,11 @@ export default function LandingPage() {
           On white. It sat on ink until now, which is why the kicker, the
           heading, the body and the photo slots all had to flip with it. */}
       <section className="bg-white py-24 sm:py-32">
-        {/* Wider than the page's usual max-w-6xl, on purpose: the reference runs
-            this band to 1340 of 1440, leaving 50px either side, and at max-w-6xl
-            our cards came out 21% smaller than its. The width is most of what
-            makes the images carry the band. */}
-        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-[50px]">
+        {/* The reference runs this band to 1240 of 1440 — the same 100px gutter
+            its header and hero use, which is now ours too. Wider than the
+            page's usual max-w-6xl on purpose: the width is most of what makes
+            the images carry the band. */}
+        <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-[100px]">
           <Reveal className="text-center">
             <Kicker center>What you get</Kicker>
             <SplitText
@@ -208,28 +223,31 @@ export default function LandingPage() {
             />
           </Reveal>
 
-          {/* Every measurement here is the reference's, taken off its rendered
-              page: 4:3 images at 24px radius, 24px gutters, 20px from image to
-              title, 8px from title to text, 1.55 line height on the text, and
-              64px from the headline to the row. */}
-          <div className="mt-16 grid gap-6 md:grid-cols-3">
+          {/* The reference's card geometry, measured off its rendered page at
+              1440: three 407x500 cards on a 10px gap, at 30px radius with 20px
+              of padding. 407/500 is the aspect; on a 1240 row the three columns
+              and two gaps resolve to exactly 406.67 each, so the height lands
+              on 500 without being asked for. */}
+          <div className="mt-16 grid gap-[10px] md:grid-cols-3">
             {DECISION_CARDS.map((card, i) => (
               <Reveal key={card.title} delay={i * 90}>
-                <article className="flex h-full flex-col">
+                <article className="relative aspect-[407/500] w-full overflow-hidden rounded-[30px]">
+                  {/* The photo is its own element rather than the article's
+                      background: role="img" makes everything inside it
+                      presentational, so a title nested in the photo would be
+                      invisible to a screen reader. */}
                   <div
-                    className="lh-slot aspect-[4/3] w-full overflow-hidden rounded-3xl"
-                    style={{ "--photo": card.photo } as React.CSSProperties}
+                    className="lh-slot absolute inset-0"
+                    style={
+                      { "--photo": card.photo, "--photo-pos": card.pos } as React.CSSProperties
+                    }
                     role="img"
                     aria-label={card.alt}
                   />
-                  <h3 className="mt-5 font-display text-xl font-semibold tracking-[-0.02em] text-ink sm:text-2xl">
+                  <div className="lh-decision-scrim absolute inset-0" aria-hidden />
+                  <h3 className="absolute inset-x-5 bottom-5 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.02em] text-white sm:text-[1.75rem]">
                     {card.title}
                   </h3>
-                  {/* Size and leading as one pair: `sm:text-base` alone would
-                      reset the line height to Tailwind's 1.5 at that breakpoint. */}
-                  <p className="mt-2 text-[15px]/[1.55] text-muted sm:text-base/[1.55]">
-                    {card.body}
-                  </p>
                 </article>
               </Reveal>
             ))}

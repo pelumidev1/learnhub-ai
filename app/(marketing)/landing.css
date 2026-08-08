@@ -104,8 +104,28 @@
   background-color: #eff2f8; /* paper-2 */
   background-image: var(--photo, none);
   background-size: cover;
-  background-position: center;
+  /* Centre unless a card asks otherwise. A 4:3 source in a 4:5 box loses 280px
+     off the sides, which is fine for a photograph and not fine for a product
+     mockup with type near the edge. */
+  background-position: var(--photo-pos, center);
   box-shadow: inset 0 0 0 1px rgba(11, 15, 26, 0.08);
+}
+
+/* Bottom scrim for the decision cards, which carry their title inside the
+   image rather than under it.
+
+   Bottom-up, and only over the lower half, because two of the three photos are
+   light all the way through (a white studio wall, a white product mockup) and
+   white type needs real density under it. .lh-after-scrim cannot be reused
+   here: it runs top-down at .62-.7 across 78% of the box, which is right for a
+   1120px band and would black out a 407px card almost entirely. */
+.lh-decision-scrim {
+  background-image: linear-gradient(
+    0deg,
+    rgba(11, 15, 26, 0.88) 0%,
+    rgba(11, 15, 26, 0.62) 26%,
+    rgba(11, 15, 26, 0) 55%
+  );
 }
 
 /* Hero photo grade: lift saturation and contrast so the image reads vivid
