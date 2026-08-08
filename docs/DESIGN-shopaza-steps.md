@@ -1,5 +1,12 @@
 # DESIGN: shopaza.africa "How It Works"
 
+> **Status: the layout was built and then reverted.** Pelumi kept the step
+> *copy* (badge, title, body, three steps) and asked for the previous portrait
+> 407x500 placeholders back, so the landing page no longer uses the dark
+> ground, the wide photo, or the overlaid white cards described below. This
+> stays as the capture it is: the measurements are good, and it is the record
+> of where the step wording came from.
+
 Produced by the `firecrawl-website-design-clone` skill. Scoped deliberately to
 one section rather than a whole design system: LearnHub already has a design
 authority (`CLAUDE.md`) and a landing reference (`docs/LANDING-REFERENCE.md`),

@@ -24,7 +24,7 @@ one-for-one:
 |---|---|---|
 | 1 | `section_hero` | Hero — full-bleed photo, split-letter headline |
 | 2 | `section_outline` | Statement — giant centred line, media through the letterforms |
-| 3 | `section_decisions` | "Makes the choice clear" — three step cards over a wide photo (from shopaza, not Zerion — see `DESIGN-shopaza-steps.md`) |
+| 3 | `section_decisions` | "Makes the choice clear" — three portrait 407x500 cards, each carrying a step badge, title and body inside it |
 | 4 | `section_finance` | How it works — heading, product clip full width below |
 | 5 | `section_business` | What you get — scroll-driven pinned stage, four beats (was a 4-card row) |
 | 6 | `section_funding` | Life after the match — dark band, three outcome cards |
@@ -47,9 +47,12 @@ between two whites. Never three of the same in a row: the career map, pricing,
 the beta band and the CTA were four white sections and 3200px with nothing
 marking the joins. Pricing carries `paper` now.
 
-That run of three whites at the top of the page (statement, the 3-card band,
-"How it works") is gone. The band went back to `ink` when it was rebuilt as
-steps, which restores `white → ink → white` across those three.
+⚠️ **The top of the page breaks that rule.** The statement, the 3-card band and
+"How it works" are three whites in a row — the same 3200px problem the rule
+exists to prevent. The band was briefly `ink`, which fixed it, and went back to
+`white` with the card layout it belongs to. The one-line fix is `paper` on the
+statement section, which restores `ink → paper → white → white`. Not applied: it
+changes a section nobody asked to change.
 
 **Text on dark.** Three steps, plus one exception:
 
