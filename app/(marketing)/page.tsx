@@ -110,13 +110,12 @@ export default function LandingPage() {
         {/* The reference's hero layout, measured off its rendered page at
             1440x900 and rebuilt here: header on a 100px gutter, the headline
             left and roughly centred in the space below it, and a bottom row
-            that pins to the floor — a floating pill card on the left, the body
-            copy and the primary action on the right, both bottoms aligned.
+            that pins to the floor — a floating pill card on the left and the
+            primary action on the right, bottoms aligned.
 
-            Theirs: h1 at y=368, bottom row at y=704, everything ending 40px off
-            the floor. This does it with flex rather than fixed offsets so it
-            holds at every height. */}
-        <div className="relative mx-auto flex min-h-svh w-full max-w-[1440px] flex-col px-5 pb-10 pt-28 lg:px-[100px]">
+            Theirs: h1 at y=368, bottom row at y=704. This does it with flex
+            rather than fixed offsets so it holds at every height. */}
+        <div className="relative mx-auto flex min-h-svh w-full max-w-[1440px] flex-col px-5 pb-14 pt-28 sm:pb-20 lg:px-[100px]">
           <div className="flex flex-1 items-center">
             <div>
               <span
@@ -138,25 +137,19 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Bottom row. Card left, copy + action right, bottoms aligned — the
-              reference lands both on the same baseline 40px off the floor. */}
-          <div className="grid gap-10 sm:grid-cols-2 sm:items-end">
+          {/* Bottom row. Card left, primary action right, bottoms aligned — the
+              reference lands both on the same baseline off the floor. The gap
+              and the section's bottom padding both clear the card's ghost
+              stack, which hangs 34px below the card itself. */}
+          <div className="grid gap-14 sm:grid-cols-2 sm:items-end sm:gap-10">
             <div className="lh-hero-in" style={d(640)}>
               <HeroExploreCard />
             </div>
 
             <div className="lh-hero-in sm:justify-self-end" style={d(760)}>
-              {/* 20px/500 is theirs. The measure is wider than their 315px
-                  because this sentence is 160 characters against their 96, and
-                  at 315 it would have run to six lines and collided with the
-                  button. */}
-              <p className="max-w-[420px] text-[17px] font-medium leading-[1.35] text-white sm:text-[20px]">
-                Take a 2-minute assessment. LearnHub&rsquo;s AI finds the tech careers that fit you,
-                builds a learning path you can follow on your phone, and stays on as your coach.
-              </p>
               <Link
                 href="/signup"
-                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-blue px-10 py-[23px] text-base font-bold text-white shadow-glow transition hover:-translate-y-0.5 hover:brightness-110"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue px-10 py-[23px] text-base font-bold text-white shadow-glow transition hover:-translate-y-0.5 hover:brightness-110"
               >
                 Get started <ArrowIcon className="h-4 w-4" />
               </Link>
