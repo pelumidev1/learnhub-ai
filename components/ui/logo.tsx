@@ -19,22 +19,32 @@ export function Logo({
   className,
   href = "/",
   reverse = false,
+  size = "default",
 }: {
   className?: string;
   href?: string;
   reverse?: boolean;
+  /** "lg" is the landing hero's lockup, sized to the reference's own logo. */
+  size?: "default" | "lg";
 }) {
+  // The reference sets its logo 108x30 in a 102px-tall header. "lg" matches
+  // that height — a 30px wordmark with a 36px mark — which is roughly half
+  // again the default and is what makes the hero read as the reference's.
+  const lg = size === "lg";
   return (
     <Link
       href={href}
       aria-label="LearnHub home"
       className={cn(
-        "inline-flex items-center gap-2.5 font-display text-xl font-bold tracking-tight",
+        "inline-flex items-center font-display font-bold tracking-tight",
+        lg ? "gap-3 text-2xl sm:text-[30px]" : "gap-2.5 text-xl",
         reverse ? "text-white" : "text-ink",
         className,
       )}
     >
-      <LogoMark className={reverse ? "text-white" : "text-blue"} />
+      <LogoMark
+        className={cn(lg && "h-8 w-8 sm:h-9 sm:w-9", reverse ? "text-white" : "text-blue")}
+      />
       LearnHub
     </Link>
   );

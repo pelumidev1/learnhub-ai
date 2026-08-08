@@ -8,6 +8,7 @@ import { Reveal } from "@/components/marketing/landing/reveal";
 import { HowItWorksSection } from "@/components/marketing/landing/how-it-works-section";
 import { CareerMatchSection } from "@/components/marketing/landing/career-match";
 import { LifeAfterMatch } from "@/components/marketing/landing/life-after-match";
+import { HeroExploreCard } from "@/components/marketing/landing/hero-explore-card";
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
@@ -88,7 +89,7 @@ export default function LandingPage() {
       {/* ================================================================ HERO
           Full-bleed photography; the headline is split into letters that rise
           out of their masks on load, line by line. */}
-      <section className="relative flex min-h-svh items-center overflow-hidden bg-ink">
+      <section className="relative overflow-hidden bg-ink">
         <div
           className="lh-photo lh-hero-photo absolute inset-0"
           style={{ "--photo": "url(/brand/students-hero.jpg)" } as React.CSSProperties}
@@ -106,44 +107,58 @@ export default function LandingPage() {
         />
         <div className="lh-noise pointer-events-none absolute inset-0" aria-hidden />
 
-        <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-28 sm:pb-24 sm:pt-32">
-          <div className="max-w-4xl">
-            <span
-              className="lh-hero-in inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur"
-              style={d(0)}
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-sky-2" /> Free while in beta
-            </span>
+        {/* The reference's hero layout, measured off its rendered page at
+            1440x900 and rebuilt here: header on a 100px gutter, the headline
+            left and roughly centred in the space below it, and a bottom row
+            that pins to the floor — a floating pill card on the left, the body
+            copy and the primary action on the right, both bottoms aligned.
 
-            <h1 className="mt-5 font-display text-[2.75rem] font-bold leading-[1.02] tracking-[-0.035em] text-white sm:mt-6 sm:text-[5rem]">
-              <SplitText text="Discover the" delay={80} stagger={16} />
-              <SplitText text="tech career" delay={210} stagger={16} className="text-sky-2" />
-              <SplitText text="built for you" delay={340} stagger={16} />
-            </h1>
+            Theirs: h1 at y=368, bottom row at y=704, everything ending 40px off
+            the floor. This does it with flex rather than fixed offsets so it
+            holds at every height. */}
+        <div className="relative mx-auto flex min-h-svh w-full max-w-[1440px] flex-col px-5 pb-10 pt-28 lg:px-[100px]">
+          <div className="flex flex-1 items-center">
+            <div>
+              <span
+                className="lh-hero-in inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur"
+                style={d(0)}
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-sky-2" /> Free while in beta
+              </span>
 
-            <p
-              className="lh-hero-in mt-6 max-w-lg text-[17px] leading-relaxed text-white/80 sm:text-lg"
-              style={d(520)}
-            >
-              Take a 2-minute assessment. LearnHub&rsquo;s AI finds the tech careers that fit you,
-              builds a learning path you can follow on your phone, and stays on as your coach.
-            </p>
+              {/* 80px / 0.9 / -0.05em is the reference's headline exactly. Ours
+                  was already 80px but set looser at 1.02 and -0.035em, which is
+                  what kept it from reading as the same typographic voice. Case
+                  and the sky accent stay ours. */}
+              <h1 className="mt-5 max-w-[15ch] font-display text-[2.75rem] font-bold leading-[0.92] tracking-[-0.04em] text-white sm:mt-6 sm:text-[5rem] sm:leading-[0.9] sm:tracking-[-0.05em]">
+                <SplitText text="Discover the" delay={80} stagger={16} />
+                <SplitText text="tech career" delay={210} stagger={16} className="text-sky-2" />
+                <SplitText text="built for you" delay={340} stagger={16} />
+              </h1>
+            </div>
+          </div>
 
-            <div
-              className="lh-hero-in mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
-              style={d(640)}
-            >
+          {/* Bottom row. Card left, copy + action right, bottoms aligned — the
+              reference lands both on the same baseline 40px off the floor. */}
+          <div className="grid gap-10 sm:grid-cols-2 sm:items-end">
+            <div className="lh-hero-in" style={d(640)}>
+              <HeroExploreCard />
+            </div>
+
+            <div className="lh-hero-in sm:justify-self-end" style={d(760)}>
+              {/* 20px/500 is theirs. The measure is wider than their 315px
+                  because this sentence is 160 characters against their 96, and
+                  at 315 it would have run to six lines and collided with the
+                  button. */}
+              <p className="max-w-[420px] text-[17px] font-medium leading-[1.35] text-white sm:text-[20px]">
+                Take a 2-minute assessment. LearnHub&rsquo;s AI finds the tech careers that fit you,
+                builds a learning path you can follow on your phone, and stays on as your coach.
+              </p>
               <Link
                 href="/signup"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue px-8 py-4 text-sm font-bold text-white shadow-glow transition hover:-translate-y-0.5 hover:brightness-110"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-blue px-10 py-[23px] text-base font-bold text-white shadow-glow transition hover:-translate-y-0.5 hover:brightness-110"
               >
-                Find your career <ArrowIcon className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/careers"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/10"
-              >
-                Explore careers
+                Get started <ArrowIcon className="h-4 w-4" />
               </Link>
             </div>
           </div>

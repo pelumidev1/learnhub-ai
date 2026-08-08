@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 
+/* Same address the FAQ gives. Note privacy/page.tsx uses
+   hello@learnhubworld.com — one of the two is wrong and they should agree. */
+const CONTACT_EMAIL = "hello@learnhub.africa";
+
 const LINKS = [
   { href: "#how", label: "How it works" },
   { href: "#what", label: "What you get" },
@@ -40,8 +44,11 @@ export function LandingNav() {
           : "border-b border-transparent"
       } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-        <Logo reverse={!scrolled && !open} />
+      {/* The reference runs its header on the same gutter as its hero — 100px
+          at 1440, not the page's usual centred 1152 — so the logo sits on the
+          headline's own left edge. This container matches the hero's below. */}
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-5 py-3 lg:px-[100px]">
+        <Logo reverse={!scrolled && !open} size="lg" />
 
         <nav className="hidden items-center gap-8 md:flex">
           {LINKS.map((l) => (
@@ -57,21 +64,18 @@ export function LandingNav() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
-          <Link
-            href="/login"
-            className={`text-sm font-semibold transition ${
-              scrolled ? "text-ink hover:text-blue" : "text-white"
+        {/* One pill, as the reference has: white on the dark hero, inverting to
+            ink once the bar frosts. 36px radius and 13/40 padding are its
+            measurements. The primary action lives in the hero itself now. */}
+        <div className="hidden items-center md:flex">
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className={`rounded-full px-10 py-3.5 text-base font-semibold transition hover:-translate-y-0.5 ${
+              scrolled || open ? "bg-ink text-white" : "bg-white text-ink"
             }`}
           >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className="rounded-full bg-blue px-5 py-2.5 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
-          >
-            Get started
-          </Link>
+            Contact
+          </a>
         </div>
 
         {/* Mobile toggle */}
@@ -120,13 +124,13 @@ export function LandingNav() {
             ))}
           </nav>
           <div className="mt-5 flex flex-col gap-3">
-            <Link
-              href="/login"
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
               onClick={() => setOpen(false)}
               className="rounded-full border border-silver-2 py-3 text-center text-sm font-bold text-ink"
             >
-              Log in
-            </Link>
+              Contact
+            </a>
             <Link
               href="/signup"
               onClick={() => setOpen(false)}
