@@ -101,17 +101,10 @@
    and every photograph would have lost its edge. Both are now opaque palette
    values, so the slot reads the same whichever ground it lands on. */
 .lh-slot {
-  /* Three knobs, all defaulted, so one class covers both jobs the slot does:
-     a photograph bled to the edges, and a product shot sitting on a flat ground
-     the way the reference's own placeholders do. */
-  background-color: var(--photo-ground, #eff2f8); /* paper-2 */
+  background-color: #eff2f8; /* paper-2 */
   background-image: var(--photo, none);
-  background-size: var(--photo-size, cover);
-  /* Centre unless a card asks otherwise. A 4:3 source in a 4:5 box loses 280px
-     off the sides, which is fine for a photograph and not fine for a product
-     mockup with type near the edge. */
-  background-position: var(--photo-pos, center);
-  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   box-shadow: inset 0 0 0 1px rgba(11, 15, 26, 0.08);
 }
 

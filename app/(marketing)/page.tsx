@@ -13,7 +13,6 @@ import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
 import { CONTACT_EMAIL } from "@/lib/site";
-import { cn } from "@/lib/utils/cn";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -63,19 +62,8 @@ const DECISION_STEPS = [
     step: "Step 1",
     title: "Answer a few questions",
     body: "Two minutes on your phone. No CV, and nothing to revise for.",
-    photo: "url(/brand/choice-1.webp)",
-    /* The reference's own placeholder treatment: a flat #f6f6f6 ground with the
-       artwork sitting on it whole. `contain` is also what keeps the mockup
-       uncropped — a 4:3 image in a 4:5 box loses 449 source px off its sides at
-       cover, straight through the "YOUR MATCHES" label.
-
-       Sat at 8% now rather than 30%: this card carries a badge, a title and
-       three lines of body, so the artwork has to clear the lower half instead
-       of sitting in the middle of it. */
-    ground: "#f6f6f6",
-    size: "contain",
-    pos: "center 8%",
-    alt: "The LearnHub matches screen, with Data Analyst at 92 percent fit",
+    photo: "url(/brand/step-1.webp)",
+    alt: "A man in a beige coat smiling at his phone",
   },
   {
     step: "Step 2",
@@ -233,62 +221,32 @@ export default function LandingPage() {
           </Reveal>
 
           <div className="mt-16 grid gap-[10px] md:grid-cols-3">
-            {DECISION_STEPS.map((s, i) => {
-              /* A card sitting on a flat ground needs neither the scrim nor
-                 white type: the scrim exists to hold white type off a
-                 photograph, and on #f6f6f6 it would only grey the card out. */
-              const onGround = Boolean(s.ground);
-              return (
-                <Reveal key={s.step} delay={i * 90}>
-                  <article className="relative aspect-[407/500] w-full overflow-hidden rounded-[30px]">
-                    {/* The photo is its own element rather than the article's
-                        background: role="img" makes everything inside it
-                        presentational, so copy nested in the photo would be
-                        invisible to a screen reader. */}
-                    <div
-                      className="lh-slot absolute inset-0"
-                      style={
-                        {
-                          "--photo": s.photo,
-                          "--photo-ground": s.ground,
-                          "--photo-size": s.size,
-                          "--photo-pos": s.pos,
-                        } as React.CSSProperties
-                      }
-                      role="img"
-                      aria-label={s.alt}
-                    />
-                    {!onGround && <div className="lh-decision-scrim absolute inset-0" aria-hidden />}
-                    <div className="absolute inset-x-5 bottom-5">
-                      <span
-                        className={cn(
-                          "inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-bold",
-                          onGround ? "bg-blue text-white" : "bg-white text-ink",
-                        )}
-                      >
-                        {s.step}
-                      </span>
-                      <h3
-                        className={cn(
-                          "mt-3 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.02em]",
-                          onGround ? "text-ink" : "text-white",
-                        )}
-                      >
-                        {s.title}
-                      </h3>
-                      <p
-                        className={cn(
-                          "mt-2 text-[15px]/[1.5]",
-                          onGround ? "text-muted" : "text-white/80",
-                        )}
-                      >
-                        {s.body}
-                      </p>
-                    </div>
-                  </article>
-                </Reveal>
-              );
-            })}
+            {DECISION_STEPS.map((s, i) => (
+              <Reveal key={s.step} delay={i * 90}>
+                <article className="relative aspect-[407/500] w-full overflow-hidden rounded-[30px]">
+                  {/* The photo is its own element rather than the article's
+                      background: role="img" makes everything inside it
+                      presentational, so copy nested in the photo would be
+                      invisible to a screen reader. */}
+                  <div
+                    className="lh-slot absolute inset-0"
+                    style={{ "--photo": s.photo } as React.CSSProperties}
+                    role="img"
+                    aria-label={s.alt}
+                  />
+                  <div className="lh-decision-scrim absolute inset-0" aria-hidden />
+                  <div className="absolute inset-x-5 bottom-5">
+                    <span className="inline-flex items-center rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-ink">
+                      {s.step}
+                    </span>
+                    <h3 className="mt-3 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.02em] text-white">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 text-[15px]/[1.5] text-white/80">{s.body}</p>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
