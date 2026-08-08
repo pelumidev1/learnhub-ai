@@ -531,6 +531,44 @@
    Every card is sticky within .lh-stack, not within a wrapper of its own: a
    sticky element can only travel inside its containing block, so a wrapper the
    height of the card would give it nowhere to stick. */
+/* "After the match" card scrim. Bottom-transparent, so the photograph keeps
+   its ground and the copy sits in the flat band above it.
+
+   Two values, because the phone card is portrait and the laptop card is 3:2.
+   On 3:2 the copy fills most of the card and lands on the middle of the frame;
+   on the taller portrait card the same copy occupies half the height and can
+   land anywhere the photograph happens to be bright — the light shirt in the
+   third card washed the body line out. Mobile therefore runs .70 down to 84%,
+   laptop keeps the original .62 to 78% exactly. */
+.lh-after-scrim {
+  background-image: linear-gradient(
+    180deg,
+    rgba(11, 15, 26, 0.7) 0%,
+    rgba(11, 15, 26, 0.7) 84%,
+    rgba(11, 15, 26, 0) 100%
+  );
+}
+@media (min-width: 640px) {
+  .lh-after-scrim {
+    background-image: linear-gradient(
+      180deg,
+      rgba(11, 15, 26, 0.62) 0%,
+      rgba(11, 15, 26, 0.62) 78%,
+      rgba(11, 15, 26, 0) 100%
+    );
+  }
+}
+
+/* Clears the fixed nav, which is 64px on a phone against 76px on a laptop. */
+.lh-stack {
+  --stack-top: 4.5rem;
+}
+@media (min-width: 640px) {
+  .lh-stack {
+    --stack-top: 5.5rem;
+  }
+}
+
 .lh-stack-card {
   position: sticky;
   /* Each card lands slightly lower than the one before, so the deck shows its

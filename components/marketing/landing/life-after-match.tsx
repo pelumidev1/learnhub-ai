@@ -1,4 +1,7 @@
 import Image from "next/image";
+import afterPlan from "@/public/brand/after-plan.webp";
+import afterProof from "@/public/brand/after-proof.webp";
+import afterRole from "@/public/brand/after-role.webp";
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { Reveal } from "@/components/marketing/landing/reveal";
 
@@ -25,32 +28,27 @@ import { Reveal } from "@/components/marketing/landing/reveal";
  * A server component. Only <Reveal> needs JS, and it renders visible.
  */
 
-/** Bottom-transparent so the photograph keeps its ground; the copy sits in the
- *  flat 62% band that covers the top 78%. */
-const SCRIM =
-  "linear-gradient(180deg, rgba(11,15,26,.62) 0%, rgba(11,15,26,.62) 78%, rgba(11,15,26,0) 100%)";
-
 const CARDS = [
   {
     n: "01",
     label: "Your plan",
     head: "A path you can start on Monday",
     body: "Week by week, in order. Free resources only.",
-    photo: "after-plan.webp",
+    photo: afterPlan,
   },
   {
     n: "02",
     label: "Your proof",
     head: "Work you can show, not claim",
     body: "Real projects, reviewed by your AI advisor.",
-    photo: "after-proof.webp",
+    photo: afterProof,
   },
   {
     n: "03",
     label: "Your first role",
     head: "The job you are ready to apply for",
     body: "Junior roles you match, and the gap to close.",
-    photo: "after-role.webp",
+    photo: afterRole,
   },
 ];
 
@@ -68,29 +66,44 @@ export function LifeAfterMatch() {
           </h2>
         </Reveal>
 
-        {/* --stack-top clears the fixed nav; --n is what slices the shrink
-            timeline between the cards. */}
+        {/* --n is what slices the shrink timeline between the cards.
+            --stack-top clears the fixed nav and lives in landing.css, because
+            the nav is shorter on a phone than on a laptop. */}
         <div
           className="lh-stack mt-12 flex flex-col gap-5 sm:mt-16 sm:gap-6"
-          style={{ "--stack-top": "5.5rem", "--n": CARDS.length } as React.CSSProperties}
+          style={{ "--n": CARDS.length } as React.CSSProperties}
         >
           {CARDS.map((c, i) => (
             <div key={c.n} className="lh-stack-card" style={{ "--i": i } as React.CSSProperties}>
-              {/* 1120x747 is 3:2, which holds from 640px up. Below that it is
-                  240px of height for three lines of display type at 36px, so
-                  the ratio becomes a floor instead of a fixed shape: 66.7vw is
-                  the same 3:2, and the card grows past it only as far as the
-                  copy actually needs. */}
-              <article className="relative isolate flex min-h-[66.7vw] w-full items-center justify-center overflow-hidden rounded-3xl shadow-[0_24px_60px_-24px_rgba(0,0,0,.7)] sm:aspect-[1120/747] sm:min-h-0">
+              {/* 1120x747 is 3:2 and holds from 640px up. On a phone the card
+                  turns portrait, and that is what makes the stack work rather
+                  than a style choice. A sticky card's travel is the stack's
+                  height minus its own, so travel is (n-1) x card: at 3:2 a
+                  phone card was 305px in a 727px viewport — 42% of the screen,
+                  and the whole stacking sequence took 0.89 viewports, less
+                  than one thumb flick, so it was over before you saw it. At
+                  125vw the card is 68% of the screen and the sequence takes
+                  1.41 viewports, which is close to the 83% / 1.71 the desktop
+                  card gets. The min-height is still a floor, so the card grows
+                  past it if the copy needs more. */}
+              <article className="relative isolate flex min-h-[125vw] w-full items-center justify-center overflow-hidden rounded-3xl shadow-[0_24px_60px_-24px_rgba(0,0,0,.7)] sm:aspect-[1120/747] sm:min-h-0">
                 <div className="lh-photo absolute inset-0" aria-hidden />
+                {/* Static import, so Next generates the blurDataURL at build
+                    time and the card opens on a blurred frame of its own photo
+                    instead of a flat gradient. Measured on a 400kbps phone:
+                    arriving at the section, all three were `complete: false`
+                    and the cards were empty blue rectangles for seconds. Still
+                    lazy — the section is far below the fold and the bytes are
+                    worth deferring; what changed is what fills the gap. */}
                 <Image
-                  src={`/brand/${c.photo}`}
+                  src={c.photo}
                   alt=""
                   fill
+                  placeholder="blur"
                   sizes="(min-width: 1160px) 1120px, 100vw"
                   className="object-cover"
                 />
-                <div className="absolute inset-0" style={{ backgroundImage: SCRIM }} aria-hidden />
+                <div className="lh-after-scrim absolute inset-0" aria-hidden />
 
                 <div className="relative flex flex-col items-center gap-5 px-6 py-10 text-center sm:py-0">
                   <span className="flex items-center gap-3">
