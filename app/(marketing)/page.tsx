@@ -210,11 +210,14 @@ export default function LandingPage() {
         <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-[100px]">
           <Reveal className="text-center">
             <Kicker center>What you get</Kicker>
-            <SplitText
-              as="h2"
-              text="LearnHub makes the choice clear"
-              className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.5rem]"
-            />
+            {/* Two lines, broken between the subject and its object rather
+                than wherever the measure happens to run out. Each SplitText is
+                display:block (see .lh-split), so the units stack and the second
+                line rises in behind the first. */}
+            <h2 className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.5rem]">
+              <SplitText text="LearnHub makes" />
+              <SplitText text="the choice clear" delay={120} />
+            </h2>
             <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-muted">
               Three steps, and you can start the first one now.
             </p>
