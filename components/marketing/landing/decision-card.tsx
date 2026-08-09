@@ -10,13 +10,15 @@ import { Reveal } from "@/components/marketing/landing/reveal";
  * Closing it the moment the pointer left meant both cards turned at once, which
  * read as the row lurching rather than as one card handing over to the next.
  *
- * 2s against the 900ms flip is a hold, not just a stagger: the arriving card
- * lands, both cards sit still for about a second, and only then does the one you
- * left turn back. Pelumi asked for this specifically, through 400 and 800, so
- * the two movements never read as one. The card you left is deliberately still
- * showing its back while you read the new one.
+ * 5s against the 900ms flip is a long hold, asked for through 400, 800 and 2000:
+ * the arriving card lands and the one you left sits open for four more seconds
+ * before turning back, so the two movements never read as one.
+ *
+ * **This applies to a card that was clicked open, not to hover.** Hover is CSS
+ * (`.lh-flip:hover`), and a hovered card turns back the instant the pointer
+ * leaves it, with no hold at all — no value here changes that.
  */
-const CLOSE_DELAY = 2000;
+const CLOSE_DELAY = 5000;
 
 export type DecisionStep = {
   step: string;
