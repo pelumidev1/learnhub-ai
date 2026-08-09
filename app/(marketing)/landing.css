@@ -142,12 +142,22 @@
   position: relative;
   height: 100%;
   transform-style: preserve-3d;
-  /* 520ms, well past the design system's 150-250, and the exception is the
-     point: those numbers are for a state change you should barely notice, and
-     this is a card physically turning over. At 300 it read as a snap — the back
-     arrived without anyone seeing it come — which is what Pelumi called too
-     fast. Slower again and hovering across the row would feel like waiting. */
-  transition: transform 520ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* 900ms, and the easing changed with it — the easing is most of why 300 and
+     then 520 both still read as too fast.
+
+     Both earlier values used the page's ease-out, which front-loads the
+     movement: the card threw itself most of the way round in the first third
+     and then crawled into place. Perceived speed comes from that opening burst,
+     not from the total, so raising the duration mostly lengthened the crawl and
+     the flip still felt snapped.
+
+     easeInOutCubic accelerates and decelerates symmetrically, which is how an
+     object with weight actually turns, and it spends the middle of the movement
+     — the part where the card is edge-on and reading as a turn — at an even
+     speed. The design system's 150-250 is for state changes you should barely
+     notice; this is a card physically turning over, and the number has to match
+     the movement rather than the rule. */
+  transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* Hover only where hovering is real. On a touch screen (hover: none) this rule
