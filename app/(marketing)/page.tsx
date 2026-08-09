@@ -52,12 +52,11 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  * The numbers are the product's: two recommendations, not a shortlist, because
  * that is what the recommendation schema returns.
  *
- * The three photographs are one set — `step-1`, `step-2`, `step-3` — and that
- * is the whole point of them: waist-up on the same pale studio wall, so the row
- * reads as three frames from one shoot rather than three stock photos. Anything
- * that replaces one has to carry that wall (top around rgb(240,242,240),
- * bottom around rgb(228,231,229)); see docs/LANDING-REFERENCE.md for how the
- * existing three were brought onto it.
+ * Steps 1 and 2 are waist-up on the same pale studio wall — step 1's flat white
+ * background was repainted with step 2's gradient specifically so the two read
+ * as one shoot. Step 3 is Pelumi's placeholder and is not on that wall; if it is
+ * ever replaced, matching the wall is what would pull the row together (top
+ * around rgb(240,242,240), bottom around rgb(228,231,229)).
  *
  * Ship photos no wider than 1200px, as WebP. The slot renders about 407px
  * across on a laptop, so anything larger is bytes a student on metered data
@@ -82,8 +81,8 @@ const DECISION_STEPS = [
     step: "Step 3",
     title: "Follow your path",
     body: "A week-by-week plan you can follow on your phone, and an AI coach for when you get stuck.",
-    photo: "url(/brand/step-3.webp)",
-    alt: "A woman smiling at the laptop she is holding",
+    photo: "url(/brand/choice-3.webp)",
+    alt: "A woman at a laptop, celebrating with both fists raised",
   },
 ];
 

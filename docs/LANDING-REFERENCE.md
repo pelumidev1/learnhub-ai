@@ -292,23 +292,20 @@ The layout expects real photography, and every slot now has it — see
 An empty slot degrades to a branded gradient via `.lh-photo` rather than a broken
 image, so a missing file is never a hole.
 
-The one set worth knowing about here is **`step-1` / `step-2` / `step-3`**, the
-three-card "makes the choice clear" row. They are waist-up on the same pale
-studio wall on purpose — the row's whole effect is three frames from one shoot,
-and a photo that ignores the wall breaks it. The wall runs rgb(240,242,240) at
-the top of the card to rgb(228,231,229) at the bottom, and none of the three
-arrived on it:
+The row worth knowing about here is the three-card "makes the choice clear" band:
+**`step-1`**, **`step-2`** and **`choice-3`**.
 
-- **Step 1** was a JPEG cutout with a transparency checkerboard baked into its
-  pixels. Every achromatic pixel at or above 226 was flattened to white (the test
-  is chroma, not brightness — the turtleneck runs 246–251 but warm, so it
-  survives), then step 2's wall gradient was sampled down both edges, smoothed
-  over 25px and repainted onto it, mapped so the two agree at the same point on
-  *the card* rather than the same point in the file.
-- **Step 3** was generated on Higgsfield (nano-banana, 3:4, 2 credits) rather
-  than sourced, because nothing in stock matched the set. Its wall came out ~12
-  levels dark and blue (227,231,233 against step 1's 240,243,240), so it carries
-  a per-channel white balance — `colorlevels=rimax=0.9458:gimax=0.9545:bimax=0.9708`
-  — which lands the wall on the set's values and warms the skin and knit with it.
-  A closed laptop lid was chosen over an open screen deliberately: the variant
-  with a visible screen filled it with garbled AI text.
+Cards 1 and 2 are waist-up on the same pale studio wall on purpose. That wall
+runs rgb(240,242,240) at the top of the card to rgb(228,231,229) at the bottom,
+and step 1 did not arrive on it: it was a JPEG cutout with a transparency
+checkerboard baked into its pixels. Every achromatic pixel at or above 226 was
+flattened to white (the test is chroma, not brightness — the turtleneck runs
+246–251 but warm, so it survives), then step 2's wall gradient was sampled down
+both edges, smoothed over 25px and repainted onto it, mapped so the two agree at
+the same point on *the card* rather than the same point in the file.
+
+**Card 3 is Pelumi's placeholder and is not on that wall** — a landscape interior
+shot, cover-cropped to its middle 549 columns by the portrait card. A studio
+frame matching the wall was generated for it (Higgsfield, nano-banana, 3:4) and
+he reverted it, so the row is deliberately two-thirds a set. Leave it alone
+unless he asks; the wall values above are what a replacement would need to hit.

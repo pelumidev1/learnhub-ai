@@ -111,8 +111,8 @@
 /* Bottom scrim for the decision cards, which carry their title inside the
    image rather than under it.
 
-   Bottom-up, and only over the lower half, because all three photos are the
-   same pale studio wall all the way through, and white type needs real density
+   Bottom-up, and only over the lower half, because two of the three photos are
+   a pale studio wall all the way through and white type needs real density
    under it. .lh-after-scrim cannot be reused
    here: it runs top-down at .62-.7 across 78% of the box, which is right for a
    1120px band and would black out a 407px card almost entirely. */

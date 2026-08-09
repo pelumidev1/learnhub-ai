@@ -11,11 +11,11 @@ get cut off.
 
 ## Still needed
 
-**Nothing.** Every slot on the site has a real photograph in it. The old
-`student-1` / `student-2` / `student-3` slots are gone: the three-card row is now
-`step-1` / `step-2` / `step-3` (below), the wide panel under "How it works" was
-replaced by a looping video in [`public/media/`](../media/README.md), and the
-dark banner it named no longer exists.
+**Nothing.** Every slot on the site has a photograph in it. The old `student-1` /
+`student-2` / `student-3` slots are gone: the three-card row is now `step-1`,
+`step-2` and `choice-3` (below), the wide panel under "How it works" was replaced
+by a looping video in [`public/media/`](../media/README.md), and the dark banner
+it named no longer exists.
 
 What follows is what is there, and what to match if you ever want to swap one
 out.
@@ -27,23 +27,21 @@ out.
 | `students-hero.jpg` | Landing hero background **and** the "What your match looks like" panel **and** the statement clip's still | 2000×1333, 306KB. Faces right-of-centre — the headline sits on the left. Gets a saturation/contrast lift via `.lh-hero-photo` and film grain from `.lh-noise`. |
 | `step-1.webp` | "Makes the choice clear" — card 1, *Answer a few questions* | 1000×1161, 81KB. A man in a beige coat smiling at his phone. |
 | `step-2.jpg` | The same row, card 2, *See your matches* — **and** the 60px avatar in the hero's "Explore careers" pill | 688×1024, 51KB. A student smiling with a stack of books. Two files point at this one; renaming it means editing both. |
-| `step-3.webp` | The same row, card 3, *Follow your path* | 896×1200, 73KB. A woman smiling at the laptop she is holding. |
+| `choice-3.webp` | The same row, card 3, *Follow your path* | 900×675, 57KB. A woman celebrating at a laptop. Pelumi's placeholder, and the one photo in the row that is not on the studio wall — landscape, so the card crops it to its middle 549 columns. |
 | `after-plan.webp` | "After the match" — card 01, *Your plan* | 1014×676. A man writing beside a laptop, cropped to the cards' 3:2 from a 16:9 original. |
 | `after-proof.webp` | "After the match" — card 02, *Your proof* | 734×490. Two people high-fiving over a laptop, cropped from a portrait original — the band keeps both faces, the clasped hands and the laptop lid. |
 | `after-role.webp` | "After the match" — card 03, *Your first role* | 746×498. A handshake across a desk. |
 | `signup.png` | Login / signup left panel | Portrait, ~1200×1600. Currently a 1.8 MB PNG — worth re-exporting as JPG/WebP. |
 
-### The three step cards are one set
+### Replacing a step card
 
-`step-1`, `step-2` and `step-3` are not three photographs that happen to sit next
-to each other. They are waist-up on the same pale studio wall, and that is what
-makes the row read as one shoot instead of three stock photos. The wall runs
-about **rgb(240,242,240) at the top to rgb(228,231,229) at the bottom** of the
-card, and all three were brought onto it deliberately — step 1's flat white
-background was repainted with step 2's gradient, and step 3 was white-balanced
-onto the same values.
+Cards 1 and 2 are waist-up on the same pale studio wall, and that is deliberate:
+step 1's flat white background was repainted with step 2's gradient so the two
+read as one shoot rather than two stock photos. The wall runs about
+**rgb(240,242,240) at the top to rgb(228,231,229) at the bottom** of the card.
+Card 3 is a placeholder and is not on that wall.
 
-So a replacement needs to match that wall, not just be a nice photo. Aim for:
+A photo that matches the wall is what would pull all three together. Aim for:
 
 - **Portrait, ~800–1000px wide.** The card is 407×500 and cover-crops from the
   centre, so a landscape photo loses its sides entirely.
