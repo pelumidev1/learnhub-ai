@@ -5,8 +5,8 @@ so they can be regenerated.
 
 | File | Purpose | Actual |
 |---|---|---|
-| `how-it-works.mp4` | The looping clip below the three steps. H.264, no audio track. | 1428×720, 23 s, 24 fps, silent, **323 KB** |
-| `how-it-works.webp` | Still from 2 s. Doubles as the video `poster` **and** the reduced-motion replacement. | 1428×720, **19.2 KB** |
+| `how-it-works.mp4` | The looping clip below the three steps. H.264, no audio track. **Dark app view** — see below. | 1428×720, 23 s, 24 fps, silent, **335 KB** |
+| `how-it-works.webp` | Still from 2 s. Doubles as the video `poster` **and** the reduced-motion replacement. | 1428×720, **18.9 KB** |
 | `statement.mp4` | The moving layer behind the statement knockout, seen only through the letterforms. | 900×394, 16.3 s, 24 fps, silent, **253 KB** |
 
 ## statement.mp4
@@ -68,7 +68,59 @@ The poster is WebP, not JPEG, because it is the one asset that loads on *every*
 visit — `poster` is fetched eagerly whether or not anyone scrolls this far. WebP
 roughly halves it for free.
 
+## The app in the clip is dark
+
+It shipped as a light app view and was re-rendered dark, because the frame around
+it on the page is `ink` and a white screen inside a dark bezel was the wrong way
+round.
+
+The whole composition draws from one palette object at the top of
+`steps-video.jsx`, and every usage of it is semantic — `white` is a surface,
+`ink` is text, `silver` is a hairline. So the dark version is a **value swap on
+that object and nothing else**; not one of the ~60 usages below it changed. What
+carries over is the luminance *order*, not the colours: light had a white main
+pane, a slightly darker paper sidebar, and white cards raised out of it, and dark
+keeps those three steps in the same direction.
+
+```js
+ink: '#ffffff'                      // primary text
+ink2: 'rgba(255,255,255,0.92)'
+blue: '#4c93f0'                     // the accent, read against the background
+sky2: '#7db8fa'
+paper: '#0a1019'                    // recessed: the sidebar, the coach panel
+silver:  'rgba(255,255,255,0.10)'   // hairlines and track fills
+silver2: 'rgba(255,255,255,0.18)'
+muted:  'rgba(255,255,255,0.68)'
+muted2: 'rgba(255,255,255,0.46)'
+white: '#0f1524'                    // the main pane and the cards
+```
+
+**`white` is #0f1524 rather than the page's own #0b0f1a on purpose.** The clip is
+framed in an ink matte, so a pane at exactly the matte's value would have no edge
+at all. A step lighter and the screen separates itself. The sidebar at #0a1019 is
+a step *darker* than the matte and does still disappear into it — the frame's
+`white/10` hairline is what holds that edge, and it is there for this reason.
+
+Three things could not be expressed as a value swap, each commented where it sits:
+
+1. **The primary button** keeps the brand gradient (`#2a46f0 → #1f33cc →
+   #182ab0`) with white type. It is the one place blue is a fill rather than an
+   accent read against the background, so it is brand blue on either screen.
+   `C.blue` has moved to the sky tone and would have lit up the middle stop.
+2. **The pointer inverts** — a dark dot with a light ring is invisible on a dark
+   app, so it is a light dot with a dark ring.
+3. **The blue selection tints** were written as literal `rgba(31,51,204,…)`. They
+   became the sky tone with more alpha, since a 5–6% wash that reads on white is
+   nothing on a dark pane. The button's own glow is brand and stayed.
+
+The shadow constant also had to change: ink at 4% does nothing over a dark
+surface, so it is black and much heavier.
+
 ## Regenerating
+
+The edited composition is kept at `~/Downloads/Three-step animated product
+walkthrough — dark`, beside the light original it was copied from. It is outside
+the repo because the whole design export is — see below.
 
 Source: the design project **"Three-step animated product walkthrough"**, exported
 as a folder containing `LearnHub How It Works.dc.html` plus its `.jsx` files. Its
@@ -127,7 +179,7 @@ node embed/capture-how-it-works.mjs
 cp public/media/how-it-works.{mp4,webp} "<repo>/public/media/"
 ```
 
-crf ladder, at 1428×720 from 552 frames: **30 → 323 KB**, comfortably inside the
+crf ladder, at 1428×720 from 552 frames: **30 → 335 KB**, comfortably inside the
 ~400 KB budget on the first rung. **Raise crf before touching the framerate** —
 this clip has no fast motion, so the quantiser has far more headroom than frames
 per second do. Frame 48 is t=2 s, where the assessment screen is settled; that is

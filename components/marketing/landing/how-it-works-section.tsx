@@ -38,18 +38,17 @@ export function HowItWorksSection() {
             own edges are white, so with nothing behind them they vanish into a
             white section and the app's top bar reads as the section's own rule.
 
-            The matte is `ink`. It was `paper` — a light matte on a light section
-            — which meant the frame had to be held together by two hairlines,
-            and the clip's pale left sidebar still went soft against it. Ink
-            separates a white-edged clip on contrast alone, so both hairlines
-            came off with it: a border between an ink matte and a white clip is
-            either invisible against the clip or a second line beside the matte's
-            own edge. One dark block, one light screen inside it.
+            The matte is `ink`, and the clip inside it is a dark app view too, so
+            the frame is one dark mass on a white section — the only one in the
+            3000px run of white grounds that docs/LANDING-REFERENCE.md flags.
 
-            It also gives this stretch of page something to look at. The
-            statement, the step cards and this section are three white grounds in
-            a row (see docs/LANDING-REFERENCE.md), and the frame is now the one
-            dark mass in 3000px of white.
+            Which puts the screen's own edge back in question. The clip's main
+            pane is #0f1524, a step lighter than this matte, so it separates on
+            its own; its sidebar is #0a1019, a step darker, and against ink that
+            left edge disappears. That is the same vanishing edge the light
+            version had, in reverse. The white/10 hairline is what holds it, and
+            it is the only border here — the outer edge needs none, since ink
+            against a white section is its own line.
 
             Radii stay concentric — 28px outside minus the 12px matte is the 16px
             (rounded-xl) inside — so the corners stay parallel instead of drifting
@@ -60,7 +59,7 @@ export function HowItWorksSection() {
             presented. */}
         <Reveal className="mt-10 md:mt-14">
           <div className="rounded-[28px] bg-ink p-3 shadow-soft">
-            <div className="overflow-hidden rounded-xl">
+            <div className="overflow-hidden rounded-xl border border-white/10">
               <HowItWorksVideo />
             </div>
           </div>
