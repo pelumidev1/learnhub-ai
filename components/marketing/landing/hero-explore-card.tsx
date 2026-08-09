@@ -60,7 +60,7 @@ export function HeroExploreCard() {
               the object-position puts the face on the circle's centre first so
               the zoom stays on it. */}
           <Image
-            src="/brand/student-1.jpg"
+            src="/brand/step-2.jpg"
             alt=""
             fill
             sizes="60px"

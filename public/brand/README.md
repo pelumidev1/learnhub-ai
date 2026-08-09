@@ -11,28 +11,54 @@ get cut off.
 
 ## Still needed
 
-| File | Where it shows | Shape to aim for | Watch out for |
-|---|---|---|---|
-| `student-1.jpg` | "Makes the choice clear" — middle card of the three-card row | Roughly **square / slight portrait**, ~800×850 | A white "Your match" card sits over the **bottom third**. Keep the face in the upper two-thirds. |
-| `student-3.jpg` | "A win for your career" — wide banner in the dark section | **Wide landscape**, ~2000×740 | Nothing sits on top of this one. It's on a near-black background, so a brighter photo reads better. |
+**Nothing.** Every slot on the site has a real photograph in it. The old
+`student-1` / `student-2` / `student-3` slots are gone: the three-card row is now
+`step-1` / `step-2` / `step-3` (below), the wide panel under "How it works" was
+replaced by a looping video in [`public/media/`](../media/README.md), and the
+dark banner it named no longer exists.
 
-
-There is no `student-2.jpg` slot any more — the wide photo panel it filled under
-"How it works" was replaced by a looping video. Those assets live in
-[`public/media/`](../media/README.md).
+What follows is what is there, and what to match if you ever want to swap one
+out.
 
 ## Already in place
-
-Replacing an `after-*` card: **3:2 landscape**, and larger than what is there now
-if you have it — the cards render 1120px wide, and these three sources are
-734–1014px, so they are soft on a high-density screen. A scrim covers the top 78%
-at 62% ink, so a mid-tone photograph holds the white type better than a very
-bright or very dark one; the bottom 22% fades clear, which is the part that
-actually shows.
 
 | File | Where it shows | Notes |
 |---|---|---|
 | `students-hero.jpg` | Landing hero background **and** the "What your match looks like" panel **and** the statement clip's still | 2000×1333, 306KB. Faces right-of-centre — the headline sits on the left. Gets a saturation/contrast lift via `.lh-hero-photo` and film grain from `.lh-noise`. |
+| `step-1.webp` | "Makes the choice clear" — card 1, *Answer a few questions* | 1000×1161, 81KB. A man in a beige coat smiling at his phone. |
+| `step-2.jpg` | The same row, card 2, *See your matches* — **and** the 60px avatar in the hero's "Explore careers" pill | 688×1024, 51KB. A student smiling with a stack of books. Two files point at this one; renaming it means editing both. |
+| `step-3.webp` | The same row, card 3, *Follow your path* | 896×1200, 73KB. A woman smiling at the laptop she is holding. |
+| `after-plan.webp` | "After the match" — card 01, *Your plan* | 1014×676. A man writing beside a laptop, cropped to the cards' 3:2 from a 16:9 original. |
+| `after-proof.webp` | "After the match" — card 02, *Your proof* | 734×490. Two people high-fiving over a laptop, cropped from a portrait original — the band keeps both faces, the clasped hands and the laptop lid. |
+| `after-role.webp` | "After the match" — card 03, *Your first role* | 746×498. A handshake across a desk. |
+| `signup.png` | Login / signup left panel | Portrait, ~1200×1600. Currently a 1.8 MB PNG — worth re-exporting as JPG/WebP. |
+
+### The three step cards are one set
+
+`step-1`, `step-2` and `step-3` are not three photographs that happen to sit next
+to each other. They are waist-up on the same pale studio wall, and that is what
+makes the row read as one shoot instead of three stock photos. The wall runs
+about **rgb(240,242,240) at the top to rgb(228,231,229) at the bottom** of the
+card, and all three were brought onto it deliberately — step 1's flat white
+background was repainted with step 2's gradient, and step 3 was white-balanced
+onto the same values.
+
+So a replacement needs to match that wall, not just be a nice photo. Aim for:
+
+- **Portrait, ~800–1000px wide.** The card is 407×500 and cover-crops from the
+  centre, so a landscape photo loses its sides entirely.
+- **The face in the upper half.** A dark scrim covers the bottom 45% and carries
+  the step badge, the title and two lines of body copy.
+- **A pale, near-neutral background** with at most a soft shadow. Anything
+  environmental — a room, plants, a desk — breaks the set on sight.
+
+### Replacing an `after-*` card
+
+**3:2 landscape**, and larger than what is there now if you have it — the cards
+render 1120px wide, and those three sources are 734–1014px, so they are soft on a
+high-density screen. A scrim covers the top 78% at 62% ink, so a mid-tone
+photograph holds the white type better than a very bright or very dark one; the
+bottom 22% fades clear, which is the part that actually shows.
 
 ### The hero photograph, and why it is the size it is
 
@@ -67,10 +93,6 @@ The 306KB does not cost render speed: measured on a production build over
 someone's data plan. If that becomes worth optimising, the fix is to serve the
 hero through `<Image>` with responsive variants rather than a CSS background,
 so a 390px phone fetches ~1170px instead of 2000px.
-| `after-plan.webp` | "After the match" — card 01, *Your plan* | 1014×676. A man writing beside a laptop, cropped to the cards' 3:2 from a 16:9 original. |
-| `after-proof.webp` | "After the match" — card 02, *Your proof* | 734×490. Two people high-fiving over a laptop, cropped from a portrait original — the band keeps both faces, the clasped hands and the laptop lid. |
-| `after-role.webp` | "After the match" — card 03, *Your first role* | 746×498. A handshake across a desk. |
-| `signup.png` | Login / signup left panel | Portrait, ~1200×1600. Currently a 1.8 MB PNG — worth re-exporting as JPG/WebP. |
 
 ## Before you export
 

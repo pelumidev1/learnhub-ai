@@ -52,6 +52,13 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  * The numbers are the product's: two recommendations, not a shortlist, because
  * that is what the recommendation schema returns.
  *
+ * The three photographs are one set — `step-1`, `step-2`, `step-3` — and that
+ * is the whole point of them: waist-up on the same pale studio wall, so the row
+ * reads as three frames from one shoot rather than three stock photos. Anything
+ * that replaces one has to carry that wall (top around rgb(240,242,240),
+ * bottom around rgb(228,231,229)); see docs/LANDING-REFERENCE.md for how the
+ * existing three were brought onto it.
+ *
  * Ship photos no wider than 1200px, as WebP. The slot renders about 407px
  * across on a laptop, so anything larger is bytes a student on metered data
  * pays for and never sees.
@@ -68,15 +75,15 @@ const DECISION_STEPS = [
     step: "Step 2",
     title: "See your matches",
     body: "Two careers that fit you, with the reasons, what they pay where you live, and how long each takes.",
-    photo: "url(/brand/student-1.jpg)",
+    photo: "url(/brand/step-2.jpg)",
     alt: "A student smiling, holding a stack of books",
   },
   {
     step: "Step 3",
     title: "Follow your path",
     body: "A week-by-week plan you can follow on your phone, and an AI coach for when you get stuck.",
-    photo: "url(/brand/choice-3.webp)",
-    alt: "A woman at a laptop, celebrating with both fists raised",
+    photo: "url(/brand/step-3.webp)",
+    alt: "A woman smiling at the laptop she is holding",
   },
 ];
 
