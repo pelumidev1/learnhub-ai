@@ -9,11 +9,13 @@ import { Reveal } from "@/components/marketing/landing/reveal";
  *
  * Closing it the moment the pointer left meant both cards turned at once, which
  * read as the row lurching rather than as one card handing over to the next.
- * 400ms against the 900ms flip puts the leaving card roughly edge-on as the
- * arriving one starts, so they read as a sequence. Long enough to be a beat,
- * short enough that the old card is never still sitting there.
+ *
+ * 800ms against the 900ms flip makes them almost fully sequential: the arriving
+ * card has all but landed before the one you left starts back, so at most a
+ * sliver of the two movements share the screen. It was 400 first, which staggers
+ * them but still overlaps through the middle of both turns.
  */
-const CLOSE_DELAY = 400;
+const CLOSE_DELAY = 800;
 
 export type DecisionStep = {
   step: string;
