@@ -5,6 +5,7 @@ import Link from "next/link";
 import { buttonClasses } from "@/components/ui/button";
 import { LogoMark } from "@/components/ui/logo";
 import { Kicker } from "./kicker";
+import { ScrambleText } from "./scramble-text";
 import {
   BoardMock,
   CanvasMock,
@@ -247,9 +248,11 @@ export function CareerMapSection() {
       <div className="mx-auto max-w-[1280px] px-5">
         <Reveal className="mx-auto max-w-2xl text-center">
           <Kicker center>One ecosystem</Kicker>
-          <h2 className="mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.9rem]">
-            Every path into tech, connected to you
-          </h2>
+          <ScrambleText
+            as="h2"
+            text="Every path into tech, connected to you"
+            className="mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.9rem]"
+          />
           <p className="mt-4 text-[15px] leading-relaxed text-muted">
             Data, design, security, AI, and everything between. Tap a path to see what the work
             really is.

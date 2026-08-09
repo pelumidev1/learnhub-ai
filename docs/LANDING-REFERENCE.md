@@ -100,6 +100,30 @@ Two signature effects, both driven on scroll-into-view:
 2. **Block reveal.** Cards and blocks fade up ~32px with a stagger.
    **Ours:** the existing `<Reveal>` component.
 
+3. **Scramble-in** — not from the reference. Added 2026-08-10 after Pelumi
+   picked it off thefounderos.com: the heading arrives as random glyphs and
+   resolves left to right into the real words.
+   **Ours:** `components/marketing/landing/scramble-text.tsx`, on three
+   headings — the hero `h1`, "LearnHub makes the choice clear", and the career
+   map's "Every path into tech, connected to you". Those three no longer do the
+   masked rise; everything else still does.
+
+   Three things it gets right that the obvious implementation does not, all
+   commented in the component:
+
+   - **The word is the unit.** Per-character overlays collide — a wide glyph
+     centred over a narrow character's box laps over both neighbours and the
+     heading reads as a pile-up.
+   - **The real word stays in the flow**, invisible, holding the box. Replacing
+     the text instead would change every word's width 18 times a second, which
+     on a 5rem heading rewraps the line while you watch it. Measured: the hero
+     `h1` holds one box, 425x216, for the entire run.
+   - **The overlay is clipped to its word** with `overflow-x: clip` (never
+     `hidden`, which would make it a scroll container and move the baseline;
+     never on the y axis, which would crop descenders). Random glyphs do not add
+     up to the width of what they replace — up to 70px past it on the hero — and
+     that difference lands on the next word.
+
 Both apply their hidden state *from JS only*, so text is never invisible with JS
 off or under `prefers-reduced-motion`.
 

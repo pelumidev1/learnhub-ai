@@ -334,6 +334,50 @@
    slide up from below it, staggered. Driven by <SplitText> — the hidden state
    (.lh-split-hidden) is only ever applied from JS and only when motion is
    allowed, so text is never invisible without JS. */
+/* Scramble-in. See components/marketing/landing/scramble-text.tsx.
+
+   The real word stays in the flow and holds the box; the scrambling string is
+   painted over it. That is the whole reason the effect cannot rewrap the line as
+   it runs — replacing the text instead would change every word's width 18 times
+   a second. `.lh-scramble-armed` is added by JS and removed when the last
+   character lands, so with JS off or under reduced motion the heading is simply
+   the text, at full opacity, never blank. */
+.lh-scramble {
+  display: block;
+}
+.lh-scramble-word {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  /* Clip the overlay to the word it is standing in for. Random glyphs do not
+     add up to the width of the word they replace — measured at up to 70px past
+     it on the hero — and that difference lands on top of the next word. Clipped,
+     a scrambling word can never touch its neighbour, and the cut sits exactly on
+     the word's own edge, which is a boundary that means something.
+
+     `clip` rather than `hidden`, and on the x axis only: hidden would make this
+     a scroll container and take the baseline with it, and clipping y would crop
+     the descenders on g, y and p. */
+  overflow-x: clip;
+  overflow-y: visible;
+}
+.lh-scramble-armed .lh-scramble-real {
+  opacity: 0;
+}
+/* Anchored left, not centred: the resolved prefix is then already in its final
+   position, so characters land rather than settle, and the finished overlay is
+   pixel-identical to the word underneath it. */
+.lh-scramble-fake {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: pre;
+  /* The overlay is decoration over a box it does not size; letting it catch
+     pointer events or selection would make the heading unselectable mid-run. */
+  pointer-events: none;
+  user-select: none;
+}
+
 .lh-split {
   /* Masks are inline-block; this keeps multi-line headings on their own leading. */
   display: block;

@@ -11,6 +11,7 @@ import { HeroExploreCard } from "@/components/marketing/landing/hero-explore-car
 import { DecisionCards, type DecisionStep } from "@/components/marketing/landing/decision-card";
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
+import { ScrambleText } from "@/components/marketing/landing/scramble-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
 import { CONTACT_EMAIL } from "@/lib/site";
 import "./landing.css";
@@ -156,10 +157,14 @@ export default function LandingPage() {
                   was already 80px but set looser at 1.02 and -0.035em, which is
                   what kept it from reading as the same typographic voice. Case
                   and the sky accent stay ours. */}
+              {/* Scramble rather than the masked rise. Delays run each line in
+                  after the one above it has finished resolving: 11 characters
+                  at 40ms is ~440ms, so 0 / 380 / 760 reads as three lines
+                  landing in sequence rather than three racing each other. */}
               <h1 className="mt-5 max-w-[15ch] font-display text-[2.75rem] font-bold leading-[0.92] tracking-[-0.04em] text-white sm:mt-6 sm:text-[5rem] sm:leading-[0.9] sm:tracking-[-0.05em]">
-                <SplitText text="Discover the" delay={80} stagger={16} />
-                <SplitText text="tech career" delay={210} stagger={16} className="text-sky-2" />
-                <SplitText text="built for you" delay={340} stagger={16} />
+                <ScrambleText text="Discover the" />
+                <ScrambleText text="tech career" delay={380} className="text-sky-2" />
+                <ScrambleText text="built for you" delay={760} />
               </h1>
             </div>
           </div>
@@ -233,12 +238,12 @@ export default function LandingPage() {
           <Reveal className="text-center">
             <Kicker center>What you get</Kicker>
             {/* Two lines, broken between the subject and its object rather
-                than wherever the measure happens to run out. Each SplitText is
-                display:block (see .lh-split), so the units stack and the second
-                line rises in behind the first. */}
+                than wherever the measure happens to run out. Each ScrambleText
+                is display:block (see .lh-scramble), so the units stack and the
+                second line resolves after the first has finished. */}
             <h2 className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.5rem]">
-              <SplitText text="LearnHub makes" />
-              <SplitText text="the choice clear" delay={120} />
+              <ScrambleText text="LearnHub makes" />
+              <ScrambleText text="the choice clear" delay={520} />
             </h2>
             <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-muted">
               Three steps, and you can start the first one now.
