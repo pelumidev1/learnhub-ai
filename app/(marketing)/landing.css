@@ -142,10 +142,12 @@
   position: relative;
   height: 100%;
   transform-style: preserve-3d;
-  /* 300ms rather than the design system's 150-250. A 180deg rotation covers far
-     more visual distance than a fade over the same time, and under 250 the card
-     snaps rather than turns — you see the back arrive without seeing it come. */
-  transition: transform 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* 520ms, well past the design system's 150-250, and the exception is the
+     point: those numbers are for a state change you should barely notice, and
+     this is a card physically turning over. At 300 it read as a snap — the back
+     arrived without anyone seeing it come — which is what Pelumi called too
+     fast. Slower again and hovering across the row would feel like waiting. */
+  transition: transform 520ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 /* Hover only where hovering is real. On a touch screen (hover: none) this rule
