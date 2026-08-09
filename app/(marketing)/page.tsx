@@ -6,7 +6,6 @@ import { CareerMapSection } from "@/components/marketing/landing/career-map";
 import { Faq } from "@/components/marketing/landing/faq";
 import { Reveal } from "@/components/marketing/landing/reveal";
 import { HowItWorksSection } from "@/components/marketing/landing/how-it-works-section";
-import { CareerMatchSection } from "@/components/marketing/landing/career-match";
 import { LifeAfterMatch } from "@/components/marketing/landing/life-after-match";
 import { HeroExploreCard } from "@/components/marketing/landing/hero-explore-card";
 import { Kicker } from "@/components/marketing/landing/kicker";
@@ -202,7 +201,11 @@ export default function LandingPage() {
           On white, which is what it was before that. Note the consequence,
           recorded in docs/LANDING-REFERENCE.md: the statement, this band and
           "How it works" are three whites in a row again. */}
-      <section className="bg-white py-24 sm:py-32">
+      {/* id="what" moved here from the career-match stage when that came off the
+          page. The nav's "What you get" pointed at it, and this section is where
+          that eyebrow already lived, so the link now lands on the eyebrow that
+          names it rather than on a section further down. */}
+      <section id="what" className="bg-white py-24 sm:py-32">
         {/* The reference runs this band to 1240 of 1440 — the same 100px gutter
             its header and hero use, which is now ours too. Wider than the
             page's usual max-w-6xl on purpose: the width is most of what makes
@@ -257,11 +260,13 @@ export default function LandingPage() {
       {/* =============================================================== STEPS */}
       <HowItWorksSection />
 
-      {/* ========================================================= WHAT YOU GET
-          Scroll-driven: a pinned 16:9 stage advancing through the four beats,
-          ending on the CTA. Phones and coarse pointers get the same four beats
-          as stacked cards instead — see CareerMatchSection. */}
-      <CareerMatchSection />
+      {/* The scroll-driven "AI career match" stage used to sit here: a pinned
+          16:9 window advancing through four beats, with a stacked-card variant
+          for phones. Pelumi took it off the page and wants it kept, so
+          career-match*.tsx are all still in the tree and still typecheck. To
+          put it back, import CareerMatchSection and render it on this line —
+          and move id="what" off the decisions section first, or the page will
+          have the anchor twice. */}
 
       {/* ===================================================== AFTER THE MATCH
           Three full-bleed image cards: plan, proof, first role. Answers what

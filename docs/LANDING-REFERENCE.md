@@ -24,9 +24,9 @@ one-for-one:
 |---|---|---|
 | 1 | `section_hero` | Hero — full-bleed photo, split-letter headline |
 | 2 | `section_outline` | Statement — giant centred line, media through the letterforms |
-| 3 | `section_decisions` | "Makes the choice clear" — three portrait 407x500 cards, each carrying a step badge, title and body inside it |
+| 3 | `section_decisions` | "Makes the choice clear" — three portrait 407x500 cards, each carrying a step badge, title and body inside it. Carries `id="what"` (the nav's "What you get") since the stage at 5 came off |
 | 4 | `section_finance` | How it works — heading, product clip full width below |
-| 5 | `section_business` | What you get — scroll-driven pinned stage, four beats (was a 4-card row) |
+| 5 | `section_business` | *(empty)* — the scroll-driven pinned stage was taken off the page. `career-match*.tsx` are kept for later; see the note in `page.tsx` where it used to render |
 | 6 | `section_funding` | Life after the match — dark band, three outcome cards |
 | 7 | `section_clickhouse` | Ecosystem — cursor-parallax nodes |
 | 8 | `section_fair-pricing` | Pricing — "Free while in beta", 2 cards |
