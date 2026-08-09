@@ -1,7 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/marketing/landing/reveal";
+
+/**
+ * How long a card that was clicked open waits before turning back, once the
+ * pointer has moved to a different card.
+ *
+ * Closing it the moment the pointer left meant both cards turned at once, which
+ * read as the row lurching rather than as one card handing over to the next.
+ * 400ms against the 900ms flip puts the leaving card roughly edge-on as the
+ * arriving one starts, so they read as a sequence. Long enough to be a beat,
+ * short enough that the old card is never still sitting there.
+ */
+const CLOSE_DELAY = 400;
 
 export type DecisionStep = {
   step: string;
@@ -21,15 +33,49 @@ export type DecisionStep = {
  * **One card is open at a time, and that is why the row owns the state rather
  * than the cards.** A click leaves a card turned over until it is clicked again,
  * so with per-card state you could click one and then hover the next and be
- * looking at two backs at once, one of them stuck. Opening any card closes the
- * one before it, and moving the pointer onto a different card closes it too —
- * otherwise the clicked card sits open behind you while the hovered one turns.
+ * looking at two backs at once, one of them stuck.
+ *
+ * The card you leave does not close on the way out, though — it closes
+ * CLOSE_DELAY later, so the arriving card leads and the leaving one follows
+ * instead of both turning together. Coming back to the open card before that
+ * lands cancels it, and clicking anything cancels it too, since a click is an
+ * explicit answer to the same question the timer is about to answer.
  *
  * `openIndex` is null when nothing is held open, which is the resting state on a
  * mouse: hover alone never writes to it.
  */
 export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const closeTimer = useRef<number | null>(null);
+
+  const cancelClose = () => {
+    if (closeTimer.current !== null) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  // A pending close must not outlive the row, or it fires into an unmounted tree.
+  useEffect(() => cancelClose, []);
+
+  const toggle = (i: number) => {
+    cancelClose();
+    setOpenIndex((prev) => (prev === i ? null : i));
+  };
+
+  /**
+   * The pointer (or focus) has arrived on card `i`. Hover itself is CSS — this
+   * exists only to deal with a *different* card someone clicked open.
+   */
+  const enter = (i: number) => {
+    if (openIndex === null) return; // nothing held open: a plain mouse sweep, no work
+    if (openIndex === i) return cancelClose(); // came back to it before it closed
+    if (closeTimer.current !== null) return; // already on its way out, don't restart the beat
+    closeTimer.current = window.setTimeout(() => {
+      closeTimer.current = null;
+      setOpenIndex(null);
+    }, CLOSE_DELAY);
+  };
 
   return (
     <div className="mt-16 grid gap-[10px] md:grid-cols-3">
@@ -38,11 +84,8 @@ export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
           <DecisionCard
             {...s}
             open={openIndex === i}
-            onToggle={() => setOpenIndex((prev) => (prev === i ? null : i))}
-            // Hover is CSS, so this fires only to clear a *different* card that
-            // was clicked open. Guarding on prev !== null keeps a plain mouse
-            // sweep across the row from re-rendering anything.
-            onEnter={() => setOpenIndex((prev) => (prev === null || prev === i ? prev : null))}
+            onToggle={() => toggle(i)}
+            onEnter={() => enter(i)}
           />
         </Reveal>
       ))}
