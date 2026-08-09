@@ -8,7 +8,7 @@ import { Reveal } from "@/components/marketing/landing/reveal";
 import { HowItWorksSection } from "@/components/marketing/landing/how-it-works-section";
 import { LifeAfterMatch } from "@/components/marketing/landing/life-after-match";
 import { HeroExploreCard } from "@/components/marketing/landing/hero-explore-card";
-import { DecisionCard, type DecisionStep } from "@/components/marketing/landing/decision-card";
+import { DecisionCards, type DecisionStep } from "@/components/marketing/landing/decision-card";
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
@@ -245,13 +245,7 @@ export default function LandingPage() {
             </p>
           </Reveal>
 
-          <div className="mt-16 grid gap-[10px] md:grid-cols-3">
-            {DECISION_STEPS.map((s, i) => (
-              <Reveal key={s.step} delay={i * 90}>
-                <DecisionCard {...s} />
-              </Reveal>
-            ))}
-          </div>
+          <DecisionCards steps={DECISION_STEPS} />
         </div>
       </section>
 

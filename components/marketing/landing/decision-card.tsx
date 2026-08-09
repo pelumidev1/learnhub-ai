@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Reveal } from "@/components/marketing/landing/reveal";
 
 export type DecisionStep = {
   step: string;
@@ -14,8 +15,43 @@ export type DecisionStep = {
 };
 
 /**
- * One of the three "makes the choice clear" cards, which turns over to show a
+ * The three "makes the choice clear" cards, each of which turns over to show a
  * fuller description of its step.
+ *
+ * **One card is open at a time, and that is why the row owns the state rather
+ * than the cards.** A click leaves a card turned over until it is clicked again,
+ * so with per-card state you could click one and then hover the next and be
+ * looking at two backs at once, one of them stuck. Opening any card closes the
+ * one before it, and moving the pointer onto a different card closes it too —
+ * otherwise the clicked card sits open behind you while the hovered one turns.
+ *
+ * `openIndex` is null when nothing is held open, which is the resting state on a
+ * mouse: hover alone never writes to it.
+ */
+export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  return (
+    <div className="mt-16 grid gap-[10px] md:grid-cols-3">
+      {steps.map((s, i) => (
+        <Reveal key={s.step} delay={i * 90}>
+          <DecisionCard
+            {...s}
+            open={openIndex === i}
+            onToggle={() => setOpenIndex((prev) => (prev === i ? null : i))}
+            // Hover is CSS, so this fires only to clear a *different* card that
+            // was clicked open. Guarding on prev !== null keeps a plain mouse
+            // sweep across the row from re-rendering anything.
+            onEnter={() => setOpenIndex((prev) => (prev === null || prev === i ? prev : null))}
+          />
+        </Reveal>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * One card.
  *
  * Two triggers, because a landing page for phones cannot put content behind
  * hover alone:
@@ -23,10 +59,10 @@ export type DecisionStep = {
  * - **Hover** is pure CSS (`.lh-flip:hover`), so a mouse crossing three cards
  *   costs no React renders. On a mid-tier Android that matters more than the
  *   tidiness of driving it from state.
- * - **Tap and Enter/Space** flip through `flipped`, which is what a touch
- *   device and a keyboard get instead. The whole card is the control rather
- *   than a "more" button in a corner: on a phone the card *is* the target, and
- *   a 350px tap area beats a 24px one.
+ * - **Tap and Enter/Space** flip through `open`, which is what a touch device
+ *   and a keyboard get instead. The whole card is the control rather than a
+ *   "more" button in a corner: on a phone the card *is* the target, and a 350px
+ *   tap area beats a 24px one.
  *
  * Both faces stay in the accessibility tree the whole time — nothing here is
  * ever `aria-hidden`. The flip is a visual affordance for people who can see it
@@ -35,24 +71,36 @@ export type DecisionStep = {
  * explicit toggle only, since hover is a pointer gesture with no state behind
  * it.
  */
-export function DecisionCard({ step, title, body, detail, photo, alt }: DecisionStep) {
-  const [flipped, setFlipped] = useState(false);
-
+function DecisionCard({
+  step,
+  title,
+  body,
+  detail,
+  photo,
+  alt,
+  open,
+  onToggle,
+  onEnter,
+}: DecisionStep & { open: boolean; onToggle: () => void; onEnter: () => void }) {
   return (
     <div
       className="lh-flip aspect-[407/500] w-full cursor-pointer select-none rounded-[30px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
-      data-flipped={flipped}
+      data-flipped={open}
       role="button"
       tabIndex={0}
-      aria-expanded={flipped}
+      aria-expanded={open}
       aria-label={`${step}, ${title}. Show the detail.`}
-      onClick={() => setFlipped((f) => !f)}
+      onClick={onToggle}
+      onPointerEnter={onEnter}
+      // A keyboard user moving along the row should close what they opened, the
+      // same as a pointer moving off it.
+      onFocus={onEnter}
       onKeyDown={(e) => {
         // Space scrolls the page by default, and Enter is the other half of
         // what a real <button> would have given us for free.
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          setFlipped((f) => !f);
+          onToggle();
         }
       }}
     >
