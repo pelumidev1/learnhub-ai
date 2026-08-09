@@ -125,9 +125,13 @@
   );
 }
 
-/* The decision cards turn over to show the detail of their step. See
-   components/marketing/landing/decision-card.tsx for why hover lives here in
-   CSS and tap/keyboard live in React state.
+/* The decision cards turn over to show the detail of their step.
+
+   Only `data-flipped` turns a card, never `:hover`. There was a `:hover` rule
+   here, and it was the reason a hovered card snapped back the instant the
+   pointer left while a clicked one held for seconds: the two routes were two
+   mechanisms with two behaviours. decision-card.tsx owns all of it now, so the
+   hold is one rule for pointer, tap and keyboard alike.
 
    The perspective is on the outer element and preserve-3d on the inner one,
    which is the only arrangement where the two faces share a single 3D space.
@@ -160,15 +164,6 @@
   transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Hover only where hovering is real. On a touch screen (hover: none) this rule
-   would fire on tap and then stick until the next tap elsewhere, which is the
-   classic sticky-hover bug; there, the React toggle does the work. */
-@media (hover: hover) and (pointer: fine) {
-  .lh-flip:hover .lh-flip-inner {
-    transform: rotateY(180deg);
-  }
-}
-
 .lh-flip[data-flipped="true"] .lh-flip-inner {
   transform: rotateY(180deg);
 }
@@ -186,11 +181,10 @@
 
 /* Reduced motion gets the same content with no rotation: the back cross-fades
    over the front. Backface culling has to come off with the rotation, or the
-   un-rotated back stays invisible. The hover and toggle rules are restated
-   rather than reset, because .lh-flip:hover .lh-flip-inner outranks a bare
-   .lh-flip-inner and would otherwise keep spinning the card. */
+   un-rotated back stays invisible. The flipped rule is restated rather than
+   reset, since it outranks a bare .lh-flip-inner and would otherwise keep
+   spinning the card. */
 @media (prefers-reduced-motion: reduce) {
-  .lh-flip:hover .lh-flip-inner,
   .lh-flip[data-flipped="true"] .lh-flip-inner {
     transform: none;
   }
@@ -211,12 +205,6 @@
   }
 
   .lh-flip[data-flipped="true"] .lh-flip-back {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
-  .lh-flip:hover .lh-flip-back {
     opacity: 1;
   }
 }

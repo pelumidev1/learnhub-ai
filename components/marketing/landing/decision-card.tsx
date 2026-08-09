@@ -4,21 +4,20 @@ import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/marketing/landing/reveal";
 
 /**
- * How long a card that was clicked open waits before turning back, once the
- * pointer has moved to a different card.
+ * How long a card waits before turning back once you leave it.
  *
- * Closing it the moment the pointer left meant both cards turned at once, which
- * read as the row lurching rather than as one card handing over to the next.
+ * Closing it the moment you left meant both cards turned at once, which read as
+ * the row lurching rather than as one card handing over to the next. 800ms
+ * against the 900ms flip means the arriving card has all but landed before the
+ * one you left starts back, so the two never really move together.
  *
- * 5s against the 900ms flip is a long hold, asked for through 400, 800 and 2000:
- * the arriving card lands and the one you left sits open for four more seconds
- * before turning back, so the two movements never read as one.
- *
- * **This applies to a card that was clicked open, not to hover.** Hover is CSS
- * (`.lh-flip:hover`), and a hovered card turns back the instant the pointer
- * leaves it, with no hold at all — no value here changes that.
+ * It applies to every way of opening a card — pointer, tap, keyboard — which it
+ * did not always. Hover used to be CSS, so a hovered card snapped back the
+ * instant the pointer left it and this constant never reached that path. The
+ * numbers it went through before that (400 up to 5000) were all tuned against
+ * clicks only; a hold that a mouse actually feels wants a much smaller one.
  */
-const CLOSE_DELAY = 5000;
+const CLOSE_DELAY = 800;
 
 export type DecisionStep = {
   step: string;
@@ -35,51 +34,77 @@ export type DecisionStep = {
  * The three "makes the choice clear" cards, each of which turns over to show a
  * fuller description of its step.
  *
- * **One card is open at a time, and that is why the row owns the state rather
- * than the cards.** A click leaves a card turned over until it is clicked again,
- * so with per-card state you could click one and then hover the next and be
- * looking at two backs at once, one of them stuck.
+ * **The row owns which cards are showing, and the hold is why that is a set
+ * rather than a single index.** During a hold two cards are legitimately turned
+ * over at once: the one you have arrived at, and the one you left, which is
+ * still holding out its four seconds. They are never both *moving* — that was
+ * the thing to avoid — but they are both open.
  *
- * The card you leave does not close on the way out, though — it closes
- * CLOSE_DELAY later, so the arriving card leads and the leaving one follows
- * instead of both turning together. Coming back to the open card before that
- * lands cancels it, and clicking anything cancels it too, since a click is an
- * explicit answer to the same question the timer is about to answer.
- *
- * `openIndex` is null when nothing is held open, which is the resting state on a
- * mouse: hover alone never writes to it.
+ * Hover used to be CSS and every other route was state, which meant the hold
+ * governed clicks and taps but not the pointer: a hovered card snapped back the
+ * moment you left it. Everything is state now, so there is one rule and one
+ * delay. It costs a render per card entered, which on three cards is nothing —
+ * and nothing at all on the phones the CSS version was protecting, since those
+ * have no hover to begin with.
  */
 export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const closeTimer = useRef<number | null>(null);
+  const [open, setOpen] = useState<ReadonlySet<number>>(() => new Set());
+  /** Pending close per card, so each holds its own four seconds independently. */
+  const timers = useRef(new Map<number, number>());
 
-  const cancelClose = () => {
-    if (closeTimer.current !== null) {
-      window.clearTimeout(closeTimer.current);
-      closeTimer.current = null;
+  const cancel = (i: number) => {
+    const t = timers.current.get(i);
+    if (t !== undefined) {
+      window.clearTimeout(t);
+      timers.current.delete(i);
     }
   };
 
-  // A pending close must not outlive the row, or it fires into an unmounted tree.
-  useEffect(() => cancelClose, []);
+  // Pending closes must not outlive the row, or they fire into an unmounted tree.
+  useEffect(() => {
+    const pending = timers.current;
+    return () => {
+      pending.forEach((t) => window.clearTimeout(t));
+      pending.clear();
+    };
+  }, []);
 
-  const toggle = (i: number) => {
-    cancelClose();
-    setOpenIndex((prev) => (prev === i ? null : i));
+  const show = (i: number) => {
+    cancel(i);
+    setOpen((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
+  };
+
+  const hide = (i: number) => {
+    cancel(i);
+    setOpen((prev) => {
+      if (!prev.has(i)) return prev;
+      const next = new Set(prev);
+      next.delete(i);
+      return next;
+    });
+  };
+
+  /** Start card `i`'s hold. Already holding means the beat keeps its start. */
+  const hideLater = (i: number) => {
+    if (timers.current.has(i)) return;
+    timers.current.set(
+      i,
+      window.setTimeout(() => {
+        timers.current.delete(i);
+        hide(i);
+      }, CLOSE_DELAY),
+    );
   };
 
   /**
-   * The pointer (or focus) has arrived on card `i`. Hover itself is CSS — this
-   * exists only to deal with a *different* card someone clicked open.
+   * A tap or an Enter/Space. Touch has no pointer to leave the card with, so the
+   * gesture has to say both things: open this one, and start everything else on
+   * its way out.
    */
-  const enter = (i: number) => {
-    if (openIndex === null) return; // nothing held open: a plain mouse sweep, no work
-    if (openIndex === i) return cancelClose(); // came back to it before it closed
-    if (closeTimer.current !== null) return; // already on its way out, don't restart the beat
-    closeTimer.current = window.setTimeout(() => {
-      closeTimer.current = null;
-      setOpenIndex(null);
-    }, CLOSE_DELAY);
+  const activate = (i: number) => {
+    if (open.has(i)) return hide(i); // tap it again to put it back now
+    show(i);
+    open.forEach((j) => j !== i && hideLater(j));
   };
 
   return (
@@ -88,9 +113,10 @@ export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
         <Reveal key={s.step} delay={i * 90}>
           <DecisionCard
             {...s}
-            open={openIndex === i}
-            onToggle={() => toggle(i)}
-            onEnter={() => enter(i)}
+            open={open.has(i)}
+            onShow={() => show(i)}
+            onHideLater={() => hideLater(i)}
+            onActivate={() => activate(i)}
           />
         </Reveal>
       ))}
@@ -101,23 +127,25 @@ export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
 /**
  * One card.
  *
- * Two triggers, because a landing page for phones cannot put content behind
- * hover alone:
+ * Each input gets the handler that suits it, and all three land on the same
+ * hold. The whole card is the control rather than a "more" button in a corner:
+ * on a phone the card *is* the target, and a 350px tap area beats a 24px one.
  *
- * - **Hover** is pure CSS (`.lh-flip:hover`), so a mouse crossing three cards
- *   costs no React renders. On a mid-tier Android that matters more than the
- *   tidiness of driving it from state.
- * - **Tap and Enter/Space** flip through `open`, which is what a touch device
- *   and a keyboard get instead. The whole card is the control rather than a
- *   "more" button in a corner: on a phone the card *is* the target, and a 350px
- *   tap area beats a 24px one.
+ * - **Pointer** opens on enter and starts the hold on leave, guarded on
+ *   `pointerType === "mouse"`. A touch also fires enter and leave — around the
+ *   tap, since the finger's pointer is created and destroyed by the gesture —
+ *   so without the guard a tap would open the card and immediately start it
+ *   closing again.
+ * - **Touch** is the pointerup instead, which is a tap in the only form a touch
+ *   screen has. Mouse pointerup is ignored: hover has already opened the card,
+ *   and treating the click as a toggle would shut it under the cursor.
+ * - **Keyboard** mirrors the pointer with focus and blur, plus Enter and Space.
  *
  * Both faces stay in the accessibility tree the whole time — nothing here is
  * ever `aria-hidden`. The flip is a visual affordance for people who can see it
  * turn; a screen reader just reads the short body and then the long one, which
- * is the same information in the same order. `aria-expanded` tracks the
- * explicit toggle only, since hover is a pointer gesture with no state behind
- * it.
+ * is the same information in the same order. `aria-expanded` is honest now that
+ * every route writes state, hover included.
  */
 function DecisionCard({
   step,
@@ -127,9 +155,15 @@ function DecisionCard({
   photo,
   alt,
   open,
-  onToggle,
-  onEnter,
-}: DecisionStep & { open: boolean; onToggle: () => void; onEnter: () => void }) {
+  onShow,
+  onHideLater,
+  onActivate,
+}: DecisionStep & {
+  open: boolean;
+  onShow: () => void;
+  onHideLater: () => void;
+  onActivate: () => void;
+}) {
   return (
     <div
       className="lh-flip aspect-[407/500] w-full cursor-pointer select-none rounded-[30px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
@@ -138,17 +172,17 @@ function DecisionCard({
       tabIndex={0}
       aria-expanded={open}
       aria-label={`${step}, ${title}. Show the detail.`}
-      onClick={onToggle}
-      onPointerEnter={onEnter}
-      // A keyboard user moving along the row should close what they opened, the
-      // same as a pointer moving off it.
-      onFocus={onEnter}
+      onPointerEnter={(e) => e.pointerType === "mouse" && onShow()}
+      onPointerLeave={(e) => e.pointerType === "mouse" && onHideLater()}
+      onPointerUp={(e) => e.pointerType !== "mouse" && onActivate()}
+      onFocus={onShow}
+      onBlur={onHideLater}
       onKeyDown={(e) => {
         // Space scrolls the page by default, and Enter is the other half of
         // what a real <button> would have given us for free.
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          onToggle();
+          onActivate();
         }
       }}
     >
