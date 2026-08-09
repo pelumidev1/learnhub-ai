@@ -125,6 +125,90 @@
   );
 }
 
+/* The decision cards turn over to show the detail of their step. See
+   components/marketing/landing/decision-card.tsx for why hover lives here in
+   CSS and tap/keyboard live in React state.
+
+   The perspective is on the outer element and preserve-3d on the inner one,
+   which is the only arrangement where the two faces share a single 3D space.
+   overflow-hidden belongs on the faces, never on .lh-flip-inner: an overflow
+   value other than visible flattens a preserve-3d context, and the back would
+   sit on top of the front instead of behind it. */
+.lh-flip {
+  perspective: 1400px;
+}
+
+.lh-flip-inner {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  /* 300ms rather than the design system's 150-250. A 180deg rotation covers far
+     more visual distance than a fade over the same time, and under 250 the card
+     snaps rather than turns — you see the back arrive without seeing it come. */
+  transition: transform 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Hover only where hovering is real. On a touch screen (hover: none) this rule
+   would fire on tap and then stick until the next tap elsewhere, which is the
+   classic sticky-hover bug; there, the React toggle does the work. */
+@media (hover: hover) and (pointer: fine) {
+  .lh-flip:hover .lh-flip-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+.lh-flip[data-flipped="true"] .lh-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.lh-flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* Safari still needs the prefix here. */
+}
+
+.lh-flip-back {
+  transform: rotateY(180deg);
+}
+
+/* Reduced motion gets the same content with no rotation: the back cross-fades
+   over the front. Backface culling has to come off with the rotation, or the
+   un-rotated back stays invisible. The hover and toggle rules are restated
+   rather than reset, because .lh-flip:hover .lh-flip-inner outranks a bare
+   .lh-flip-inner and would otherwise keep spinning the card. */
+@media (prefers-reduced-motion: reduce) {
+  .lh-flip:hover .lh-flip-inner,
+  .lh-flip[data-flipped="true"] .lh-flip-inner {
+    transform: none;
+  }
+
+  .lh-flip-inner {
+    transition: none;
+  }
+
+  .lh-flip-face {
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+  }
+
+  .lh-flip-back {
+    transform: none;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+
+  .lh-flip[data-flipped="true"] .lh-flip-back {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
+  .lh-flip:hover .lh-flip-back {
+    opacity: 1;
+  }
+}
+
 /* Hero photo grade: lift saturation and contrast so the image reads vivid
    through the dark scrims (Zerion-style color-graded photography). */
 /* The grade was lifting the whole frame with brightness(1.16), which raises

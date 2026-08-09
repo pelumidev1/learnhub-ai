@@ -8,6 +8,7 @@ import { Reveal } from "@/components/marketing/landing/reveal";
 import { HowItWorksSection } from "@/components/marketing/landing/how-it-works-section";
 import { LifeAfterMatch } from "@/components/marketing/landing/life-after-match";
 import { HeroExploreCard } from "@/components/marketing/landing/hero-explore-card";
+import { DecisionCard, type DecisionStep } from "@/components/marketing/landing/decision-card";
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
@@ -49,8 +50,14 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  * falls back to a neutral surface if a file is ever missing rather than
  * breaking.
  *
- * The numbers are the product's: two recommendations, not a shortlist, because
- * that is what the recommendation schema returns.
+ * Each card turns over to its `detail` — see DecisionCard. `body` is the line
+ * that has to work at a glance while scrolling; `detail` is for someone who
+ * stopped, so it can afford to be specific.
+ *
+ * The numbers in both are the product's, not marketing's: five assessment
+ * screens (lib/assessment/questions.ts), exactly two recommendations rather
+ * than a shortlist (RecommendationSchema), and five to ten roadmap steps
+ * (RoadmapSchema). If any of those change, this copy is wrong.
  *
  * Steps 1 and 2 are waist-up on the same pale studio wall — step 1's flat white
  * background was repainted with step 2's gradient specifically so the two read
@@ -62,11 +69,13 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  * across on a laptop, so anything larger is bytes a student on metered data
  * pays for and never sees.
  */
-const DECISION_STEPS = [
+const DECISION_STEPS: DecisionStep[] = [
   {
     step: "Step 1",
     title: "Answer a few questions",
     body: "Two minutes on your phone. No CV, and nothing to revise for.",
+    detail:
+      "Five short screens: your background, what you enjoy, your goals, what you can already do, and your real limits on time, budget, device and data. Every answer saves as you go, so a dropped connection costs you nothing.",
     photo: "url(/brand/step-1.webp)",
     alt: "A man in a beige coat smiling at his phone",
   },
@@ -74,6 +83,8 @@ const DECISION_STEPS = [
     step: "Step 2",
     title: "See your matches",
     body: "Two careers that fit you, with the reasons, what they pay where you live, and how long each takes.",
+    detail:
+      "Two careers, not a long list. For each one you get why it fits you, the strengths it uses, the gaps to close, what it pays where you live, whether remote work is realistic, and how long it takes to be job ready.",
     photo: "url(/brand/step-2.jpg)",
     alt: "A student smiling, holding a stack of books",
   },
@@ -81,6 +92,8 @@ const DECISION_STEPS = [
     step: "Step 3",
     title: "Follow your path",
     body: "A week-by-week plan you can follow on your phone, and an AI coach for when you get stuck.",
+    detail:
+      "Five to ten ordered steps, foundations first. Each one names the skill, the weeks to give it, and free resources that work on a phone. Tick them off as you go, and ask the AI coach whenever you get stuck.",
     photo: "url(/brand/choice-3.webp)",
     alt: "A woman at a laptop, celebrating with both fists raised",
   },
@@ -235,28 +248,7 @@ export default function LandingPage() {
           <div className="mt-16 grid gap-[10px] md:grid-cols-3">
             {DECISION_STEPS.map((s, i) => (
               <Reveal key={s.step} delay={i * 90}>
-                <article className="relative aspect-[407/500] w-full overflow-hidden rounded-[30px]">
-                  {/* The photo is its own element rather than the article's
-                      background: role="img" makes everything inside it
-                      presentational, so copy nested in the photo would be
-                      invisible to a screen reader. */}
-                  <div
-                    className="lh-slot absolute inset-0"
-                    style={{ "--photo": s.photo } as React.CSSProperties}
-                    role="img"
-                    aria-label={s.alt}
-                  />
-                  <div className="lh-decision-scrim absolute inset-0" aria-hidden />
-                  <div className="absolute inset-x-5 bottom-5">
-                    <span className="inline-flex items-center rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-ink">
-                      {s.step}
-                    </span>
-                    <h3 className="mt-3 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.02em] text-white">
-                      {s.title}
-                    </h3>
-                    <p className="mt-2 text-[15px]/[1.5] text-white/80">{s.body}</p>
-                  </div>
-                </article>
+                <DecisionCard {...s} />
               </Reveal>
             ))}
           </div>
