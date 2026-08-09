@@ -7,9 +7,10 @@ import { Reveal } from "@/components/marketing/landing/reveal";
  * How long a card waits before turning back once you leave it.
  *
  * Closing it the moment you left meant both cards turned at once, which read as
- * the row lurching rather than as one card handing over to the next. 800ms
- * against the 900ms flip means the arriving card has all but landed before the
- * one you left starts back, so the two never really move together.
+ * the row lurching rather than as one card handing over to the next. 400ms
+ * against the 900ms flip is a stagger rather than a full hand-off: the card you
+ * left starts back while the arriving one is still turning, so the two overlap
+ * through the middle, but they never start together.
  *
  * It applies to every way of opening a card — pointer, tap, keyboard — which it
  * did not always. Hover used to be CSS, so a hovered card snapped back the
@@ -17,7 +18,7 @@ import { Reveal } from "@/components/marketing/landing/reveal";
  * numbers it went through before that (400 up to 5000) were all tuned against
  * clicks only; a hold that a mouse actually feels wants a much smaller one.
  */
-const CLOSE_DELAY = 800;
+const CLOSE_DELAY = 400;
 
 export type DecisionStep = {
   step: string;
