@@ -15,10 +15,9 @@ import { HowItWorksVideo } from "@/components/marketing/landing/how-it-works-vid
  */
 export function HowItWorksSection() {
   return (
-    /* py, not pb only. This had no top padding at all, because the section
-       above it was white and supplied the space. That section is ink now, so
-       the kicker was sitting flush against the dark-to-white seam with zero
-       white above it. Same rhythm as the ink bands either side. */
+    /* py, not pb only. This once had no top padding at all and borrowed the
+       space from whatever sat above it, which broke the moment that section
+       changed ground. It carries its own now, on the page's default rhythm. */
     <section id="how" className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
         <Reveal>
@@ -35,20 +34,24 @@ export function HowItWorksSection() {
         </Reveal>
 
         {/* Framed, so the clip reads as a screen being shown rather than as page
-            furniture that happens to move. The matte is what does that work: the
-            clip's own edges are white, so on a white section they simply vanish
-            and the app's top bar looks like the section's own rule. 12px of
-            paper between the clip and the outer hairline separates the two.
+            furniture that happens to move. The matte does that work: the clip's
+            own edges are white, so with nothing behind them they vanish into a
+            white section and the app's top bar reads as the section's own rule.
 
-            The matte is `paper`, the one light surface tone on this page. It
-            was paper-2 for a while: the app's sidebar is itself a pale grey, and
-            against paper the clip's left edge vanished into the matte so only
-            the right half of the frame read. The hairline around the clip is
-            what actually fixed that, and it holds the edge on its own — so the
-            matte can rejoin the rest of the page. If the left edge ever goes
-            soft again, strengthen the hairline rather than darkening the matte.
+            The matte is `ink`. It was `paper` — a light matte on a light section
+            — which meant the frame had to be held together by two hairlines,
+            and the clip's pale left sidebar still went soft against it. Ink
+            separates a white-edged clip on contrast alone, so both hairlines
+            came off with it: a border between an ink matte and a white clip is
+            either invisible against the clip or a second line beside the matte's
+            own edge. One dark block, one light screen inside it.
 
-            Radii are concentric — 28px outside minus the 12px matte is the 16px
+            It also gives this stretch of page something to look at. The
+            statement, the step cards and this section are three white grounds in
+            a row (see docs/LANDING-REFERENCE.md), and the frame is now the one
+            dark mass in 3000px of white.
+
+            Radii stay concentric — 28px outside minus the 12px matte is the 16px
             (rounded-xl) inside — so the corners stay parallel instead of drifting
             apart, which is what makes a nested frame look wrong.
 
@@ -56,8 +59,8 @@ export function HowItWorksSection() {
             component owns the reserved aspect ratio, this owns how it is
             presented. */}
         <Reveal className="mt-10 md:mt-14">
-          <div className="rounded-[28px] border border-silver-2 bg-paper p-3 shadow-soft">
-            <div className="overflow-hidden rounded-xl border border-silver-2">
+          <div className="rounded-[28px] bg-ink p-3 shadow-soft">
+            <div className="overflow-hidden rounded-xl">
               <HowItWorksVideo />
             </div>
           </div>
