@@ -163,17 +163,30 @@ export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
   }, [open]);
 
   return (
-    <div ref={rowRef} className="mt-10 grid gap-[10px] sm:mt-12 md:grid-cols-3">
+    /* flex column on a phone, grid from md. The column is what makes the deck
+       possible — see .lh-deck in landing.css for why a grid item cannot stick.
+       Single-column grid and flex column lay out identically at this gap, so
+       nothing moves; only the containing block changes. */
+    <div
+      ref={rowRef}
+      className="lh-deck mt-10 flex flex-col gap-[10px] sm:mt-12 md:grid md:grid-cols-3"
+      style={{ "--n": steps.length } as React.CSSProperties}
+    >
       {steps.map((s, i) => (
-        <Reveal key={s.step} delay={i * 90}>
-          <DecisionCard
-            {...s}
-            open={open.has(i)}
-            onShow={() => show(i)}
-            onHideLater={() => hideLater(i)}
-            onActivate={() => activate(i)}
-          />
-        </Reveal>
+        /* The deck's scale and the Reveal's rise are on separate elements
+           because both animate `transform`. Above md this div is an inert
+           wrapper. */
+        <div key={s.step} className="lh-deck-card" style={{ "--i": i } as React.CSSProperties}>
+          <Reveal delay={i * 90}>
+            <DecisionCard
+              {...s}
+              open={open.has(i)}
+              onShow={() => show(i)}
+              onHideLater={() => hideLater(i)}
+              onActivate={() => activate(i)}
+            />
+          </Reveal>
+        </div>
       ))}
     </div>
   );

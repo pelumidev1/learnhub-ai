@@ -917,3 +917,55 @@
     transform: scale(0.8);
   }
 }
+
+/* The step cards deck the same way, on a phone only.
+ *
+ * Three separate classes rather than reusing .lh-stack, because this one has to
+ * stop existing at md. Above that the row is three columns side by side; there
+ * is nothing to stack, and a sticky grid item there would pin a card in the
+ * middle of the band. Everything below is inside `max-width: 767px`, which is
+ * one below Tailwind's md, so the desktop row is untouched by all of it.
+ *
+ * The row is a flex column on a phone and only becomes a grid at md — that is
+ * load-bearing, not tidying. A sticky element can travel only inside its
+ * containing block, and a grid item's containing block is its own row track,
+ * which is exactly the height of the card. It would have nowhere to stick. As a
+ * flex child the containing block is the whole row, which is what gives it the
+ * other two cards' worth of travel.
+ *
+ * Its own timeline name, so the two decks on the page cannot drive each other.
+ *
+ * The transform here and the flip are separate elements on purpose: .lh-deck-card
+ * scales, the Reveal inside it translates, and .lh-flip below that owns the
+ * perspective. All three write `transform`, so they cannot share an element. A
+ * scale on an ancestor is safe for the 3D — it makes a containing block, and
+ * only `overflow` would flatten the preserve-3d context.
+ */
+@media (max-width: 767px) {
+  .lh-deck {
+    --deck-top: 4.5rem;
+    view-timeline-name: --lh-deck;
+    view-timeline-axis: block;
+  }
+
+  .lh-deck-card {
+    position: sticky;
+    /* Each lands slightly lower than the one before, so the deck shows its
+       edges rather than hiding each card completely behind the next. */
+    top: calc(var(--deck-top) + var(--i) * 14px);
+    transform-origin: 50% 0%;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+    /* The last card has nothing riding over it, so it never shrinks. */
+    .lh-deck-card:not(:last-child) {
+      animation: lh-stack-shrink both;
+      animation-timeline: --lh-deck;
+      animation-range: exit-crossing calc(var(--i) / var(--n) * 100%) exit-crossing
+        calc((var(--i) + 1) / var(--n) * 100%);
+      animation-timing-function: cubic-bezier(0.34, 1.44, 0.64, 1);
+    }
+  }
+}
