@@ -918,6 +918,65 @@
   }
 }
 
+/* Tetris reveal for the how-it-works clip.
+ *
+ * A grid of blocks the colour of the matte sits over the screen, so before it
+ * runs the frame reads as one solid dark object rather than as a covered video.
+ * On scroll-in the blocks clear row by row from the top, each dropping a little
+ * as it goes, and the app view is uncovered behind them.
+ *
+ * Row drives the delay, so the wave is strictly top to bottom. `--j` is a
+ * per-block jitter on top of that: without it all eight blocks in a row leave on
+ * the same frame and it reads as a window blind, not as blocks. It is derived
+ * from the index rather than from Math.random so the server and client markup
+ * agree — a random value here is a hydration mismatch.
+ *
+ * `both` is what makes this safe. The backwards fill holds a block opaque
+ * through its delay, so no block clears early, and the forwards fill leaves it
+ * gone rather than snapping back at the end.
+ *
+ * Blocks are transparent by default and only become opaque when JS arms them,
+ * and only while the frame is still below the fold. So with JS off, under
+ * reduced motion, or on a page already scrolled past this point, there is no
+ * cover at all — never a clip hidden behind blocks that will not move.
+ */
+.lh-tetris {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  pointer-events: none;
+}
+
+.lh-tetris > span {
+  background: #0b0f1a;
+  opacity: 0;
+}
+
+.lh-tetris[data-state="covered"] > span {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lh-tetris[data-state="playing"] > span {
+    animation: lh-tetris-clear 360ms cubic-bezier(0.4, 0, 0.7, 0.2) both;
+    animation-delay: calc(var(--r) * 105ms + var(--j) * 1ms);
+  }
+}
+
+@keyframes lh-tetris-clear {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(28%);
+  }
+}
+
 /* The step cards deck the same way, on a phone only.
  *
  * Three separate classes rather than reusing .lh-stack, because this one has to

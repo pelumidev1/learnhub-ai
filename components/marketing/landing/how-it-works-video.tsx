@@ -1,7 +1,68 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGatedVideo } from "./use-gated-video";
+
+/** Blocks across and down. 64 is enough to read as a grid and few enough to
+ *  animate on a mid-tier phone without a paint spike. */
+const COLS = 8;
+const ROWS = 8;
+
+/**
+ * The Tetris reveal: a wall of blocks over the screen that clears top to bottom
+ * as the frame is scrolled to, uncovering the app view behind it.
+ *
+ * Armed from JS and only while the frame is still below the fold, so the cover
+ * exists exactly when it can also be removed. With JS off, under reduced motion,
+ * or when the page loads already scrolled past here, the blocks stay transparent
+ * and the clip is simply visible — there is no state in which a block wall is
+ * left sitting on the video.
+ *
+ * The jitter is derived from the block's index, not Math.random: this renders on
+ * the server too, and a random number would differ between the two passes and
+ * trip a hydration mismatch. A stride of 37 against 8 columns walks the row
+ * rather than repeating, which is what stops each row leaving as one piece.
+ */
+function TetrisReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [state, setState] = useState<"off" | "covered" | "playing">("off");
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Never cover something the reader is already looking at.
+    if (el.getBoundingClientRect().top < window.innerHeight) return;
+
+    setState("covered");
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setState("playing");
+        io.disconnect();
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="lh-tetris" data-state={state} aria-hidden>
+      {Array.from({ length: COLS * ROWS }, (_, i) => (
+        <span
+          key={i}
+          style={
+            {
+              "--r": Math.floor(i / COLS),
+              "--j": (i * 37) % 90,
+            } as React.CSSProperties
+          }
+        />
+      ))}
+    </div>
+  );
+}
 
 const LABEL =
   "The LearnHub app moving through the assessment, your career match, and your learning roadmap.";
@@ -108,6 +169,8 @@ export function HowItWorksVideo() {
           so a screen reader is given the description once, not twice. */}
       <Clip cut={TALL} className="absolute inset-0 sm:hidden" />
       <Clip cut={WIDE} className="absolute inset-0 hidden sm:block" />
+      {/* Over both cuts, so one wall serves whichever is showing. */}
+      <TetrisReveal />
     </div>
   );
 }
