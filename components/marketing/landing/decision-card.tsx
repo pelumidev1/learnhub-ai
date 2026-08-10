@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/marketing/landing/reveal";
+import { hasFinePointer } from "@/components/marketing/landing/motion-budget";
 
 /**
  * How long a card waits before turning back once you leave it.
@@ -111,37 +112,54 @@ export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
   };
 
   /**
-   * A touch anywhere off the row puts every open card back.
+   * On a touch screen, scrolling away or tapping elsewhere puts every open card
+   * back.
    *
    * A mouse has a way of saying "not this one any more" — it leaves, and
-   * onPointerLeave starts the hold. A finger has no such gesture. So until now
-   * the only ways out of an open card on a phone were tapping it again or
-   * tapping a different one, and a tap on the heading, the page, or anywhere
-   * else left it turned over indefinitely. Card backs would stack up behind you
-   * as you scrolled.
+   * onPointerLeave starts the hold. A finger has no such gesture, so without
+   * this the only exits are tapping the card again or tapping a different one,
+   * and everything else leaves it turned over as you scroll past.
    *
-   * pointerdown rather than click, so it also fires at the start of a scroll
-   * that begins off the row — which is the same intent, expressed with a drag.
-   * Immediate, not the hold: the hold exists so two cards never move at once,
-   * and here nothing else is moving.
+   * **Scroll is the one that matters, and a tap test alone does not catch it.**
+   * The first version of this only listened for a pointerdown landing outside
+   * the row, which sounds equivalent and is not: on a phone a card is most of
+   * the viewport, so a scroll almost always begins *on* one, and that reads as
+   * inside the row. Worse, a touch that turns into a scroll never produces a
+   * pointerup — the browser sends pointercancel instead — so the card's own tap
+   * handler never runs either. The card just stayed open.
    *
-   * Mouse pointers return early. Hover already governs them, and a click that
-   * lands off the row has always been preceded by the pointer leaving it.
+   * So: any scroll closes the row, wherever the finger started. pointerdown is
+   * kept for the tap that is not a scroll — on the heading, on the page.
+   *
+   * Both are touch-only. `hasFinePointer()` rather than the event's own
+   * pointerType, because a scroll event carries no pointer: on a mouse, hover
+   * governs all of this, and closing a hovered card on a wheel tick would leave
+   * it shut under a pointer that never left it.
    */
   useEffect(() => {
-    if (open.size === 0) return;
-    const onDown = (e: PointerEvent) => {
-      if (e.pointerType === "mouse") return;
-      const row = rowRef.current;
-      if (row && e.target instanceof Node && row.contains(e.target)) return;
+    if (open.size === 0 || hasFinePointer()) return;
+
+    const closeAll = () => {
       timers.current.forEach((t) => window.clearTimeout(t));
       timers.current.clear();
       setOpen(new Set<number>());
     };
-    // Capture, so a tap that lands on something which stops propagation still
-    // closes the row.
+
+    const onDown = (e: PointerEvent) => {
+      const row = rowRef.current;
+      // A tap on a card is that card's own business — it toggles itself.
+      if (row && e.target instanceof Node && row.contains(e.target)) return;
+      closeAll();
+    };
+
+    // Capture on the pointer, so a tap onto something that stops propagation
+    // still closes the row. Passive on the scroll, so this never delays one.
     document.addEventListener("pointerdown", onDown, true);
-    return () => document.removeEventListener("pointerdown", onDown, true);
+    window.addEventListener("scroll", closeAll, { passive: true });
+    return () => {
+      document.removeEventListener("pointerdown", onDown, true);
+      window.removeEventListener("scroll", closeAll);
+    };
   }, [open]);
 
   return (
