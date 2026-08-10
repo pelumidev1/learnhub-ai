@@ -224,23 +224,46 @@ function DecisionCard({
             empty black above, and an empty card reads as unfinished rather than
             as restraint. Spread, the title still lands near its old position
             and the space looks chosen. */}
-        {/* p-4 until lg because 768-1023 is the pinch: three columns of a 728px
-            row make a 236x290 card, the smallest the back's copy ever has to
-            fit in, and at p-5 the longest of the three overflowed it by 2px. */}
-        <div className="lh-flip-face lh-flip-back lh-metal-ink flex flex-col justify-between overflow-hidden rounded-[30px] p-4 lg:p-5">
-          <span className="inline-flex w-fit items-center rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-ink">
-            {step}
-          </span>
-          <div>
-            {/* A <p>, not a second <h3>: this is the front's heading repeated
-                for the eye, and two headings with identical text is noise in an
-                outline. */}
-            <p className="font-display text-xl font-semibold leading-[1.15] tracking-[-0.02em] text-white lg:text-2xl">
-              {title}
-            </p>
-            <p className="mt-2.5 text-[14px] leading-[1.5] text-white/70 lg:text-[15px]">
-              {detail}
-            </p>
+        {/* The face paints nothing itself. The metal is on a child, exactly as
+            the front's photograph is, and that is not a style choice — it is the
+            fix for the black corners on iOS.
+
+            `backface-visibility: hidden` forces this face onto its own
+            composited layer, and WebKit does not clip a composited layer's own
+            background to its border-radius. So a background *on the face* fills
+            the square, and what shows in the four corners the 30px radius cuts
+            away is flat #0B0F1A — black wedges on a white section, on every
+            card, at every corner. The face's *children* are clipped correctly,
+            which is why the front has never had the problem: it is transparent
+            and its photo is a child.
+
+            It only appeared when the back gained a gradient. A flat `bg-ink`
+            was cheap enough for WebKit to paint without promoting the layer;
+            a gradient is not. Chromium and desktop WebKit both render it
+            correctly, so this reproduces on an iPhone and nowhere I can point a
+            screenshot at — the reasoning above is the evidence, not a capture.
+
+            Anything painted on a face inside .lh-flip has to follow this rule. */}
+        <div className="lh-flip-face lh-flip-back overflow-hidden rounded-[30px]">
+          <div className="lh-metal-ink absolute inset-0 rounded-[30px]" aria-hidden />
+          {/* p-4 until lg because 768-1023 is the pinch: three columns of a 728px
+              row make a 236x290 card, the smallest the back's copy ever has to
+              fit in, and at p-5 the longest of the three overflowed it by 2px. */}
+          <div className="relative flex h-full flex-col justify-between p-4 lg:p-5">
+            <span className="inline-flex w-fit items-center rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-ink">
+              {step}
+            </span>
+            <div>
+              {/* A <p>, not a second <h3>: this is the front's heading repeated
+                  for the eye, and two headings with identical text is noise in an
+                  outline. */}
+              <p className="font-display text-xl font-semibold leading-[1.15] tracking-[-0.02em] text-white lg:text-2xl">
+                {title}
+              </p>
+              <p className="mt-2.5 text-[14px] leading-[1.5] text-white/70 lg:text-[15px]">
+                {detail}
+              </p>
+            </div>
           </div>
         </div>
       </div>
