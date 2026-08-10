@@ -265,19 +265,19 @@ export function CareerMapSection() {
   const active = selected === null ? null : PATHS[selected];
 
   return (
-    <section className="overflow-x-clip bg-white py-24 sm:py-32">
+    <section className="overflow-x-clip bg-ink py-24 sm:py-32">
       {/* Wider than the page's usual 1152: the ring is the one thing here that
           wants the room, and at 1152 it had a third of the width to spare on
           either side. The copy above and below keeps its own narrow measure. */}
       <div className="mx-auto max-w-[1280px] px-5">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Kicker center>One ecosystem</Kicker>
+          <Kicker center reverse>One ecosystem</Kicker>
           <ScrambleText
             as="h2"
             text="Every path into tech, connected to you"
-            className="mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.9rem]"
+            className="mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[2.9rem]"
           />
-          <p className="mt-4 text-[15px] leading-relaxed text-muted">
+          <p className="mt-4 text-[15px] leading-relaxed text-white/70">
             Data, design, security, AI, and everything between. Tap a path to see what the work
             really is.
           </p>
@@ -300,7 +300,7 @@ export function CareerMapSection() {
               them. Two insets, so it is the same ellipse the tiles ride. */}
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-x-[40px] inset-y-[62px] rounded-full border border-dashed border-silver-2 sm:inset-x-[76px] sm:inset-y-[88px]"
+              className="pointer-events-none absolute inset-x-[40px] inset-y-[62px] rounded-full border border-dashed border-white/15 sm:inset-x-[76px] sm:inset-y-[88px]"
             />
 
             {/* Beam from hub to the selected tile. Under the hub card, over the
@@ -357,7 +357,7 @@ export function CareerMapSection() {
                     93px of arc per tile, so a label wider than that reaches into
                     its neighbour; "AI & machine learning" would run well past
                     the stage edge unset. */}
-                  <span className="mx-auto mt-2 block max-w-[76px] text-[11.5px] font-semibold leading-[1.25] text-ink sm:max-w-none sm:text-[12.5px]">
+                  <span className="mx-auto mt-2 block max-w-[76px] text-[11.5px] font-semibold leading-[1.25] text-white sm:max-w-none sm:text-[12.5px]">
                     {p.name}
                   </span>
                 </button>
@@ -372,7 +372,7 @@ export function CareerMapSection() {
               the ring it is readable at full width instead of squeezed. */}
           <div className="mt-5 sm:absolute sm:left-1/2 sm:top-1/2 sm:z-20 sm:mt-0 sm:-translate-x-1/2 sm:-translate-y-1/2">
             <div
-              className="mx-auto rounded-3xl border border-silver bg-white p-5 text-center shadow-soft sm:mx-0"
+              className="lh-metal-card mx-auto rounded-3xl p-5 text-center sm:mx-0"
               style={{ width: "min(78vw, 300px)" }}
             >
               {active === null ? (
@@ -380,23 +380,23 @@ export function CareerMapSection() {
                   <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue text-white shadow-glow">
                     <LogoMark className="h-6 w-6 text-white" />
                   </span>
-                  <p className="mt-3 font-display text-base font-semibold tracking-[-0.02em] text-ink">
+                  <p className="mt-3 font-display text-base font-semibold tracking-[-0.02em] text-white">
                     LearnHub
                   </p>
-                  <p className="mt-1.5 text-[13px] leading-[1.5] text-muted">
+                  <p className="mt-1.5 text-[13px] leading-[1.5] text-white/70">
                     Tap any path to see what the work is really like.
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-blue">
+                  <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-sky-2">
                     Path {(selected ?? 0) + 1} of {PATHS.length}
                   </p>
-                  <p className="mt-2 font-display text-base font-semibold tracking-[-0.02em] text-ink">
+                  <p className="mt-2 font-display text-base font-semibold tracking-[-0.02em] text-white">
                     {active.name}
                   </p>
-                  <p className="mt-1.5 text-[13px] leading-[1.5] text-muted">{active.blurb}</p>
-                  <p className="mt-3 inline-block rounded-full bg-paper px-3 py-1.5 text-[11.5px] font-semibold text-muted">
+                  <p className="mt-1.5 text-[13px] leading-[1.5] text-white/70">{active.blurb}</p>
+                  <p className="mt-3 inline-block rounded-full bg-white/10 px-3 py-1.5 text-[11.5px] font-semibold text-white/70">
                     {active.starts}
                   </p>
                 </>
@@ -406,7 +406,7 @@ export function CareerMapSection() {
         </div>
 
         <Reveal className="mx-auto mt-10 max-w-xl text-center">
-          <p className="text-[13.5px] leading-[1.6] text-muted-2">
+          <p className="text-[13.5px] leading-[1.6] text-white/50">
             Sample paths, shown for illustration. Your own map is built from your assessment, then
             narrowed by your AI advisor to the two or three paths that fit you.
           </p>

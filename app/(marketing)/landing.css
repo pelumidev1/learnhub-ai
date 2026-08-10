@@ -334,6 +334,32 @@
    slide up from below it, staggered. Driven by <SplitText> — the hidden state
    (.lh-split-hidden) is only ever applied from JS and only when motion is
    allowed, so text is never invisible without JS. */
+/* Metallic surface for the career map's hub, now that the section is dark.
+
+   What makes this read as metal rather than as a grey box is the top highlight:
+   a single bright inset line along the upper edge, which is how a curved metal
+   surface catches the light above it. The fill under it is a short ramp, bright
+   at the top and falling away fast, not an even wash — an even wash is plastic.
+
+   The blur is the design system's one sanctioned use of frosted glass, on a
+   surface that sits over something moving: the ring turns behind this card. */
+.lh-metal-card {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.05) 42%,
+      rgba(255, 255, 255, 0.03) 100%
+    ),
+    rgba(11, 15, 26, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 24px 48px -24px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+}
+
 /* Scramble-in. See components/marketing/landing/scramble-text.tsx.
 
    The real word stays in the flow and holds the box; the scrambling string is
