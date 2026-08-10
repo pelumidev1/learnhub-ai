@@ -19,7 +19,11 @@ export function HowItWorksSection() {
        space from whatever sat above it, which broke the moment that section
        changed ground. It carries its own now, on the page's default rhythm. */
     <section id="how" className="bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-5">
+      {/* 1440/100px rather than max-w-6xl, which is the same measure the
+          decisions band above uses. The clip is the whole explanation in this
+          section, and at 1152 it was the narrowest large element on the page —
+          1240 gives it 128px more to be seen at, for nothing. */}
+      <div className="mx-auto max-w-[1440px] px-5 lg:px-[100px]">
         <Reveal>
           <Kicker>How it works</Kicker>
           {/* No max-width on the wrapper, and the size comes from
@@ -62,9 +66,14 @@ export function HowItWorksSection() {
             overflow-hidden sits here rather than on the clip's own box: the video
             component owns the reserved aspect ratio, this owns how it is
             presented. */}
-        <Reveal className="mt-10 md:mt-14">
-          <div className="lh-metal-ink rounded-[28px] p-3 shadow-soft">
-            <div className="lh-metal-rim overflow-hidden rounded-xl">
+        {/* The matte thins to 8px on a phone and keeps 12 from sm up. A 2:1
+            clip is height-starved on a phone by construction — every pixel the
+            frame takes from its width costs half a pixel of height — and 12px
+            of bezel is a desktop proportion. Radii stay concentric at both:
+            22 - 8 = 14, 28 - 12 = 16. */}
+        <Reveal className="-mx-3 mt-10 sm:mx-0 md:mt-14">
+          <div className="lh-metal-ink rounded-[22px] p-2 shadow-soft sm:rounded-[28px] sm:p-3">
+            <div className="lh-metal-rim overflow-hidden rounded-[14px] sm:rounded-xl">
               <HowItWorksVideo />
             </div>
           </div>
