@@ -252,10 +252,17 @@ export default function LandingPage() {
           page. The nav's "What you get" pointed at it, and this section is where
           that eyebrow already lived, so the link now lands on the eyebrow that
           names it rather than on a section further down. */}
-      {/* py-16/24, down from py-24/32. Half this band was padding, which on ink
-          reads as a hole rather than as room. The cards took most of it back by
-          growing (see DecisionCard); this gives back the rest. */}
-      <section id="what" className="bg-ink py-16 sm:py-24">
+      {/* Down from py-24/32, and no longer symmetric. Half this band was
+          padding, which on ink reads as a hole rather than as room; the cards
+          took most of that back by growing (see DecisionCard), and this is the
+          rest of it.
+
+          The top is cut harder than the bottom — 56 against 96 at sm — which is
+          what shifts the whole band up under the section above it. Even padding
+          left the eyebrow floating a long way below the fold of the previous
+          section, and a heading needs less air above it than a row of cards
+          needs below. */}
+      <section id="what" className="bg-ink pb-16 pt-10 sm:pb-24 sm:pt-14">
         {/* The reference runs this band to 1240 of 1440 — the same 100px gutter
             its header and hero use, which is now ours too. Wider than the
             page's usual max-w-6xl on purpose: the width is most of what makes
