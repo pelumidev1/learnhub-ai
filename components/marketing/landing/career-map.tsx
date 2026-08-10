@@ -119,20 +119,27 @@ const MIN_RX = 100;
 const MIN_RY = 128;
 
 /**
- * Degrees per **second** — one turn a minute.
+ * Degrees per **second** — a turn every twelve seconds.
  *
- * It was 0.035 degrees per *frame*, which is two things at once. It was slow:
+ * It was 0.035 degrees per *frame*, which was two faults at once. It was slow:
  * 2m50s a turn, slow enough that the ring read as a still picture unless you
  * watched one tile against the edge of the stage. And because it was per frame,
  * it was a different speed on every screen — the same constant runs twice as
  * fast on a 120Hz laptop as on a 60Hz phone, so no value could be tuned by eye
- * and trusted. The loop is given the frame's own elapsed time now, so this is
- * six degrees a second everywhere.
+ * and trusted. The loop is given the frame's own elapsed time, so this is thirty
+ * degrees a second everywhere.
  *
- * Three times the old speed and still unhurried: the tiles are buttons with
- * labels, so the ring has to stay easy to aim at.
+ * 6 was the careful answer to "faster" and it was still a minute a turn. This is
+ * five times that, and fast is now the point rather than a side effect.
+ *
+ * What makes a speed like this safe on tiles that are buttons: the ring is not
+ * something you have to catch. `pausedRef` stops it the moment a pointer enters
+ * the stage and `selectedRef` holds it stopped while a path is open, both eased
+ * rather than snapped — so the ring is only ever moving when nobody is trying to
+ * hit it. A touch screen has no hover to trigger that, which is the one case
+ * where this asks something of the reader; a tap that misses costs a tap.
  */
-const SPIN = 6;
+const SPIN = 30;
 /** Selected tile scale, and the float's amplitude in px. */
 const SELECTED_SCALE = 1.14;
 const FLOAT = 5;
