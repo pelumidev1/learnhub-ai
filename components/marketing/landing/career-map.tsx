@@ -118,8 +118,21 @@ const PAD = {
 const MIN_RX = 100;
 const MIN_RY = 128;
 
-/** Degrees per frame. At 60fps the ring takes about 2m50s to come round. */
-const SPIN = 0.035;
+/**
+ * Degrees per **second** — one turn a minute.
+ *
+ * It was 0.035 degrees per *frame*, which is two things at once. It was slow:
+ * 2m50s a turn, slow enough that the ring read as a still picture unless you
+ * watched one tile against the edge of the stage. And because it was per frame,
+ * it was a different speed on every screen — the same constant runs twice as
+ * fast on a 120Hz laptop as on a 60Hz phone, so no value could be tuned by eye
+ * and trusted. The loop is given the frame's own elapsed time now, so this is
+ * six degrees a second everywhere.
+ *
+ * Three times the old speed and still unhurried: the tiles are buttons with
+ * labels, so the ring has to stay easy to aim at.
+ */
+const SPIN = 6;
 /** Selected tile scale, and the float's amplitude in px. */
 const SELECTED_SCALE = 1.14;
 const FLOAT = 5;
@@ -175,10 +188,21 @@ export function CareerMapSection() {
 
     let raf = 0;
     const start = performance.now();
+    let last = start;
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
       let moving = !reduced;
+
+      /* Seconds since the last frame, so the ring turns at the same rate on a
+         60Hz phone and a 120Hz laptop. Clamped: a backgrounded tab or a long
+         main-thread block returns a gap of seconds, and un-clamped that jumps
+         the ring a third of a turn in one frame. EASE below is deliberately
+         left per-frame — it settles a scale over a few hundred ms rather than
+         running continuously, so the difference between refresh rates is a
+         settle that is slightly quicker, not a speed that is visibly wrong. */
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
 
       const rect = stage.getBoundingClientRect();
       // Recomputed per frame rather than on resize: it is three reads of a rect
@@ -192,7 +216,7 @@ export function CareerMapSection() {
       // bug, and one that restarts dead reads as a jolt.
       const wanted = pausedRef.current || selectedRef.current !== null ? 0 : 1;
       speedRef.current += (wanted - speedRef.current) * EASE;
-      if (!reduced) angleRef.current += SPIN * speedRef.current;
+      if (!reduced) angleRef.current += SPIN * speedRef.current * dt;
 
       const t = (now - start) / 1000;
 
