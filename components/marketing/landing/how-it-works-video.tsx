@@ -7,48 +7,76 @@ const LABEL =
   "The LearnHub app moving through the assessment, your career match, and your learning roadmap.";
 
 /**
- * The looping "How it works" clip — the desktop app view, exported at the
- * composition's own 1428×720 (1.983:1).
+ * The looping "How it works" clip, in two cuts of the same 23-second animation.
  *
- * Delivery is gated by useGatedVideo: the source attaches only once the panel is
- * half visible, and never at all under reduced motion or on a data-saver or
- * 2g-class connection. In every one of those cases the `poster` is what stays
- * on screen, which is also what a refused autoplay leaves, so the fallback
- * picture is the same one either way.
+ * **Why two.** The wide cut is the desktop app view at 1428×720 (1.983:1). On a
+ * phone the frame is about 354 CSS px across, and at that width a 2:1 clip is
+ * 178px tall — a letterbox strip in the middle of a section that is supposed to
+ * be the whole explanation. Height is width ÷ 1.983 and no amount of CSS changes
+ * that; the only lever is to crop, and every beat of this composition uses the
+ * full frame (the third option card, the second match card, the roadmap's
+ * certificate column and both primary buttons all live in the right third, and
+ * the "Your path" rail is the left 18%). There is no crop window that does not
+ * delete product meaning.
  *
- * The wrapper reserves the box with `aspect-[1428/720]` and both children fill
- * it absolutely, so the reserved height is identical whichever one renders and
- * nothing moves when the poster or the clip lands. Width/height attributes are
- * still set: they are what a no-CSS render (and any tool reading the markup)
- * uses to size it.
+ * So the phone gets its own render rather than a crop: the same composition at
+ * 900×1100, with the three-across option cards stacked, the match pair stacked
+ * and the roadmap's two columns stacked. Same beats, same copy, same length,
+ * relaid for a tall box. At 354px wide it is 433px tall instead of 178.
  *
- * This component owns the reserved box and nothing else — the frame around it
- * (matte, hairline, radius, shadow) belongs to the section, because it is a
- * decision about presentation rather than about the media.
+ * **Only one of them ever downloads.** Each cut is its own element and the
+ * breakpoint hides the other with `display: none`. useGatedVideo attaches the
+ * source on first intersection, and a `display: none` element never intersects —
+ * its rect is zero — so the hidden cut is not merely deferred, it is never
+ * fetched at all. That is what keeps a second 284KB file off a phone that will
+ * never show it, and the 335KB desktop file off one that will.
  *
- * 1428 px is not oversized at either end. Desktop paints it at 1112 CSS px, so
- * there is almost no headroom there; a 390 px phone paints it at 350, which is
- * 1050 device pixels at 3x. Shrinking the file to save mobile bytes would cost
- * desktop sharpness and save a phone nothing — the delivery gate above is the
- * lever, not the resolution.
+ * The wrapper's aspect ratio switches with the cut, so the reserved box is the
+ * exact shape of whichever clip renders and nothing shifts when it lands.
  *
- * mp4 only, deliberately. VP9 measured 2.7–3.7× larger than H.264 on these
- * frames at matched quality, and every browser this audience uses plays H.264,
- * so a second source would cost a file to maintain and risk Chrome and Firefox
- * picking the worse one.
+ * Both cuts are mp4 only. VP9 measured 2.7–3.7× larger than H.264 on these
+ * frames at matched quality, and every browser this audience uses plays H.264.
+ * See public/media/README.md for how each is regenerated.
  */
-export function HowItWorksVideo() {
+
+type Cut = {
+  mp4: string;
+  poster: string;
+  width: number;
+  height: number;
+};
+
+const WIDE: Cut = {
+  mp4: "/media/how-it-works.mp4",
+  poster: "/media/how-it-works.webp",
+  width: 1428,
+  height: 720,
+};
+
+const TALL: Cut = {
+  mp4: "/media/how-it-works-portrait.mp4",
+  poster: "/media/how-it-works-portrait.webp",
+  width: 900,
+  height: 1100,
+};
+
+/**
+ * One cut. Both children fill the box absolutely, so the reserved height is the
+ * same whichever renders and nothing moves when the poster gives way to the
+ * clip — which is also what a refused autoplay leaves on screen.
+ */
+function Clip({ cut, className }: { cut: Cut; className: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   useGatedVideo(ref);
 
   return (
-    <div className="relative aspect-[1428/720] w-full">
+    <div className={className}>
       <video
         ref={ref}
         className="absolute inset-0 block h-full w-full motion-reduce:hidden"
-        width={1428}
-        height={720}
-        poster="/media/how-it-works.webp"
+        width={cut.width}
+        height={cut.height}
+        poster={cut.poster}
         preload="none"
         autoPlay
         loop
@@ -56,18 +84,30 @@ export function HowItWorksVideo() {
         playsInline
         aria-label={LABEL}
       >
-        {/* src is attached by the observer above — see the note on metered data. */}
-        <source data-src="/media/how-it-works.mp4" type="video/mp4" />
+        {/* src is attached by the observer — see the note on metered data. */}
+        <source data-src={cut.mp4} type="video/mp4" />
       </video>
       {/* Reduced-motion swap, done with Tailwind's motion-reduce variant so it
           holds with JS disabled. */}
       <img
-        src="/media/how-it-works.webp"
+        src={cut.poster}
         alt={LABEL}
-        width={1428}
-        height={720}
+        width={cut.width}
+        height={cut.height}
         className="absolute inset-0 hidden h-full w-full motion-reduce:block"
       />
+    </div>
+  );
+}
+
+export function HowItWorksVideo() {
+  return (
+    <div className="relative aspect-[900/1100] w-full sm:aspect-[1428/720]">
+      {/* Exactly one of these is displayed at any width, and only the displayed
+          one is ever fetched. The alt text sits on the images rather than here,
+          so a screen reader is given the description once, not twice. */}
+      <Clip cut={TALL} className="absolute inset-0 sm:hidden" />
+      <Clip cut={WIDE} className="absolute inset-0 hidden sm:block" />
     </div>
   );
 }

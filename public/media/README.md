@@ -5,8 +5,10 @@ so they can be regenerated.
 
 | File | Purpose | Actual |
 |---|---|---|
-| `how-it-works.mp4` | The looping clip below the three steps. H.264, no audio track. **Dark app view** — see below. | 1428×720, 23 s, 24 fps, silent, **335 KB** |
+| `how-it-works.mp4` | The looping clip below the three steps, **sm and up**. H.264, no audio track. **Dark app view** — see below. | 1428×720, 23 s, 24 fps, silent, **335 KB** |
 | `how-it-works.webp` | Still from 2 s. Doubles as the video `poster` **and** the reduced-motion replacement. | 1428×720, **18.9 KB** |
+| `how-it-works-portrait.mp4` | The same animation relaid for a phone, **below sm**. See "The phone cut". | 900×1100, 23 s, 24 fps, silent, **284 KB** |
+| `how-it-works-portrait.webp` | Its poster and reduced-motion still. | 900×1100, **19 KB** |
 | `statement.mp4` | The moving layer behind the statement knockout, seen only through the letterforms. | 900×394, 16.3 s, 24 fps, silent, **253 KB** |
 
 ## statement.mp4
@@ -219,10 +221,62 @@ capture script emits a `.webm`; the fixed copy drops that encode.
   at 3x. Both ends land near native. The statement clip is the one where phones
   are outright the high-resolution case. If you are looking to save mobile bytes,
   the gate above is the lever, not the resolution.
-- **The v2 clip is a desktop app view, and a phone cannot read its text.** At
-  350 CSS px the app's body copy renders around 4.5 px. What survives at that
-  size is the shape of the product — sidebar, progress bar, cards filling in,
-  checkmarks landing — not a word of it. The clip's `aria-label` therefore
-  describes what it does rather than what it says. Since the section has no step
-  copy of its own any more, a phone gets the shape of the product and the heading
-  and nothing else. Fixing that needs a phone-shaped crop, not a smaller file.
+- **A phone gets its own render, not the desktop one.** See below.
+
+## The phone cut
+
+`how-it-works-portrait.mp4`, 900×1100, served below `sm` and never fetched above
+it. This replaced the note that used to sit here, which said a phone could not
+read the desktop clip's text and that fixing it needed a phone-shaped crop. The
+first half was right: at 354 CSS px the desktop cut's body copy renders around
+4.5 px, so what survived was the shape of the product and not a word of it.
+
+**A crop was the wrong prescription.** Every beat of this composition uses the
+full 1428px frame — the third option card, the second match card, the roadmap's
+certificate column and both primary buttons are all in the right third, and the
+"Your path" rail, the only place the three steps are named, is the left 18%.
+There is no crop window that does not delete product meaning. It needed a
+re-render.
+
+The portrait composition is a copy of the dark one at `~/Downloads/Three-step
+animated product walkthrough — portrait`, and the diff against its parent is
+small and entirely geometric:
+
+```
+W 1428 -> 900, H 720 -> 1100, SIDE 264 -> 208, TOPBAR 68 -> 64, PAD 44 -> 32
+Options   gridTemplateColumns 'repeat(3, 1fr)' -> '1fr', card height 130 -> 96
+Match     the pair's flex row -> column, and MatchCard flex:1 -> flex:'none'
+          with alignSelf 'center' -> 'stretch'
+Roadmap   the two columns -> a column, list flex 1.35 -> 2.1
+Cursor    tw.showCursor === false -> true, i.e. off
+```
+
+Two of those are worth knowing about.
+
+**MatchCard had to change how it flexes, not just where it sits.** `flex: 1` and
+`alignSelf: 'center'` mean "fill the row, centre me vertically" in a row and
+"fill the column, shrink to my content's width" in a column. Left alone the two
+match cards came out narrow, floating, and with the fit percentage jammed against
+the career name, because `justifyContent: space-between` had no width to work
+across. `flex: 'none'` + `alignSelf: 'stretch'` restores the intent.
+
+**The cursor is off.** Its waypoints (`OPT`, `CTA`) are hardcoded to the desktop
+main pane's 1164×652, so in a 692×1036 pane every one of them lands somewhere
+arbitrary. The composition already had a switch for this; re-deriving a path by
+eye would have been the wrong kind of work. A phone has no pointer to depict.
+
+Capture and encode are otherwise identical — same script, same four fixes, same
+crf ladder. It lands at crf 32 for 284 KB. Regenerate it the same way:
+
+```sh
+cd "~/Downloads/Three-step animated product walkthrough — portrait"
+ln -sfn <repo>/node_modules node_modules
+node embed/capture-how-it-works.mjs
+cp public/media/how-it-works-portrait.{mp4,webp} "<repo>/public/media/"
+```
+
+**Only one cut ever downloads.** Each is its own element and the breakpoint hides
+the other with `display: none`; `useGatedVideo` attaches the source on first
+intersection, and a `display: none` element never intersects because its rect is
+zero. So the hidden cut is not deferred, it is never fetched. Verified at 320,
+360, 390, 640, 768 and 1440: exactly one mp4 request at every width.
