@@ -360,6 +360,59 @@
   backdrop-filter: blur(10px);
 }
 
+/* ── The rest of the page's metal ────────────────────────────────────────────
+   What makes a face read as metal is not a gradient, it is where the light is:
+   a bright hairline along the top edge, where a curved surface catches the
+   light above it, over a fill that falls away from it. An even wash reads as
+   plastic. Every class below is that one idea on a different ground.
+
+   None of them own a drop shadow. A shadow says how far the object is off the
+   page, which is the call site's business — and two stylesheets both setting
+   box-shadow race on load order, which is a bug that only shows up in
+   production. `.lh-metal` is the exception: its shadow is a blue glow, which is
+   part of what that material is.
+
+     .lh-metal        blue, a primary surface — the CTA card.
+     .lh-metal-card   dark glass, for a dark ground. Translucent and blurred.
+     .lh-metal-ink    dark metal, opaque, so it holds on any ground.
+     .lh-metal-light  silver, for white and paper grounds.
+     .lh-metal-rim    the edge alone, for a face already carrying a photograph.
+
+   Call sites drop the `bg-*`, `border-*` and `shadow-*` utilities these
+   replace rather than layering over them — see the note above about races. */
+
+.lh-metal-ink {
+  background-color: #0b0f1a;
+  background-image: linear-gradient(180deg, #1a2234 0%, #101728 44%, #0b0f1a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Silver. The fall is white at the top to `paper` at the bottom — the page's
+   own two light values, so the card is made of the section rather than of a
+   grey that appears nowhere else.
+
+   The bounce line is what does the work: a near-white hairline *inside* the
+   lower edge, under a border a shade darker than the rest. That pair is how a
+   brushed surface behaves — light from above, and the ground throwing a little
+   of it back up. Without it this is a box with a gradient in it. */
+.lh-metal-light {
+  background-color: #ffffff;
+  background-image: linear-gradient(180deg, #ffffff 0%, #fafbfd 44%, #eef1f7 100%);
+  border: 1px solid #e7eaf1;
+  border-bottom-color: #d8deea;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.85);
+}
+
+/* A real border, not an inset shadow. These faces carry a photograph as an
+   absolutely positioned child filling the padding box, and an inset shadow
+   paints under its own children — so the rim would be there and invisible. A
+   border sits outside the padding box, which is exactly where the photo stops. */
+.lh-metal-rim {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(255, 255, 255, 0.28);
+}
+
 /* Scramble-in. See components/marketing/landing/scramble-text.tsx.
 
    The real word stays in the flow and holds the box; the scrambling string is

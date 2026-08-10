@@ -83,6 +83,43 @@ statement's `py-28 sm:py-48` is the single showpiece, and it is the only one.
 plus a mono label), then the `h2`, then optional body. Pricing was the one
 without an eyebrow and the beta band's was left-aligned inside a centred block.
 
+**Surface.** Every card on the page is one of five metals, defined together in
+`landing.css`. The set is closed for the same reason the others are.
+
+| | Ground | Where |
+|---|---|---|
+| `.lh-metal` | blue | the CTA card. Owns its shadow — a blue glow, which is part of the material |
+| `.lh-metal-card` | dark, translucent | a dark ground with something behind it worth blurring: the hero badge, the career map hub |
+| `.lh-metal-ink` | any | opaque dark metal: the how-it-works matte, the decision-card backs, the pricing dark card, the FAQ, the nav pill once it frosts |
+| `.lh-metal-light` | white, paper, blue | silver: the hero explore card, the pricing light card, the career pills, the CTA's button, the nav pill over the hero |
+| `.lh-metal-rim` | photography | the edge alone, for a face that already carries an image |
+
+What makes a face read as metal is not the gradient, it is where the light is: a
+bright hairline along the top edge, over a fill that falls away from it. An even
+wash is plastic. On light grounds the fall is `white → paper` — the page's own
+two values — with a near-white bounce line inside the lower edge.
+
+Three rules, each of which is a bug already paid for:
+
+- **None of them carry a drop shadow** (except `.lh-metal`, above). Height off
+  the page is the call site's business, and two stylesheets both setting
+  `box-shadow` race on load order.
+- **Call sites delete the `bg-*`, `border-*` and `shadow-*` utilities the class
+  replaces** rather than layering over them, for the same reason.
+- **`.lh-metal-rim` is a real border, not an inset shadow.** Those faces hold a
+  photograph as an absolutely positioned child filling the padding box, and an
+  inset shadow paints *under* its own children — the rim would be there and
+  invisible. A border sits outside the padding box, which is where the photo
+  stops.
+
+The primary **button** is the same idea and lives in `components/ui/button.tsx`,
+not here, so `/signup` and the dashboard get it too: brand blue as the middle
+gradient stop, with `blue-500` above and `blue-600` below, and the top highlight
+folded into one `shadow-[…]` with the glow. It has to be one declaration — a
+second `shadow-*` utility replaces this one outright rather than adding to it.
+`outline` stays flat on purpose: `.lh-metal-light` is in `landing.css`, which
+only the landing route loads.
+
 ## Motion
 
 Two signature effects, both driven on scroll-into-view:

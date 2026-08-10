@@ -7,8 +7,23 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   loading?: boolean;
 };
 
+/* Primary is the design system's "subtle blue gradient with a faint top
+   highlight", which is what a lit metal surface is. Brand blue is the middle
+   stop, not an end, so the button still reads as #1F33CC — the lighter stop
+   above it and the darker one below are the light falling across it.
+
+   The shadow is `shadow-glow` written out, plus the highlight. It has to be one
+   declaration: a second `shadow-*` utility would replace this one outright
+   rather than add to it, and the highlight is the whole point. */
 const styles: Record<Variant, string> = {
-  primary: "bg-blue text-white shadow-glow hover:brightness-110",
+  primary: [
+    "bg-blue bg-gradient-to-b from-blue-500 via-blue to-blue-600 text-white",
+    "shadow-[inset_0_1px_0_rgba(255,255,255,.32),0_20px_50px_-24px_rgba(31,51,204,.42)]",
+    "hover:brightness-110",
+  ].join(" "),
+  /* Outline stays flat: `.lh-metal-light` is in landing.css, which only the
+     landing route loads, so an outline button on /signup would come out with a
+     border and no fill at all. */
   outline: "border border-silver-2 bg-white text-ink shadow-soft hover:bg-paper",
   ghost: "text-ink hover:bg-paper",
 };
@@ -52,11 +67,7 @@ export function Button({
   ...props
 }: Props) {
   return (
-    <button
-      disabled={disabled || loading}
-      className={buttonClasses(variant, className)}
-      {...props}
-    >
+    <button disabled={disabled || loading} className={buttonClasses(variant, className)} {...props}>
       {loading && <Spinner />}
       {children}
     </button>

@@ -23,6 +23,11 @@ import { LogoMark } from "@/components/ui/logo";
  * on a photo. Their card also carries `backdrop-filter: blur(36px)`, which does
  * nothing behind an opaque white fill; it is not reproduced here.
  *
+ * The fill is `.lh-metal-light` rather than their flat white — the page's silver
+ * surface, so this card is the same material as the pricing card and the career
+ * pills. It keeps their no-shadow rule: the depth here is the ghost stack, and a
+ * drop shadow would sit on top of those three layers and muddy them.
+ *
  * What changed is only what it says. Their second line is a money figure and a
  * progress percentage; ours is the size of the catalog, because inventing a
  * match percentage here would put a number in front of someone that nothing has
@@ -48,7 +53,7 @@ export function HeroExploreCard() {
 
       <Link
         href="/careers"
-        className="relative inline-flex items-center gap-3 rounded-full bg-white p-3 pr-[30px] transition hover:-translate-y-0.5"
+        className="lh-metal-light relative inline-flex items-center gap-3 rounded-full p-3 pr-[30px] transition hover:-translate-y-0.5"
       >
         {/* 60px, circular. A real face, as theirs is — the hero is a photograph
             of students and this is the same cast. */}

@@ -46,9 +46,14 @@ export function HowItWorksSection() {
             pane is #0f1524, a step lighter than this matte, so it separates on
             its own; its sidebar is #0a1019, a step darker, and against ink that
             left edge disappears. That is the same vanishing edge the light
-            version had, in reverse. The white/10 hairline is what holds it, and
-            it is the only border here — the outer edge needs none, since ink
-            against a white section is its own line.
+            version had, in reverse. `.lh-metal-rim` is what holds it: the same
+            hairline as before, brighter along the top edge, so the screen reads
+            as sunk into the matte rather than printed on it.
+
+            The matte is `.lh-metal-ink` rather than flat `bg-ink` — it is a
+            solid object on a white section, and the one dark mass in that run
+            of white, so it is the surface on the page with the most to gain
+            from being lit rather than filled.
 
             Radii stay concentric — 28px outside minus the 12px matte is the 16px
             (rounded-xl) inside — so the corners stay parallel instead of drifting
@@ -58,8 +63,8 @@ export function HowItWorksSection() {
             component owns the reserved aspect ratio, this owns how it is
             presented. */}
         <Reveal className="mt-10 md:mt-14">
-          <div className="rounded-[28px] bg-ink p-3 shadow-soft">
-            <div className="overflow-hidden rounded-xl border border-white/10">
+          <div className="lh-metal-ink rounded-[28px] p-3 shadow-soft">
+            <div className="lh-metal-rim overflow-hidden rounded-xl">
               <HowItWorksVideo />
             </div>
           </div>

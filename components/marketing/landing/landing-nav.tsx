@@ -67,8 +67,11 @@ export function LandingNav() {
         <div className="hidden items-center md:flex">
           <a
             href={`mailto:${CONTACT_EMAIL}`}
+            /* Both states are the page's metal, so the pill changes ground
+               without changing material: dark metal once the bar frosts, silver
+               while it is over the hero photograph. */
             className={`rounded-full px-10 py-3.5 text-base font-semibold transition hover:-translate-y-0.5 ${
-              scrolled || open ? "bg-ink text-white" : "bg-white text-ink"
+              scrolled || open ? "lh-metal-ink text-white" : "lh-metal-light text-ink"
             }`}
           >
             Contact

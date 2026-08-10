@@ -86,7 +86,7 @@ export function LifeAfterMatch() {
                   1.41 viewports, which is close to the 83% / 1.71 the desktop
                   card gets. The min-height is still a floor, so the card grows
                   past it if the copy needs more. */}
-              <article className="relative isolate flex min-h-[125vw] w-full items-center justify-center overflow-hidden rounded-3xl shadow-[0_24px_60px_-24px_rgba(0,0,0,.7)] sm:aspect-[1120/747] sm:min-h-0">
+              <article className="lh-metal-rim relative isolate flex min-h-[125vw] w-full items-center justify-center overflow-hidden rounded-3xl shadow-[0_24px_60px_-24px_rgba(0,0,0,.7)] sm:aspect-[1120/747] sm:min-h-0">
                 <div className="lh-photo absolute inset-0" aria-hidden />
                 {/* Static import, so Next generates the blurDataURL at build
                     time and the card opens on a blurred frame of its own photo

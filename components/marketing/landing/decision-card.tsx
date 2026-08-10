@@ -188,6 +188,8 @@ function DecisionCard({
       }}
     >
       <div className="lh-flip-inner">
+        {/* No rim on this face: it sits on a white section under pale studio
+            photographs, so a light edge would have nothing to show against. */}
         <article className="lh-flip-face overflow-hidden rounded-[30px]">
           {/* The photo is its own element rather than the article's background:
               role="img" makes everything inside it presentational, so copy
@@ -210,8 +212,11 @@ function DecisionCard({
           </div>
         </article>
 
-        {/* The back is flat ink — not the brand blue, which would make the
-            accent the section's ground three cards over.
+        {/* The back is dark metal — not the brand blue, which would make the
+            accent the section's ground three cards over. It is the one face
+            here you only ever see mid-turn or held, so the highlight along its
+            top edge is what tells you the card has weight and has turned over,
+            rather than that the tile simply swapped its picture for text.
 
             Badge to the top, copy to the bottom. Bottom-aligning the whole
             block (which keeps the badge and title exactly where the front had
@@ -222,7 +227,7 @@ function DecisionCard({
         {/* p-4 until lg because 768-1023 is the pinch: three columns of a 728px
             row make a 236x290 card, the smallest the back's copy ever has to
             fit in, and at p-5 the longest of the three overflowed it by 2px. */}
-        <div className="lh-flip-face lh-flip-back flex flex-col justify-between overflow-hidden rounded-[30px] bg-ink p-4 lg:p-5">
+        <div className="lh-flip-face lh-flip-back lh-metal-ink flex flex-col justify-between overflow-hidden rounded-[30px] p-4 lg:p-5">
           <span className="inline-flex w-fit items-center rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-ink">
             {step}
           </span>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
+import { buttonClasses } from "@/components/ui/button";
 import { LandingNav } from "@/components/marketing/landing/landing-nav";
 import { CareerMapSection } from "@/components/marketing/landing/career-map";
 import { Faq } from "@/components/marketing/landing/faq";
@@ -120,7 +121,11 @@ export default function LandingPage() {
       <section className="relative overflow-hidden bg-ink">
         <div
           className="lh-photo lh-hero-photo absolute inset-0"
-          style={{ "--photo": "url(/brand/students-hero.jpg)" } as React.CSSProperties}
+          style={
+            {
+              "--photo": "url(/brand/students-hero.jpg)",
+            } as React.CSSProperties
+          }
           aria-hidden
         />
         {/* Scrims are deliberately light in the middle and right so the photograph
@@ -147,7 +152,7 @@ export default function LandingPage() {
           <div className="flex flex-1 items-center">
             <div>
               <span
-                className="lh-hero-in inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur"
+                className="lh-hero-in lh-metal-card inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold text-white"
                 style={d(0)}
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-sky-2" /> Free while in beta
@@ -179,9 +184,15 @@ export default function LandingPage() {
             </div>
 
             <div className="lh-hero-in sm:justify-self-end" style={d(760)}>
+              {/* Through buttonClasses rather than a hand-written copy of it,
+                  so the metal on a primary button is defined once. Only the
+                  size and the lift are this button's own. */}
               <Link
                 href="/signup"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue px-10 py-[23px] text-base font-bold text-white shadow-glow transition hover:-translate-y-0.5 hover:brightness-110"
+                className={buttonClasses(
+                  "primary",
+                  "px-10 py-[23px] text-base hover:-translate-y-0.5",
+                )}
               >
                 Get started <ArrowIcon className="h-4 w-4" />
               </Link>
@@ -300,11 +311,11 @@ export default function LandingPage() {
 
           <div className="mt-16 grid gap-6 md:grid-cols-2">
             <Reveal>
-              {/* White on the band's paper ground, hairlined and lifted —
-                  the same card the career map's hub and the how-it-works frame
-                  use. It was a borderless `bg-paper` block, which is now the
+              {/* Silver on the band's paper ground — the page's light metal,
+                  the same face the hero's explore card and the career pills
+                  carry. It was a borderless `bg-paper` block, which is now the
                   section's own ground and would have vanished into it. */}
-              <div className="h-full rounded-3xl border border-silver bg-white p-8 shadow-soft">
+              <div className="lh-metal-light h-full rounded-3xl p-8 shadow-soft">
                 <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-ink">
                   Everything included
                 </h3>
@@ -340,7 +351,7 @@ export default function LandingPage() {
                 </ul>
                 <Link
                   href="/signup"
-                  className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue px-7 py-3.5 text-sm font-bold text-white transition hover:brightness-110"
+                  className={buttonClasses("primary", "mt-8 w-full px-7 py-3.5 text-sm")}
                 >
                   Create your free account <ArrowIcon className="h-4 w-4" />
                 </Link>
@@ -348,7 +359,7 @@ export default function LandingPage() {
             </Reveal>
 
             <Reveal delay={100}>
-              <div className="flex h-full flex-col justify-between rounded-3xl bg-ink p-8">
+              <div className="lh-metal-ink flex h-full flex-col justify-between rounded-3xl p-8">
                 <div>
                   <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-white">
                     Why it&rsquo;s free
@@ -404,7 +415,7 @@ export default function LandingPage() {
                 {CAREERS.map((career) => (
                   <span
                     key={career}
-                    className="flex-none rounded-full border border-silver bg-paper px-6 py-3 font-display text-[15px] font-semibold text-ink sm:px-7 sm:py-3.5 sm:text-base"
+                    className="lh-metal-light flex-none rounded-full px-6 py-3 font-display text-[15px] font-semibold text-ink sm:px-7 sm:py-3.5 sm:text-base"
                   >
                     {career}
                   </span>
@@ -432,9 +443,13 @@ export default function LandingPage() {
               Take the free assessment and meet the career that fits you. It takes two minutes and
               costs nothing.
             </p>
+            {/* Silver, not flat white. It is the one light object on the
+                page's one blue surface, so it is where the light metal is most
+                visible — and a flat white pill on a lit blue card was the one
+                thing here still reading as a sticker. */}
             <Link
               href="/signup"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-bold text-blue transition hover:-translate-y-0.5 hover:bg-white/90"
+              className="lh-metal-light mt-8 inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-bold text-blue transition hover:-translate-y-0.5 hover:brightness-[1.02]"
             >
               Get started free <ArrowIcon className="h-4 w-4" />
             </Link>
@@ -464,7 +479,13 @@ export default function LandingPage() {
               .
             </p>
           </Reveal>
-          <Faq />
+          {/* The accordion on a metal face rather than loose on the section's
+              ground. `.lh-metal-ink`, not `.lh-metal-card`: there is nothing
+              behind this but flat ink, so the glass card's backdrop blur would
+              be paint a mid-tier Android pays for and no one can see. */}
+          <div className="lh-metal-ink rounded-3xl px-6 py-2 sm:px-8">
+            <Faq />
+          </div>
         </div>
       </section>
 
