@@ -47,12 +47,19 @@ between two whites. Never three of the same in a row: the career map, pricing,
 the beta band and the CTA were four white sections and 3200px with nothing
 marking the joins. Pricing carries `paper` now.
 
-⚠️ **The top of the page breaks that rule.** The statement, the 3-card band and
-"How it works" are three whites in a row — the same 3200px problem the rule
-exists to prevent. The band was briefly `ink`, which fixed it, and went back to
-`white` with the card layout it belongs to. The one-line fix is `paper` on the
-statement section, which restores `ink → paper → white → white`. Not applied: it
-changes a section nobody asked to change.
+✅ **The top of the page used to break that rule, and no longer does.** The
+statement, the 3-card band and "How it works" were three whites in a row — the
+same 3200px problem the rule exists to prevent. The band was briefly `ink`, which
+fixed it, and went back to `white` with the card layout it belongs to. It is now
+`ink` *with* that layout, so the run reads `ink → white → ink → white`.
+
+What settled it was not the rhythm. On an iPhone the step cards showed black
+wedges in their rounded corners; every dark surface inside them was given its own
+radius and the fault survived, and neither engine here can reproduce it — headless
+WebKit does not honour `backface-visibility` at all, so it renders the *back* of
+every card and cannot test the front. Against `ink` a dark corner has nothing to
+show against. **That is a cover, not a repair.** If those wedges ever appear on a
+light ground again, the cause is still out there.
 
 **Text on dark.** Three steps, plus one exception:
 

@@ -233,30 +233,44 @@ export default function LandingPage() {
           replaced — badge, title, body — but back inside these cards rather
           than in white boxes over one wide photograph.
 
-          On white, which is what it was before that. Note the consequence,
-          recorded in docs/LANDING-REFERENCE.md: the statement, this band and
-          "How it works" are three whites in a row again. */}
+          On ink. Two reasons, and the second is the one that decided it.
+
+          The rhythm: the statement, this band and "How it works" were three
+          whites in a row, the 3200px problem docs/LANDING-REFERENCE.md exists
+          to prevent. This band was briefly ink once before, which fixed it, and
+          went back to white with the card layout it belongs to. It now has both
+          — the layout and the dark ground.
+
+          And it ends a bug I could not close. On an iPhone these cards show
+          black wedges in their rounded corners; every dark surface inside them
+          is now rounded, and both engines I can drive render the corners white
+          on the deployed site, so I could neither reproduce the fault nor prove
+          a fix. Against ink there is nothing for a dark corner to give away.
+          That is a cover, not a repair — if the wedges are ever seen again on a
+          light ground, the cause is still out there. */}
       {/* id="what" moved here from the career-match stage when that came off the
           page. The nav's "What you get" pointed at it, and this section is where
           that eyebrow already lived, so the link now lands on the eyebrow that
           names it rather than on a section further down. */}
-      <section id="what" className="bg-white py-24 sm:py-32">
+      <section id="what" className="bg-ink py-24 sm:py-32">
         {/* The reference runs this band to 1240 of 1440 — the same 100px gutter
             its header and hero use, which is now ours too. Wider than the
             page's usual max-w-6xl on purpose: the width is most of what makes
             the images carry the band. */}
         <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-[100px]">
           <Reveal className="text-center">
-            <Kicker center>What you get</Kicker>
+            <Kicker center reverse>
+              What you get
+            </Kicker>
             {/* Two lines, broken between the subject and its object rather
                 than wherever the measure happens to run out. Each ScrambleText
                 is display:block (see .lh-scramble), so the units stack and the
                 second line resolves after the first has finished. */}
-            <h2 className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.5rem]">
+            <h2 className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[3.5rem]">
               <ScrambleText text="LearnHub makes" />
               <ScrambleText text="the choice clear" delay={520} />
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-muted">
+            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/70">
               Three steps, and you can start the first one now.
             </p>
           </Reveal>
