@@ -135,6 +135,14 @@
    that size of text needs. The edge composites to rgb(58,60,66) — a dark card,
    which is what it is, rather than a black one. */
 .lh-decision-scrim {
+  /* Its own corners, not just its parent's clip. The scrim is a dark gradient
+     on a square box sitting inside a face that is rounded and clipped, and the
+     face is composited (backface-visibility). A composited layer's rounded clip
+     is the thing browsers drop first, and if it goes here, what appears in the
+     two bottom corners is this box's square edge. `inherit` takes the face's
+     30px, so the shape is right whether or not the clip holds, and it stays
+     right if that radius is ever changed. */
+  border-radius: inherit;
   background-image: linear-gradient(
     0deg,
     rgba(11, 15, 26, 0.72) 0%,
