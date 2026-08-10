@@ -52,6 +52,8 @@ export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
   const [open, setOpen] = useState<ReadonlySet<number>>(() => new Set());
   /** Pending close per card, so each holds its own four seconds independently. */
   const timers = useRef(new Map<number, number>());
+  /** The row's own box, to tell a tap inside it from a tap anywhere else. */
+  const rowRef = useRef<HTMLDivElement>(null);
 
   const cancel = (i: number) => {
     const t = timers.current.get(i);
@@ -108,8 +110,42 @@ export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
     open.forEach((j) => j !== i && hideLater(j));
   };
 
+  /**
+   * A touch anywhere off the row puts every open card back.
+   *
+   * A mouse has a way of saying "not this one any more" — it leaves, and
+   * onPointerLeave starts the hold. A finger has no such gesture. So until now
+   * the only ways out of an open card on a phone were tapping it again or
+   * tapping a different one, and a tap on the heading, the page, or anywhere
+   * else left it turned over indefinitely. Card backs would stack up behind you
+   * as you scrolled.
+   *
+   * pointerdown rather than click, so it also fires at the start of a scroll
+   * that begins off the row — which is the same intent, expressed with a drag.
+   * Immediate, not the hold: the hold exists so two cards never move at once,
+   * and here nothing else is moving.
+   *
+   * Mouse pointers return early. Hover already governs them, and a click that
+   * lands off the row has always been preceded by the pointer leaving it.
+   */
+  useEffect(() => {
+    if (open.size === 0) return;
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") return;
+      const row = rowRef.current;
+      if (row && e.target instanceof Node && row.contains(e.target)) return;
+      timers.current.forEach((t) => window.clearTimeout(t));
+      timers.current.clear();
+      setOpen(new Set<number>());
+    };
+    // Capture, so a tap that lands on something which stops propagation still
+    // closes the row.
+    document.addEventListener("pointerdown", onDown, true);
+    return () => document.removeEventListener("pointerdown", onDown, true);
+  }, [open]);
+
   return (
-    <div className="mt-16 grid gap-[10px] md:grid-cols-3">
+    <div ref={rowRef} className="mt-16 grid gap-[10px] md:grid-cols-3">
       {steps.map((s, i) => (
         <Reveal key={s.step} delay={i * 90}>
           <DecisionCard
