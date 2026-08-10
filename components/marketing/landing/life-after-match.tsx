@@ -54,13 +54,13 @@ const CARDS = [
 
 export function LifeAfterMatch() {
   return (
-    <section className="bg-ink py-24 text-white sm:py-32">
+    <section className="bg-white py-24 text-ink sm:py-32">
       {/* 1160 = the card's 1120 plus the page's 20px gutters, which Tailwind's
           max-w counts as part of the box. The header then sits on the same left
           edge as the cards rather than on the page's usual 1152 container. */}
       <div className="mx-auto max-w-[1160px] px-5">
         <Reveal>
-          <Kicker reverse>After the match</Kicker>
+          <Kicker>After the match</Kicker>
           <h2 className="mt-4 font-display text-[clamp(2rem,5.2vw,3.25rem)] font-semibold uppercase leading-[1.02] tracking-[-0.03em]">
             The match is the start
           </h2>
@@ -86,7 +86,14 @@ export function LifeAfterMatch() {
                   1.41 viewports, which is close to the 83% / 1.71 the desktop
                   card gets. The min-height is still a floor, so the card grows
                   past it if the copy needs more. */}
-              <article className="lh-metal-rim relative isolate flex min-h-[125vw] w-full items-center justify-center overflow-hidden rounded-3xl shadow-[0_24px_60px_-24px_rgba(0,0,0,.7)] sm:aspect-[1120/747] sm:min-h-0">
+              {/* `text-white` sits on the card, not on the section, and that is
+                  load-bearing. The copy here is over a photograph and is white
+                  whatever the band behind it is; it used to inherit that from a
+                  section that was ink, so taking the section white turned the
+                  headings black on the picture. The section's own heading is
+                  ink, the cards' copy is white, and neither now depends on the
+                  other. */}
+              <article className="lh-metal-rim relative isolate flex min-h-[125vw] w-full items-center justify-center overflow-hidden rounded-3xl text-white shadow-[0_24px_60px_-24px_rgba(0,0,0,.45)] sm:aspect-[1120/747] sm:min-h-0">
                 <div className="lh-photo absolute inset-0" aria-hidden />
                 {/* Static import, so Next generates the blurDataURL at build
                     time and the card opens on a blurred frame of its own photo
