@@ -115,11 +115,29 @@
    a pale studio wall all the way through and white type needs real density
    under it. .lh-after-scrim cannot be reused
    here: it runs top-down at .62-.7 across 78% of the box, which is right for a
-   1120px band and would black out a 407px card almost entirely. */
+   1120px band and would black out a 407px card almost entirely.
+
+   The bottom stop was .88, which is where the black edge came from. These three
+   photos are pale at the foot — mean luminance about 160 — and .88 ink over 160
+   composites to rgb(30,32,39). Measured on the rendered card: the bottom 30px
+   was that value clean across the width and up into both corners, which against
+   a white section is a black bar with two black corners, not a scrim.
+
+   Two things made it worse on a phone than on a laptop. The card is the whole
+   column rather than a third of one, and the body copy runs to three lines
+   instead of two, so the darkest end of the ramp carries a much larger share of
+   the card.
+
+   .72 instead. That is the value at the very edge, where nothing is set; the
+   ramp through the text is barely touched, because .88 was only ever reached
+   below the last line. Measured at the lowest line of body copy: alpha went
+   .83 → .69, and white/80 on it still reads at about 7:1, well past the 4.5:1
+   that size of text needs. The edge composites to rgb(58,60,66) — a dark card,
+   which is what it is, rather than a black one. */
 .lh-decision-scrim {
   background-image: linear-gradient(
     0deg,
-    rgba(11, 15, 26, 0.88) 0%,
+    rgba(11, 15, 26, 0.72) 0%,
     rgba(11, 15, 26, 0.62) 26%,
     rgba(11, 15, 26, 0) 55%
   );
