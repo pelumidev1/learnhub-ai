@@ -252,7 +252,10 @@ export default function LandingPage() {
           page. The nav's "What you get" pointed at it, and this section is where
           that eyebrow already lived, so the link now lands on the eyebrow that
           names it rather than on a section further down. */}
-      <section id="what" className="bg-ink py-24 sm:py-32">
+      {/* py-16/24, down from py-24/32. Half this band was padding, which on ink
+          reads as a hole rather than as room. The cards took most of it back by
+          growing (see DecisionCard); this gives back the rest. */}
+      <section id="what" className="bg-ink py-16 sm:py-24">
         {/* The reference runs this band to 1240 of 1440 — the same 100px gutter
             its header and hero use, which is now ours too. Wider than the
             page's usual max-w-6xl on purpose: the width is most of what makes
@@ -266,7 +269,10 @@ export default function LandingPage() {
                 than wherever the measure happens to run out. Each ScrambleText
                 is display:block (see .lh-scramble), so the units stack and the
                 second line resolves after the first has finished. */}
-            <h2 className="mx-auto mt-5 max-w-4xl font-display text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[3.5rem]">
+            {/* Larger, and on a wider measure. The heading is the only thing
+                holding the top half of a dark band; at 3.5rem it was a small
+                mark in a large dark field. */}
+            <h2 className="mx-auto mt-5 max-w-5xl font-display text-[2.35rem] font-semibold leading-[1.06] tracking-[-0.035em] text-white sm:text-[4.25rem]">
               <ScrambleText text="LearnHub makes" />
               <ScrambleText text="the choice clear" delay={520} />
             </h2>

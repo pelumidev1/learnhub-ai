@@ -163,7 +163,7 @@ export function DecisionCards({ steps }: { steps: DecisionStep[] }) {
   }, [open]);
 
   return (
-    <div ref={rowRef} className="mt-16 grid gap-[10px] md:grid-cols-3">
+    <div ref={rowRef} className="mt-10 grid gap-[10px] sm:mt-12 md:grid-cols-3">
       {steps.map((s, i) => (
         <Reveal key={s.step} delay={i * 90}>
           <DecisionCard
@@ -221,7 +221,14 @@ function DecisionCard({
 }) {
   return (
     <div
-      className="lh-flip aspect-[407/500] w-full cursor-pointer select-none rounded-[30px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
+      /* 407/620, up from the reference's 407/500.
+         On white, 500 sat in a band that was half padding and read as
+         breathing room. On ink the same emptiness reads as a hole — a dark
+         ground gives negative space nothing to be, so the cards had to grow
+         into it rather than the band shrink around them. At 620 the row is
+         58% of the section's height instead of 49%, and the photographs get
+         the extra 120px, which is where a portrait wants it. */
+      className="lh-flip aspect-[407/620] w-full cursor-pointer select-none rounded-[30px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-4"
       data-flipped={open}
       role="button"
       tabIndex={0}
