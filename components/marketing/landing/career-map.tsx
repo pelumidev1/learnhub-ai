@@ -271,7 +271,9 @@ export function CareerMapSection() {
           either side. The copy above and below keeps its own narrow measure. */}
       <div className="mx-auto max-w-[1280px] px-5">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Kicker center reverse>One ecosystem</Kicker>
+          <Kicker center reverse>
+            One ecosystem
+          </Kicker>
           <ScrambleText
             as="h2"
             text="Every path into tech, connected to you"
@@ -372,7 +374,7 @@ export function CareerMapSection() {
               the ring it is readable at full width instead of squeezed. */}
           <div className="mt-5 sm:absolute sm:left-1/2 sm:top-1/2 sm:z-20 sm:mt-0 sm:-translate-x-1/2 sm:-translate-y-1/2">
             <div
-              className="lh-metal-card mx-auto rounded-3xl p-5 text-center sm:mx-0"
+              className="lh-map-hub lh-metal-card mx-auto rounded-3xl p-5 text-center sm:mx-0"
               style={{ width: "min(78vw, 300px)" }}
             >
               {active === null ? (

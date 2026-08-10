@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
+import { buttonClasses } from "@/components/ui/button";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 const LINKS = [
@@ -123,18 +124,22 @@ export function LandingNav() {
               </a>
             ))}
           </nav>
+          {/* The same two materials the bar above uses. This menu is the
+              primary path on a phone, and its "Get started" was the one primary
+              button on the page still hand-written and flat — so a phone got
+              the only unlit version of the page's main action. */}
           <div className="mt-5 flex flex-col gap-3">
             <a
               href={`mailto:${CONTACT_EMAIL}`}
               onClick={() => setOpen(false)}
-              className="rounded-full border border-silver-2 py-3 text-center text-sm font-bold text-ink"
+              className="lh-metal-light rounded-full py-3 text-center text-sm font-bold text-ink"
             >
               Contact
             </a>
             <Link
               href="/signup"
               onClick={() => setOpen(false)}
-              className="rounded-full bg-blue py-3 text-center text-sm font-bold text-white shadow-glow"
+              className={buttonClasses("primary", "w-full py-3 text-sm")}
             >
               Get started
             </Link>

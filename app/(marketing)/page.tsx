@@ -482,8 +482,11 @@ export default function LandingPage() {
           {/* The accordion on a metal face rather than loose on the section's
               ground. `.lh-metal-ink`, not `.lh-metal-card`: there is nothing
               behind this but flat ink, so the glass card's backdrop blur would
-              be paint a mid-tier Android pays for and no one can see. */}
-          <div className="lh-metal-ink rounded-3xl px-6 py-2 sm:px-8">
+              be paint a mid-tier Android pays for and no one can see.
+
+              `lh-faq-card` takes the whole card off below sm — its padding was
+              costing the questions a second line on a phone. See landing.css. */}
+          <div className="lh-faq-card lh-metal-ink rounded-3xl px-6 py-2 sm:px-8">
             <Faq />
           </div>
         </div>

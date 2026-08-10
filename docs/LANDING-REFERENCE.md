@@ -345,6 +345,24 @@ enforced in code, not by convention:
    percentage-width stage is the usual cause; the ecosystem glow is a 420px
    circle and needed `overflow-x-clip` on its section. Check 320 and 360, not
    just 390.
+5. **No `backdrop-filter` over a flat ground.** A blur needs a backdrop root and
+   a readback whether or not there is anything behind it to blur. The career map
+   hub is centred in the ring from `sm` up, over the dashed ellipse and the beam,
+   and earns it; on a phone it sits in the flow *under* the stage with flat
+   `ink` behind, where it was blurring one solid colour into itself. `.lh-map-hub`
+   drops the filter below `sm` and keeps the translucent face, which looks
+   identical. The hero badge keeps its blur at both sizes — it is over the
+   photograph.
+6. **Decoration does not get to take reading width.** The FAQ's metal card cost
+   48px of the 350 a 390px phone has, which wrapped two of five questions onto a
+   second line; 12px of padding wrapped none, so it was over budget by double.
+   `.lh-faq-card` removes the card below `sm` rather than tuning the padding to
+   a threshold it only just clears. On a narrow screen the card was the part
+   that could go.
+
+Rules 5 and 6 are the metal's: it arrived after 1–4 and broke neither, but a
+material applied page-wide has to be checked against both — paint cost and the
+width it takes from the copy.
 
 ## Image slots
 

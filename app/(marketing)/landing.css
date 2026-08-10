@@ -413,6 +413,35 @@
   border-top-color: rgba(255, 255, 255, 0.28);
 }
 
+/* Two places where the metal costs a phone something and returns nothing.
+   Both are `max-width: 639px`, which is one below Tailwind's `sm`. */
+@media (max-width: 639px) {
+  /* The FAQ card is decoration; the questions inside it are the content. Its
+     24px of padding takes 48 of the 350 a 390px phone has, and measured there
+     that wraps two of the five questions onto a second line — 12px wraps none,
+     so the card was over its budget by a factor of two. Rather than tune the
+     padding to a threshold it only just clears, the card comes off below sm and
+     the accordion sits on the section's own ground, which is where it was. From
+     sm up there is room for both. */
+  .lh-faq-card {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  /* The career map's hub is centred in the ring from sm up, over the dashed
+     ellipse and the beam, and the blur has something to do. On a phone it is in
+     the flow *under* the stage with flat ink behind it, so the browser sets up a
+     backdrop root and blurs one solid colour into itself — a layer and a
+     readback for a result identical to no blur at all. The face stays
+     translucent; only the blur goes. */
+  .lh-map-hub {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 /* Scramble-in. See components/marketing/landing/scramble-text.tsx.
 
    The real word stays in the flow and holds the box; the scrambling string is
