@@ -1,0 +1,44 @@
+name: CI
+
+# Typecheck, tests, and a production build on every push and pull request.
+# Until now none of the 305 tests ran anywhere but a laptop, and a push to main
+# deploys straight to Vercel — so a broken commit was only caught by the deploy
+# failing, after it had already been promoted.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Tests
+        run: npm test
+
+      # The build is what catches server/client boundary mistakes and static
+      # generation errors that `tsc` cannot see.
+      #
+      # Placeholder Supabase values, deliberately: no secret belongs in CI for
+      # this. The only build-time data fetch is the careers catalog
+      # (`generateStaticParams` in app/(marketing)/careers/[slug]), and
+      # `getCareers()` already falls back to an empty list when the query fails,
+      # so the build completes with an empty catalog. We are checking that the
+      # app compiles and prerenders, not that the data is right.
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
