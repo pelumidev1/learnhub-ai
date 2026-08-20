@@ -4,7 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { generateCareerRecommendation } from "@/lib/ai/recommendation";
-import { estimateCostUsd } from "@/lib/ai/config";
+import { estimateCostUsd, MODELS } from "@/lib/ai/config";
 import { checkAiRateLimit, AI_LIMITS } from "@/lib/ai/rate-limit";
 import { formatAnswers } from "@/lib/assessment/questions";
 
@@ -77,15 +77,43 @@ export async function generateRecommendation(assessmentId: string): Promise<Resu
 
   try {
     const startedAt = Date.now();
-    const { recommendation, usage, model } = await generateCareerRecommendation({
-      answersText: formatAnswers(answers),
-      country: profile?.country ?? null,
-      careers: (careers ?? []).map((c) => ({
-        slug: c.slug,
-        title: c.title,
-        category: c.category,
-      })),
-    });
+
+    let generated: Awaited<ReturnType<typeof generateCareerRecommendation>>;
+    try {
+      generated = await generateCareerRecommendation({
+        answersText: formatAnswers(answers),
+        country: profile?.country ?? null,
+        careers: (careers ?? []).map((c) => ({
+          slug: c.slug,
+          title: c.title,
+          category: c.category,
+        })),
+      });
+    } catch (e) {
+      /* Log the failure so it counts against the rate limit, the way quiz
+         generation already does (lib/db/quiz-generate.ts). Only successful calls
+         were logged before, and the limiter counts rows in `ai_events` — so a
+         call the model returned unparseable JSON for cost full Opus price, moved
+         the limiter not at all, and never appeared on /admin. GeneratePanel fires this
+         on mount, so it retried on every page load, forever. */
+      try {
+        await supabase.from("ai_events").insert({
+          user_id: user.id,
+          call_type: "recommendation",
+          model: MODELS.recommendation,
+          input_tokens: 0,
+          output_tokens: 0,
+          cost_usd: 0,
+          latency_ms: Date.now() - startedAt,
+          related_id: assessmentId,
+          status: "error",
+        });
+      } catch {
+        // logging is best-effort
+      }
+      throw e;
+    }
+    const { recommendation, usage, model } = generated;
 
     // Log the call immediately — it cost money even if persisting fails below.
     try {

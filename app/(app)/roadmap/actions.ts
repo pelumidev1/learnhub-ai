@@ -7,7 +7,7 @@ import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { generateRoadmap } from "@/lib/ai/roadmap";
-import { estimateCostUsd } from "@/lib/ai/config";
+import { estimateCostUsd, MODELS } from "@/lib/ai/config";
 import { checkAiRateLimit, AI_LIMITS } from "@/lib/ai/rate-limit";
 import { formatAnswers } from "@/lib/assessment/questions";
 import { generateQuizzesForSteps } from "@/lib/db/quiz-generate";
@@ -65,12 +65,39 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
   let roadmapId: string | null = null;
   try {
     const startedAt = Date.now();
-    const { roadmap, usage, model } = await generateRoadmap({
-      careerTitle: cr.title,
-      rationale: cr.rationale,
-      country: profile?.country ?? null,
-      constraints: formatAnswers(answers),
-    });
+
+    let generated: Awaited<ReturnType<typeof generateRoadmap>>;
+    try {
+      generated = await generateRoadmap({
+        careerTitle: cr.title,
+        rationale: cr.rationale,
+        country: profile?.country ?? null,
+        constraints: formatAnswers(answers),
+      });
+    } catch (e) {
+      /* Log the failure so it counts against the rate limit, the way quiz
+         generation already does (lib/db/quiz-generate.ts). Only successful calls
+         were logged before, and the limiter counts rows in `ai_events` — so a
+         call the model returned unparseable JSON for cost full Opus price, moved
+         the limiter not at all, and never appeared on /admin. */
+      try {
+        await supabase.from("ai_events").insert({
+          user_id: user.id,
+          call_type: "roadmap",
+          model: MODELS.roadmap,
+          input_tokens: 0,
+          output_tokens: 0,
+          cost_usd: 0,
+          latency_ms: Date.now() - startedAt,
+          related_id: cr.id,
+          status: "error",
+        });
+      } catch {
+        // logging is best-effort
+      }
+      throw e;
+    }
+    const { roadmap, usage, model } = generated;
 
     // Log the call immediately — it cost money even if persisting fails below.
     try {
