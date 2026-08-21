@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   // The root layout appends "· LearnHub"; adding it here too doubles it.
   title: "Free AI masterclass",
   description:
-    "A free live session on the AI tools I actually build with: Claude, Claude Code, ChatGPT, and the connectors that make them useful. Five free bootcamp seats given away at the end.",
+    "A free live session on the AI tools I actually work with: building, video, design, and the tools behind all three. Five free bootcamp seats given away at the end.",
 };
 
 /* Static. Nothing on this page is per-visitor, and it is about to take the
@@ -17,11 +17,11 @@ export const metadata: Metadata = {
 export const dynamic = "force-static";
 
 const SEEING = [
-  "Claude, where it beats ChatGPT, and the places it does not",
+  "Claude and ChatGPT, and where each one actually wins",
   "Claude Code building something small from start to finish, live, with nothing hidden",
-  "Skills, plugins, connectors and MCPs, explained without the jargon",
-  "Cowork, and what it is for",
-  "ChatGPT, and what it is still best at",
+  "A video made with AI, from the script to a finished cut",
+  "Images and design, without hiring a designer",
+  "Skills, plugins, connectors, MCPs and Cowork, explained without the jargon",
   "An honest ten minutes on what AI cannot do for you",
 ];
 
@@ -62,9 +62,8 @@ export default function MasterclassPage() {
           I will show you the AI tools I actually build with
         </h1>
         <p className="mt-4 text-lg text-muted">
-          Free, live, and recorded. Claude, Claude Code, ChatGPT, and the connectors that make
-          them genuinely useful. At the end I am giving five people a free seat in the Learnhub AI
-          bootcamp.
+          Free, live, and recorded. Building, video, design, and the AI tools I use for all three.
+          At the end I am giving five people a free seat in the Learnhub AI bootcamp.
         </p>
         <p className="mt-4 font-display font-semibold text-ink">
           {MASTERCLASS.date} at {MASTERCLASS.time}. Free. Bring a laptop or a phone, either works.
@@ -108,16 +107,14 @@ export default function MasterclassPage() {
         </Section>
 
         <Section title="About me">
-          <p className="text-muted">I am Pelumi. I came from digital marketing, not engineering.</p>
-          <p className="mt-3 text-muted">
-            Last year I started a tech school and had to shut it down. The course was cloud
-            engineering, every student needed a serious laptop just to begin, and I could not
-            afford to build them a platform to learn on. I paused it and moved my students onto
-            scholarships somewhere else.
+          <p className="text-muted">
+            I am Pelumi. I market products for a living. At some point waiting for a developer
+            stopped making sense, so now I write the positioning and I ship the thing it
+            describes.
           </p>
           <p className="mt-3 text-muted">
-            This year I built the platform myself, with AI, having never trained as a developer.
-            That is the entire reason I believe what I am about to show you.
+            This platform is one of them. I built it myself with AI, and that is the entire reason
+            I believe what I am about to show you.
           </p>
         </Section>
 
