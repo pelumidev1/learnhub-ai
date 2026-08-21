@@ -22,9 +22,6 @@ jobs:
 
       - run: npm ci
 
-      - name: Typecheck
-        run: npx tsc --noEmit
-
       - name: Tests
         run: npm test
 
@@ -42,3 +39,13 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+
+      # After the build, not before it. `next-env.d.ts` is gitignored and is
+      # what pulls in next/image-types/global, the declaration that makes
+      # `import cover from "@/public/brand/after-plan.webp"` a known module.
+      # A fresh clone does not have that file until a build writes it, so a
+      # typecheck running first fails on every image import in
+      # components/marketing/landing/life-after-match.tsx — which is exactly
+      # how this workflow failed its first run.
+      - name: Typecheck
+        run: npx tsc --noEmit
