@@ -34,21 +34,36 @@ function buildRows(assessmentId: string, userId: string, answers: Answers) {
     }));
 }
 
-/** Autosave: upsert the current answers (called on every step advance). */
-export async function saveStep(assessmentId: string, answers: Answers): Promise<void> {
-  if (!UuidSchema.safeParse(assessmentId).success) return;
+/**
+ * Autosave: upsert the current answers (called on every step advance).
+ *
+ * Returns whether the answers actually reached the server, because the wizard
+ * shows a "Saved" tick on the strength of it. This used to return void and
+ * swallow every failure — an expired session returned early, and the upsert's
+ * error was never read — so the tick appeared over a write the server had
+ * discarded. The assessment runs long enough for a session to lapse mid-way,
+ * which makes that a real case rather than a theoretical one.
+ *
+ * A false here is not data loss: the wizard also buffers to localStorage. It is
+ * the difference between "your answers are on our servers" and "your answers
+ * are on this phone", and only one of those survives switching device.
+ */
+export async function saveStep(assessmentId: string, answers: Answers): Promise<boolean> {
+  if (!UuidSchema.safeParse(assessmentId).success) return false;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return;
+  if (!user) return false;
 
   const rows = buildRows(assessmentId, user.id, answers);
-  if (rows.length) {
-    await supabase
-      .from("assessment_answers")
-      .upsert(rows, { onConflict: "assessment_id,question_key" });
-  }
+  // Nothing to write is not a failure: an optional-only step saves no rows.
+  if (rows.length === 0) return true;
+
+  const { error } = await supabase
+    .from("assessment_answers")
+    .upsert(rows, { onConflict: "assessment_id,question_key" });
+  return !error;
 }
 
 /** Finalize the assessment and hand off to the results (recommendation) flow. */

@@ -45,7 +45,7 @@ export function AssessmentWizard({
   const router = useRouter();
   const [answers, setAnswers] = useState<Answers>(() => withDefaults(initialAnswers));
   const [step, setStep] = useState(0);
-  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "local">("idle");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -104,10 +104,14 @@ export function AssessmentWizard({
     startTransition(async () => {
       setSaveState("saving");
       try {
-        await saveStep(assessmentId, answers);
-        setSaveState("saved");
+        /* "Saved" now means the server has it. saveStep returns false when the
+           write did not land — most often a session that lapsed part-way
+           through — and the answers are then only in localStorage, which does
+           not follow anyone to another device. Claiming otherwise is the one
+           thing autosave must not do. */
+        setSaveState((await saveStep(assessmentId, answers)) ? "saved" : "local");
       } catch {
-        setSaveState("idle");
+        setSaveState("local");
       }
       if (isLast) {
         try {
@@ -163,6 +167,14 @@ export function AssessmentWizard({
           {saveState === "saved" && (
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-2">
               <Icons.check className="h-3.5 w-3.5 text-blue" /> Saved
+            </span>
+          )}
+          {saveState === "local" && (
+            <span
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-2"
+              title="We could not reach the server. Your answers are kept on this device and will go up when you continue."
+            >
+              <Icons.clock className="h-3.5 w-3.5" /> Saved on this device
             </span>
           )}
           <button
