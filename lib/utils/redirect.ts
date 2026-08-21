@@ -13,3 +13,22 @@ export function safeInternalPath(
   }
   return path;
 }
+
+/**
+ * Whether a caught error is Next's way of saying "this Server Action
+ * redirected".
+ *
+ * `redirect()` works by throwing, and the throw crosses the Server Action
+ * boundary to the caller. So any client that wraps an action in try/catch to
+ * report failure catches its successes too, and reports a working redirect as
+ * an error. The digest is the only thing distinguishing them.
+ */
+export function isRedirectError(e: unknown): boolean {
+  return (
+    typeof e === "object" &&
+    e !== null &&
+    "digest" in e &&
+    typeof (e as { digest: unknown }).digest === "string" &&
+    (e as { digest: string }).digest.startsWith("NEXT_REDIRECT")
+  );
+}

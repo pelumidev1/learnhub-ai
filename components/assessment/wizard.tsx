@@ -10,6 +10,7 @@ import {
 } from "@/lib/assessment/questions";
 import { SingleSelect, MultiSelect, ScaleInput, TextField } from "./fields";
 import { saveStep, submitAssessment } from "@/app/(app)/assessment/actions";
+import { isRedirectError } from "@/lib/utils/redirect";
 import { Logo } from "@/components/ui/logo";
 import { Spinner } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
@@ -109,7 +110,23 @@ export function AssessmentWizard({
         setSaveState("idle");
       }
       if (isLast) {
-        await submitAssessment(assessmentId, answers); // redirects to /results/[id]
+        try {
+          await submitAssessment(assessmentId, answers); // redirects to /results/[id]
+        } catch (e) {
+          /* A submit that worked ends in redirect(), which Next signals by
+             throwing a NEXT_REDIRECT digest. Rethrow that untouched, or a
+             successful submit would render as a failure.
+
+             Anything else is real: a dropped connection, or a session that
+             expired during the ten minutes this takes. This call was the one
+             in the wizard with no error path — the button just stopped
+             spinning and left someone on the last question with no idea
+             whether their answers had gone anywhere. */
+          if (isRedirectError(e)) throw e;
+          setError(
+            "We couldn't send your answers. They're safe on this device. Check your connection and tap See my results again.",
+          );
+        }
       } else {
         setStep((s) => s + 1);
         window.scrollTo({ top: 0, behavior: "smooth" });

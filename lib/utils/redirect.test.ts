@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { safeInternalPath } from "./redirect";
+import { isRedirectError, safeInternalPath } from "./redirect";
 
 /**
  * Open-redirect guard, added by the 2026-07-12 security pass. It decides where
@@ -55,5 +55,35 @@ describe("safeInternalPath", () => {
    */
   it("allows an internal path that embeds a URL in its query", () => {
     expect(safeInternalPath("/login?next=https://evil.com")).toBe("/login?next=https://evil.com");
+  });
+});
+
+/**
+ * The assessment wizard wraps submitAssessment in try/catch so a dropped
+ * connection on the final step says so instead of silently doing nothing. That
+ * catch also sees the throw redirect() uses to navigate on success, so getting
+ * this wrong turns every successful submit into an error message.
+ */
+describe("isRedirectError", () => {
+  it("recognises Next's redirect throw", () => {
+    expect(isRedirectError({ digest: "NEXT_REDIRECT;push;/results/abc;307;" })).toBe(true);
+  });
+
+  it("recognises a bare NEXT_REDIRECT digest", () => {
+    expect(isRedirectError({ digest: "NEXT_REDIRECT" })).toBe(true);
+  });
+
+  it.each([
+    ["a network failure", new TypeError("Failed to fetch")],
+    ["a plain error", new Error("boom")],
+    ["a not-found throw", { digest: "NEXT_NOT_FOUND" }],
+    ["a digest that merely mentions it", { digest: "SOMETHING_NEXT_REDIRECT" }],
+    ["a non-string digest", { digest: 307 }],
+    ["an object without a digest", { message: "nope" }],
+    ["null", null],
+    ["undefined", undefined],
+    ["a string", "NEXT_REDIRECT"],
+  ])("does not mistake %s for a redirect", (_label, value) => {
+    expect(isRedirectError(value)).toBe(false);
   });
 });
