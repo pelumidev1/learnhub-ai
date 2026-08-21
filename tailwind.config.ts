@@ -31,6 +31,27 @@ export default {
         soft: "0 2px 6px rgba(16,24,48,.06), 0 20px 40px -26px rgba(16,24,48,.22)",
         glow: "0 20px 50px -24px rgba(31,51,204,.42)",
       },
+      /* Motion tokens. The built-in CSS easings are too weak to read as
+         deliberate; these are the strong variants, not hand-rolled.
+         `out` for anything entering or exiting, `move` for something
+         travelling across the screen, `drawer` for sheets sliding from an
+         edge. Nothing in the app uses ease-in: it starts slow, which delays
+         the exact moment the user is watching. */
+      transitionTimingFunction: {
+        out: "cubic-bezier(0.23, 1, 0.32, 1)",
+        move: "cubic-bezier(0.77, 0, 0.175, 1)",
+        drawer: "cubic-bezier(0.32, 0.72, 0, 1)",
+      },
+      /* A short scale, so nobody reaches for an arbitrary 350ms. Press is the
+         fastest thing in the app because it is pure acknowledgement; nothing
+         here goes past 260ms, since UI over 300ms reads as sluggish however
+         nice the curve. */
+      transitionDuration: {
+        press: "140ms",
+        fast: "180ms",
+        base: "220ms",
+        slow: "260ms",
+      },
     },
   },
   plugins: [],

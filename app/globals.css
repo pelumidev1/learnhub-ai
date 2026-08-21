@@ -30,12 +30,59 @@ body {
   color: #0b0f1a;
 }
 
-/* Respect reduced motion globally. */
+/* Motion tokens, also available as CSS variables for the places that are not
+   Tailwind utilities: keyframes, inline styles, and the toast layer. Kept in
+   step with tailwind.config.ts by hand, because there are five of them. */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-move: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-press: 140ms;
+  --dur-fast: 180ms;
+  --dur-base: 220ms;
+}
+
+/* Entrance for a page's own content. Held here rather than in a component so
+   every screen enters the same way.
+
+   Driven by a `data-mounted` attribute set after the first render, not by
+   @starting-style. Next 16's browser baseline reaches back to Chrome 111 and
+   @starting-style only lands in 117, so on a three-year-old Android the CSS
+   version simply would not run and the content would appear with no entrance
+   at all. The attribute works everywhere. */
+[data-enter] {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+  /* Delay comes from the element's index, so a list cascades instead of
+     arriving in one block. Capped in the component at 5 steps: past about
+     240ms of total stagger the page stops feeling quick. */
+  transition-delay: calc(var(--enter-index, 0) * 40ms);
+}
+[data-enter][data-mounted="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced motion: fewer and gentler, not none.
+   The previous rule flattened every duration to 0.01ms, which also killed the
+   fades and colour changes that help someone follow what just changed. Motion
+   through space goes; opacity stays. */
 @media (prefers-reduced-motion: reduce) {
+  [data-enter] {
+    transform: none;
+    transition-delay: 0ms;
+  }
+  [data-enter][data-mounted="true"] {
+    transform: none;
+  }
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
