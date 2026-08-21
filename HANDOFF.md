@@ -1,6 +1,6 @@
 # HANDOFF — resume here (written for Opus 4.8)
 
-_Last updated 2026-07-12 (after the scalability and security passes). Written for a fresh Claude Code session with **no access to previous conversations**. Read this file first; it links to everything else._
+_Last updated 2026-08-21 (after the full-stack audit — see "Audit pass" below). Written for a fresh Claude Code session with **no access to previous conversations**. Read this file first; it links to everything else._
 
 ## What this is
 
@@ -35,7 +35,7 @@ _Last updated 2026-07-12 (after the scalability and security passes). Written fo
 2. **Never run `npx next build` while the dev server is running** — they share `.next` and corrupt each other. Stop dev, build, `rm -rf .next`, restart dev. This bit us twice.
 3. Before any commit: `npm test && npx tsc --noEmit && npx next build` must all pass. Commit to `main`; the owner asks for pushes explicitly and uses them to trigger Vercel deploys.
 4. ~~When the owner funds Anthropic: flip `AI_DEMO_MODE=false`, run the full loop once, inspect output.~~ **DONE 2026-07-23** — account funded, `AI_DEMO_MODE=false` locally, full real loop verified (see state note above). Still worth doing once through the browser UI with a real signup to confirm `ai_events` rows land with cost/latency.
-5. ~~**Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project.~~ **DONE — owner confirmed applied 2026-07-23.** The RLS performance fix and the one-roadmap-per-match unique index are live. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` is also applied.) No pending migrations remain.
+5. ~~**Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project.~~ **DONE — owner confirmed applied 2026-07-23.** The RLS performance fix and the one-roadmap-per-match unique index are live. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` is also applied.) **The two 2026-08-20/21 migrations — `20260820120000_analytics_own_select.sql` and `20260821120000_quiz_gate_server_only.sql` — are applied and verified too.** No pending migrations remain. There is no Supabase CLI in this project and no `config.toml`; migrations are applied by hand in the dashboard SQL Editor, so a migration file landing in the repo does **not** mean it is live — ask.
 
 ## Tests
 
@@ -81,7 +81,7 @@ The suite was checked by mutation, not just by passing: ten deliberate regressio
 
 **Google OAuth: ✅ DONE & TESTED (2026-07-23).** Google Cloud OAuth client created, provider enabled in Supabase, sign-in verified working end-to-end (lands on dashboard; `handle_new_user` trigger fills the profile row from Google's `full_name`/`avatar_url` metadata). Both email/password and Google now work.
 
-**Post-beta, in order:** ~~certificate public verification page~~ (`app/(marketing)/verify/[code]` exists); ~~populate `ai_events.cost_usd`/`latency_ms`~~ (done — written at all three call sites via `estimateCostUsd`); ~~public careers catalog~~ (`app/(marketing)/careers` exists); ~~Privacy & Terms pages~~ (exist). ~~**recommendation feedback thumbs**~~ — shipped 2026-08-02, see below. Still open: no timeout/retry story on the AI calls (a call that fails before the `ai_events` insert never counts against the rate limit).
+**Post-beta, in order:** ~~certificate public verification page~~ (`app/(marketing)/verify/[code]` exists); ~~populate `ai_events.cost_usd`/`latency_ms`~~ (done — written at all three call sites via `estimateCostUsd`); ~~public careers catalog~~ (`app/(marketing)/careers` exists); ~~Privacy & Terms pages~~ (exist). ~~**recommendation feedback thumbs**~~ — shipped 2026-08-02, see below. ~~Still open: no timeout/retry story on the AI calls (a call that fails before the `ai_events` insert never counts against the rate limit).~~ **The logging half is fixed 2026-08-21** — failed recommendation and roadmap calls now write an `ai_events` row with `status: "error"`, so they count against the limiter and show on `/admin`. A timeout/retry policy is still absent; the advisor route still logs only on success.
 
 ~~**Next build: step quizzes**~~ — shipped 2026-08-03, see below.
 
@@ -140,6 +140,95 @@ Reads the five `admin_*` views that had existed unused since the init migration.
 - Totals are all-time; charts cover 30 days. Days are bucketed in **UTC**, same trade-off `computeStreaks` makes.
 
 **Future roadmap (PRD phases):** Phase 3 — monetize via human mentor booking, Paystack/Flutterwave. Phase 4 — localization (French, Swahili), phone/OTP auth, job-board partnerships, community, native app.
+
+## Audit pass (2026-08-21)
+
+A full front-end/back-end review plus a GitHub-side review. Five real bugs
+fixed, all deployed and verified in production. Commits `c4a928f`, `7c97985`,
+`b474bf5`, `1dc6ad0`, `f1c6032`, `28e052b`, `ca578ad`, `0b7febf`.
+
+**Fixed — cost and correctness**
+
+1. **Failed AI calls were invisible and uncapped.** `ai_events` was written only
+   on success, and the rate limiter counts rows in that table, so a failed Opus
+   call cost real money, moved the limiter not at all, and never reached
+   `/admin`. `GeneratePanel` auto-fires on mount, so a recommendation whose JSON
+   the model kept getting wrong hit Opus on every page load with no ceiling.
+   Both Opus paths now log failures, matching what `lib/db/quiz-generate.ts` has
+   always done.
+2. **"Recent activity" was empty for every user since launch.**
+   `analytics_events` had insert-your-own and select-if-admin policies, and no
+   owner-read. RLS filtered the dashboard's query to zero rows silently, and
+   `safe()` passed the empty list through to an empty state that looked like a
+   new account. Writes were always landing; nothing could read them back.
+   Migration `20260820120000_analytics_own_select.sql` — **applied**.
+3. **The quiz gate was app-only.** The database would have accepted
+   `insert into quiz_attempts (passed: true)` from any signed-in user, and
+   served `step_quizzes.questions` including `correct_index`. Either one hands
+   out a certificate with no question answered. Both tables are now
+   server-write-only and the answer key is hidden behind a column-level grant.
+   Migration `20260821120000_quiz_gate_server_only.sql` — **applied and
+   verified**: `has_column_privilege`/`has_table_privilege` all return false,
+   and quizzes still render on the roadmap page.
+4. **Autosave claimed "Saved" for writes the server discarded.** `saveStep`
+   returned void and swallowed both failure modes. It now returns whether the
+   write landed; where it did not, the indicator reads "Saved on this device",
+   which is true — localStorage has it, but localStorage does not follow anyone
+   to another phone.
+5. **The final assessment step had no error path.** A dropped connection on
+   "See my results" did nothing visible at all. Now reports and lets you retry.
+   The catch has to rethrow `NEXT_REDIRECT` or every successful submit renders
+   as a failure — `isRedirectError` in `lib/utils/redirect.ts`, 11 tests.
+
+**New: the quiz path now depends on the service role.** `lib/db/quiz.ts` reads
+`questions` through `createServiceClient()`, because `authenticated` no longer
+has that column. That inverts what its `user_id` filter does — it is now the
+*only* thing scoping the row, not a belt-and-braces check on top of RLS. Never
+call those functions with an id that did not come from `supabase.auth.getUser()`.
+`SUPABASE_SERVICE_ROLE_KEY` is set in Vercel Production and Preview; without it
+quizzes break outright rather than degrading.
+
+**Migration/deploy order matters here.** Ship code first, apply the migration
+second. New code uses the service role and works under both old and new grants;
+old code reads `questions` with the caller's client, so a migration applied
+ahead of the deploy blanks every quiz until it catches up.
+
+**New: CI.** `.github/workflows/ci.yml` runs tests, build, then typecheck on
+every push and PR. **Typecheck must stay after the build** — `next-env.d.ts` is
+gitignored and is what declares `*.webp` as an importable module, so on a fresh
+clone a typecheck running first fails on the image imports in
+`life-after-match.tsx`. That is how this workflow failed its own first run.
+Note CI cannot *block* a deploy without branch protection and a PR flow; today
+it buys a red X and an email, not a gate.
+
+**New: GitHub security posture.** Secret scanning with push protection, and
+Dependabot alerts plus automated security fixes, are enabled. The repo is
+**public** — history was checked value-by-value against `.env.local` and no
+real secret was ever committed (only `NEXT_PUBLIC_*` values, which are public by
+design). Nothing needs rotating.
+
+**Next 16 upgrade — trialled 2026-08-21, not applied.** Dependabot PR #5 bumps
+`next` 15.1.6 → 16.3.1, which is the only route to the three open `sharp`/libvips
+CVEs. Trialled in a throwaway copy: 316 tests pass, build completes all routes,
+`tsc --noEmit` clean, **npm audit drops to 0 vulnerabilities** (sharp 0.35.3),
+`after()` still exports from `next/server`, and the `NEXT_REDIRECT` digest
+format is unchanged so `isRedirectError` still holds. The Next 15 Edge Runtime
+warning about `process.version` disappears. One deprecation warning: the
+`middleware` file convention is renamed to `proxy` (still works).
+**What the trial does not prove** is runtime behaviour — the auth cookie flow,
+SSE streaming in the advisor, and the OAuth round-trip are not exercised by a
+build. Merge the PR to get a Vercel preview, click through signup → assessment →
+roadmap → advisor on the preview URL, then promote.
+
+**Known-remaining, none blocking:** the advisor route logs `ai_events` only on
+success; raw Supabase error strings ("Invalid login credentials") reach users
+and break the tone rule; `lib/supabase/client.ts` is dead code (nothing imports
+it, and no Supabase key reaches the browser as a result); the public repo still
+carries the stale `marketing/` copy, scraped third-party HTML in
+`references/inspiration/`, and a `.claude/launch.json` pointing at a path that
+no longer exists. **Supabase is on the free tier and pauses after 7 days idle —
+while paused the whole site is down, not degraded.** It paused once (resumed
+2026-08-20).
 
 ## Working with the owner (Pelumi)
 
