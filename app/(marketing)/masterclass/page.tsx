@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   // The root layout appends "· LearnHub"; adding it here too doubles it.
   title: "Free AI masterclass",
   description:
-    "A free live session on the AI tools I actually work with: building, video, design, and the tools behind all three. Five free bootcamp seats given away at the end.",
+    "A free live session on the AI tools Learnhub builds with: building, video, design, and the tools behind all three. Five free bootcamp seats at the end.",
 };
 
 /* Static. Nothing on this page is per-visitor, and it is about to take the
@@ -40,7 +40,7 @@ const FAQ = [
   ],
   [
     "Do I need a laptop?",
-    "No. Most of what I will show works on a phone. Bring a laptop if you want to follow along with the building part.",
+    "No. Most of it works on a phone. Bring a laptop if you want to follow along with the building part.",
   ],
   ["Do I need to know how to code?", "No. That is rather the point."],
   [
@@ -59,11 +59,11 @@ export default function MasterclassPage() {
           Free live masterclass
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-5xl">
-          I will show you the AI tools I actually build with
+          The AI tools we actually build with
         </h1>
         <p className="mt-4 text-lg text-muted">
-          Free, live, and recorded. Building, video, design, and the AI tools I use for all three.
-          At the end I am giving five people a free seat in the Learnhub AI bootcamp.
+          Free, live, and recorded. Building, video, design, and the AI tools behind all three.
+          Five people leave the session with a free seat in the Learnhub bootcamp.
         </p>
         <p className="mt-4 font-display font-semibold text-ink">
           {MASTERCLASS.date} at {MASTERCLASS.time}. Free. Bring a laptop or a phone, either works.
@@ -76,7 +76,7 @@ export default function MasterclassPage() {
         <Section title="What you will actually see">
           <List items={SEEING} />
           <p className="mt-4 text-muted">
-            No slides full of theory. If I show you something, you will see me do it.
+            No slides full of theory. Everything on that list gets built in front of you.
           </p>
         </Section>
 
@@ -84,8 +84,8 @@ export default function MasterclassPage() {
           <List items={FOR_YOU} />
           <h3 className="mt-6 font-display font-semibold text-ink">Who this is not for</h3>
           <p className="mt-2 text-muted">
-            AI engineers and machine learning people. This session is not that, and I will not
-            pretend otherwise. If you build models for a living you will be bored.
+            AI engineers and machine learning people. This session is not that. If you build
+            models for a living you will be bored.
           </p>
         </Section>
 
@@ -95,8 +95,7 @@ export default function MasterclassPage() {
               Five free seats in the first Learnhub cohort.
             </p>
             <p className="mt-3 text-muted">
-              The bootcamp runs six weeks. I am giving five seats away, free, to people in this
-              session.
+              The bootcamp runs six weeks. Five seats go free to people in this session.
             </p>
             <p className="mt-3 text-muted">
               There is one condition: you have to be in the room. The entry form opens during the
@@ -104,18 +103,6 @@ export default function MasterclassPage() {
             </p>
             <p className="mt-3 font-semibold text-ink">Winners announced Friday 28 August.</p>
           </div>
-        </Section>
-
-        <Section title="About me">
-          <p className="text-muted">
-            I am Pelumi. I market products for a living. At some point waiting for a developer
-            stopped making sense, so now I write the positioning and I ship the thing it
-            describes.
-          </p>
-          <p className="mt-3 text-muted">
-            This platform is one of them. I built it myself with AI, and that is the entire reason
-            I believe what I am about to show you.
-          </p>
         </Section>
 
         <Section title="Frequently asked">

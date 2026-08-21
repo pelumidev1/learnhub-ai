@@ -60,8 +60,8 @@ export function RegistrationForm({ source }: { source?: string }) {
           You are in{firstName ? `, ${firstName}` : ""}.
         </h2>
         <p className="mt-2 text-muted">
-          {MASTERCLASS.date} at {MASTERCLASS.time}. The link is in your inbox now, and I will
-          send it again an hour before we start.
+          {MASTERCLASS.date} at {MASTERCLASS.time}. The link is in your inbox now. We will send
+          it again an hour before we start.
         </p>
         <p className="mt-4 text-muted">
           One thing worth doing before then: think about what you actually want to build. Not a
