@@ -1,6 +1,7 @@
 import "server-only";
 import { QuizQuestionSchema, type QuizQuestion } from "@/lib/ai/quiz";
 import { gradeQuestion, qkey, type GradedQuestion } from "@/lib/quiz/grade";
+import { createServiceClient } from "@/lib/supabase/service";
 import type { createClient } from "@/lib/supabase/server";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -60,9 +61,14 @@ function parseQuestions(raw: unknown): QuizQuestion[] {
  * database in both places rather than trusted from the browser. A client that
  * dropped questions to shrink the denominator would have no effect.
  *
- * Every query is scoped by `user_id` on top of RLS. RLS is the thing actually
- * enforcing it; the filter is there so a policy regression shows up as missing
- * data rather than as one student grading against another's answer key.
+ * `questions` carries correct_index, and since 2026-08-21 that column is not
+ * granted to `authenticated` at all — the answer key is reachable only through
+ * the service role, so the read below uses it. That inverts what `user_id` is
+ * doing here: it is no longer a belt-and-braces filter on top of RLS, it is the
+ * only thing scoping the row, because the service role bypasses RLS entirely.
+ * Do not remove it, and do not call this with an id that did not come from
+ * supabase.auth.getUser(). Attempts still read through the caller's client, so
+ * RLS covers those.
  */
 export async function loadRoadmapQuizzes(
   supabase: Supabase,
@@ -73,7 +79,7 @@ export async function loadRoadmapQuizzes(
   if (stepIds.length === 0) return byStep;
 
   const [{ data: quizRows }, { data: attemptRows }] = await Promise.all([
-    supabase
+    createServiceClient()
       .from("step_quizzes")
       .select("id, step_id, questions")
       .eq("user_id", userId)
@@ -159,7 +165,9 @@ export async function loadAttemptReview(
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle(),
-    supabase
+    // Service role: `questions` is not selectable by `authenticated`. Scoped by
+    // both step and user, so it can only ever return this student's own key.
+    createServiceClient()
       .from("step_quizzes")
       .select("questions")
       .eq("step_id", stepId)

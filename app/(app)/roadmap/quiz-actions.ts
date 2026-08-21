@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 import { loadAttemptReview, loadStepQuiz } from "@/lib/db/quiz";
 import { gradeAttempt, type GradedQuestion } from "@/lib/quiz/grade";
 
@@ -64,7 +65,14 @@ export async function submitQuizAttempt(raw: unknown): Promise<Result> {
      megabyte of nonsense and we would write it to the row verbatim. */
   const recorded = Object.fromEntries(graded.map((g) => [g.key, g.chosenIndex]));
 
-  const { error } = await supabase.from("quiz_attempts").insert({
+  /* Service role, because `authenticated` no longer has insert on this table
+     (20260821120000). An attempt is a graded result, and the grading happened
+     six lines up, against a key the browser never saw. While the client could
+     insert here, a pass could be asserted instead of earned — post
+     passed: true and setStepStatus ticks the step and eventually issues a
+     certificate, with no question ever answered. user_id comes from the
+     session, never the request. */
+  const { error } = await createServiceClient().from("quiz_attempts").insert({
     quiz_id: loaded.quizId,
     step_id: stepId,
     user_id: user.id,

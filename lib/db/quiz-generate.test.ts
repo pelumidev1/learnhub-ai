@@ -19,9 +19,24 @@ vi.mock("@/lib/ai/rate-limit", () => ({
   AI_LIMITS: { quiz: { windowMinutes: 60, max: 40 } },
   checkAiRateLimit: async () => ({ allowed: true, remaining: 40, windowMinutes: 60 }),
 }));
+/**
+ * The service role does two things in this module: it settles the ai_events row
+ * (which has no update policy), and since 20260821120000 it writes step_quizzes
+ * too, because `authenticated` no longer has insert on that table. Its inserts
+ * go into the same recorder as the caller-client's, so a test asserting "two
+ * quizzes were written" does not have to care which client wrote them.
+ */
+let recordInsert: (table: string, row: Record<string, unknown>) => void = () => {};
+
 vi.mock("@/lib/supabase/service", () => ({
   createServiceClient: () => ({
-    from: () => ({ update: () => ({ eq: async () => ({ error: null }) }) }),
+    from: (table: string) => ({
+      update: () => ({ eq: async () => ({ error: null }) }),
+      insert: async (row: Record<string, unknown>) => {
+        recordInsert(table, row);
+        return { error: null };
+      },
+    }),
   }),
 }));
 
@@ -33,6 +48,7 @@ type Rows = { quizzedStepIds: string[]; claimedStepIds: string[] };
  *  Records every insert so the test can see what the run actually did. */
 function stubClient(rows: Rows) {
   const inserted: { table: string; row: Record<string, unknown> }[] = [];
+  recordInsert = (table, row) => inserted.push({ table, row });
 
   function chain(table: string, data: unknown) {
     const self = {

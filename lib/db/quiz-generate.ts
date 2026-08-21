@@ -167,9 +167,14 @@ async function generateOne(
     costUsd: estimateCostUsd(model, usage.input, usage.output),
   });
 
-  // `step_id` is unique, so a concurrent generation for the same step loses
-  // here rather than creating a second quiz. Either row is equally valid.
-  const { error } = await supabase
+  /* `step_id` is unique, so a concurrent generation for the same step loses
+     here rather than creating a second quiz. Either row is equally valid.
+
+     Service role: `authenticated` no longer has insert on step_quizzes
+     (20260821120000). Generation is a server job either way, but leaving the
+     grant open let a student write their own quiz — with their own
+     correct_index — for any step that had none yet, and then pass it. */
+  const { error } = await createServiceClient()
     .from("step_quizzes")
     .insert({ step_id: step.id, user_id: userId, questions: quiz.questions });
 
