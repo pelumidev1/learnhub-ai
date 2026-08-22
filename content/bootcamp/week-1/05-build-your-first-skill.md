@@ -81,4 +81,3 @@ Have one working skill on your machine that you actually use, and know exactly w
 
 ## Transcript
 
-Transcript goes here once the video is recorded.

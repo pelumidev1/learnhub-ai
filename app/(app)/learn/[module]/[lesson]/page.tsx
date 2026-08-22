@@ -2,8 +2,15 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient, getAuthUser } from "@/lib/supabase/server";
-import { getLesson, type Chapter, type Lesson, type LessonResource } from "@/lib/bootcamp/queries";
+import {
+  getLesson,
+  getCompletedLessonIds,
+  type Chapter,
+  type Lesson,
+  type LessonResource,
+} from "@/lib/bootcamp/queries";
 import { renderLessonBody } from "@/lib/bootcamp/markdown";
+import { LessonDone } from "@/components/bootcamp/lesson-done";
 import { Enter } from "@/components/ui/enter";
 import { Icons } from "@/components/ui/icons";
 
@@ -35,7 +42,12 @@ export default async function LessonPage({ params }: { params: Params }) {
   const user = await getAuthUser();
   if (!user) redirect(`/login?redirect=/learn/${moduleSlug}/${lessonSlug}`);
 
-  const found = await getLesson(supabase, moduleSlug, lessonSlug);
+  // Both reads in one round trip. On the connections this is built for, a
+  // second sequential query is a second stall before anything paints.
+  const [found, completedIds] = await Promise.all([
+    getLesson(supabase, moduleSlug, lessonSlug),
+    getCompletedLessonIds(supabase, user.id),
+  ]);
   /* 404 rather than "you need to enrol". RLS filters an unreadable lesson out
      entirely, so we cannot tell a paid lesson from an invented URL, and saying
      "this exists but is not for you" confirms the curriculum to anyone
@@ -76,7 +88,7 @@ export default async function LessonPage({ params }: { params: Params }) {
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
         {/* Left rail on desktop, below the lesson on a phone. */}
         <Enter index={1} className="order-2 lg:order-1 lg:w-64 lg:flex-none lg:sticky lg:top-6">
-          <Outline chapters={lesson.chapters} />
+          <Outline chapters={lesson.chapters} hasVideo={Boolean(lesson.video_url)} />
           <Resources
             resources={lesson.resources}
             checkedOn={lesson.resources_checked_on}
@@ -95,10 +107,16 @@ export default async function LessonPage({ params }: { params: Params }) {
             />
           </Enter>
 
-          <Transcript markdown={lesson.transcript} />
+          <Transcript markdown={lesson.transcript} hasVideo={Boolean(lesson.video_url)} />
 
           <Enter index={3}>
-            <nav className="flex items-stretch gap-3 border-t border-silver pt-6">
+            <div className="border-t border-silver pt-6">
+              <LessonDone lessonId={lesson.id} completed={completedIds.has(lesson.id)} />
+            </div>
+          </Enter>
+
+          <Enter index={4}>
+            <nav className="flex items-stretch gap-3">
               {prev ? (
                 <PagerLink href={`/learn/${mod.slug}/${prev.slug}`} label="Previous" title={prev.title} back />
               ) : (
@@ -124,7 +142,7 @@ function stamp(at: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-function Outline({ chapters }: { chapters: Chapter[] }) {
+function Outline({ chapters, hasVideo }: { chapters: Chapter[]; hasVideo: boolean }) {
   if (chapters.length === 0) return null;
   return (
     <nav aria-label="In this lesson" className="rounded-2xl border border-silver bg-white p-4 shadow-soft">
@@ -135,9 +153,14 @@ function Outline({ chapters }: { chapters: Chapter[] }) {
         {chapters.map((c, i) => (
           <li key={i} className="flex gap-2.5 text-sm">
             <span className="mt-[0.15rem] font-mono text-[0.7rem] text-muted-2 tabular-nums">
-              {/* Once a video exists these become jump links. Until then the
-                  outline still earns its place as a map of the lesson. */}
-              {typeof c.at === "number" ? stamp(c.at) : String(i + 1).padStart(2, "0")}
+              {/* A timestamp only means something once there is a video to jump
+                  into, and authoring a lesson before the recording leaves every
+                  `at` at zero — five identical 0:00 markers read as broken.
+                  Number the chapters until the video exists; the outline still
+                  earns its place as a map of the lesson. */}
+              {hasVideo && typeof c.at === "number"
+                ? stamp(c.at)
+                : String(i + 1).padStart(2, "0")}
             </span>
             <span className="text-ink">{c.label}</span>
           </li>
@@ -224,8 +247,12 @@ function Video({ lesson }: { lesson: Lesson }) {
   );
 }
 
-function Transcript({ markdown }: { markdown: string | null }) {
-  if (!markdown) return null;
+function Transcript({ markdown, hasVideo }: { markdown: string | null; hasVideo: boolean }) {
+  /* A transcript is a transcript *of* something. Before the recording exists
+     the field holds authoring placeholder text, and shipping a panel headed
+     "Transcript" that turns out to be an apology is worse than no panel — the
+     written lesson above is already the whole lesson. */
+  if (!markdown || !hasVideo) return null;
   return (
     <Enter index={3}>
       {/* Open by default. On a metered connection plenty of people will read

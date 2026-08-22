@@ -42,4 +42,3 @@ Run a six step chain on a real piece of work, and feel the difference between ar
 
 ## Transcript
 
-Transcript goes here once the video is recorded.

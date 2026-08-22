@@ -10,6 +10,11 @@ import { cn } from "@/lib/utils/cn";
 
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/dashboard", label: "Dashboard", icon: "home" },
+  /* Second, not last: for anyone who has paid, the bootcamp is the product.
+     It sits inside the first five so it reaches the mobile bar, which costs
+     Resources its place there — Resources is still one tap away in the
+     sidebar on a wide screen and from the dashboard on a phone. */
+  { href: "/learn", label: "Bootcamp", icon: "play" },
   { href: "/assessment", label: "Assessment", icon: "compass" },
   { href: "/roadmap", label: "Roadmaps", icon: "map" },
   { href: "/advisor", label: "AI Coach", icon: "chat" },

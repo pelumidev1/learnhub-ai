@@ -48,4 +48,3 @@ Explain why a skill's description matters more than its instructions, and point 
 
 ## Transcript
 
-Transcript goes here once the video is recorded.

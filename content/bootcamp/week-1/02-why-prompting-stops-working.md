@@ -46,4 +46,3 @@ Notice when you are arguing with a model instead of directing it, and stop. That
 
 ## Transcript
 
-Transcript goes here once the video is recorded.

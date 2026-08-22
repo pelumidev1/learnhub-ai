@@ -44,6 +44,3 @@ Explain to someone else, without jargon, what a language model is doing when it 
 
 ## Transcript
 
-Transcript goes here once the video is recorded. Until then this lesson reads
-from the notes above, which is deliberate: the text has to stand on its own for
-anyone who cannot spend the data on video.

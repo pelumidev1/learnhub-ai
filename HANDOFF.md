@@ -336,8 +336,11 @@ the transformer), why prompting stops working, workflows over prompts and the
 six roles, skills as what you stop typing, and building your first skill. An
 earlier generic version was rejected, correctly.
 
-**Every lesson has a placeholder transcript reading "goes here once the video is
-recorded", and no video.** Both are Pelumi's to fill. Lessons are published and
+**No lesson has a video or a transcript yet.** Both are Pelumi's to fill. The
+placeholder transcripts were cleared on 2026-08-22; each file keeps an empty
+`## Transcript` heading as the slot to write into, and the lesson page renders
+no transcript panel at all until the lesson has a video, because a transcript
+of nothing is an apology with a heading on it. Lessons are published and
 the only enrolled person is him, on a comped seat.
 
 ### Waiting on Pelumi, all blocking something
@@ -352,6 +355,40 @@ keeps no real backups), about $45/month, before charging anyone. Run
 
 A live status board is published at
 https://claude.ai/code/artifact/440130aa-bb14-4f11-8736-0bf195ff9ee5
+
+### LMS pass (2026-08-22, after the launch pivot notes above)
+
+Four things, all in `/learn`:
+
+**`/learn` reached the nav.** It had no link anywhere in the app and only opened
+if you typed the URL. `Bootcamp` now sits second in `NAV`
+(`components/app/app-shell.tsx`), which puts it inside the mobile bar's first
+five and costs Resources its place there — a product call worth revisiting if
+Resources turns out to matter more on a phone.
+
+**Chapter markers number instead of stamping.** Authoring a lesson before the
+recording leaves every `at` at 0, so the outline showed five identical `0:00`s.
+The page now numbers the chapters until the lesson actually has a video.
+
+**Lesson progress.** New `lesson_progress` table — one row per lesson finished,
+presence is the whole state, un-ticking deletes the row. The insert policy
+checks the lesson is readable through `lessons_read`, so the paywall is not
+re-implemented in the Server Action. A "Mark as done" toggle at the end of each
+lesson (optimistic, reverts on failure), blue ticks and a per-week bar on the
+week list, and a Continue button that jumps to the first unfinished lesson.
+
+`getCompletedLessonIds` returns an empty set on any failure, deliberately, so
+the pages work in the window between the deploy and the migration. The migration
+`20260822130000_lesson_progress.sql` was applied in the dashboard on 2026-08-22,
+and both directions are verified against the live database.
+
+**Do not write to `lesson_progress` with `.upsert()`.** PostgREST implements
+upsert as `insert ... on conflict do update`, and Postgres wants the UPDATE
+privilege for that path whether or not a row actually conflicts. This table
+grants only select, insert and delete, on purpose, so an upsert fails every
+time — and it surfaces as the action's generic "check your connection" message,
+which sends you looking in entirely the wrong place. Insert, and treat 23505 as
+success.
 
 ### Next in the build order
 

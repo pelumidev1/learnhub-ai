@@ -197,3 +197,25 @@ export async function getLesson(
 
   return { module: { ...module, lessons }, lesson };
 }
+
+/**
+ * The lessons this user has already finished.
+ *
+ * A set rather than a list because every caller asks the same question of it —
+ * "is this one done" — once per row it renders.
+ *
+ * An empty set on failure, deliberately. Code ships before its migration in
+ * this repo (HANDOFF, "ship code before applying a migration"), so between the
+ * deploy and the migration this table does not exist yet. A week list missing
+ * its ticks for an hour is a small thing; a week list that 500s is not.
+ */
+export async function getCompletedLessonIds(
+  supabase: Supabase,
+  userId: string,
+): Promise<Set<string>> {
+  const { data } = await supabase
+    .from("lesson_progress")
+    .select("lesson_id")
+    .eq("user_id", userId);
+  return new Set(((data as { lesson_id: string }[] | null) ?? []).map((r) => r.lesson_id));
+}
