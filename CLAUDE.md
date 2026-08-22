@@ -17,6 +17,12 @@ Students, graduates, and career changers across Africa — mostly 18–35, on mi
 ## Tone (every user-facing string)
 **Professional, simple, friendly.** Plain English. Short, clear sentences. Encouraging, never condescending. Explain jargon or avoid it. Speak *to* the user ("your path", "you're a good fit for…"). No hype, no filler.
 
+**Learnhub speaks, never Pelumi.** (Decided 2026-08-22.) The product is a company: the app, the marketing pages, lesson content, and platform emails. No "I", no founder biography, and never the 2025 school that closed. That story is his, and it belongs in his own marketing videos and posts, where a first person account is far stronger than it would be in an app.
+
+Two exceptions, both the *reader's* voice rather than the company's: questions in an FAQ ("Do I need a laptop?"), and button labels ("Save my seat").
+
+Note this overrules `learnhub-launch/learnhub-master-context.md` section 9, which still says to admit the 2025 failure plainly. Section 9a of that file records the correction. If those two ever disagree again, this rule wins for anything shipping in the product.
+
 ## Product decisions (locked — do not relitigate in code)
 - **Free product.** No payments, no premium tier in v1. AI-cost discipline is a hard requirement.
 - **Auth: Email + password *and* Google OAuth**, with forgot/reset password. (Updated 2026-07-10 from the earlier Google-only decision.) Built on `@supabase/ssr` — cookie sessions, protected routes via `middleware.ts`. No phone/OTP.
