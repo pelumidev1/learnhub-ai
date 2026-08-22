@@ -1,7 +1,7 @@
 ---
 title: Getting from a bad first answer to a good one
 duration_minutes: 12
-published: false
+published: true
 ---
 
 > **Draft.** Written from the week 1 outline. Pelumi to rewrite.

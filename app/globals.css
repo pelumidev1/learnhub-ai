@@ -86,3 +86,83 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Lesson body.
+   The markdown is rendered on the server, so this is the only styling it gets.
+   Sized for a phone held one-handed: 17px, generous leading, and a measure that
+   stays near 65 characters on a laptop instead of running the full width. */
+.lesson-prose {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: #374151;
+  max-width: 34rem;
+}
+.lesson-prose > * + * {
+  margin-top: 1.15em;
+}
+.lesson-prose h2,
+.lesson-prose h3 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  color: #0b0f1a;
+  font-weight: 700;
+  line-height: 1.25;
+  /* More space above a heading than below it, so a section reads as attached
+     to the text under it rather than floating between two blocks. */
+  margin-top: 2em;
+  margin-bottom: -0.3em;
+}
+.lesson-prose h2 { font-size: 1.32rem; }
+.lesson-prose h3 { font-size: 1.1rem; }
+.lesson-prose strong { color: #0b0f1a; font-weight: 600; }
+.lesson-prose a {
+  color: #1f33cc;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.lesson-prose ul,
+.lesson-prose ol {
+  padding-left: 1.25rem;
+}
+.lesson-prose ul { list-style: disc; }
+.lesson-prose ol { list-style: decimal; }
+.lesson-prose li + li { margin-top: 0.4em; }
+.lesson-prose li::marker { color: #8a93a6; }
+/* Blockquote carries the draft banners on unfinished lessons, so it has to
+   read as an aside rather than as emphasis. */
+.lesson-prose blockquote {
+  border-left: 2px solid #e7eaf1;
+  padding-left: 1rem;
+  color: #5b6472;
+}
+.lesson-prose code {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.9em;
+  background: #eff2f8;
+  border-radius: 6px;
+  padding: 0.1em 0.35em;
+}
+.lesson-prose pre {
+  background: #0b0f1a;
+  color: #f6f7fb;
+  border-radius: 12px;
+  padding: 1rem;
+  /* Code is the one thing that legitimately exceeds the measure. Scroll it
+     inside its own box so the page never scrolls sideways on a phone. */
+  overflow-x: auto;
+}
+.lesson-prose pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.85em;
+}
+.lesson-prose hr {
+  border: 0;
+  border-top: 1px solid #e7eaf1;
+  margin-top: 2em;
+}
+.lesson-prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}

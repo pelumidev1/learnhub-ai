@@ -22,6 +22,18 @@ export type Enrollment = {
   status: "pending" | "active" | "withdrawn";
 };
 
+export type Lesson = {
+  id: string;
+  slug: string;
+  title: string;
+  position: number;
+  body: string | null;
+  video_url: string | null;
+  duration_minutes: number | null;
+};
+
+export type ModuleWithLessons = ModuleSummary & { lessons: Lesson[] };
+
 export type ModuleSummary = {
   id: string;
   week_number: number;
@@ -113,4 +125,63 @@ export function weekOpensOn(cohortStartsOn: string | null, weekNumber: number): 
   const start = new Date(`${cohortStartsOn}T00:00:00Z`);
   start.setUTCDate(start.getUTCDate() + (weekNumber - 1) * 7);
   return start;
+}
+
+/**
+ * Every visible module with its published lessons, in one round trip.
+ *
+ * A join rather than a query per module: a seven week curriculum would
+ * otherwise be eight round trips before the page could paint, and this product
+ * is built for connections where each of those is felt.
+ *
+ * RLS decides what comes back. An unenrolled reader gets the public modules
+ * and nothing else, so there is no enrolment check here to forget.
+ */
+export async function getCurriculum(supabase: Supabase): Promise<ModuleWithLessons[]> {
+  const { data } = await supabase
+    .from("bootcamp_modules")
+    .select(
+      "id, week_number, slug, title, summary, ship, lessons(id, slug, title, position, body, video_url, duration_minutes)",
+    )
+    .eq("is_published", true)
+    .eq("lessons.is_published", true)
+    .order("week_number", { ascending: true });
+
+  return ((data as ModuleWithLessons[] | null) ?? []).map((m) => ({
+    ...m,
+    // Postgres does not promise order inside an embedded select.
+    lessons: [...(m.lessons ?? [])].sort((a, b) => a.position - b.position),
+  }));
+}
+
+/**
+ * One lesson, plus the module it belongs to and its siblings for the pager.
+ *
+ * Returns null when the reader is not allowed to see it, because RLS filters
+ * the row out rather than erroring. The page turns that into a 404, which also
+ * means an unenrolled visitor cannot tell a paid lesson from a made-up URL.
+ */
+export async function getLesson(
+  supabase: Supabase,
+  moduleSlug: string,
+  lessonSlug: string,
+): Promise<{ module: ModuleWithLessons; lesson: Lesson } | null> {
+  const { data } = await supabase
+    .from("bootcamp_modules")
+    .select(
+      "id, week_number, slug, title, summary, ship, lessons(id, slug, title, position, body, video_url, duration_minutes)",
+    )
+    .eq("slug", moduleSlug)
+    .eq("is_published", true)
+    .eq("lessons.is_published", true)
+    .maybeSingle();
+
+  const module = data as ModuleWithLessons | null;
+  if (!module) return null;
+
+  const lessons = [...(module.lessons ?? [])].sort((a, b) => a.position - b.position);
+  const lesson = lessons.find((l) => l.slug === lessonSlug);
+  if (!lesson) return null;
+
+  return { module: { ...module, lessons }, lesson };
 }

@@ -1,7 +1,7 @@
 ---
 title: Your first ship, your bio and one-line offer
 duration_minutes: 15
-published: false
+published: true
 ---
 
 > **Draft.** Written from the week 1 outline. The deliverable is fixed by the

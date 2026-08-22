@@ -1,7 +1,7 @@
 ---
 title: What prompting actually is
 duration_minutes: 10
-published: false
+published: true
 ---
 
 > **Draft.** Written from the week 1 outline in `learnhub-master-context.md`.

@@ -1,7 +1,7 @@
 ---
 title: Knowing when to abandon a conversation
 duration_minutes: 8
-published: false
+published: true
 ---
 
 > **Draft.** Written from the week 1 outline. Pelumi to rewrite.
