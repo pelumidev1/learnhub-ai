@@ -1,6 +1,6 @@
 # HANDOFF — resume here (written for Opus 4.8)
 
-_Last updated 2026-08-21 (after the full-stack audit — see "Audit pass" below). Written for a fresh Claude Code session with **no access to previous conversations**. Read this file first; it links to everything else._
+_Last updated 2026-08-22 (the launch pivot — read "Launch pivot" below **before** anything else). Written for a fresh Claude Code session with **no access to previous conversations**. Read this file first; it links to everything else._
 
 ## What this is
 
@@ -229,6 +229,137 @@ carries the stale `marketing/` copy, scraped third-party HTML in
 no longer exists. **Supabase is on the free tier and pauses after 7 days idle —
 while paused the whole site is down, not degraded.** It paused once (resumed
 2026-08-20).
+
+## Launch pivot (2026-08-22) — read this first
+
+The product changed shape. This repo was a free AI career advisor; it is now
+also the LMS for a **paid six week AI bootcamp** launching **1 September 2026**,
+with masterclass registration due **26 or 27 August**. `PRD.md` still describes
+the free product only and has not been updated.
+
+The launch documents live **outside this repo**, in `../learnhub-launch/`:
+`learnhub-master-context.md` (positioning, curriculum, pricing, voice),
+`learnhub-masterclass-copy.md` (page and email copy, paste-ready),
+`learnhub-lms-notes.md` (feature requirements and the build order). They are not
+version controlled. Read them before building anything bootcamp-related.
+
+### Four traps, in the order they will bite you
+
+**1. Never run `supabase db push` before repairing migration history.** The CLI
+was installed today (2.115.0, `supabase/config.toml` committed) but the project
+is **not linked yet** and all **20 migrations were applied by hand** in the
+dashboard, so the CLI has no record of any of them. A push runs all 20 against
+production, and they are not idempotent: `create table public.cohorts` against a
+database that already has it fails partway through with things half applied.
+Mark them applied first, one per version:
+`supabase migration repair --status applied <version>`. Linking needs
+`supabase login`, which only Pelumi can do.
+
+**2. Ship code before applying a migration, never the reverse.** Bit us twice.
+The quiz-gate case is the clearest: new code reads through the service role and
+works under either set of grants, old code reads with the caller's client, so a
+migration landing first blanks every quiz until the deploy catches up.
+
+**3. Typecheck runs after the build in CI, not before.** `next-env.d.ts` is
+gitignored and is what declares `*.webp` importable, so on a fresh clone a
+typecheck running first fails on the image imports in `life-after-match.tsx`.
+
+**4. Supabase hands new `public` tables to `anon` automatically.** Its default
+privileges do this, so a new table is anon-readable with only RLS holding the
+line. Set grants explicitly in every migration that creates a table. Found the
+hard way on `masterclass_registrations` (20260821150000).
+
+### Voice: Learnhub speaks, never Pelumi
+
+Decided 2026-08-22 and now recorded in `CLAUDE.md`, which wins over the launch
+docs for anything shipping in the product. No "I", no founder biography, and
+never the 2025 school that closed. That story is his and belongs in his own
+marketing videos and posts. Two exceptions, both the reader's voice: FAQ
+questions, and button labels.
+
+`learnhub-master-context.md` section 9 still says to admit the failure plainly;
+**section 9a of that file records the correction**. The masterclass page was
+written in his first person twice before this was written down.
+
+### What was built today
+
+**Masterclass registration** — `/masterclass`, static, copy verbatim from the
+copy doc. Writes through a Server Action on the service role;
+`masterclass_registrations` grants nothing to the public. Live in production but
+**not linked from anywhere**, with a placeholder date and no email being sent.
+
+**Bootcamp backend** — `cohorts`, `enrollments`, `bootcamp_modules`, `lessons`.
+The paywall is an RLS policy, not a page check: a module is readable when
+published and either `access = 'public'` or the reader holds an active
+enrolment. Verified live, anon gets 401 on curriculum and 200 on cohorts.
+`cohort-1.starts_on` is deliberately **null** (open question 3), every module
+except week one is unpublished, and status is `upcoming`.
+
+**Paystack** — `lib/paystack.ts` and `lib/bootcamp/enrol.ts`. Price is decided
+server-side from the seat count and deadline, never accepted from the client.
+Activation is idempotent because the browser callback and the webhook race each
+other. Webhook verifies HMAC SHA512 over the **raw body text** in constant time;
+7 tests. `PAYSTACK_SECRET_KEY` in `.env.local` is a **test** key. **Not in Vercel
+yet**, and there is still **no buy button** — `startCheckout` has no caller.
+
+**Lesson delivery** — `/learn` (week list) and `/learn/[module]/[lesson]`.
+`/bootcamp` is deliberately left free for the public sales page, since two route
+groups cannot own one path. Layout is Anthropic Academy's: outline and resources
+in a left rail, video and body on the right, transcript below, and that order
+inverts on a phone. Markdown renders server-side with `marked`, so a lesson
+costs no JavaScript to read. **No sanitiser** — safe only because the sole
+writer is the sync script on the service role. An unreadable lesson 404s rather
+than saying "please enrol".
+
+**Lesson authoring** — markdown in `content/bootcamp/`, synced with
+`npm run bootcamp:sync`. Frontmatter carries chapters and resources as one-line
+JSON, and `## Transcript` splits the file. **The sync never deletes**, which
+already caused a collision: rewriting week one left the four old lessons in the
+database at duplicate positions and they had to be removed by hand.
+
+**Motion** — tokens in `tailwind.config.ts` and `globals.css`, strong easing
+curves, nothing over 260ms. Buttons have `active:scale-[0.97]`; hover is gated
+behind `(hover: hover)` because a tap was leaving buttons stuck bright. Screens
+enter via `components/ui/enter.tsx`, which uses the `data-mounted` pattern
+rather than `@starting-style` because Next 16's baseline reaches Chrome 111 and
+that lands in 117.
+
+**Next 16** — production runs 16.3.1. `middleware.ts` still works but is
+deprecated in favour of `proxy.ts`; the rename was deliberately kept out of the
+upgrade.
+
+### Week one content
+
+Five lessons in `content/bootcamp/week-1/`, written from Pelumi's newsletter at
+aiwithpelumi.com rather than invented: what AI actually is (Turing, the winters,
+the transformer), why prompting stops working, workflows over prompts and the
+six roles, skills as what you stop typing, and building your first skill. An
+earlier generic version was rejected, correctly.
+
+**Every lesson has a placeholder transcript reading "goes here once the video is
+recorded", and no video.** Both are Pelumi's to fill. Lessons are published and
+the only enrolled person is him, on a comped seat.
+
+### Waiting on Pelumi, all blocking something
+
+Accept the **Resend** marketplace terms (blocks every launch email). Confirm the
+**masterclass date, time and join link** in `lib/masterclass.ts`. Set
+**`cohort-1.starts_on`**. Record videos and write transcripts. **Roll the live
+Paystack key**, which was briefly in `.env.local`. Upgrade **Vercel** (Hobby
+forbids commercial use) and **Supabase** (free tier pauses after 7 days idle and
+keeps no real backups), about $45/month, before charging anyone. Run
+`supabase login`.
+
+A live status board is published at
+https://claude.ai/code/artifact/440130aa-bb14-4f11-8736-0bf195ff9ee5
+
+### Next in the build order
+
+The **sales page and buy button** are the only things standing between this and
+revenue. Then the giveaway form, then the four launch emails once Resend is
+connected.
+
+---
 
 ## Working with the owner (Pelumi)
 
