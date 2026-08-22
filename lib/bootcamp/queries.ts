@@ -22,12 +22,24 @@ export type Enrollment = {
   status: "pending" | "active" | "withdrawn";
 };
 
+export type Chapter = { label: string; at: number | null };
+export type LessonResource = {
+  label: string;
+  url: string;
+  kind?: "course" | "doc" | "tool" | "video" | "article";
+  cost?: string;
+};
+
 export type Lesson = {
   id: string;
   slug: string;
   title: string;
   position: number;
   body: string | null;
+  transcript: string | null;
+  chapters: Chapter[];
+  resources: LessonResource[];
+  resources_checked_on: string | null;
   video_url: string | null;
   duration_minutes: number | null;
 };
@@ -141,7 +153,7 @@ export async function getCurriculum(supabase: Supabase): Promise<ModuleWithLesso
   const { data } = await supabase
     .from("bootcamp_modules")
     .select(
-      "id, week_number, slug, title, summary, ship, lessons(id, slug, title, position, body, video_url, duration_minutes)",
+      "id, week_number, slug, title, summary, ship, lessons(id, slug, title, position, body, transcript, chapters, resources, resources_checked_on, video_url, duration_minutes)",
     )
     .eq("is_published", true)
     .eq("lessons.is_published", true)
@@ -169,7 +181,7 @@ export async function getLesson(
   const { data } = await supabase
     .from("bootcamp_modules")
     .select(
-      "id, week_number, slug, title, summary, ship, lessons(id, slug, title, position, body, video_url, duration_minutes)",
+      "id, week_number, slug, title, summary, ship, lessons(id, slug, title, position, body, transcript, chapters, resources, resources_checked_on, video_url, duration_minutes)",
     )
     .eq("slug", moduleSlug)
     .eq("is_published", true)

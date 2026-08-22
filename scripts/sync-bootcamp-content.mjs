@@ -26,8 +26,14 @@ const db = createClient(url, key, { auth: { persistSession: false } });
 const ROOT = "content/bootcamp";
 
 /**
- * Minimal frontmatter reader. Only the scalar types the lesson header uses, so
- * there is no YAML dependency for four keys.
+ * Frontmatter reader.
+ *
+ * Scalars stay plain `key: value`. Chapters and resources are JSON on one line,
+ * because they are lists of objects and hand-rolling nested YAML for them would
+ * be a parser rather than a helper:
+ *
+ *   chapters: [{"label":"Why prompting stops working","at":0}]
+ *   resources: [{"label":"Anthropic Academy","url":"https://...","kind":"course","cost":"Free"}]
  */
 function parseFrontmatter(raw) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
@@ -39,11 +45,36 @@ function parseFrontmatter(raw) {
     if (at === -1) continue;
     const k = line.slice(0, at).trim();
     let v = line.slice(at + 1).trim();
-    if (v === "true" || v === "false") v = v === "true";
+
+    if (v.startsWith("[") || v.startsWith("{")) {
+      try {
+        v = JSON.parse(v);
+      } catch {
+        console.warn(`  ! ${k} is not valid JSON, skipping that field`);
+        continue;
+      }
+    } else if (v === "true" || v === "false") v = v === "true";
     else if (v !== "" && !Number.isNaN(Number(v))) v = Number(v);
+
     meta[k] = v;
   }
   return { meta, body: match[2].trim() };
+}
+
+/**
+ * Split a file into the lesson body and its transcript.
+ *
+ * One file per lesson, not two, so the transcript cannot drift away from the
+ * lesson it belongs to. Everything after a `## Transcript` heading is the
+ * transcript; everything before it is the body.
+ */
+function splitTranscript(markdown) {
+  const at = markdown.search(/^##\s+Transcript\s*$/m);
+  if (at === -1) return { body: markdown, transcript: null };
+  return {
+    body: markdown.slice(0, at).trim(),
+    transcript: markdown.slice(at).replace(/^##\s+Transcript\s*$/m, "").trim() || null,
+  };
 }
 
 const files = [];
@@ -77,7 +108,8 @@ for (const f of files) {
     continue;
   }
 
-  const { meta, body } = parseFrontmatter(await readFile(f.path, "utf8"));
+  const { meta, body: full } = parseFrontmatter(await readFile(f.path, "utf8"));
+  const { body, transcript } = splitTranscript(full);
 
   // "01-what-prompting-is.md" -> position 1, slug "what-prompting-is"
   const m = f.name.replace(/\.md$/, "").match(/^(\d+)-(.+)$/);
@@ -98,6 +130,10 @@ for (const f of files) {
     body,
     video_url: meta.video_url ? String(meta.video_url) : null,
     duration_minutes: typeof meta.duration_minutes === "number" ? meta.duration_minutes : null,
+    transcript,
+    chapters: Array.isArray(meta.chapters) ? meta.chapters : [],
+    resources: Array.isArray(meta.resources) ? meta.resources : [],
+    resources_checked_on: meta.resources_checked_on ? String(meta.resources_checked_on) : null,
     // Default false. A lesson has to be published on purpose, so a draft
     // committed to the repo cannot reach a student by accident.
     is_published: meta.published === true,
@@ -105,7 +141,9 @@ for (const f of files) {
 
   if (dry) {
     console.log(
-      `  would write ${module.slug}/${slug} (pos ${position}, ${body.length} chars, published=${row.is_published})`,
+      `  would write ${module.slug}/${slug} (pos ${position}, ${body.length} chars, ` +
+        `${row.chapters.length} chapters, ${row.resources.length} resources, ` +
+        `transcript=${transcript ? "yes" : "no"}, published=${row.is_published})`,
     );
     written += 1;
     continue;
