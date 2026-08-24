@@ -219,3 +219,65 @@ export async function getCompletedLessonIds(
     .eq("user_id", userId);
   return new Set(((data as { lesson_id: string }[] | null) ?? []).map((r) => r.lesson_id));
 }
+
+export type BootcampSummary = {
+  cohortName: string;
+  totalDone: number;
+  totalLessons: number;
+  /** Where to pick up. Null once every published lesson is finished, which is
+   *  the ordinary state between weeks rather than an edge case. */
+  resume: {
+    href: string;
+    weekNumber: number | null;
+    moduleTitle: string;
+    lessonTitle: string;
+  } | null;
+};
+
+/**
+ * Everything the dashboard's bootcamp card needs, or null if there is nothing
+ * to show.
+ *
+ * Null for anyone without an active enrolment. The bootcamp is the paid
+ * product and there is no sales page to send a free user to yet, so a card
+ * advertising it would be a dead end; the nav still gets them to /learn and
+ * the preview modules. Drop the enrolment check here when the sales page ships.
+ *
+ * Deliberately not folded into getDashboardData: the checks run in sequence and
+ * stop at the first "no". A signed-in user who has not bought pays for two
+ * small reads and never the curriculum join, which matters on the connections
+ * this product is built for.
+ */
+export async function getBootcampSummary(
+  supabase: Supabase,
+  userId: string,
+): Promise<BootcampSummary | null> {
+  const cohort = await getCurrentCohort();
+  if (!cohort) return null;
+
+  const enrollment = await getEnrollment(supabase, userId, cohort.id);
+  if (enrollment?.status !== "active") return null;
+
+  const [curriculum, completedIds] = await Promise.all([
+    getCurriculum(supabase),
+    getCompletedLessonIds(supabase, userId),
+  ]);
+  if (curriculum.length === 0) return null;
+
+  const lessons = curriculum.flatMap((m) => m.lessons.map((l) => ({ module: m, lesson: l })));
+  const next = lessons.find(({ lesson }) => !completedIds.has(lesson.id));
+
+  return {
+    cohortName: cohort.name,
+    totalDone: lessons.filter(({ lesson }) => completedIds.has(lesson.id)).length,
+    totalLessons: lessons.length,
+    resume: next
+      ? {
+          href: `/learn/${next.module.slug}/${next.lesson.slug}`,
+          weekNumber: next.module.week_number,
+          moduleTitle: next.module.title,
+          lessonTitle: next.lesson.title,
+        }
+      : null,
+  };
+}

@@ -27,9 +27,12 @@ function Inner() {
   );
 }
 
-export function GoogleButton() {
+export function GoogleButton({ redirectTo }: { redirectTo?: string }) {
   return (
     <form action={signInWithGoogle}>
+      {/* Carries the destination through Google the same way LoginForm carries
+          it through email sign-in, so both routes in land in the same place. */}
+      <input type="hidden" name="redirect" value={redirectTo ?? "/dashboard"} />
       <Inner />
     </form>
   );

@@ -69,13 +69,21 @@ export async function signUp(
 }
 
 /** Start the Google OAuth flow (redirects to Google). Used as a form action. */
-export async function signInWithGoogle(): Promise<void> {
+export async function signInWithGoogle(formData: FormData): Promise<void> {
   const supabase = await createClient();
   const origin = await siteOrigin();
+
+  /* Where to land once Google comes back. Without this the whole OAuth path
+     forgets where the user was heading, so a link to a lesson dropped anyone
+     signed out on the dashboard — the one screen that cannot say what they
+     came for. Sanitized here as well as in the callback, because it arrives
+     from a hidden field and is therefore client-controlled. */
+  const next = safeInternalPath(formData.get("redirect")?.toString());
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${origin}/auth/callback?next=/dashboard`,
+      redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}`,
       queryParams: { access_type: "offline", prompt: "consent" },
     },
   });

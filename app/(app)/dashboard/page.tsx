@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { getAuthUser } from "@/lib/supabase/server";
+import { createClient, getAuthUser } from "@/lib/supabase/server";
 import { getDashboardData } from "@/lib/dashboard/queries";
+import { getBootcampSummary } from "@/lib/bootcamp/queries";
+import { BootcampCard } from "@/components/dashboard/bootcamp-card";
 import { WelcomeSection } from "@/components/dashboard/welcome-section";
 import { ProgressOverview } from "@/components/dashboard/progress-overview";
 import { ContinueLearning } from "@/components/dashboard/continue-learning";
@@ -20,7 +22,11 @@ export default async function DashboardPage() {
   const user = await getAuthUser();
   if (!user) redirect("/login");
 
-  const data = await getDashboardData(user.id);
+  const supabase = await createClient();
+  const [data, bootcamp] = await Promise.all([
+    getDashboardData(user.id),
+    getBootcampSummary(supabase, user.id),
+  ]);
   const name = data.profile?.full_name ?? null;
 
   /* The cascade runs down the page in reading order, and the two columns share
@@ -42,13 +48,20 @@ export default async function DashboardPage() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <Enter index={2}>
+          {/* First in the column: for anyone who has paid, the bootcamp is the
+              product, and this is the only place on the dashboard it appears. */}
+          {bootcamp && (
+            <Enter index={2}>
+              <BootcampCard summary={bootcamp} />
+            </Enter>
+          )}
+          <Enter index={3}>
             <ContinueLearning data={data} />
           </Enter>
-          <Enter index={3}>
+          <Enter index={4}>
             <SavedRoadmaps roadmaps={data.roadmaps} limit={4} />
           </Enter>
-          <Enter index={4}>
+          <Enter index={5}>
             <RecommendedResources resources={data.resources} />
           </Enter>
         </div>

@@ -21,7 +21,7 @@ export default async function LoginPage({
 
       <div className="mt-6 space-y-4">
         {error && <Alert>{error}</Alert>}
-        <GoogleButton />
+        <GoogleButton redirectTo={redirect} />
       </div>
 
       <Divider />

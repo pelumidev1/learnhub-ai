@@ -11,6 +11,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const PROTECTED = [
   "/admin",
   "/dashboard",
+  "/learn",
   "/onboarding",
   "/assessment",
   "/results",
