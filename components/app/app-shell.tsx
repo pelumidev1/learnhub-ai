@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/logo";
 import { Icons, type IconName } from "@/components/ui/icons";
 import { SignOutButton } from "./sign-out-button";
+import { IdleTimeout } from "./idle-timeout";
 import { cn } from "@/lib/utils/cn";
 
 const NAV: { href: string; label: string; icon: IconName }[] = [
@@ -149,6 +150,10 @@ export function AppShell({
           );
         })}
       </nav>
+
+      {/* Warns before the idle timeout signs them out. Renders nothing until
+          there is something to say. See lib/auth/idle.ts. */}
+      <IdleTimeout />
     </div>
   );
 }

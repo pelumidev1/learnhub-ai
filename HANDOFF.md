@@ -123,6 +123,18 @@ Thumbs up/down on the results page (`context = 'recommendation'`, keyed on the a
 - **Upsert, not insert.** `20260802120000_feedback_one_per_thing.sql` adds a unique index on `(user_id, context, context_id)` with `nulls not distinct`, plus the UPDATE policy the table never had. Without both, tapping twice counts as two responses and the satisfaction *percentage* is divided by a number inflated by whoever tapped the most. `nulls not distinct` matters because `context_id` is nullable for app-level feedback, and Postgres treats NULLs as distinct by default.
 - `user_id` comes from the session, never from the client payload.
 
+## Idle sign-out (added 2026-08-25)
+
+Sessions used to last for days. They now end after **30 minutes of inactivity** — the common LMS setting, and the right one for an audience that shares campus and café machines. All the numbers live in `lib/auth/idle.ts`; change them there and both halves follow.
+
+- **Two halves, and the server one is the feature.** `lib/supabase/middleware.ts` stamps a `lh_last_seen` cookie on every authenticated navigation and signs out anything that arrives more than 30 minutes after the last stamp. `components/app/idle-timeout.tsx` is the courtesy: it warns at 2 minutes with a countdown, because nothing navigates while you read a lesson and otherwise the first sign of the timeout would be being thrown to `/login` mid-click. Delete the client half and the policy still holds.
+- **A missing stamp means "start the clock", not "expired".** That is what let this ship without signing out everyone who was already logged in. `idleFor()` and its tests pin it down.
+- **`scope: "local"`, not the default global.** Timing out on a lab machine must not sign the user out on their phone. The manual Sign out button is deliberately left global — pressing it is a decision about the account.
+- **Lesson videos are a cross-origin iframe and swallow every input event**, so a student 20 minutes into a lesson looks idle. The watcher counts focus sitting inside an embed as activity, capped at `IDLE_EMBED_MAX_MS` (90 min) since the last real input so a focused video cannot hold an account open forever.
+- **Activity is shared across tabs** via `localStorage["lh:last-activity"]`. Without it the tab you are *not* looking at signs you out — and that revokes the session, taking the tab you are using with it.
+- `/reset-password` and `/auth/*` are exempt: they are reached with a live session mid-recovery, and timing out there strands someone holding a spent link.
+- Tests: `lib/auth/idle.test.ts` and `lib/supabase/middleware.test.ts` (the enforcement branch, with Supabase stubbed).
+
 ## Admin page (`/admin`, added 2026-08-02)
 
 Reads the five `admin_*` views that had existed unused since the init migration. Signups, assessment drop-off, roadmap activity, Anthropic spend by call type, feedback.

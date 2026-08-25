@@ -10,9 +10,9 @@ export const metadata: Metadata = { title: "Log in" };
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; redirect?: string }>;
+  searchParams: Promise<{ error?: string; redirect?: string; reason?: string }>;
 }) {
-  const { error, redirect } = await searchParams;
+  const { error, redirect, reason } = await searchParams;
 
   return (
     <div className="rounded-2xl border border-silver bg-white p-8 shadow-soft">
@@ -21,6 +21,14 @@ export default async function LoginPage({
 
       <div className="mt-6 space-y-4">
         {error && <Alert>{error}</Alert>}
+        {/* Matched against a fixed value and answered with fixed copy — the
+            message is ours, not whatever a crafted link puts in the URL. */}
+        {reason === "timeout" && (
+          <Alert variant="notice">
+            You were signed out because you had been inactive for a while. Log back in to
+            pick up where you left off.
+          </Alert>
+        )}
         <GoogleButton redirectTo={redirect} />
       </div>
 

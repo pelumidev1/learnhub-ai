@@ -140,3 +140,31 @@ export async function signOut(): Promise<void> {
   revalidatePath("/", "layout");
   redirect("/login");
 }
+
+/**
+ * Sign out because the idle watcher's clock ran out.
+ *
+ * Separate from signOut() rather than a parameter on it: signOut is used as a
+ * `<form action>`, so its first argument is FormData and cannot also be a
+ * caller's string. This one is called directly from the client watcher.
+ *
+ * `returnTo` is where they were when the clock ran out, so logging back in puts
+ * them there instead of on the dashboard. It arrives from the client, so it is
+ * sanitized — safeInternalPath rejects anything that could bounce them off-site.
+ */
+export async function signOutIdle(returnTo: unknown): Promise<void> {
+  const path = safeInternalPath(
+    typeof returnTo === "string" ? returnTo : null,
+    "/dashboard",
+  );
+
+  const supabase = await createClient();
+  /* scope "local", unlike the button above. Pressing "Sign out" is a decision
+     about the account and clears every device; running out of clock on one
+     machine is a fact about that machine only, and should not reach into the
+     phone in their pocket. Middleware does the same — see lib/auth/idle.ts. */
+  await supabase.auth.signOut({ scope: "local" });
+  revalidatePath("/", "layout");
+
+  redirect(`/login?reason=timeout&redirect=${encodeURIComponent(path)}`);
+}

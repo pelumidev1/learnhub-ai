@@ -1,5 +1,11 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import {
+  IDLE_TIMEOUT_MS,
+  LAST_SEEN_COOKIE,
+  idleFor,
+  lastSeenCookieOptions,
+} from "@/lib/auth/idle";
 
 /**
  * Route prefixes that require an authenticated user.
@@ -24,6 +30,16 @@ const PROTECTED = [
 
 /** Auth pages a signed-in user should be bounced away from. */
 const AUTH_ROUTES = ["/login", "/signup", "/forgot-password"];
+
+/**
+ * Routes the idle timeout does not apply to.
+ *
+ * /reset-password is the one that matters: it is reached WITH a live session,
+ * mid password-recovery, often minutes after the email arrived. Signing that
+ * user out is not a safety win — it strands them halfway through recovering the
+ * account, with a now-spent link.
+ */
+const IDLE_EXEMPT = [...AUTH_ROUTES, "/reset-password", "/auth"];
 
 const matches = (path: string, list: string[]) =>
   list.some((p) => path === p || path.startsWith(p + "/"));
@@ -96,6 +112,45 @@ export async function updateSession(request: NextRequest) {
     url.pathname = "/dashboard";
     url.search = "";
     return NextResponse.redirect(url);
+  }
+
+  // ---------------------------------------------------------- Idle timeout
+  // The enforcement half of the policy in lib/auth/idle.ts. This runs on the
+  // server on every navigation, so it holds for a browser that closed, a tab
+  // that was killed, and a client whose JavaScript never ran at all.
+  if (user && !matches(path, IDLE_EXEMPT)) {
+    if (idleFor(request.cookies.get(LAST_SEEN_COOKIE)?.value) > IDLE_TIMEOUT_MS) {
+      /* scope "local" revokes the refresh token behind THIS session and leaves
+         the user's other devices signed in. The default is "global", which
+         would mean timing out on a lab machine also signed them out on the
+         phone in their pocket — a punishment for using two devices, not a
+         safety measure. */
+      await supabase.auth.signOut({ scope: "local" });
+
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.search = "";
+      url.searchParams.set("reason", "timeout");
+      // Only worth carrying a destination they can actually be returned to.
+      if (matches(path, PROTECTED)) url.searchParams.set("redirect", path);
+
+      const timedOut = NextResponse.redirect(url);
+      /* signOut() wrote its cookie removals onto `response` via setAll above,
+         and `response` is not what we are returning. Clear the auth cookies on
+         the redirect itself, or the browser keeps a session the server has
+         already revoked and every navigation costs a failed refresh. Supabase
+         chunks large tokens across `sb-…-auth-token.0`, `.1`, … so match the
+         prefix rather than an exact name. */
+      for (const { name } of request.cookies.getAll()) {
+        if (name.startsWith("sb-")) timedOut.cookies.delete(name);
+      }
+      timedOut.cookies.delete(LAST_SEEN_COOKIE);
+      return timedOut;
+    }
+
+    // Still within the window: this navigation IS activity, so restamp. Set on
+    // `response` last, because setAll() above may have replaced the object.
+    response.cookies.set(LAST_SEEN_COOKIE, String(Date.now()), lastSeenCookieOptions());
   }
 
   return response;
