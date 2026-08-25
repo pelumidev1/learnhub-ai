@@ -15,7 +15,7 @@ import { useGatedVideo } from "./use-gated-video";
  *     The knockout turns the glyphs transparent, so if nothing were painted back
  *     here the black text would blend to white and the whole statement would
  *     vanish. The still is what guarantees it is always legible.
- *   - It reuses /brand/students-hero.jpg, which the hero has already fetched, so
+ *   - It reuses /brand/students-hero.webp, which the hero has already fetched, so
  *     the fallback costs no extra bytes.
  *
  * Delivery is gated by useGatedVideo, the same policy the "how it works" clip
@@ -30,7 +30,7 @@ export function StatementMedia() {
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden>
       <img
-        src="/brand/students-hero.jpg"
+        src="/brand/students-hero.webp"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />

@@ -79,11 +79,19 @@
 /* Call sites pass the image as --photo (not background-image), so the branded
    gradient beneath always renders when the file is missing — an intentional
    tile, never a black hole or broken image. */
+/* The layer under --photo is itself overridable as --photo-under. A tile with
+   no photo of its own wants the brand gradient; a tile whose photo is the first
+   thing on the page wants a blurred thumbnail of that photo instead, so the
+   wait reads as the image arriving rather than as a blue block. See
+   .lh-hero-photo. */
 .lh-photo {
   background-color: #0b0f1a;
   background-image:
     var(--photo, none),
-    radial-gradient(120% 110% at 22% 0%, #2a46f0 0%, #182ab0 34%, #101733 68%, #0b0f1a 100%);
+    var(
+      --photo-under,
+      radial-gradient(120% 110% at 22% 0%, #2a46f0 0%, #182ab0 34%, #101733 68%, #0b0f1a 100%)
+    );
   background-size: cover;
   background-position: center;
 }
@@ -244,10 +252,24 @@
    background rather than flattening everything toward grey.
 
    This makes the photograph read more clearly. It cannot make it sharper: the
-   file is 735x490 and the hero paints 2880x1800 on a retina laptop, so it is
-   being enlarged about 4x. No filter recovers detail that was never in the
-   file — see public/brand/README.md for the size to replace it with. */
+   file is 2000x1333 and the hero paints 2880x1800 on a retina laptop, so it is
+   still being enlarged. No filter recovers detail that was never in the file —
+   see public/brand/README.md for the size to replace it with.
+
+   --photo-under: a 30x20 thumbnail of the very same photograph, inlined so it
+   costs no request and paints the instant the stylesheet does. Without it the
+   layer beneath the hero is .lh-photo's brand gradient, and a full-bleed
+   saturated blue block was what every visitor actually saw first — on a phone
+   over slow data, for as long as the photograph took to arrive. A blurred
+   version of the real image reads as the photo loading, which is what it is.
+   Regenerate alongside the photo if it is ever replaced:
+     cwebp -q 40 -resize 30 20 -m 6 students-hero.jpg -o lqip.webp
+     base64 -i lqip.webp | tr -d '\n'
+   Keep the thumbnail's aspect ratio equal to the photo's — both layers are
+   painted with the same `background-size: cover`, so a mismatch crops them
+   differently and the image jumps when it lands. */
 .lh-hero-photo {
+  --photo-under: url("data:image/webp;base64,UklGRhYBAABXRUJQVlA4IAoBAADQBQCdASoeABQAPu1iqE2ppaOiMAgBMB2JaACdMt16HY1gQz/HR18xCMphxEDlpubEs4Rpf2/wAP7AaxKZwFdOjSaFlEZgpFaVOkudYfn5z2hkWIiRJQ/Ngb0OFX1FHhV5a1M2tDUaB+dcf55x7Ts+Yd9yqM0MXHp9vqjCA484fZInSvAgQEHcqyfXdRfsomBkaWLXqTohBtIi54odnBY730b3DHNplJnQRuCkZciMZltdfsAM0SDCezvw8gpxgQXTfGAiWef3FLJz2nnggSDT5yzqfyXVrmJKapRP0rdQWZY8WdMEh6VEf+lQqIdppXEXzKduVo2J/W8TnV1ywwYlVblCQylLdhbgAA==");
   filter: saturate(1.14) contrast(1.14) brightness(1.05);
 }
 

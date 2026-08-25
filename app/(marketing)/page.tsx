@@ -104,14 +104,14 @@ const DECISION_STEPS: DecisionStep[] = [
 export default function LandingPage() {
   return (
     <div className="lh-landing bg-white text-ink">
-      {/* The hero photograph is a CSS background (it needs the .lh-photo gradient
-          fallback underneath), so the browser cannot discover it until the
-          stylesheet has downloaded and parsed. On a phone over slow data that
-          leaves the hero on its gradient for the whole of that wait. Preloading
-          starts the fetch during HTML parse instead, in parallel with the CSS.
-          React hoists this into <head>. Keep the href in step with the
-          --photo url below, or this fetches a file nothing uses. */}
-      <link rel="preload" as="image" href="/brand/students-hero.jpg" fetchPriority="high" />
+      {/* The hero photograph is a CSS background (it needs a fallback layer
+          underneath — see .lh-hero-photo), so the browser cannot discover it
+          until the stylesheet has downloaded and parsed. On a phone over slow
+          data that leaves the hero on its fallback for the whole of that wait.
+          Preloading starts the fetch during HTML parse instead, in parallel
+          with the CSS. React hoists this into <head>. Keep the href in step
+          with the --photo url below, or this fetches a file nothing uses. */}
+      <link rel="preload" as="image" href="/brand/students-hero.webp" fetchPriority="high" />
 
       <LandingNav />
 
@@ -123,7 +123,7 @@ export default function LandingPage() {
           className="lh-photo lh-hero-photo absolute inset-0"
           style={
             {
-              "--photo": "url(/brand/students-hero.jpg)",
+              "--photo": "url(/brand/students-hero.webp)",
             } as React.CSSProperties
           }
           aria-hidden

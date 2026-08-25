@@ -24,7 +24,7 @@ out.
 
 | File | Where it shows | Notes |
 |---|---|---|
-| `students-hero.jpg` | Landing hero background **and** the "What your match looks like" panel **and** the statement clip's still | 2000×1333, 306KB. Faces right-of-centre — the headline sits on the left. Gets a saturation/contrast lift via `.lh-hero-photo` and film grain from `.lh-noise`. |
+| `students-hero.webp` | Landing hero background **and** the "What your match looks like" panel **and** the statement clip's still | 2000×1333, 175KB. Faces right-of-centre — the headline sits on the left. Gets a saturation/contrast lift via `.lh-hero-photo` and film grain from `.lh-noise`. It is the first thing on the page, so `.lh-hero-photo` also inlines a 30×20 blurred thumbnail of it as `--photo-under`; regenerate that whenever this file changes (the command is in the CSS comment). |
 | `step-1.webp` | "Makes the choice clear" — card 1, *Answer a few questions* | 1000×1161, 81KB. A man in a beige coat smiling at his phone. |
 | `step-2.jpg` | The same row, card 2, *See your matches* — **and** the 60px avatar in the hero's "Explore careers" pill | 688×1024, 51KB. A student smiling with a stack of books. Two files point at this one; renaming it means editing both. |
 | `choice-3.webp` | The same row, card 3, *Follow your path* | 900×675, 57KB. A woman celebrating at a laptop. Pelumi's placeholder, and the one photo in the row that is not on the studio wall — landscape, so the card crops it to its middle 549 columns. |
