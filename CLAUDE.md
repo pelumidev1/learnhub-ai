@@ -63,7 +63,7 @@ Note this overrules `learnhub-launch/learnhub-master-context.md` section 9, whic
 **Modern, minimal, metallic, Apple-like.** Generous whitespace, calm hierarchy, restraint over decoration. Every screen should feel premium and effortless on a phone.
 
 ### Brand
-LearnHub AI. Logo = the circular "orbit" glyph + `LearnHub` wordmark. Three lockups (place in `public/brand/`):
+The product is called **LearnHub** — "AI" is a descriptor ("AI career coach", "AI advisor"), not part of the name. Renamed 2026-07-24; older text in this file and in `PRD.md` still says "LearnHub AI". Logo = the circular "orbit" glyph + `LearnHub` wordmark. Three lockups (place in `public/brand/`):
 - `logo-metallic.png` — dark/metallic hero treatment (dark navy ground).
 - `logo-primary.svg` — royal-blue mark on light backgrounds (default).
 - `logo-reverse.svg` — light-blue mark on royal-blue backgrounds.
@@ -89,7 +89,7 @@ Core brand is **Blue, White, Black.** Blue is the accent — use it deliberately
 - **Radius:** 8px (sm), 12px (md), 16px (lg), full for pills.
 - **Shadows:** soft and layered, e.g. `0 1px 2px rgba(11,15,26,.06), 0 8px 24px rgba(11,15,26,.08)`. No harsh drop shadows.
 - **Motion:** 150–250ms, ease-out. Purposeful, never bouncy or decorative.
-- **Typography:** a clean, modern geometric/humanist sans (e.g. **Geist**). **Never** Inter, Roboto, Arial, or default system fonts — they read as generic AI slop. Strong weight contrast for hierarchy; comfortable line-height for mobile reading.
+- **Typography: Switzer for display, General Sans for body, Geist Mono for technical detail.** Wired up in `app/fonts.ts` and `tailwind.config.ts` — settled 2026-08-04, and this line used to say Geist, which sent more than one session "correcting" the page back. **Never** Inter, Roboto, Arial, or default system fonts — they read as generic AI slop. Strong weight contrast for hierarchy; comfortable line-height for mobile reading.
 - Avoid: cluttered layouts, purple-on-white gradients, stock-illustration clutter, more than one accent color.
 
 ## Code rules
