@@ -34,12 +34,26 @@ const AUTH_ROUTES = ["/login", "/signup", "/forgot-password"];
 /**
  * Routes the idle timeout does not apply to.
  *
- * /reset-password is the one that matters: it is reached WITH a live session,
- * mid password-recovery, often minutes after the email arrived. Signing that
- * user out is not a safety win — it strands them halfway through recovering the
- * account, with a now-spent link.
+ * What they have in common is an unavoidable wait somewhere we do not control,
+ * ending in a page that is reached WITH a live session and where being thrown
+ * to /login is the worst possible answer.
+ *
+ * /reset-password is reached mid password-recovery, often many minutes after
+ * the email arrived. Signing that user out is not a safety win — it strands
+ * them halfway through recovering the account, holding a now-spent link.
+ *
+ * The enrolment callback is where Paystack returns a buyer, after however long
+ * their bank app, their OTP and their connection took. Timing out there tells
+ * somebody who has just paid to sign in again, with no word about their money.
+ * (The webhook still enrols them, so nothing is lost but the confirmation —
+ * which is the entire reason that page exists.)
  */
-const IDLE_EXEMPT = [...AUTH_ROUTES, "/reset-password", "/auth"];
+const IDLE_EXEMPT = [
+  ...AUTH_ROUTES,
+  "/reset-password",
+  "/auth",
+  "/bootcamp/enrol/callback",
+];
 
 const matches = (path: string, list: string[]) =>
   list.some((p) => path === p || path.startsWith(p + "/"));
@@ -118,8 +132,9 @@ export async function updateSession(request: NextRequest) {
   // The enforcement half of the policy in lib/auth/idle.ts. This runs on the
   // server on every navigation, so it holds for a browser that closed, a tab
   // that was killed, and a client whose JavaScript never ran at all.
-  if (user && !matches(path, IDLE_EXEMPT)) {
-    if (idleFor(request.cookies.get(LAST_SEEN_COOKIE)?.value) > IDLE_TIMEOUT_MS) {
+  if (user) {
+    const enforced = !matches(path, IDLE_EXEMPT);
+    if (enforced && idleFor(request.cookies.get(LAST_SEEN_COOKIE)?.value) > IDLE_TIMEOUT_MS) {
       /* scope "local" revokes the refresh token behind THIS session and leaves
          the user's other devices signed in. The default is "global", which
          would mean timing out on a lab machine also signed them out on the
@@ -148,8 +163,15 @@ export async function updateSession(request: NextRequest) {
       return timedOut;
     }
 
-    // Still within the window: this navigation IS activity, so restamp. Set on
-    // `response` last, because setAll() above may have replaced the object.
+    /* This navigation IS activity, so restamp — including on the exempt pages,
+       which is what the first version of this got wrong. Not restamping there
+       only moved the sign-out one click later: someone who reset their password
+       after half an hour idle finished on /reset-password, was sent to
+       /dashboard, and was timed out on arrival by a stamp that had not been
+       touched since before the email. The page we refuse to time out on is
+       still a person using the site.
+
+       Set on `response` last, because setAll() above may have replaced it. */
     response.cookies.set(LAST_SEEN_COOKIE, String(Date.now()), lastSeenCookieOptions());
   }
 
