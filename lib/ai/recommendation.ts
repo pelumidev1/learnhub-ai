@@ -1,5 +1,5 @@
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
+import { anthropic, AI_TIMEOUT_MS } from "./client";
 import { AI_DEMO_MODE, MODELS } from "./config";
 import { DEMO_MODEL, demoDelay, demoRecommendation } from "./demo";
 import { extractText, parseJson } from "./parse";
@@ -57,7 +57,7 @@ export async function generateCareerRecommendation(input: {
     };
   }
 
-  const client = new Anthropic(); // lazy so a missing key can't crash module import
+  const client = anthropic({ timeoutMs: AI_TIMEOUT_MS.slow, maxRetries: 1 });
 
   const catalog = input.careers.length
     ? input.careers.map((c) => `${c.slug} | ${c.title} (${c.category})`).join("\n")

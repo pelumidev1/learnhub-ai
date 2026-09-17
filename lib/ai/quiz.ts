@@ -1,5 +1,5 @@
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
+import { anthropic, AI_TIMEOUT_MS } from "./client";
 import { z } from "zod";
 import { AI_DEMO_MODE, MODELS } from "./config";
 import { DEMO_MODEL, demoDelay, demoQuiz } from "./demo";
@@ -89,7 +89,7 @@ export async function generateQuiz(input: {
     };
   }
 
-  const client = new Anthropic();
+  const client = anthropic({ timeoutMs: AI_TIMEOUT_MS.fast, maxRetries: 1 });
 
   const userContent = `Career: ${input.careerTitle}
 Roadmap step: ${input.stepTitle}

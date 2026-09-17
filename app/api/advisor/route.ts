@@ -155,9 +155,11 @@ export async function POST(req: Request) {
       let full = "";
       let usage = { input: 0, output: 0 };
       let model: string = MODELS.advisor;
+      let failed = false;
       const startedAt = Date.now();
+      let ai: ReturnType<typeof streamAdvisorReply> | null = null;
       try {
-        const ai = streamAdvisorReply({ context, history });
+        ai = streamAdvisorReply({ context, history });
         model = ai.model;
         for await (const chunk of ai.text) {
           full += chunk;
@@ -165,14 +167,24 @@ export async function POST(req: Request) {
         }
         usage = await ai.usage();
       } catch {
+        failed = true;
+        /* A stream that broke partway still cost whatever it had produced, so
+           ask for the usage anyway. It usually refuses too — the count comes
+           from the final message and there isn't one — and then the row is
+           logged at zero, which understates the spend but never invents it. */
+        try {
+          if (ai) usage = await ai.usage();
+        } catch {
+          // no usable count; leave it at zero rather than guess one
+        }
         controller.enqueue(
           sse({ error: "The coach couldn't reply just now. Please try again." }),
         );
       }
 
       // Save the reply and log the call (best-effort — never block the response on it).
-      if (full) {
-        try {
+      try {
+        if (full) {
           await supabase.from("messages").insert({
             conversation_id: conversationId,
             user_id: user.id,
@@ -184,20 +196,27 @@ export async function POST(req: Request) {
             .from("conversations")
             .update({ updated_at: new Date().toISOString() })
             .eq("id", conversationId);
-          await supabase.from("ai_events").insert({
-            user_id: user.id,
-            call_type: "advisor",
-            model,
-            input_tokens: usage.input,
-            output_tokens: usage.output,
-            cost_usd: estimateCostUsd(model, usage.input, usage.output),
-            latency_ms: Date.now() - startedAt,
-            related_id: conversationId,
-            status: "ok",
-          });
-        } catch {
-          // logging is best-effort
         }
+        /* Logged whether or not the model answered, and deliberately outside the
+           `if (full)` this used to sit inside. checkAiRateLimit counts rows in
+           this table, so an advisor call that failed used to cost money, move
+           the limiter not at all, and never appear on /admin — the same hole
+           that was closed on the recommendation and roadmap paths in August
+           (app/(app)/results/actions.ts). Chat is the highest-volume call in the
+           product, so it is the worst place to leave uncounted. */
+        await supabase.from("ai_events").insert({
+          user_id: user.id,
+          call_type: "advisor",
+          model,
+          input_tokens: usage.input,
+          output_tokens: usage.output,
+          cost_usd: estimateCostUsd(model, usage.input, usage.output),
+          latency_ms: Date.now() - startedAt,
+          related_id: conversationId,
+          status: failed ? "error" : "ok",
+        });
+      } catch {
+        // logging is best-effort
       }
 
       controller.enqueue(sse({ done: true }));
