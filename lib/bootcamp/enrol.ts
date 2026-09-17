@@ -89,7 +89,13 @@ export async function startCheckout(input: {
 
 export type ActivationResult =
   | { ok: true; alreadyActive: boolean }
-  | { ok: false; reason: "unknown_reference" | "not_paid" | "amount_mismatch" | "error" };
+  | {
+      ok: false;
+      reason: "unknown_reference" | "not_paid" | "amount_mismatch" | "wrong_currency" | "error";
+    };
+
+/** The enrolment this transaction belongs to, however we managed to find it. */
+type EnrolmentRow = { id: string; status: string; amount_kobo: number | null };
 
 /**
  * Turn a paid transaction into an active enrolment.
@@ -105,16 +111,16 @@ export type ActivationResult =
 export async function activateFromReference(reference: string): Promise<ActivationResult> {
   const service = createServiceClient();
 
-  const { data: enrolment } = await service
+  const { data: byRef } = await service
     .from("enrollments")
     .select("id, status, amount_kobo")
     .eq("payment_ref", reference)
     .maybeSingle();
 
-  // A reference we never issued. Someone guessing, or a webhook for another
-  // integration on the same Paystack account.
-  if (!enrolment) return { ok: false, reason: "unknown_reference" };
-  if (enrolment.status === "active") return { ok: true, alreadyActive: true };
+  // Already done. Answered before asking Paystack anything, because the webhook
+  // and the browser callback fire for the same payment and one of them is
+  // always second.
+  if (byRef?.status === "active") return { ok: true, alreadyActive: true };
 
   let verified;
   try {
@@ -125,6 +131,47 @@ export async function activateFromReference(reference: string): Promise<Activati
   }
 
   if (verified.status !== "success") return { ok: false, reason: "not_paid" };
+
+  /* Currency, not just amount. `amount` is a bare integer in the currency's
+     minor unit, so 5,500,000 of something that is not kobo is a different sum
+     entirely — and the row we are about to activate says NGN. Paystack accounts
+     can be enabled for more than one currency, which is the whole risk. */
+  if (verified.currency !== "NGN") {
+    console.error("paystack currency mismatch", {
+      reference,
+      currency: verified.currency,
+    });
+    return { ok: false, reason: "wrong_currency" };
+  }
+
+  /* No row carries this reference, which does not mean nobody paid.
+     startCheckout upserts, so a second attempt overwrites payment_ref on the
+     same row — and if the buyer then finishes the *first* checkout page, still
+     open in another tab, this is the payment that arrives. Before this fallback
+     that money landed as "unknown_reference" and the seat was never granted.
+     The metadata is ours, set at initialize, and it comes back signed-for by a
+     verify call we just made, so it is as trustworthy as the amount is. */
+  let enrolment: EnrolmentRow | null = byRef ?? null;
+  if (!enrolment) {
+    const userId = verified.metadata.user_id;
+    const cohortId = verified.metadata.cohort_id;
+    if (typeof userId !== "string" || typeof cohortId !== "string") {
+      // A reference we never issued: someone guessing, or another integration
+      // on the same Paystack account.
+      return { ok: false, reason: "unknown_reference" };
+    }
+
+    const { data: byOwner } = await service
+      .from("enrollments")
+      .select("id, status, amount_kobo")
+      .eq("user_id", userId)
+      .eq("cohort_id", cohortId)
+      .maybeSingle();
+
+    if (!byOwner) return { ok: false, reason: "unknown_reference" };
+    if (byOwner.status === "active") return { ok: true, alreadyActive: true };
+    enrolment = byOwner;
+  }
 
   /* Check what they actually paid against what we asked for. Paystack's hosted
      page does not let a buyer change the amount, but this row is the thing that
@@ -140,7 +187,16 @@ export async function activateFromReference(reference: string): Promise<Activati
 
   const { error } = await service
     .from("enrollments")
-    .update({ status: "active", paid_at: verified.paidAt ?? new Date().toISOString() })
+    .update({
+      status: "active",
+      paid_at: verified.paidAt ?? new Date().toISOString(),
+      /* Record the reference that was actually paid. Where we arrived here
+         through the metadata fallback the row still carries an abandoned
+         reference, and leaving it there means the row does not reconcile
+         against Paystack's ledger. payment_ref is unique, but the reference we
+         are writing is by definition on no other row. */
+      payment_ref: reference,
+    })
     .eq("id", enrolment.id)
     // Only promote a pending row. If the webhook and the callback land at the
     // same moment, the second update matches nothing instead of overwriting.
@@ -163,7 +219,24 @@ export async function activateFromReference(reference: string): Promise<Activati
  * which is why the seat count only ever looks at founding and standard.
  */
 export async function compEnrollment(userId: string, cohortId: string): Promise<boolean> {
-  const { error } = await createServiceClient().from("enrollments").upsert(
+  const service = createServiceClient();
+
+  /* Never flatten a seat somebody paid for. The upsert below rewrites tier and
+     amount_kobo on conflict, so comping a name that is already on the paid list
+     — a mis-typed giveaway winner, or a winner who got impatient and bought —
+     would erase the only record that they paid, and quietly take their seat out
+     of the founding count. They already have what the comp was going to give
+     them, so the right answer is to do nothing and report success. */
+  const { data: existing } = await service
+    .from("enrollments")
+    .select("status, tier")
+    .eq("user_id", userId)
+    .eq("cohort_id", cohortId)
+    .maybeSingle();
+
+  if (existing?.status === "active" && existing.tier !== "comped") return true;
+
+  const { error } = await service.from("enrollments").upsert(
     {
       user_id: userId,
       cohort_id: cohortId,

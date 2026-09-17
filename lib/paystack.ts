@@ -78,6 +78,13 @@ export type VerifiedTransaction = {
   currency: string;
   paidAt: string | null;
   email: string | null;
+  /**
+   * What we attached at initialize, handed back to us.
+   *
+   * Typed loosely on purpose: it makes a round trip through Paystack, so it is
+   * their echo of our data rather than our data, and the caller narrows it.
+   */
+  metadata: Record<string, unknown>;
 };
 
 /**
@@ -103,6 +110,7 @@ export async function verifyTransaction(reference: string): Promise<VerifiedTran
       currency?: string;
       paid_at?: string | null;
       customer?: { email?: string };
+      metadata?: unknown;
     };
   };
 
@@ -117,6 +125,13 @@ export async function verifyTransaction(reference: string): Promise<VerifiedTran
     currency: json.data.currency ?? "NGN",
     paidAt: json.data.paid_at ?? null,
     email: json.data.customer?.email ?? null,
+    /* Paystack returns metadata as an object when we sent one, but has been
+       known to hand back "" or a JSON string for transactions created outside
+       our integration, so anything that is not a plain object becomes {}. */
+    metadata:
+      typeof json.data.metadata === "object" && json.data.metadata !== null
+        ? (json.data.metadata as Record<string, unknown>)
+        : {},
   };
 }
 
