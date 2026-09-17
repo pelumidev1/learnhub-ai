@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { safeInternalPath } from "@/lib/utils/redirect";
+import { authErrorMessage } from "@/lib/auth/messages";
 
 export type AuthState = { error?: string; message?: string } | undefined;
 
@@ -30,7 +31,7 @@ export async function signIn(
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) return { error: error.message };
+  if (error) return { error: authErrorMessage(error) };
 
   revalidatePath("/", "layout");
   redirect(safeInternalPath(redirectTo));
@@ -61,7 +62,7 @@ export async function signUp(
       data: { full_name: fullName },
     },
   });
-  if (error) return { error: error.message };
+  if (error) return { error: authErrorMessage(error) };
 
   return {
     message: `We sent a confirmation link to ${email}. Open it to finish setting up your account.`,
@@ -88,7 +89,7 @@ export async function signInWithGoogle(formData: FormData): Promise<void> {
     },
   });
   if (error)
-    redirect(`/login?error=${encodeURIComponent(error.message)}`);
+    redirect(`/login?error=${encodeURIComponent(authErrorMessage(error))}`);
   if (data.url) redirect(data.url);
 }
 
@@ -105,10 +106,16 @@ export async function forgotPassword(
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?next=/reset-password`,
   });
-  // Do not reveal whether the email exists.
-  if (error && !error.message.toLowerCase().includes("rate"))
+  /* Never reveal whether the address is registered: every outcome but a rate
+     limit reports the same success. A rate limit is different — it is a fact
+     about this browser, not about that address, and swallowing it leaves
+     someone pressing a button that silently does nothing. Matched on the code
+     now, rather than on whether the message happens to contain "rate". */
+  const rateLimited =
+    error?.code === "over_email_send_rate_limit" || error?.code === "over_request_rate_limit";
+  if (error && !rateLimited)
     return { message: "If that email is registered, a reset link is on its way." };
-  if (error) return { error: error.message };
+  if (error) return { error: authErrorMessage(error) };
 
   return { message: "If that email is registered, a reset link is on its way." };
 }
@@ -127,7 +134,7 @@ export async function updatePassword(
 
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
-  if (error) return { error: error.message };
+  if (error) return { error: authErrorMessage(error) };
 
   revalidatePath("/", "layout");
   redirect("/dashboard");
