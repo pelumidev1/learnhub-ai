@@ -1,10 +1,46 @@
 # HANDOFF — resume here (written for Opus 4.8)
 
-_Last updated 2026-08-22 (the launch pivot — read "Launch pivot" below **before** anything else). Written for a fresh Claude Code session with **no access to previous conversations**. Read this file first; it links to everything else._
+_Last updated 2026-09-17. Written for a fresh Claude Code session with **no access to previous conversations**. Read this file first; it links to everything else. Read "Where this stands" immediately below before anything — **every launch date written into the code has passed** — then "Launch pivot", which explains what this product became._
 
 ## What this is
 
 **LearnHub AI** — the AI career coach for Africa's next generation of tech talent. A person takes a 2-minute assessment, gets an AI-reasoned ranked list of tech careers that fit them (with local salary ranges and honest timelines), generates a step-by-step learning roadmap of free-first resources, tracks progress to a certificate, and can ask a context-aware AI coach anything, 24/7. Free while in beta. Audience: students, graduates, and career changers across Africa, 18–35, mostly on mid-tier Android phones over metered connections — every technical decision serves that user.
+
+## Where this stands (17 September 2026)
+
+**Nothing has been committed since 25 August.** `main` is at `e02f5b2`, the
+working tree is clean apart from an untracked `.vscode/`, and the three weeks
+since are not accounted for anywhere in this repo. Verified today against that
+head: `npm test` passes 369 tests in 19 files, `npx tsc --noEmit` is clean, and
+`npx next build` completes every route.
+
+**Every launch date in the code is now in the past.** Nothing has told this repo
+what happened, so do not assume — ask before changing any of them:
+
+| Where | Says | Now |
+|---|---|---|
+| `lib/masterclass.ts` | Wednesday 27 August, 7:00pm WAT | three weeks ago, and `joinUrl` is still `""`, so `isMasterclassConfigured()` is still false |
+| `lib/bootcamp/pricing.ts` | founding tier closes midnight 31 August | closed — `currentTier()` now returns `standard` for everybody, whatever the seat count |
+| the launch docs | cohort one starts 1 September | past. `cohort-1.starts_on` was still null at the last check, so `weekOpensOn` returns null for every week and no lesson has an open date |
+
+So `/masterclass` is live, statically prerendered, and still says "Wednesday 27
+August" with no guard in front of it — `isMasterclassConfigured()` exists but the
+page does not call it. Worse, the form's success message reads "The link is in
+your inbox now", and no email is sent, because Resend was never connected. That
+is a promise the product cannot keep, in a product where honesty is a stated
+value. **Either take the page down or fix that line before anyone is sent to
+it.** It is linked from nowhere, which is the only reason this has not already
+cost anything. A paid enrolment, meanwhile, would now be priced `standard` —
+₦90,000, not the ₦55,000 founding price — though nothing can actually reach
+checkout.
+
+The plain reading is that the 1 September launch did not happen as planned, or
+happened somewhere other than this codebase. **Ask Pelumi first: did the
+masterclass run, has anyone paid, and is there a new date?** That answer decides
+whether the next move is the sales page and buy button — still the only things
+standing between this and revenue, and `startCheckout` in `lib/bootcamp/enrol.ts`
+still has no caller anywhere in the app — or resetting the dates and running the
+launch again.
 
 ## Read these, in this order
 
@@ -18,28 +54,68 @@ _Last updated 2026-08-22 (the launch pivot — read "Launch pivot" below **befor
 8. **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — deploy guide and launch checklist.
 9. **[STATUS_REPORT.md](STATUS_REPORT.md)** / **[CHANGELOG.md](CHANGELOG.md)** — history, if you need it. [DESIGN.md](DESIGN.md) for visual language detail.
 
-## State right now (all verified 2026-07-11 — see the audit for how)
+## State right now (dated per line; the audit says how each was verified)
 
-- `npx tsc --noEmit` and `npx next build` pass; 19 routes.
+- **Tests, typecheck and build all pass — re-verified 2026-09-17** on `e02f5b2`: 369 tests in 19 files, `tsc --noEmit` clean, `next build` completes every route.
 - **Supabase is live**: migrations + seed applied (16 careers, 22 resources), the new-user trigger fires, RLS verified blocking cross-user reads.
 - **Auth works end-to-end** (scripted test): signup → profile row → sign-in → cookie session through middleware → authenticated API call.
 - **Anthropic account is FUNDED and the real AI loop is VERIFIED LIVE (2026-07-23).** `AI_DEMO_MODE=false` locally now. All three real-model paths were run end-to-end through the actual `lib/ai` code (real prompts, prompt caching, streaming, Zod validation) against the live key: recommendation (Opus 4.8) → roadmap (Opus 4.8) → advisor (Haiku 4.5). Output quality is beta-worthy — locally grounded (Naira + remote-USD salaries, Nigerian communities, honest timelines, free resources). **Cost ≈ $0.12 per full user journey** (~$0.055 rec + ~$0.061 roadmap + ~$0.002/advisor msg); Opus latency ~28–30s each (why streaming matters). This was previously the single biggest unverified thing in the project — it is now proven. (Demo mode still available: set `AI_DEMO_MODE=true` for zero-spend canned output; ignored on production.)
 - Repo: https://github.com/pelumidev1/learnhub-ai (`main`). **Deployed and live**: https://learnhub-ai-alpha.vercel.app (Vercel project `learnhub-ai`, team `pelumi2`). Production has `AI_DEMO_MODE` **off** — AI features there hit the real Anthropic API, so confirm the account is funded before sending users.
 - **Security pass done (2026-07-12, `012a1f3`)** — see [docs/SECURITY.md](docs/SECURITY.md). Its migration is applied to the live DB and `NEXT_PUBLIC_SITE_URL` is set in Vercel Production; nothing pending from it.
 - The marketing landing is served at `/` (statically prerendered); two mobile bugs (header overlap, robot hidden by the wash) were found via screenshot testing and fixed.
-- **Landing rebuilt 2026-07-26/27 (`736b032`).** `app/(marketing)/page.tsx` was restructured section-for-section on the Zerion template layout the owner picked as the direction. **Read [docs/LANDING-REFERENCE.md](docs/LANDING-REFERENCE.md) before touching the landing** — it holds the section map, the motion spec, and the deliberate divergences. Key points: the scroll animation is `components/marketing/landing/split-text.tsx` (masked letter rise via CSS + IntersectionObserver, deliberately not GSAP, for bundle size); **never combine it with `background-clip: text`** — a transformed child breaks the parent's clip and renders the heading invisible, which shipped a blank section once. `orbit.tsx`, `hero-card.tsx`, and `steps-tabs.tsx` are committed but orphaned, held at the owner's request. `student-1/2/3.jpg` are still gradient placeholders and carry three of the page's biggest surfaces — re-judge the mid-page once the real photos land.
+- **The landing was rebuilt, then reworked for a month.** It started as a section-for-section build on the Zerion template (`736b032`, 26/27 July); roughly seventy commits between 4 and 11 August turned that into the page that is live now — a five-surface material system, alternating dark and light section grounds, the flip step cards, the orbiting career map, and two separate renders of the how-it-works clip. **Read [docs/LANDING-REFERENCE.md](docs/LANDING-REFERENCE.md) before touching any of it.** What bites:
+  - The scroll animation is `components/marketing/landing/split-text.tsx` — masked letter rise, CSS plus one IntersectionObserver, deliberately not GSAP, for bundle size. **Never combine it with `background-clip: text`**: a transformed child breaks the parent's clip and paints the heading invisible. That shipped a blank section once.
+  - **The page is set in Switzer (display) and General Sans (body), with Geist Mono for technical detail** — `app/fonts.ts` and `tailwind.config.ts`, changed 2026-08-04. **CLAUDE.md still names Geist**, and CLAUDE.md governs, so a session reading only the rules will "correct" the fonts and quietly undo a decision. Ask before acting on that line. (CLAUDE.md is stale on the name too: the product is **LearnHub**, with "AI" kept only as a descriptor.)
+  - The grounds alternate on purpose: hero ink → statement white → "What you get" ink → "How it works" white → "After the match" white → career map ink → pricing paper → beta white → CTA white → FAQ ink. **"How it works" and "After the match" are two whites in a row**, held apart only by the dark photographs between them. One more light section and the problem the reference doc exists to catch is back.
+  - Career map tiles were still the light product-screen mocks on a dark ground as of 2026-08-11, where they read as bright stickers. Replacing them needs seven Higgsfield chrome objects at ~2 credits each — prompt and the two gotchas are in `public/brand/paths/README.md`, and one (`cybersecurity.webp`) already exists. They go in all together or not at all.
+  - Held but orphaned at the owner's request: `orbit.tsx`, `hero-card.tsx`, `steps-tabs.tsx`. The old `student-1/2/3.jpg` gradient placeholders are gone — `public/brand/` now carries real WebP art.
 
 ## Do this first (in order)
 
-1. `npm install` if needed; `npm run dev` → http://localhost:3000 (keep port 3000 — OAuth callback + `NEXT_PUBLIC_SITE_URL` are pinned to it).
-2. **Never run `npx next build` while the dev server is running** — they share `.next` and corrupt each other. Stop dev, build, `rm -rf .next`, restart dev. This bit us twice.
+1. `npm install` if needed, then `npm run dev`. **It comes up on http://localhost:3001, not 3000** — port 3000 belongs to Pelumi's separate `ai-os` project and is usually already taken. `NEXT_PUBLIC_SITE_URL` in `.env.local` is still pinned to `http://localhost:3000`, so anything that round-trips through it (Google OAuth, email links) will land on the wrong port locally unless you free 3000 first. A dead-looking 3001 does not mean nothing is running, and he starts `next dev` from VS Code mid-conversation: kill by full path — `pkill -f "Learnhub-ai/node_modules/.bin/next dev"` — so the other project's server survives.
+2. **Never run `npx next build` while the dev server is running** — they share `.next` and corrupt each other. Stop dev, build, `rm -rf .next`, restart dev. This bit us twice. Check `pgrep -fl "next dev|next-server"` immediately before **every** build, not once per session — he may have started one since you last looked.
 3. Before any commit: `npm test && npx tsc --noEmit && npx next build` must all pass. Commit to `main`; the owner asks for pushes explicitly and uses them to trigger Vercel deploys.
 4. ~~When the owner funds Anthropic: flip `AI_DEMO_MODE=false`, run the full loop once, inspect output.~~ **DONE 2026-07-23** — account funded, `AI_DEMO_MODE=false` locally, full real loop verified (see state note above). Still worth doing once through the browser UI with a real signup to confirm `ai_events` rows land with cost/latency.
-5. ~~**Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project.~~ **DONE — owner confirmed applied 2026-07-23.** The RLS performance fix and the one-roadmap-per-match unique index are live. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` is also applied.) **The two 2026-08-20/21 migrations — `20260820120000_analytics_own_select.sql` and `20260821120000_quiz_gate_server_only.sql` — are applied and verified too.** No pending migrations remain. There is no Supabase CLI in this project and no `config.toml`; migrations are applied by hand in the dashboard SQL Editor, so a migration file landing in the repo does **not** mean it is live — ask.
+5. ~~**Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project.~~ **DONE — owner confirmed applied 2026-07-23.** The RLS performance fix and the one-roadmap-per-match unique index are live. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` is also applied.) **The two 2026-08-20/21 migrations — `20260820120000_analytics_own_select.sql` and `20260821120000_quiz_gate_server_only.sql` — are applied and verified too.** No pending migrations remain. The most recent applied migration is `20260822130000_lesson_progress.sql` (2026-08-22) and nothing has been added to `supabase/migrations/` since. The Supabase CLI *was* added on 2026-08-22 (`f8152cd`, with `supabase/config.toml`), but the project is **not linked** and all 20-odd migrations were applied by hand in the dashboard SQL Editor, so the CLI has no record of any of them — **read trap 1 under "Launch pivot" before running any CLI command.** A migration file landing in the repo does **not** mean it is live: ask.
+
+## Seeing the UI while you work
+
+The Claude-in-Chrome extension returns "Permission denied for this action on
+this domain" on `http://localhost:3001`, so it cannot screenshot the dev server
+at all. Use headless Chrome:
+
+```
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless --disable-gpu --hide-scrollbars \
+  --virtual-time-budget=20000 --window-size=1024,760 \
+  --screenshot="out.png" http://localhost:3001/some-route
+```
+
+- `--virtual-time-budget` **fast-forwards timers**, which is what makes
+  time-based UI testable without waiting — a 40-second countdown resolves
+  instantly. That is how the idle-timeout warning was checked.
+- `--dump-dom` instead of `--screenshot` returns the rendered HTML, so a small
+  temporary probe component writing `getBoundingClientRect()` into the DOM is
+  how you get real numbers out.
+- **Headless clamps the viewport to about 500px wide.** `--window-size=390,760`
+  still renders at `innerWidth = 500` and then crops to 390, which makes a
+  correctly centred element look off-centre and clipped. Measure before
+  believing a layout bug at phone width; this cost a debugging detour once.
+- **Signed-in flows cannot be checked this way** — entering his password is off
+  limits. Either mount the component on a throwaway public route under
+  `app/(marketing)/` and delete it after (note Next ignores folders starting
+  with `_`, so `__preview` 404s), or hand the check to Pelumi with a concrete
+  recipe. Say plainly which parts you verified and which you left to him.
+- Headless **WebKit does not honour `backface-visibility: hidden`**, so WebKit
+  screenshots of the landing's flip cards show the *back* of every card and
+  cannot be used to judge the front. A verification was asserted on that basis
+  once and had to be retracted.
+- The live site will not show you the landing while signed in — middleware sends
+  you from `/` to `/dashboard`. Use a private window.
 
 ## Tests
 
-`npm test` (Vitest, `vitest.config.ts`). 314 tests, ~2s, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
+`npm test` (Vitest, `vitest.config.ts`). 369 tests in 19 files, about a second, no network, no database, no Anthropic calls — everything is pure functions or a stubbed Supabase query chain, so it is free to run and safe in CI.
 
 What is covered, and why those and not others: each one is a place where a silent failure costs money or corrupts stored data.
 
@@ -55,9 +131,15 @@ What is covered, and why those and not others: each one is a place where a silen
 | `lib/utils/format.test.ts` | That sub-cent AI spend does not render as `$0.00` — a cost dashboard that reports zero is worse than none. |
 | `lib/validations/feedback.test.ts` | The feedback boundary: no coercion on the thumb (a coerced `"false"` would record every negative vote as positive), uuid-shaped `context_id` (the upsert conflict target), and the comment cap enforced server-side. |
 | `lib/quiz/grade.test.ts` | **The answer-key leak test.** Asserts over the serialised client payload that `correct_index` and the explanations never reach the browser, plus the pass-mark boundary (4 of 5 passes, 3 of 5 does not) and that an unanswered question counts as wrong rather than shrinking the denominator. |
-| `lib/quiz/carry-over.test.ts` | Spaced repetition: two *consecutive* correct answers retire a question, a later miss resets the streak, the carry cap holds, and the result does not depend on the order rows came back from the database. |
 | `lib/ai/quiz.test.ts` | Model output before it is stored: exactly four options, `correct_index` in range (a 4 would make a step impossible to pass), exactly five questions, and that 80 against 5 means 4 of 5. |
 | `lib/quiz/balance.test.ts` | That a quiz is never passable by picking one letter (asserted over 500 seeds), and that correct answers spread evenly across many quizzes — the test that caught the `i % 4` pool always doubling position 0. |
+| `lib/db/quiz-generate.test.ts` | That the step is claimed in `ai_events` *before* the model is called, not after — two page views racing each other otherwise pay Haiku twice for the same quiz. Also that one failing step does not abandon the rest, and logs against the limit. |
+| `lib/auth/idle.test.ts` | That a **missing** idle stamp reads as "start the clock", not "expired" — the inverse would have signed out every logged-in user the moment this shipped. Plus the warning landing with room to react. |
+| `lib/supabase/middleware.test.ts` | The enforcement half of the idle timeout, with Supabase stubbed: a stale session is signed out and its cookies cleared on the redirect itself; the sign-out is `scope: "local"`, so the user's phone survives a timeout on a lab machine; `/reset-password` is exempt however stale. |
+| `lib/paystack.test.ts` | The webhook signature: a tampered body, a wrong key, a missing header, an empty one, and a wrong-length signature that must reject rather than throw. Anything that gets past this activates a paid enrolment nobody paid for. |
+| `lib/bootcamp/pricing.test.ts` | Both ends of the founding offer — the 15th seat still founding, one second into 1 September not — and that prices are held in kobo, the unit Paystack settles in. |
+| `lib/bootcamp/queries.test.ts` | `weekOpensOn`: week 0 sits *before* the cohort starts because onboarding runs early, month boundaries do not drift, and a cohort with no start date returns null rather than a date near 1970. |
+| `lib/validations/masterclass.test.ts` | The registration boundary: the email is lowercased, because the unique constraint is not case-insensitive and "Ada@" and "ada@" would both take a seat. |
 
 The suite was checked by mutation, not just by passing: ten deliberate regressions were introduced one at a time (remove the URL filter, flip `<` to `<=` at the rate-limit cap, drop the production guard on demo mode, allow `//evil.com`, remove each schema bound, stop stripping code fences) and **all ten were caught**. Re-run that check if you rewrite a test — a green suite that catches nothing is worse than none.
 
@@ -96,9 +178,9 @@ A step cannot be ticked complete without a passing attempt on its quiz, so a cer
 - **Sequential step locking was considered and rejected** — see `docs/QUIZ-DESIGN.md`. It adds nothing to what the certificate certifies (every step is required anyway) and can strand a student on a step they are stuck on.
 - **A step with no quiz stays ungated on purpose.** Generation is best-effort follow-up to a roadmap that is already paid for; a failed call must never leave a student stuck. `npm run quiz:backfill` (dry run by default, `--write` to generate) closes those gaps and covers roadmaps created before this shipped.
 - **Quizzes load per roadmap, in two queries** (`loadRoadmapQuizzes`). The first version loaded per step and ran the identical attempts query once per step: ~27 round trips before first paint on a 9-step roadmap, on a product built for intermittent connections.
-- **Carry-over is scoped to the roadmap.** It was scoped only to the user, so a question missed in a Data Analyst roadmap could surface in a Product Designer one.
+- **Spaced repetition was built and then removed (2026-08-04, `fbdcf43`).** A missed question used to join every later step's quiz until answered right twice running. Pelumi hit it on his own roadmap — five promised, six shown — and asked for it out. It announced itself with a note and a chip and *still* read as a bug to the person it happened to, which is the answer to whether it was worth its confusion. `carry-over.ts` and its 15 tests are deleted, not left dangling, and two queries came off every submission with them. **Do not rebuild it** without asking; `docs/QUIZ-DESIGN.md` carries the removal and the reasoning. Nothing was lost from the record: `missed_ids` is still written on every attempt and the review screen (`7267b13`) shows every question, right and wrong, for as long as the attempt exists.
 - **`quiz_attempts.answers` stores only the questions actually asked**, not the request body — the stored keys are the roll call the repetition pool reads back.
-- **Question keys are `stepId:questionId`.** Ids are `q1`..`q5` *within* a quiz, so carrying step 2's `q3` into step 3 would otherwise collide with step 3's own `q3` and grade against the wrong answer.
+- **Question keys are `stepId:questionId`.** Carry-over is why they started that way, but it is not why they stay: every step has a `q3`, stored attempts are keyed by the composite, and an attempt has to stay readable years after the quiz it came from.
 - **Answer positions are balanced in code, not by the prompt** (`lib/quiz/balance.ts`). The prompt asked the model to vary the slot; the first 26 real quizzes came back with B correct 61% of the time, D correct in none of 130 questions, and 11 of 26 passable by tapping one letter five times. Now each quiz draws targets from a pool that uses every slot before repeating any, with the repeat picked at random — building it as `i % 4` looks balanced per quiz but makes option A correct 40% of the time forever.
 - **Two terminal scripts, both dry-run by default:** `npm run quiz:backfill` generates missing quizzes, `npm run quiz:rebalance` reshuffles stored ones. Both take `-- --write`. Rebalance verifies every question keeps its wording, its four options and the same correct answer before writing, and aborts if not. Applied 2026-08-03: 26 quizzes, gameable 11 → 0, split now 24/26/27/23.
 - `awardCompletion` and the certificate logic were not touched. They already issue a certificate when every step is complete; the gate is what makes that mean something.
@@ -232,17 +314,16 @@ SSE streaming in the advisor, and the OAuth round-trip are not exercised by a
 build. Merge the PR to get a Vercel preview, click through signup → assessment →
 roadmap → advisor on the preview URL, then promote.
 
-**Known-remaining, none blocking:** the advisor route logs `ai_events` only on
-success; raw Supabase error strings ("Invalid login credentials") reach users
-and break the tone rule; `lib/supabase/client.ts` is dead code (nothing imports
-it, and no Supabase key reaches the browser as a result); the public repo still
-carries the stale `marketing/` copy, scraped third-party HTML in
-`references/inspiration/`, and a `.claude/launch.json` pointing at a path that
-no longer exists. **Supabase is on the free tier and pauses after 7 days idle —
-while paused the whole site is down, not degraded.** It paused once (resumed
-2026-08-20).
+**Known-remaining from that pass — all cleared 2026-09-17**, see "Hardening
+pass" below: the advisor's success-only logging, the raw Supabase error strings,
+the dead `lib/supabase/client.ts`, the scraped third-party HTML and the stale
+`.claude/launch.json`. The stale `marketing/` copy is still there deliberately —
+it is his own pre-Next landing, dead but his to delete.
 
-## Launch pivot (2026-08-22) — read this first
+**Supabase is on the free tier and pauses after 7 days idle — while paused the
+whole site is down, not degraded.** It paused once (resumed 2026-08-20).
+
+## Launch pivot (2026-08-22) — the shape of the product
 
 The product changed shape. This repo was a free AI career advisor; it is now
 also the LMS for a **paid six week AI bootcamp** launching **1 September 2026**,
@@ -357,6 +438,12 @@ the only enrolled person is him, on a comped seat.
 
 ### Waiting on Pelumi, all blocking something
 
+Written 2026-08-22. **Checked again 2026-09-17 and none of it has moved in the
+repo:** no `resend` dependency or code anywhere, `MASTERCLASS.joinUrl` still
+`""`, all five week-one lessons still have an empty `video_url` and an empty
+`## Transcript` slot. Whether the Vercel, Supabase and Paystack items were done
+in a dashboard cannot be seen from here — ask.
+
 Accept the **Resend** marketplace terms (blocks every launch email). Confirm the
 **masterclass date, time and join link** in `lib/masterclass.ts`. Set
 **`cohort-1.starts_on`**. Record videos and write transcripts. **Roll the live
@@ -402,11 +489,156 @@ time — and it surfaces as the action's generic "check your connection" message
 which sends you looking in entirely the wrong place. Insert, and treat 23505 as
 success.
 
+### A second way into the course (2026-08-24, `9e950be`)
+
+Pelumi reported he could not see his AI course on his phone. Nothing was broken:
+his phone was showing a tab rendered *before* the deploy that first put Bootcamp
+in the nav, and phone browsers restore tabs from memory for days without
+refetching. **There is no service worker in this project, so a stale tab is the
+only cache that can do this — put `?v=2` on the URL and you have proved it in
+one step.** Reach for that before debugging the app.
+
+The real fault was that the nav bar was the *only* route to the course, so one
+stale nav hid the whole product. So the fix was a second door, not a nav tweak:
+
+- **`BootcampCard` sits first in the dashboard's left column** — cohort, week and
+  module, the next unfinished lesson, a progress bar, and a Continue button that
+  jumps to where you stopped. The dashboard is the screen every session starts
+  on and it had said nothing about the bootcamp at all.
+- **It renders only for an active enrolment.** `getBootcampSummary` returns null
+  otherwise, because with no sales page a card advertising the bootcamp to a
+  free user is a dead end. **When the sales page ships, drop that enrolment
+  check** and the card becomes a conversion surface. Pelumi accepted this
+  explicitly — re-raise it rather than changing it silently.
+- The query is ordered to stop at the first "no", so a signed-in user who has not
+  bought pays for two small reads and never the curriculum join.
+
+**A course link now survives sign-in**, which it did not, in three separate
+places — and fixing any one alone would have changed nothing:
+
+- `/learn` was missing from `PROTECTED`, so the redirect came from the `(app)`
+  layout's bare `redirect("/login")` and arrived with no `?redirect` at all.
+- `signInWithGoogle` hardcoded `next=/dashboard`. Most people use Google, Pelumi
+  included.
+- `GoogleButton` had no way to receive a destination. Only the email form did,
+  which is why this looked fixed in the code and was not.
+
+That mattered *before* launch rather than after: a lesson link in a launch email
+would have dropped every signed-out reader on the dashboard. `?redirect=//evil.com`
+still falls back to `/dashboard` — both actions run it through `safeInternalPath`.
+Not verified: how the card actually looks, which needs a signed-in session.
+
+### Hero paint (2026-08-25, `477a7e1`)
+
+The layer under the hero photograph was `.lh-photo`'s brand gradient — right for
+a tile with no photo, but the hero has one, so **a blue block was what every
+visitor saw until the 313KB JPEG finished downloading.** On a phone over slow
+data, for seconds, on the first screen of the product.
+
+The under-layer is overridable as `--photo-under` now, and `.lh-hero-photo` sets
+it to a 30×20 blurred thumbnail of the photograph itself, inlined as a data URI:
+286 bytes, no request, painted the instant the stylesheet is. The wait now reads
+as the image arriving, which is what it is. Nothing else on `.lh-photo` changed —
+the gradient is still the right fallback for the tiles that have no photo. The
+hero is WebP as well, 313KB → 175KB at the same 2000×1333, and the still frame
+behind the statement clip points at the same file, so it followed.
+
+### Still open in the LMS — Pelumi's calls, not bugs to fix unprompted
+
+- **On a phone, resources sit after the exit.** A lesson reads video → body →
+  Mark as done → Next lesson → outline → resources, because the rail is `order-2`
+  on mobile. Most people will move on before they see the per-lesson resources.
+  Pre-existing, from the original two-column split.
+- **Bootcamp took Resources' place in the mobile bar.** `NAV` in
+  `components/app/app-shell.tsx` feeds the bar via `slice(0, 5)`. Less pressing
+  now the dashboard also links to the course.
+
+### Hardening pass (2026-09-17)
+
+An audit of the whole tree, and the fixes it turned up. Nothing was redesigned;
+the landing, the LMS and the assessment were not touched. 414 tests pass, `tsc`
+clean, build clean. **Not committed** unless he has said so since.
+
+**Two live defects, both in code that had shipped:**
+
+1. **A paid enrolment could go unmatched.** `startCheckout` upserts, so a second
+   attempt overwrites `payment_ref` on the same row. Finish the *first* checkout
+   page — still open in another tab, which is precisely what happens when a
+   connection drops — and the reference arriving on the webhook is on no row at
+   all. It was reported as `unknown_reference` and the money bought nothing.
+   `verifyTransaction` now returns Paystack's metadata (our own `user_id` and
+   `cohort_id`, set at initialize), `activateFromReference` falls back to it, and
+   the row records the reference actually paid so it reconciles against
+   Paystack's ledger. 13 tests in `lib/bootcamp/enrol.test.ts`, mutation-checked.
+2. **Finishing a password reset signed you straight back out.** The idle timeout
+   exempted `/reset-password` from *enforcement* but the restamp sat inside the
+   same branch, so the exempt pages never refreshed the clock — recover your
+   password after half an hour idle, land on `/dashboard`, and it timed you out
+   on arrival against a stamp older than the email. The restamp now runs for any
+   authenticated navigation, exempt or not.
+
+**Three more, found in the same sweep:**
+
+- **The advisor never logged a failed call.** `checkAiRateLimit` counts rows in
+  `ai_events`, so a failing chat cost money, moved the limiter not at all and
+  never reached `/admin` — the hole closed on the two Opus paths in August, left
+  open on the highest-volume call in the product. A partial stream now reports
+  what usage it can rather than logging zero tokens for tokens we were billed.
+- **`/bootcamp/enrol/callback` is exempt from the idle timeout.** Checkout is a
+  bank app, an OTP and a connection we do not control; timing out there tells
+  somebody who has just paid to sign in again, with no word about their money.
+- **`compEnrollment` could erase a payment.** Its upsert rewrites `tier` and
+  `amount_kobo` on conflict, so comping a name already on the paid list wiped
+  the only record that they paid and took their seat out of the founding count.
+  It now leaves an active paid seat alone.
+- **Currency was read and never checked.** `amount` is a bare integer in the
+  currency's minor unit, and a Paystack account can be enabled for more than
+  one, so 5,500,000 of something that is not kobo would have passed the amount
+  check.
+
+**New: `lib/ai/client.ts`.** CLAUDE.md's folder structure has always named a
+`client` in `lib/ai/` and there wasn't one — `new Anthropic()` appeared in four
+modules with no timeout, so the SDK's ten-minute default outlived every platform
+limit we run under. A hung call was killed by Vercel rather than by us, which
+means no exception, no `ai_events` row, nothing against the limiter, and a
+spinner until the function died. Budgets are now stated per call type and
+bounded by `timeout × (maxRetries + 1)`: Opus 120s with one retry, Haiku 45s,
+and the advisor zero retries because someone is watching and would rather ask
+again than wait twice.
+
+**New: `lib/auth/messages.ts`.** Six places returned Supabase's own wording to
+the screen: "Invalid login credentials", "For security purposes, you can only
+request this after 46 seconds", and a "should be at least 6 characters" that
+contradicts the 8 this product asks for. Mapped on the stable `code`, never the
+message text. `forgotPassword` now decides on the code too, rather than on
+whether the message happens to contain the word "rate" — and still never reveals
+whether an address is registered. 30 tests.
+
+**Deleted:** `lib/supabase/client.ts` (dead, and with it goes any way to make a
+Supabase client in the browser), `references/inspiration/` (608KB of scraped
+third-party HTML in a public repo), `.claude/launch.json` (pointed at a path
+that has not existed since the project moved).
+
+**CLAUDE.md corrected** on two stale facts that were actively misleading
+sessions: the typography rule said Geist when the page has been set in Switzer
+and General Sans since 2026-08-04, and the brand section still called the
+product "LearnHub AI".
+
+**Found and deliberately not touched:** the `career-match` cluster (~1,900 lines
+across five files) is unimported, as are `orbit.tsx`, `hero-card.tsx`,
+`steps-tabs.tsx` and `coming-soon.tsx`. They were kept at his request and Next
+does not bundle what nothing imports, so they cost nothing at runtime. The
+`/masterclass` success message ("The link is in your inbox now") is false —
+Resend was never connected — but that is launch copy and his call.
+
 ### Next in the build order
 
-The **sales page and buy button** are the only things standing between this and
-revenue. Then the giveaway form, then the four launch emails once Resend is
-connected.
+Ask about the dates first — see "Where this stands" at the top; three weeks have
+passed since the last commit and every launch date in the code has expired.
+
+Then, unchanged: the **sales page and buy button** are the only things standing
+between this and revenue (`startCheckout` still has no caller). Then the giveaway
+form, then the four launch emails once Resend is connected.
 
 ---
 
