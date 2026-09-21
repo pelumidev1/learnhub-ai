@@ -137,8 +137,13 @@ export function WaitlistForm() {
         </div>
       )}
 
-      <Button type="submit" loading={state === "saving"} className="mt-6 w-full py-3.5">
+      <Button
+        type="submit"
+        loading={state === "saving"}
+        className="lh-cta-sheen mt-6 w-full py-3.5"
+      >
         {state === "saving" ? "Saving your place…" : "Join the waitlist"}
+        {state !== "saving" && <Icons.arrowRight className="lh-cta-arrow h-4 w-4" />}
       </Button>
     </form>
   );
