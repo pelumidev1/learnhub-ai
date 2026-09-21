@@ -12,7 +12,7 @@ import { WAITLIST_COHORTS, type WaitlistCohortKey } from "@/lib/waitlist";
 type State = "idle" | "saving" | "joined" | "already";
 
 /**
- * The AI programme waitlist form.
+ * The AI Bootcamp waitlist form.
  *
  * Success swaps the form for the confirmation in place rather than navigating.
  * On a metered connection a second page load is a second chance to fail, and
@@ -83,8 +83,10 @@ export function WaitlistForm() {
           type="tel"
           required
           autoComplete="tel"
-          // Most of the audience is in Nigeria; the rest replace the prefix.
+          // Most of the audience is in Nigeria, so +234 is prefilled; the hint
+          // tells everyone else it is theirs to replace.
           defaultValue="+234 "
+          hint="Start with your country code. +234 is Nigeria. If you live elsewhere, replace it with yours."
         />
 
         <fieldset>

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { WaitlistInput } from "./waitlist";
 
 /**
- * The waitlist form is public, and the list behind it is what the programme's
+ * The waitlist form is public, and the list behind it is what the bootcamp's
  * first cohorts fill from. These cover the schema's two real jobs: keep junk
  * out, and normalise the email and phone so one row is one reachable person.
  */

@@ -4,10 +4,12 @@ import { cn } from "@/lib/utils/cn";
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
+  /** One line under the field: format guidance, or what a prefilled value means. */
+  hint?: string;
 };
 
 export const Input = forwardRef<HTMLInputElement, Props>(function Input(
-  { label, error, className, id, name, ...props },
+  { label, error, hint, className, id, name, ...props },
   ref,
 ) {
   const inputId = id ?? name;
@@ -33,7 +35,11 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
         )}
         {...props}
       />
-      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {error ? (
+        <p className="mt-1 text-sm text-red-500">{error}</p>
+      ) : (
+        hint && <p className="mt-1.5 text-xs text-muted-2">{hint}</p>
+      )}
     </div>
   );
 });

@@ -1,5 +1,5 @@
 -- =============================================================================
--- Learnhub — AI programme waitlist (2026-09-21)
+-- Learnhub — AI Bootcamp waitlist (2026-09-21)
 --
 -- The public /enrol form. Someone tells us which six-week cohort they want and
 -- how to reach them; when seats open, this list hears first.

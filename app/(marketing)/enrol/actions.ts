@@ -8,7 +8,7 @@ export type JoinWaitlistResult =
   | { ok: false; error: string };
 
 /**
- * Put someone on the AI programme waitlist.
+ * Put someone on the AI Bootcamp waitlist.
  *
  * Service role, because `waitlist` grants nothing to `anon`: the form is public
  * and unauthenticated, and letting a browser reach the table directly would

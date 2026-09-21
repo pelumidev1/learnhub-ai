@@ -4,7 +4,7 @@ import { WAITLIST_COHORTS } from "@/lib/waitlist";
 const cohortKeys = WAITLIST_COHORTS.map((c) => c.key) as [string, ...string[]];
 
 /**
- * Waitlist input for the AI programme.
+ * Waitlist input for the AI Bootcamp.
  *
  * Public and unauthenticated, like the masterclass form, so every field is
  * bounded and nothing is trusted for shape. Unlike the masterclass, all four
