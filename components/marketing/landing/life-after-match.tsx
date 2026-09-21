@@ -32,22 +32,22 @@ const CARDS = [
   {
     n: "01",
     label: "Your plan",
-    head: "A path you can start on Monday",
-    body: "Week by week, in order. Free resources only.",
+    head: "A plan in weekly steps",
+    body: "Free courses and projects, in the order to take them.",
     photo: afterPlan,
   },
   {
     n: "02",
     label: "Your proof",
-    head: "Work you can show, not claim",
-    body: "Real projects, reviewed by your AI advisor.",
+    head: "Projects that show what you can do",
+    body: "Your AI advisor reviews each one before it goes in your portfolio.",
     photo: afterProof,
   },
   {
     n: "03",
     label: "Your first role",
-    head: "The job you are ready to apply for",
-    body: "Junior roles you match, and the gap to close.",
+    head: "Junior jobs that fit you now",
+    body: "See which roles match your skills, and what to learn before you apply.",
     photo: afterRole,
   },
 ];
