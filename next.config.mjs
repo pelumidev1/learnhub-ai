@@ -8,6 +8,14 @@ const nextConfig = {
       { protocol: "https", hostname: "*.supabase.co" },
     ],
   },
+  async redirects() {
+    return [
+      // The waitlist lives at /enrol; /waitlist is the name people will guess
+      // and type. Not permanent (307), so the alias can be repointed later
+      // without browsers holding onto a cached 308 forever.
+      { source: "/waitlist", destination: "/enrol", permanent: false },
+    ];
+  },
   async headers() {
     return [
       {
