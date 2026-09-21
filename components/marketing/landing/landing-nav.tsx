@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { buttonClasses } from "@/components/ui/button";
+import { RollText } from "./roll-text";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 const LINKS = [
@@ -48,16 +49,22 @@ export function LandingNav() {
       <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-5 py-3 lg:px-[100px]">
         <Logo reverse={!scrolled && !open} size="lg" />
 
+        {/* Type is the reference's nav measure — 16px medium on a tight
+            track, its Inter swapped for our General Sans — and each label rolls
+            on hover the way its links do (see RollText). The press scale is
+            ours: the reference's links leave the page on click, so the roll is
+            all the feedback they need. */}
         <nav className="hidden items-center gap-8 md:flex">
           {LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className={`text-sm font-semibold transition ${
-                scrolled ? "text-muted hover:text-blue" : "text-white/80 hover:text-white"
+              className={`lh-roll-link text-base font-medium tracking-[-0.01em] transition duration-200 active:scale-[0.96] ${
+                scrolled ? "text-ink hover:text-blue" : "text-white/85 hover:text-white"
               }`}
             >
-              {l.label}
+              <span className="sr-only">{l.label}</span>
+              <RollText text={l.label} />
             </a>
           ))}
         </nav>

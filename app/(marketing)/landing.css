@@ -490,6 +490,45 @@
   }
 }
 
+/* Nav-link roll. See components/marketing/landing/roll-text.tsx.
+
+   The mask is the label's own line box; each glyph is a relative box with an
+   absolute twin sitting exactly one line below it. Hover moves every glyph up
+   by its own height, so the twin takes its place, and the per-glyph delay is
+   what turns a swap into a roll. The transition runs both ways, so leaving
+   rolls it back (the reference reverses its timeline on mouseleave).
+
+   `pre` keeps the space between words as a glyph with width; without it the
+   inline-block collapses it to nothing. Line-height 1.25 rather than 1 so the
+   mask does not crop descenders on "y" and "g". */
+.lh-roll {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 1.25;
+}
+.lh-roll-char {
+  position: relative;
+  display: inline-block;
+  white-space: pre;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * 25ms);
+}
+.lh-roll-char > span:last-child {
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
+.lh-roll-link:hover .lh-roll-char,
+.lh-roll-link:focus-visible .lh-roll-char {
+  transform: translateY(-100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lh-roll-char {
+    transition: none;
+  }
+}
+
 /* Scramble-in. See components/marketing/landing/scramble-text.tsx.
 
    The real word stays in the flow and holds the box; the scrambling string is

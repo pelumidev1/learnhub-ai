@@ -268,14 +268,15 @@ export default function LandingPage() {
                 than wherever the measure happens to run out. Each ScrambleText
                 is display:block (see .lh-scramble), so the units stack and the
                 second line resolves after the first has finished. */}
-            {/* Larger, and on a wider measure. The heading is the only thing
-                holding the top half of a dark band; at 3.5rem it was a small
-                mark in a large dark field. */}
-            <h2 className="mx-auto mt-5 max-w-5xl font-display text-[2.35rem] font-semibold leading-[1.06] tracking-[-0.035em] text-ink sm:text-[4.25rem]">
+            {/* The shared text-3xl/3.2rem pair and the wider subtitle measure,
+                the same header "What it costs" runs. It was 4.25rem while the
+                band was ink — a heading holding a dark field on its own — and
+                on white that size read as a second hero. */}
+            <h2 className="mx-auto mt-5 max-w-3xl font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[3.2rem]">
               <ScrambleText text="LearnHub makes" />
               <ScrambleText text="the choice clear" delay={520} />
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-muted">
+            <p className="lh-balance mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-muted sm:text-lg">
               Three steps, and you can start the first one now.
             </p>
           </Reveal>

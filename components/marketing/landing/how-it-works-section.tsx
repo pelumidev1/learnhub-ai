@@ -24,8 +24,11 @@ export function HowItWorksSection() {
           section, and at 1152 it was the narrowest large element on the page —
           1240 gives it 128px more to be seen at, for nothing. */}
       <div className="mx-auto max-w-[1440px] px-5 lg:px-[100px]">
-        <Reveal>
-          <Kicker>How it works</Kicker>
+        {/* Centred, like every other section header on the page. This was the
+            one left-aligned header, which made it read as a different kind of
+            section rather than the next one. */}
+        <Reveal className="text-center">
+          <Kicker center>How it works</Kicker>
           {/* No max-width on the wrapper, and the size comes from
               .lh-oneline-heading rather than the shared text-3xl/3.2rem pair:
               both exist so this sits on one line at every width. See the class
@@ -33,7 +36,7 @@ export function HowItWorksSection() {
           <SplitText
             as="h2"
             text="Three steps to a clear path"
-            className="lh-oneline-heading mt-5 font-display font-semibold leading-[1.1] tracking-[-0.03em] text-ink"
+            className="lh-oneline-heading mx-auto mt-5 font-display font-semibold leading-[1.1] tracking-[-0.03em] text-ink"
           />
         </Reveal>
 
