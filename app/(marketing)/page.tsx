@@ -485,7 +485,7 @@ export default function LandingPage() {
             <Kicker reverse>FAQ</Kicker>
             <SplitText
               as="h2"
-              text="Questions, answered"
+              text="Before you sign up"
               className="mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[2.9rem]"
             />
             <p className="mt-4 text-[15px] leading-relaxed text-white/70">

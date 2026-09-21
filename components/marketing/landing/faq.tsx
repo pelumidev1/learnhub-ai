@@ -5,23 +5,23 @@ import { useState } from "react";
 const FAQS = [
   {
     q: "Is LearnHub really free?",
-    a: "Yes. While we're in beta, everything is free: the assessment, your career match, your learning path, and the coach. No card required.",
+    a: "Yes. Everything is free while we're in beta: the assessment, your career match, your learning path and the AI coach. We don't ask for a card.",
   },
   {
     q: "How does the career match work?",
-    a: "You answer a short set of questions. LearnHub's AI reads your background, interests, and goals, then matches you to the two tech careers that fit you best, with honest local pay and timelines.",
+    a: "You answer a short set of questions about what you've done so far and what you want. LearnHub's AI matches you to the two tech careers that fit you best, and shows what each one pays where you live and how long it takes to get there.",
   },
   {
     q: "Is the coach a real person?",
-    a: "No. The coach is an AI, and we always say so. It knows your match and your roadmap, so it can answer questions about your situation, any time, day or night.",
+    a: "No. The coach is an AI, and we say so everywhere it appears. It knows your match and your roadmap, so you can ask it about your own situation whenever you like.",
   },
   {
     q: "Do I need a laptop or fast internet?",
-    a: "No. LearnHub is built for mid-range phones and metered data. Your progress auto-saves, so a dropped connection never loses your answers.",
+    a: "No, a phone is enough. LearnHub is built for mid-range phones and metered data, and your progress saves as you go, so a dropped connection won't lose your answers.",
   },
   {
     q: "Who is LearnHub for?",
-    a: "Students, graduates, and career changers across Africa who want a clear, honest path into tech, whether you're starting from scratch or switching fields.",
+    a: "Anyone in Africa who wants to get into tech and isn't sure which job to aim for: students, recent graduates, and people changing careers. You don't need any tech experience to start.",
   },
 ];
 
