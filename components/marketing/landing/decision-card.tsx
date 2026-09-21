@@ -265,9 +265,11 @@ function DecisionCard({
       }}
     >
       <div className="lh-flip-inner">
-        {/* No rim on this face: it sits on a white section under pale studio
-            photographs, so a light edge would have nothing to show against. */}
-        <article className="lh-flip-face overflow-hidden rounded-[30px]">
+        {/* A hairline rim on this face. The first two photographs have pale
+            studio backgrounds that soften into the white section behind them;
+            the silver ring is what holds the card's shape at the top edge.
+            An inset ring rather than a border so the geometry stays 407/580. */}
+        <article className="lh-flip-face overflow-hidden rounded-[30px] ring-1 ring-inset ring-silver">
           {/* The photo is its own element rather than the article's background:
               role="img" makes everything inside it presentational, so copy
               nested in the photo would be invisible to a screen reader. */}
