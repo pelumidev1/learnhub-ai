@@ -15,11 +15,13 @@ service role into a new `waitlist` table; `/waitlist` redirects to it. Files:
 `app/(marketing)/enrol/`, `components/waitlist/`, `lib/waitlist.ts` (the three
 cohorts — "12 October 2026, Cohort 1" and so on; the stored key is the date,
 `oct-2026`), `lib/validations/waitlist.ts`, and the migration
-`20260921120000_waitlist.sql`. **That migration is NOT applied.** Pelumi runs it
-by hand in the SQL Editor like every one before it; until then the form saves
-nothing and shows "We couldn't save that." The page has not been tested end to
-end by him yet — he said he would. The three earlier launch dates below are
-unchanged and still unanswered.
+`20260921120000_waitlist.sql`. **The migration is applied** (Pelumi, by hand in
+the SQL Editor, 2026-09-21) and verified: anon gets "permission denied", and the
+Server Action was driven end to end against the live table — first submission
+joined, a re-submission with the same email in different case came back
+"already", the WhatsApp number was stored normalised (`+447700900123`), and
+the test row was deleted afterwards. The table is empty and live. The three
+earlier launch dates below are unchanged and still unanswered.
 
 **Nothing has been committed since 25 August.** `main` is at `e02f5b2`, the
 working tree is clean apart from an untracked `.vscode/`, and the three weeks
@@ -89,7 +91,7 @@ launch again.
 2. **Never run `npx next build` while the dev server is running** — they share `.next` and corrupt each other. Stop dev, build, `rm -rf .next`, restart dev. This bit us twice. Check `pgrep -fl "next dev|next-server"` immediately before **every** build, not once per session — he may have started one since you last looked.
 3. Before any commit: `npm test && npx tsc --noEmit && npx next build` must all pass. Commit to `main`; the owner asks for pushes explicitly and uses them to trigger Vercel deploys.
 4. ~~When the owner funds Anthropic: flip `AI_DEMO_MODE=false`, run the full loop once, inspect output.~~ **DONE 2026-07-23** — account funded, `AI_DEMO_MODE=false` locally, full real loop verified (see state note above). Still worth doing once through the browser UI with a real signup to confirm `ai_events` rows land with cost/latency.
-5. ~~**Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project.~~ **DONE — owner confirmed applied 2026-07-23.** The RLS performance fix and the one-roadmap-per-match unique index are live. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` is also applied.) **The two 2026-08-20/21 migrations — `20260820120000_analytics_own_select.sql` and `20260821120000_quiz_gate_server_only.sql` — are applied and verified too.** **One migration is pending as of 2026-09-21: `20260921120000_waitlist.sql`** (see "Where this stands"). The most recent *applied* migration is `20260822130000_lesson_progress.sql` (2026-08-22). The Supabase CLI *was* added on 2026-08-22 (`f8152cd`, with `supabase/config.toml`), but the project is **not linked** and all 20-odd migrations were applied by hand in the dashboard SQL Editor, so the CLI has no record of any of them — **read trap 1 under "Launch pivot" before running any CLI command.** A migration file landing in the repo does **not** mean it is live: ask.
+5. ~~**Pending owner action (2026-07-12):** apply `supabase/migrations/20260712100000_scale_rls_initplan.sql` to the live Supabase project.~~ **DONE — owner confirmed applied 2026-07-23.** The RLS performance fix and the one-roadmap-per-match unique index are live. (The 2026-07-12 *security* migration `20260712120000_security_hardening.sql` is also applied.) **The two 2026-08-20/21 migrations — `20260820120000_analytics_own_select.sql` and `20260821120000_quiz_gate_server_only.sql` — are applied and verified too.** No pending migrations remain. The most recent applied migration is `20260921120000_waitlist.sql` (applied 2026-09-21, verified live). The Supabase CLI *was* added on 2026-08-22 (`f8152cd`, with `supabase/config.toml`), but the project is **not linked** and all 20-odd migrations were applied by hand in the dashboard SQL Editor, so the CLI has no record of any of them — **read trap 1 under "Launch pivot" before running any CLI command.** A migration file landing in the repo does **not** mean it is live: ask.
 
 ## Seeing the UI while you work
 
