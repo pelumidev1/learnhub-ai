@@ -7,9 +7,9 @@
  * the key is what gets stored — so renaming a label never touches the data.
  */
 export const WAITLIST_COHORTS = [
-  { key: "oct-2026", label: "12 October 2026, October cohort" },
-  { key: "nov-2026", label: "23 November 2026, November cohort" },
-  { key: "jan-2027", label: "11 January 2027, January cohort" },
+  { key: "oct-2026", label: "12 October 2026, Cohort 1" },
+  { key: "nov-2026", label: "23 November 2026, Cohort 2" },
+  { key: "jan-2027", label: "11 January 2027, Cohort 3" },
 ] as const;
 
 export type WaitlistCohortKey = (typeof WAITLIST_COHORTS)[number]["key"];
