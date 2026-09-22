@@ -63,10 +63,17 @@ Note this overrules `learnhub-launch/learnhub-master-context.md` section 9, whic
 **Modern, minimal, metallic, Apple-like.** Generous whitespace, calm hierarchy, restraint over decoration. Every screen should feel premium and effortless on a phone.
 
 ### Brand
-The product is called **LearnHub** — "AI" is a descriptor ("AI career coach", "AI advisor"), not part of the name. Renamed 2026-07-24; older text in this file and in `PRD.md` still says "LearnHub AI". Logo = the circular "orbit" glyph + `LearnHub` wordmark. Three lockups (place in `public/brand/`):
-- `logo-metallic.png` — dark/metallic hero treatment (dark navy ground).
-- `logo-primary.svg` — royal-blue mark on light backgrounds (default).
-- `logo-reverse.svg` — light-blue mark on royal-blue backgrounds.
+The product is called **LearnHub** — "AI" is a descriptor ("AI career coach", "AI advisor"), not part of the name. Renamed 2026-07-24; older text in this file and in `PRD.md` still says "LearnHub AI". Logo = the circular "orbit" glyph + `LearnHub` wordmark.
+
+**The mark, as vector** (`public/brand/`) — all three are the same traced geometry, the ring notched where the dot nests into it:
+- `logo-mark.svg` — `fill="currentColor"`. The reference `LogoMark` in `components/ui/logo.tsx` was traced against; use it when the mark must inherit its colour.
+- `logo-mark-primary.svg` — royal blue `#1F33CC`, for light grounds. Default.
+- `logo-mark-reverse.svg` — sky `#4C93F0`, for royal-blue and dark grounds.
+
+**The mark, as square raster** (~800×800 PNG, mark only, no wordmark). Named as exported — don't rename, the app doesn't reference them and the names say what each one is: `Learnhub White background 2.PNG` (ink on near-white), `Learnhub black background 2.PNG` (near-white on near-black), `Learnhub Light blue background.PNG` (royal blue on pale blue), `Learnhub Mid blue background 2.PNG` (pale blue on sky), `Learnhub dark blue background 2.PNG` (pale blue on navy).
+
+**There is no lockup file, and that is deliberate.** The wordmark in the source artwork (`logoo.JPG` and the two UUID-named JPEGs in the same folder) is not Switzer, so a flat lockup export would not match what ships. The app composes its lockup live instead — `LogoMark` beside real text in `font-display` — which is why `Logo` is a component rather than an image. Reach for a lockup file and you will ship the wrong typeface.
+
 Keep clear space around the mark; never stretch, recolor outside the palette, or add effects.
 
 ### Brand colors (calibrated from the logos — refine against final assets)
