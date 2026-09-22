@@ -10,7 +10,7 @@ Design for every screen, defined before code. Built on `CLAUDE.md` (brand, token
 
 ### 1.1 Design tokens (from `CLAUDE.md`)
 - **Color:** `--lh-blue #1F33CC` (primary), `--lh-blue-600` (hover), `--lh-blue-400` (accent), `--lh-ink #0B0F1A`, white, `--lh-mist`, gray scale. Blue is the accent — used deliberately.
-- **Type:** Geist. Scale: Display / H1 / H2 / H3 / Body / Small / Caption. Never Inter/Roboto/system.
+- **Type:** Switzer (display), General Sans (body), Geist Mono (technical labels) — settled 2026-08-04; this line said "Geist" until 2026-09-22. Scale: Display / H1 / H2 / H3 / Body / Small / Caption. Never Inter/Roboto/system.
 - **Radius:** 8 / 12 / 16 / full. **Shadow:** soft, layered. **Motion:** 150–250ms ease-out.
 
 ### 1.2 Layout shells

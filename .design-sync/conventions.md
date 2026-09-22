@@ -28,9 +28,15 @@ Blue, white, ink. That is the whole system.
 - `--lh-blue` `#1F33CC` is the accent — primary buttons, active states, the mark,
   the occasional stat. Use it deliberately and sparingly; blue everywhere reads as
   a template.
-- White and `--lh-gray-50` are the grounds. `--lh-ink` `#0B0F1A` is text, and is
-  also the ground for full-bleed dark sections.
-- Greys carry everything else: borders `--lh-gray-200`, muted text `--lh-gray-500`.
+- White and `bg-paper` (`--lh-paper` `#F6F7FB`; `paper-2` a step deeper) are the
+  grounds. `text-ink` (`--lh-ink` `#0B0F1A`) is text, and `bg-ink` is the ground
+  for full-bleed dark sections.
+- Greys carry everything else: borders `border-silver` (`silver-2` for a firmer
+  rim), muted text `text-muted` (`muted-2` for the quietest labels).
+
+Colours reach the page as Tailwind classes — `bg-blue`, `text-ink`, `bg-paper`,
+`border-silver`, `text-muted`, `text-sky` — not as `var(--lh-*)`. The custom
+properties exist so the stylesheet defines each value once; write the class.
 
 **Never introduce a second accent colour.** No purple gradients, no teal, no
 amber "warning" hue invented on the spot. Red and emerald exist only inside
@@ -38,9 +44,12 @@ amber "warning" hue invented on the spot. Red and emerald exist only inside
 
 ## Typography
 
-Geist, always — `font-display` for headings, `font-sans` for body, `font-mono` for
-section kickers and small labels. **Never Inter, Roboto, Arial, or a system font
-stack**; they are the fastest way to make this look generic.
+**Switzer** for display, **General Sans** for body, **Geist Mono** for section
+kickers and small technical labels — `font-display`, `font-sans`, `font-mono`
+respectively. Settled 2026-08-04; this line used to say Geist, and anything
+built against the old wording inherits the wrong face. **Never Inter, Roboto,
+Arial, or a system font stack**; they are the fastest way to make this look
+generic.
 
 The landing voice is uppercase display headings with `tracking-tight` and tight
 leading, set against generous whitespace. Body copy stays sentence case with
@@ -72,10 +81,6 @@ than shrinking it.
 - `Alert` has exactly two variants, `error` and `success`. Don't invent info or
   warning styles.
 - `Input` renders its own label and error text — don't build a separate label.
-
-Photo-backed sections (`OrbitSection`, hero) fall back to a blue gradient when the
-image assets aren't present. That fallback is the designed empty state, not a
-broken render.
 
 ## Things that will make a design wrong
 

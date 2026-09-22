@@ -22,6 +22,5 @@ export { Logo, LogoMark } from "../components/ui/logo";
 // Landing / marketing
 export { Kicker } from "../components/marketing/landing/kicker";
 export { HeroCard } from "../components/marketing/landing/hero-card";
-export { OrbitSection } from "../components/marketing/landing/orbit";
 export { Faq } from "../components/marketing/landing/faq";
 export { StepsTabs } from "../components/marketing/landing/steps-tabs";

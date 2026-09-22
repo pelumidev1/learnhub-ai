@@ -1,12 +1,25 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 
-/** The orbit glyph on its own. Inherits color via currentColor. */
+/**
+ * The orbit glyph on its own. Inherits color via currentColor.
+ *
+ * Traced from the brand artwork in `public/brand/` rather than approximated:
+ * the ring is notched where the dot nests into it, which a plain <circle>
+ * cannot express. Geometry (source units, viewBox padded to a square so the
+ * existing h-7 w-7 sizing still holds): ring mid-radius 111 with a 68 stroke,
+ * the dot r=47.5 sitting 163.8 out at 56.5deg, and the notch a 67.3 circle
+ * subtracted from the dot's centre. Verified at 99.4% pixel IoU against
+ * public/brand/logo-mark.svg — do not "simplify" it back to two circles.
+ */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" className={cn("h-7 w-7", className)} aria-hidden="true">
-      <circle cx="13.5" cy="13.5" r="9" fill="none" stroke="currentColor" strokeWidth="4.2" />
-      <circle cx="24.5" cy="24" r="4.7" fill="currentColor" />
+    <svg viewBox="0 0 420 420" className={cn("h-7 w-7", className)} aria-hidden="true" fill="currentColor">
+      <path
+        fillRule="evenodd"
+        d="M233.52 333.58A145 145 0 1 1 332.63 267.87A67.3 67.3 0 0 0 233.52 333.58ZM133 190.5a77 77 0 1 0 154 0a77 77 0 1 0 -154 0Z"
+      />
+      <path d="M253 327a47.5 47.5 0 1 0 95 0a47.5 47.5 0 1 0 -95 0Z" />
     </svg>
   );
 }

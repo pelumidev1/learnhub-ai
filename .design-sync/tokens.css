@@ -1,11 +1,17 @@
 /* LearnHub design tokens.
  *
  * The font variables are load-bearing, not decorative: tailwind.config.ts
- * defines fontFamily.display / .sans / .mono as var(--font-geist-sans) and
- * var(--font-geist-mono). In the Next app `next/font` sets those. Outside it
- * nothing does, so without this file every `font-display` / `font-sans` /
- * `font-mono` class falls through to system-ui and the brand typography is
- * lost with no visible error. (They can't live in fonts.css — the converter
+ * defines fontFamily.display / .sans / .mono as var(--font-display),
+ * var(--font-sans) and var(--font-geist-mono). In the Next app `app/fonts.ts`
+ * sets the first two via next/font. Outside it nothing does, so without this
+ * file every `font-display` / `font-sans` class falls through to system-ui and
+ * the brand typography is lost with no visible error.
+ *
+ * These three names must match tailwind.config.ts exactly. They did not
+ * between 2026-08-04 (when the faces changed to Switzer + General Sans) and
+ * 2026-09-22: this file still declared --font-geist-sans, which nothing reads,
+ * so every component preview in the design system rendered in system-ui —
+ * the one outcome CLAUDE.md explicitly forbids. (They can't live in fonts.css — the converter
  * parses that file for @font-face rules only and drops everything else.)
  *
  * The colours mirror tailwind.config.ts exactly, under the --lh- prefix from
@@ -16,7 +22,8 @@
 
 :root {
   /* Typography — required. See note above. */
-  --font-geist-sans: "Geist";
+  --font-display: "Switzer";
+  --font-sans: "General Sans";
   --font-geist-mono: "Geist Mono";
 
   /* Ink — near-black text */

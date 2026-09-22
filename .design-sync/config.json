@@ -4,6 +4,7 @@
   "pkg": "learnhub-ai",
   "globalName": "LearnHub",
 
+  "entry": ".design-sync/entry.tsx",
   "srcDir": "components",
   "tsconfig": ".design-sync/tsconfig.sync.json",
 
@@ -15,7 +16,6 @@
 
   "overrides": {
     "HeroCard": { "cardMode": "single", "viewport": "1180x520" },
-    "OrbitSection": { "cardMode": "single", "viewport": "1180x900" },
     "StepsTabs": { "cardMode": "single", "viewport": "1180x760", "primaryStory": "Default" }
   },
 
@@ -29,7 +29,6 @@
 
     "Kicker": "components/marketing/landing/kicker.tsx",
     "HeroCard": "components/marketing/landing/hero-card.tsx",
-    "OrbitSection": "components/marketing/landing/orbit.tsx",
     "Faq": "components/marketing/landing/faq.tsx",
     "StepsTabs": "components/marketing/landing/steps-tabs.tsx"
   }
