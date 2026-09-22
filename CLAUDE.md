@@ -76,20 +76,42 @@ The product is called **LearnHub** — "AI" is a descriptor ("AI career coach", 
 
 Keep clear space around the mark; never stretch, recolor outside the palette, or add effects.
 
-### Brand colors (calibrated from the logos — refine against final assets)
-```
---lh-blue        #1F33CC   /* Primary royal blue — brand, primary actions */
---lh-blue-600    #182AB0   /* Hover / pressed */
---lh-blue-400    #4C93F0   /* Bright sky accent, metallic highlight */
---lh-ink         #0B0F1A   /* Near-black text */
---lh-white       #FFFFFF
---lh-mist        #E9F0FE   /* Light section background */
---lh-gray-50     #F7F9FC
---lh-gray-200    #E3E8F0   /* Borders */
---lh-gray-500    #6B7280   /* Muted text */
---lh-gray-700    #374151
-```
-Core brand is **Blue, White, Black.** Blue is the accent — use it deliberately (primary buttons, active states, the mark), not everywhere. White/near-white grounds; ink for text.
+### Brand colors
+
+These are the real names. They are defined once in `tailwind.config.ts` and
+mirrored as custom properties in `.design-sync/tokens.css` — change a value and
+you change it in both. Reach for the **Tailwind utility** first (`bg-paper`,
+`text-ink`, `border-silver`); the `--lh-` custom properties are for the cases a
+utility cannot reach: gradients, box-shadow colours, inline SVG fills.
+
+| Utility | Custom property | Hex | Use |
+|---|---|---|---|
+| `bg-blue` / `text-blue` | `--lh-blue` | `#1F33CC` | Primary royal blue — brand, primary actions, the mark |
+| `bg-blue-600` | `--lh-blue-600` | `#182AB0` | Hover / pressed |
+| `bg-blue-500` | `--lh-blue-500` | `#2A46F0` | Lift inside a blue gradient |
+| `bg-sky` | `--lh-sky` | `#3B6FF0` | Bright accent |
+| `bg-sky-2` | `--lh-sky-2` | `#4C93F0` | Metallic highlight; the mark reversed on blue |
+| `text-ink` / `bg-ink` | `--lh-ink` | `#0B0F1A` | Near-black text, and the ground for full-bleed dark sections |
+| `bg-ink-2` | `--lh-ink-2` | `#1A2234` | A step up from ink |
+| `bg-paper` | `--lh-paper` | `#F6F7FB` | Light section ground |
+| `bg-paper-2` | `--lh-paper-2` | `#EFF2F8` | A step deeper |
+| `border-silver` | `--lh-silver` | `#E7EAF1` | Borders and hairlines |
+| `border-silver-2` | `--lh-silver-2` | `#D8DEEA` | A firmer rule |
+| `text-muted` | `--lh-muted` | `#5B6472` | Secondary text |
+| `text-muted-2` | `--lh-muted-2` | `#8A93A6` | Tertiary text |
+
+White is plain `#FFFFFF` — `bg-white`, no token.
+
+Until 2026-09-22 this block listed `--lh-mist`, `--lh-gray-50`, `--lh-gray-200`,
+`--lh-gray-500`, `--lh-gray-700`, `--lh-white` and `--lh-blue-400`. **None of
+those were ever defined**, in `tokens.css` or anywhere else. Nothing used them,
+so nothing broke — but a session that trusted this file and wrote
+`var(--lh-mist)` would have got an empty value and no error. If you find one of
+those names in a diff, it came from the old table: map it to the row above.
+
+Core brand is **Blue, White, Black.** Blue is the accent — use it deliberately
+(primary buttons, active states, the mark), not everywhere. White and paper are
+the grounds; ink is text. Never introduce a second accent hue.
 
 ### Look & feel
 - **Metallic, Apple-like:** subtle blue gradients on primary surfaces (`--lh-blue → --lh-blue-600`) with a faint top highlight; soft, layered shadows; frosted-glass (`backdrop-blur`) used sparingly on overlays.
