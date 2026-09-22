@@ -25,3 +25,8 @@ ds-bundle/
 # in, which the section forbids. The shipped clip is captured frame by frame from
 # the sources in docs/design-source/embed/ instead. See public/media/README.md.
 docs/design-source/*.mp4
+
+# Local editor + agent scratch, never shipped
+.claude/
+.vscode/
+Claude outputs/
