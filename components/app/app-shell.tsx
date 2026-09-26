@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -52,12 +53,32 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const asideRef = useRef<HTMLElement>(null);
+
+  // The sidebar is fixed, so the browser hands wheel events over it to the
+  // page and the content scrolls under a cursor that's on the nav. Keep them
+  // here: scroll the sidebar itself (it only overflows on short windows) and
+  // stop the page from moving. Needs a non-passive native listener, since
+  // React's onWheel can't preventDefault. ctrlKey is trackpad pinch-zoom.
+  useEffect(() => {
+    const aside = asideRef.current;
+    if (!aside) return;
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey) return;
+      e.preventDefault();
+      aside.scrollTop += e.deltaY;
+    };
+    aside.addEventListener("wheel", onWheel, { passive: false });
+    return () => aside.removeEventListener("wheel", onWheel);
+  }, []);
   const nav = isAdmin ? [...NAV, ADMIN_NAV] : NAV;
 
   return (
     <div className="min-h-svh bg-paper">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-silver bg-white px-4 py-5 lg:flex">
+      <aside
+        ref={asideRef}
+        className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col overflow-y-auto border-r border-silver bg-white px-4 py-5 lg:flex">
         <div className="px-2">
           <Logo />
         </div>
