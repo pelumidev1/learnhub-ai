@@ -1,4 +1,5 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { isAuthRetryableFetchError } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
 import {
   IDLE_TIMEOUT_MS,
@@ -6,6 +7,7 @@ import {
   idleFor,
   lastSeenCookieOptions,
 } from "@/lib/auth/idle";
+import { timeoutFetch } from "@/lib/supabase/timeout-fetch";
 
 /**
  * Route prefixes that require an authenticated user.
@@ -79,6 +81,7 @@ export async function updateSession(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      global: { fetch: timeoutFetch },
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -98,7 +101,14 @@ export async function updateSession(request: NextRequest) {
 
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
+
+  /* Supabase could not be reached, or timed out. That says nothing about
+     whether this visitor is signed in, so decide nothing: redirecting to
+     /login would sign out someone who is, and running the idle check would
+     too. Pass the request on; the (app) layout checks auth again itself. */
+  if (error && isAuthRetryableFetchError(error)) return response;
 
   const path = request.nextUrl.pathname;
 

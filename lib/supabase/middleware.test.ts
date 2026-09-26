@@ -13,11 +13,12 @@ import { IDLE_TIMEOUT_MS, LAST_SEEN_COOKIE } from "@/lib/auth/idle";
  */
 const signOut = vi.fn(async () => ({ error: null }));
 let currentUser: { id: string } | null = { id: "user-1" };
+let authError: unknown = null;
 
 vi.mock("@supabase/ssr", () => ({
   createServerClient: () => ({
     auth: {
-      getUser: async () => ({ data: { user: currentUser } }),
+      getUser: async () => ({ data: { user: currentUser }, error: authError }),
       signOut,
     },
   }),
@@ -41,6 +42,7 @@ const FRESH = IDLE_TIMEOUT_MS - 60_000;
 beforeEach(() => {
   signOut.mockClear();
   currentUser = { id: "user-1" };
+  authError = null;
 });
 
 describe("idle timeout", () => {
@@ -122,6 +124,22 @@ describe("idle timeout", () => {
   it("does not touch signed-out visitors on public pages", async () => {
     currentUser = null;
     const res = await updateSession(request("/", STALE));
+
+    expect(res.status).toBe(200);
+    expect(signOut).not.toHaveBeenCalled();
+  });
+});
+
+describe("when Supabase cannot be reached", () => {
+  /* Seen in production: a stalled auth round-trip held /dashboard until Vercel
+     killed it at 25s with a bare 504. The fetch now times out; what matters is
+     that a timeout is not read as "signed out". */
+  it("passes the request on instead of sending a signed-in user to login", async () => {
+    const { AuthRetryableFetchError } = await import("@supabase/supabase-js");
+    currentUser = null;
+    authError = new AuthRetryableFetchError("timed out", 0);
+
+    const res = await updateSession(request("/dashboard", STALE));
 
     expect(res.status).toBe(200);
     expect(signOut).not.toHaveBeenCalled();
