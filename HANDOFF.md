@@ -30,10 +30,21 @@ applied by Pelumi the same day.
    included. Only one active enrolment exists (a comped seat).
 2. The signed-in views of the work page and review queue have not been seen
    in a browser yet. Check them once week 1's work is published.
-3. Write the four new week 1 lessons (tool comparison; Claude setup; ChatGPT,
-   Codex and Gemini; builder setup). They slot in at positions 2 to 5, so the
-   existing 02 to 05 files get renumbered 06 to 09. Verify plans, features and
-   prices against current sources, not memory.
+3. ~~Write the four new week 1 lessons.~~ Drafted and synced 2026-09-28 at
+   positions 2 to 5, `published: false`; the old 02 to 05 are now 06 to 09
+   (slugs unchanged, so no links broke). Pelumi reads them alongside the week
+   1 work, then flips `published: true` and re-syncs. Facts were checked
+   against official pages that day. One change from the curriculum: lesson 4
+   teaches ChatGPT Projects and a Gemini Gem, **not custom GPTs**, because
+   OpenAI stopped personal accounts creating GPTs and retires them on
+   11 December 2026 (see the note in `CURRICULUM.md`). The weekly test still
+   covers only the original five lessons; add questions on 2 to 5 if Pelumi
+   wants them tested.
+   **Sync trap:** Homebrew's Node 26 (`/opt/homebrew/bin/node`) sometimes
+   fails every Supabase request with a TLS `BAD_RECORD_MAC` error for minutes
+   at a time, while curl works (the sync now stops with "Could not read
+   modules: fetch failed"). If it does, run it with Node 24:
+   `/usr/local/bin/node --env-file=.env.local scripts/sync-bootcamp-content.mjs`.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.

@@ -34,7 +34,7 @@ You are not getting a better answer by asking harder. You are getting a better a
 
 ## Your turn
 
-Take something you actually need to make this week. Run all six. Keep every intermediate output, because next week you will notice that four of these six steps are the same every time you do this, and that observation is the whole of lesson five.
+Take something you actually need to make this week. Run all six. Keep every intermediate output, because next week you will notice that four of these six steps are the same every time you do this, and that observation is the whole of lesson nine.
 
 ## What you should be able to do after this
 

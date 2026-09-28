@@ -85,14 +85,21 @@ prompts.
 | # | Lesson | Status |
 |---|---|---|
 | 1 | What AI actually is, and how we got here | Written |
-| 2 | Claude, ChatGPT and Gemini: what each is best at | To write |
-| 3 | Setting up Claude properly: Pro, desktop app, Projects, memory | To write |
-| 4 | ChatGPT, Codex and Gemini: custom GPTs, Gems and when to use which | To write |
-| 5 | Your builder setup: terminal basics, Claude Code, GitHub, Supabase, Vercel | To write |
+| 2 | Claude, ChatGPT and Gemini: what each is best at | Drafted |
+| 3 | Setting up Claude properly: Pro, desktop app, Projects, memory | Drafted |
+| 4 | ChatGPT, Codex and Gemini: Projects, Gems and when to use which | Drafted |
+| 5 | Your builder setup: terminal basics, Claude Code, GitHub, Supabase, Vercel | Drafted |
 | 6 | Why prompting stops working | Written |
 | 7 | Workflows over prompts | Written |
 | 8 | Skills: what you stop typing | Written |
 | 9 | Build your first skill | Written |
+
+Lessons 2 to 5 were drafted 2026-09-28, unpublished until Pelumi reads them.
+Lesson 4 no longer teaches custom GPTs: OpenAI stopped personal accounts
+(Free, Go, Plus and Pro) creating new GPTs and retires them on 11 December
+2026, moving them to plugins where a GPT's instructions become a skill. It
+teaches ChatGPT Projects and a Gemini Gem instead, and points at lessons 8 and
+9 as the version that replaces GPTs.
 
 - **Assignment:** screenshot of every tool signed in, plus your first skill.
 - **Project: your AI workspace.** A Claude Project loaded with your own context

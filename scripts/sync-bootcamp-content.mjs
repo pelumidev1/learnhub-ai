@@ -94,7 +94,14 @@ if (files.length === 0) {
 
 /* Directory name to module slug. The folders are named for the week so they
    sort and read well; the modules are named for their subject. */
-const { data: modules } = await db.from("bootcamp_modules").select("id, slug, week_number");
+const { data: modules, error: modulesError } = await db
+  .from("bootcamp_modules")
+  .select("id, slug, week_number");
+// Without this, a network failure reads as "no module for folder" on every file.
+if (modulesError) {
+  console.error(`Could not read modules: ${modulesError.message}`);
+  process.exit(1);
+}
 const byWeek = new Map((modules ?? []).map((m) => [`week-${m.week_number}`, m]));
 const bySlug = new Map((modules ?? []).map((m) => [m.slug, m]));
 
