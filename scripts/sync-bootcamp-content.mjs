@@ -1,5 +1,6 @@
 /**
- * Sync content/bootcamp/** into the `lessons` table.
+ * Sync content/bootcamp/** into the `lessons` table, and each week's
+ * content/bootcamp/week-N/work/ folder into `bootcamp_tasks` and `module_tests`.
  *
  * Lesson bodies live as markdown in the repo so they are version controlled and
  * editable in an editor, and the database is what the app reads, because the
@@ -116,6 +117,13 @@ for (const f of files) {
   const position = m ? Number(m[1]) : 0;
   const slug = m ? m[2] : f.name.replace(/\.md$/, "");
 
+  // /learn/<module>/work is the week's work page, so a lesson cannot take it.
+  if (slug === "work") {
+    console.warn(`  ! ${f.path}: "work" is reserved for the week's work page, rename the file`);
+    skipped += 1;
+    continue;
+  }
+
   if (!meta.title) {
     console.warn(`  ! ${f.path} has no title in its frontmatter, skipping`);
     skipped += 1;
@@ -164,3 +172,132 @@ for (const f of files) {
    somebody removes it deliberately, because a student halfway through a week
    should not lose the page they are on because a file got renamed. */
 console.log(`\n${dry ? "Dry run" : "Synced"}: ${written} lesson(s), ${skipped} skipped.`);
+
+/* ---------------------------------------------------------------- Coursework
+   content/bootcamp/week-N/work/
+     01-your-ai-stack.md   an assignment, project or final project
+     test.json             the weekly test
+
+   Task frontmatter: title, kind (assignment | project | final), published.
+   The body is the brief. test.json is
+     { "published": false, "questions": [{ "id", "prompt", "options" (4),
+       "correct_index" (0-3), "explanation" }] }
+   and holds the answer key, which only the service role can read. */
+
+const KINDS = new Set(["assignment", "project", "final"]);
+
+/** The same rules as QuizQuestionSchema in lib/ai/quiz.ts. The app drops any
+ *  question that fails them, so fail loudly here instead of shipping a test
+ *  that is silently shorter than written. */
+function questionProblem(q, i) {
+  const where = `question ${i + 1}`;
+  if (!q || typeof q !== "object") return `${where} is not an object`;
+  if (typeof q.id !== "string" || !q.id) return `${where} has no id`;
+  if (typeof q.prompt !== "string" || !q.prompt) return `${where} has no prompt`;
+  if (!Array.isArray(q.options) || q.options.length !== 4 || q.options.some((o) => typeof o !== "string" || !o))
+    return `${where} needs exactly four non-empty options`;
+  if (!Number.isInteger(q.correct_index) || q.correct_index < 0 || q.correct_index > 3)
+    return `${where} needs correct_index between 0 and 3`;
+  if (typeof q.explanation !== "string" || !q.explanation) return `${where} has no explanation`;
+  return null;
+}
+
+let tasksWritten = 0;
+let testsWritten = 0;
+let workSkipped = 0;
+
+for (const dirent of await readdir(ROOT, { withFileTypes: true })) {
+  if (!dirent.isDirectory()) continue;
+  const workDir = join(ROOT, dirent.name, "work");
+  let names;
+  try {
+    names = (await readdir(workDir)).sort();
+  } catch {
+    continue; // no work folder for this week yet
+  }
+  const module = byWeek.get(dirent.name) ?? bySlug.get(dirent.name);
+  if (!module) {
+    console.warn(`  ! no module for folder "${dirent.name}", skipping its work`);
+    continue;
+  }
+
+  for (const name of names.filter((n) => n.endsWith(".md"))) {
+    const path = join(workDir, name);
+    const { meta, body } = parseFrontmatter(await readFile(path, "utf8"));
+    const m = name.replace(/\.md$/, "").match(/^(\d+)-(.+)$/);
+    const row = {
+      module_id: module.id,
+      slug: m ? m[2] : name.replace(/\.md$/, ""),
+      position: m ? Number(m[1]) : 0,
+      title: meta.title ? String(meta.title) : "",
+      kind: String(meta.kind ?? ""),
+      brief: body,
+      is_published: meta.published === true,
+    };
+    if (!row.title || !KINDS.has(row.kind)) {
+      console.warn(`  ! ${path} needs a title and a kind of assignment, project or final, skipping`);
+      workSkipped += 1;
+      continue;
+    }
+    if (dry) {
+      console.log(`  would write task ${module.slug}/${row.slug} (${row.kind}, published=${row.is_published})`);
+      tasksWritten += 1;
+      continue;
+    }
+    const { error } = await db.from("bootcamp_tasks").upsert(row, { onConflict: "module_id,slug" });
+    if (error) {
+      console.error(`  ✗ task ${module.slug}/${row.slug}: ${error.message}`);
+      workSkipped += 1;
+    } else {
+      console.log(`  ✓ task ${module.slug}/${row.slug} (${row.kind}, published=${row.is_published})`);
+      tasksWritten += 1;
+    }
+  }
+
+  if (names.includes("test.json")) {
+    const path = join(workDir, "test.json");
+    let test;
+    try {
+      test = JSON.parse(await readFile(path, "utf8"));
+    } catch (e) {
+      console.error(`  ✗ ${path} is not valid JSON: ${e.message}`);
+      workSkipped += 1;
+      continue;
+    }
+    const questions = Array.isArray(test.questions) ? test.questions : [];
+    const problem =
+      questions.length === 0
+        ? "has no questions"
+        : new Set(questions.map((q) => q?.id)).size !== questions.length
+          ? "has two questions with the same id"
+          : questions.map(questionProblem).find(Boolean);
+    if (problem) {
+      console.error(`  ✗ ${path} ${problem}, skipping`);
+      workSkipped += 1;
+      continue;
+    }
+    const row = {
+      module_id: module.id,
+      questions,
+      is_published: test.published === true,
+      updated_at: new Date().toISOString(),
+    };
+    if (dry) {
+      console.log(`  would write test ${module.slug} (${questions.length} questions, published=${row.is_published})`);
+      testsWritten += 1;
+      continue;
+    }
+    const { error } = await db.from("module_tests").upsert(row, { onConflict: "module_id" });
+    if (error) {
+      console.error(`  ✗ test ${module.slug}: ${error.message}`);
+      workSkipped += 1;
+    } else {
+      console.log(`  ✓ test ${module.slug} (${questions.length} questions, published=${row.is_published})`);
+      testsWritten += 1;
+    }
+  }
+}
+
+console.log(
+  `${dry ? "Dry run" : "Synced"}: ${tasksWritten} task(s), ${testsWritten} test(s), ${workSkipped} skipped.`,
+);

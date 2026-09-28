@@ -10,6 +10,7 @@ import {
   weekOpensOn,
 } from "@/lib/bootcamp/queries";
 import { lessonExcerpt } from "@/lib/bootcamp/markdown";
+import { getCertificationStatus } from "@/lib/bootcamp/coursework";
 import { Enter } from "@/components/ui/enter";
 import { Icons } from "@/components/ui/icons";
 
@@ -31,6 +32,12 @@ export default async function LearnPage() {
   ]);
 
   const enrolled = enrollment?.status === "active";
+
+  /* Where they stand against the certificate. Only for the enrolled: nobody
+     else can do the work, so a "0 of 19" would only be discouraging. Only once
+     the whole curriculum is out, too: in week two a total that counts only two
+     weeks would say they are nearly done. */
+  const certification = enrolled ? await getCertificationStatus(user.id) : null;
 
   /* Where to pick up: the first lesson, in curriculum order, that has not been
      ticked. Null once everything published is finished — which is the ordinary
@@ -90,6 +97,11 @@ export default async function LearnPage() {
               <p className="font-mono text-xs text-muted-2">
                 {totalDone} of {totalLessons} lessons done
               </p>
+              {certification?.curriculumComplete && (
+                <p className="font-mono text-xs text-muted-2">
+                  Certificate: {certification.done} of {certification.total} done
+                </p>
+              )}
               {resume && (
                 <Link
                   href={`/learn/${resume.module.slug}/${resume.lesson.slug}`}
@@ -201,6 +213,22 @@ export default async function LearnPage() {
                   </ol>
                 ) : (
                   <p className="mt-4 text-sm text-muted-2">Lessons open with the week.</p>
+                )}
+
+                {/* The assignment, project and test. Enrolled only: the tasks
+                    sit behind the same paywall as the lessons, so the page
+                    would be empty for anyone else. */}
+                {enrolled && m.week_number !== null && m.week_number > 0 && (
+                  <Link
+                    href={`/learn/${m.slug}/work`}
+                    className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-silver px-3.5 py-3 text-sm font-semibold text-ink transition-[background-color,transform] duration-press ease-out active:scale-[0.99] [@media(hover:hover){&:hover}]:bg-paper"
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <Icons.check className="h-4 w-4 text-blue" />
+                      This week&apos;s work: assignment, project and test
+                    </span>
+                    <Icons.arrowRight className="h-4 w-4 flex-none text-muted-2" />
+                  </Link>
                 )}
               </section>
             </Enter>

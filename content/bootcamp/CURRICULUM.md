@@ -45,7 +45,7 @@ three arcs into one real thing.
 |---|---|---|
 | Lessons | Video plus written lesson. The written lesson stands on its own | Marked done by the student |
 | Assignment | One short practical task, done the same day as a lesson | Submitted as a link or screenshot |
-| Test | 10 questions on the week's lessons | Auto-marked, 70% to pass, retries allowed |
+| Test | 10 questions on the week's lessons | Auto-marked, 80% to pass (the same mark as roadmap quizzes), retries allowed |
 | Weekly project | The week's shipped deliverable | Submitted as a link, reviewed and approved or sent back |
 
 ## Certification
@@ -225,16 +225,13 @@ demo, and what happens next.
 
 ---
 
-## What the LMS needs to deliver this
+## How the LMS delivers this
 
-Lessons already work (markdown in this folder, synced with
-`npm run bootcamp:sync`). The certification rule needs four things that do not
-exist yet:
+Built 2026-09-28. Each week's page at `/learn/<module>/work` shows its
+assignment, project and test. Students hand work in as a link; you review it
+at `/admin/submissions` and approve it or send it back with a note. The
+certificate is issued automatically the moment the rule above is met, and
+verifies at `/verify/<code>` like roadmap certificates.
 
-1. **Assignments:** a per-week task with a link or image submission.
-2. **Weekly tests:** 10 questions per week, graded on the server. The roadmap
-   quiz code (`lib/quiz/grade.ts`) can be reused.
-3. **Project submissions with review:** submit a link; an admin approves it or
-   sends it back with a note.
-4. **Bootcamp certificate:** issued automatically when all four certification
-   conditions are met, verifiable at `/verify/[code]` like roadmap certificates.
+Authoring lives next to the lessons, in `content/bootcamp/week-N/work/`. See
+`content/bootcamp/README.md` for the format.

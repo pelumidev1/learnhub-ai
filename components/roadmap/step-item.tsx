@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { setStepStatus } from "@/app/(app)/roadmap/actions";
+import { getAttemptReview, submitQuizAttempt } from "@/app/(app)/roadmap/quiz-actions";
 import { Icons } from "@/components/ui/icons";
 import { StepQuiz } from "@/components/roadmap/step-quiz";
 import type { ClientQuestion } from "@/lib/quiz/grade";
@@ -162,7 +163,9 @@ export function StepItem({
 
           {quiz && (
             <StepQuiz
-              stepId={step.id}
+              submit={(answers) => submitQuizAttempt({ stepId: step.id, answers })}
+              loadLastAttempt={() => getAttemptReview(step.id)}
+              passedNote="You can mark this step complete now."
               questions={quiz.questions}
               passMark={quiz.passMark}
               passed={quiz.passed}

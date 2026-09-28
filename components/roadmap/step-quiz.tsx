@@ -1,11 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import {
-  getAttemptReview,
-  submitQuizAttempt,
-  type QuizResult,
-} from "@/app/(app)/roadmap/quiz-actions";
+import type { QuizResult } from "@/app/(app)/roadmap/quiz-actions";
 import type { ClientQuestion } from "@/lib/quiz/grade";
 import { QuizReview } from "@/components/roadmap/quiz-review";
 import { Icons } from "@/components/ui/icons";
@@ -21,8 +17,12 @@ type View =
   | { kind: "result"; result: QuizResult }
   | { kind: "past"; result: QuizResult };
 
+type Result = QuizResult | { ok: false; error: string };
+
 /**
- * The quiz a student answers to unlock a step.
+ * A multiple-choice quiz: the one that unlocks a roadmap step, and the weekly
+ * bootcamp test. The two differ only in which server action marks the answers,
+ * so the caller passes those in.
  *
  * `questions` arrives already stripped of the answer key — see
  * lib/quiz/grade.ts. There is deliberately nothing in this component that could
@@ -30,14 +30,21 @@ type View =
  * could do too.
  */
 export function StepQuiz({
-  stepId,
+  submit: submitAnswers,
+  loadLastAttempt,
+  passedNote,
   questions,
   passMark,
   passed,
   bestScore,
   lastAttempt,
 }: {
-  stepId: string;
+  /** Marks the answers on the server. */
+  submit: (answers: Record<string, number>) => Promise<Result>;
+  /** Fetches the most recent attempt, marked again. */
+  loadLastAttempt: () => Promise<Result>;
+  /** Shown above the result when this attempt passed. */
+  passedNote?: string;
   questions: ClientQuestion[];
   passMark: number;
   passed: boolean;
@@ -55,7 +62,7 @@ export function StepQuiz({
   function submit() {
     setError(null);
     start(async () => {
-      const res = await submitQuizAttempt({ stepId, answers });
+      const res = await submitAnswers(answers);
       if (res.ok) setView({ kind: "result", result: res });
       else setError(res.error);
     });
@@ -72,7 +79,7 @@ export function StepQuiz({
   function openPast() {
     setError(null);
     start(async () => {
-      const res = await getAttemptReview(stepId);
+      const res = await loadLastAttempt();
       if (res.ok) setView({ kind: "past", result: res });
       else setError(res.error);
     });
@@ -162,10 +169,8 @@ export function StepQuiz({
     const { result } = view;
     return (
       <>
-        {result.passed && (
-          <p className="mt-3 text-sm font-semibold text-blue">
-            You can mark this step complete now.
-          </p>
+        {result.passed && passedNote && (
+          <p className="mt-3 text-sm font-semibold text-blue">{passedNote}</p>
         )}
         <QuizReview
           label={result.passed ? "Passed" : "Not yet"}

@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Icons } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import { getAdminOverview, getAdminUser } from "@/lib/admin/queries";
 import { Card, SectionHeader, StatTile } from "@/components/dashboard/primitives";
@@ -29,6 +31,13 @@ export default async function AdminPage() {
         <p className="mt-1 text-muted">
           How LearnHub is doing. Totals are all-time; charts cover the last {windowDays} days.
         </p>
+        <Link
+          href="/admin/submissions"
+          className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-blue hover:text-blue-600"
+        >
+          Bootcamp submissions to review
+          <Icons.arrowRight className="h-3.5 w-3.5" />
+        </Link>
       </header>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">

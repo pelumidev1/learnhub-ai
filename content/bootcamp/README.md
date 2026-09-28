@@ -40,6 +40,30 @@ run repeatedly. It never deletes: a lesson removed from this folder stays in the
 database until someone removes it deliberately, because a student mid-week
 should not lose a page because a file got renamed.
 
+## Assignments, projects and tests
+
+Each week's coursework lives in a `work/` folder beside its lessons:
+
+```
+content/bootcamp/week-1/work/01-your-stack-and-first-skill.md
+content/bootcamp/week-1/work/02-your-ai-workspace.md
+content/bootcamp/week-1/work/test.json
+```
+
+A task file has `title`, `kind` (`assignment`, `project` or `final`) and
+`published` in its frontmatter; the body is the brief. `test.json` is
+`{ "published": false, "questions": [...] }`, each question with an `id`, a
+`prompt`, exactly four `options`, a `correct_index` (0 to 3) and an
+`explanation`. The sync refuses a test with a malformed question rather than
+publishing it shorter than written.
+
+Two checks before publishing a test, because both let a student pass without
+knowing anything: spread the right answers across all four positions, and keep
+the options about the same length. Right answers that are always the longest
+option are the most common giveaway in hand-written tests.
+
+A lesson file cannot be called `work`, since that is the week's work page.
+
 ## Writing rules
 
 The voice rules in section 9 of `learnhub-master-context.md` apply here as much

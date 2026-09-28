@@ -71,9 +71,9 @@ That last section earns its place. One real example of the output you want will 
 
 ## This week you ship
 
-Your bio, your CV and a one-line offer, rebuilt and posted publicly. But build them **through a skill and a chain**, not by typing into a box.
+Your AI workspace: a Claude Project that knows who you are, the skill you build in this lesson, and a one-page site about you, made with Claude Code and live on the internet. The full brief is on this week's work page.
 
-Write the skill that encodes how you want to be described. Run the six roles on it. Post the result. You will have shipped two things: the work, and the thing that makes the work repeatable.
+Build the page **through your skill and a chain**, not by typing into a box. Write the skill that encodes how you want to be described. Run the six roles on it. Put the result live. You will have shipped two things: the work, and the thing that makes the work repeatable.
 
 ## What you should be able to do after this
 
