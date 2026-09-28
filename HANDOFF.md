@@ -6,6 +6,38 @@ _Last updated 2026-09-21. Written for a fresh Claude Code session with **no acce
 
 **LearnHub AI** — the AI career coach for Africa's next generation of tech talent. A person takes a 2-minute assessment, gets an AI-reasoned ranked list of tech careers that fit them (with local salary ranges and honest timelines), generates a step-by-step learning roadmap of free-first resources, tracks progress to a certificate, and can ask a context-aware AI coach anything, 24/7. Free while in beta. Audience: students, graduates, and career changers across Africa, 18–35, mostly on mid-tier Android phones over metered connections — every technical decision serves that user.
 
+## Newest (28 September 2026): security fixes, new curriculum, bootcamp coursework
+
+All pushed and live (`0cd40e8`, `e1e7b4d`, `825464a`); all three migrations
+applied by Pelumi the same day.
+
+- **Security:** students could write their own roadmaps, steps and progress
+  through the REST API and so mint a publicly "Verified" certificate. Those
+  tables are now read-only to students (`20260928120000`) and the roadmap
+  actions write on the service role. The AI rate limit now counts per call type.
+- **Curriculum:** `content/bootcamp/CURRICULUM.md` is the source of truth for
+  the six weeks, replacing section 5 of the master context. Laptop required,
+  Claude Pro the one paid tool, three two-week arcs plus a final project, and
+  certification only on every project approved, assignment handed in and test
+  passed. Module rows updated by `20260928130000`.
+- **Coursework** (`20260928140000`): `/learn/<module>/work` (assignment,
+  project, weekly test), `/admin/submissions` (review queue), and an automatic
+  bootcamp certificate. Authoring format in `content/bootcamp/README.md`.
+
+**Open, in order:**
+1. Week 1's assignment, project and test are synced but `published: false`,
+   waiting for Pelumi to read them. Unpublished work shows to nobody, admins
+   included. Only one active enrolment exists (a comped seat).
+2. The signed-in views of the work page and review queue have not been seen
+   in a browser yet. Check them once week 1's work is published.
+3. Write the four new week 1 lessons (tool comparison; Claude setup; ChatGPT,
+   Codex and Gemini; builder setup). They slot in at positions 2 to 5, so the
+   existing 02 to 05 files get renumbered 06 to 09. Verify plans, features and
+   prices against current sources, not memory.
+4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
+   (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
+   the Paystack live key.
+
 ## Where this stands (21 September 2026)
 
 **Newest work (2026-09-21): the AI Bootcamp waitlist at `/enrol`.** Five
