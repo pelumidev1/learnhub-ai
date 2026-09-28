@@ -43,7 +43,7 @@ function stubClient(count: number | null) {
   return { client: client as unknown as SupabaseClient, calls };
 }
 
-const opts = { windowMinutes: 60, max: 10 };
+const opts = { callType: "recommendation", windowMinutes: 60, max: 10 } as const;
 
 describe("checkAiRateLimit", () => {
   it("allows a user with no calls in the window", async () => {
@@ -90,17 +90,19 @@ describe("checkAiRateLimit", () => {
     expect((await checkAiRateLimit(client, "u1", opts)).allowed).toBe(true);
   });
 
-  it("counts only this user's rows, inside the window, without fetching them", async () => {
+  it("counts only this user's rows of this call type, inside the window, without fetching them", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-08-02T12:00:00.000Z"));
     const { client, calls } = stubClient(0);
-    await checkAiRateLimit(client, "user-123", { windowMinutes: 60, max: 10 });
+    await checkAiRateLimit(client, "user-123", { callType: "roadmap", windowMinutes: 60, max: 10 });
     vi.useRealTimers();
 
     expect(calls).toHaveLength(1);
     expect(calls[0].table).toBe("ai_events");
     expect(calls[0].column).toBe("id"); // head+count: no rows come back
     expect(calls[0].filters.user_id).toBe("user-123");
+    // Its own call type only: a user's quizzes must not use up their roadmaps.
+    expect(calls[0].filters.call_type).toBe("roadmap");
     expect(calls[0].filters.created_at).toBe("2026-08-02T11:00:00.000Z");
   });
 
@@ -108,7 +110,7 @@ describe("checkAiRateLimit", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-08-02T12:00:00.000Z"));
     const { client, calls } = stubClient(0);
-    await checkAiRateLimit(client, "u1", { windowMinutes: 15, max: 5 });
+    await checkAiRateLimit(client, "u1", { callType: "quiz", windowMinutes: 15, max: 5 });
     vi.useRealTimers();
     expect(calls[0].filters.created_at).toBe("2026-08-02T11:45:00.000Z");
   });

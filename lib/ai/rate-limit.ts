@@ -19,10 +19,23 @@ export type RateLimit = {
   windowMinutes: number;
 };
 
+/**
+ * Each call type has its own bucket. They used to share one: the count took
+ * every row this user had, so one roadmap (1 call, plus up to 9 quiz calls in
+ * the background) left a first-time user over the recommendation cap of 10,
+ * and fifteen chat messages locked them out of roadmaps. The caps below are
+ * sized per call type, so they have to be counted per call type.
+ */
+export type RateLimitOpts = {
+  callType: "recommendation" | "roadmap" | "advisor" | "quiz";
+  windowMinutes: number;
+  max: number;
+};
+
 export async function checkAiRateLimit(
   supabase: SupabaseClient,
   userId: string,
-  opts: { windowMinutes: number; max: number },
+  opts: RateLimitOpts,
 ): Promise<RateLimit> {
   const since = new Date(Date.now() - opts.windowMinutes * 60_000).toISOString();
 
@@ -31,6 +44,7 @@ export async function checkAiRateLimit(
     .from("ai_events")
     .select("id", { count: "exact", head: true })
     .eq("user_id", userId)
+    .eq("call_type", opts.callType)
     .gte("created_at", since);
 
   const used = count ?? 0;
@@ -43,12 +57,14 @@ export async function checkAiRateLimit(
 
 /** Caps used across the app. Generous enough for real use, low enough to stop abuse. */
 export const AI_LIMITS = {
-  recommendation: { windowMinutes: 60, max: 10 },
-  roadmap: { windowMinutes: 60, max: 15 },
+  recommendation: { callType: "recommendation", windowMinutes: 60, max: 10 },
+  roadmap: { callType: "roadmap", windowMinutes: 60, max: 15 },
   /* One roadmap needs up to 9 of these, and the roadmap page tops up any that
      failed. Higher than the others because each is a cheap Haiku call, but it
      still has to be capped: without it a step whose generation keeps failing
      would be retried on every page view forever. Failed calls are logged too,
      so they count against this and a broken step gives up on its own. */
-  quiz: { windowMinutes: 60, max: 40 },
-} as const;
+  quiz: { callType: "quiz", windowMinutes: 60, max: 40 },
+  // Chat is cheaper (Haiku), so the cap is higher than the Opus flows.
+  advisor: { callType: "advisor", windowMinutes: 60, max: 60 },
+} as const satisfies Record<string, RateLimitOpts>;

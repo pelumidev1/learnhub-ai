@@ -99,6 +99,13 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
     }
     const { roadmap, usage, model } = generated;
 
+    /* Roadmaps, steps and progress are written on the service role: students
+       have read access only (20260928120000). Those three tables decide when a
+       certificate is issued, so a student who could write them could award
+       themselves one. Every row below is still stamped with the session's
+       user id, never one from the request. */
+    const service = createServiceClient();
+
     // Log the call immediately — it cost money even if persisting fails below.
     try {
       await supabase.from("ai_events").insert({
@@ -116,7 +123,7 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
       // logging is best-effort
     }
 
-    const { data: rm, error } = await supabase
+    const { data: rm, error } = await service
       .from("learning_roadmaps")
       .insert({
         user_id: user.id,
@@ -157,7 +164,7 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
         estimated_weeks: s.estimated_weeks,
         resources: s.resources,
       }));
-      const { data: steps, error: stepErr } = await supabase
+      const { data: steps, error: stepErr } = await service
         .from("roadmap_steps")
         .insert(stepRows)
         .select("id, title, description, skill");
@@ -184,7 +191,7 @@ export async function createRoadmap(careerResultId: string): Promise<void> {
         user_id: user.id,
         status: "not_started",
       }));
-      if (progRows.length) await supabase.from("progress_tracking").insert(progRows);
+      if (progRows.length) await service.from("progress_tracking").insert(progRows);
 
       await supabase
         .from("career_results")
@@ -261,7 +268,8 @@ export async function setStepStatus(
   }
 
   const now = new Date().toISOString();
-  const { data: prog } = await supabase
+  // Service role, after the gate above: students cannot write this table.
+  const { data: prog } = await createServiceClient()
     .from("progress_tracking")
     .update({
       status: completed ? "completed" : "not_started",
@@ -303,15 +311,17 @@ async function recomputeRoadmap(supabase: Supabase, userId: string, roadmapId: s
     .maybeSingle();
   if (!rm) return;
 
+  // Service role: students cannot write learning_roadmaps (20260928120000).
+  const service = createServiceClient();
   if (complete && rm.status !== "completed") {
-    await supabase
+    await service
       .from("learning_roadmaps")
       .update({ status: "completed", completed_at: new Date().toISOString() })
       .eq("id", roadmapId)
       .eq("user_id", userId);
     await awardCompletion(userId, roadmapId, rm.title);
   } else if (!complete && rm.status === "completed") {
-    await supabase
+    await service
       .from("learning_roadmaps")
       .update({ status: "active", completed_at: null })
       .eq("id", roadmapId)

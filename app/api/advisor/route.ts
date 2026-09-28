@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
-import { checkAiRateLimit } from "@/lib/ai/rate-limit";
+import { AI_LIMITS, checkAiRateLimit } from "@/lib/ai/rate-limit";
 import { streamAdvisorReply, type AdvisorContext, type ChatMessage } from "@/lib/ai/advisor";
 import { estimateCostUsd, MODELS } from "@/lib/ai/config";
 
@@ -14,9 +14,6 @@ const BodySchema = z.object({
   message: z.string().trim().min(1).max(2000),
   conversationId: z.string().uuid().nullable().optional(),
 });
-
-// Chat is cheaper (Haiku), so the cap is higher than the Opus flows.
-const ADVISOR_LIMIT = { windowMinutes: 60, max: 60 };
 
 function sse(payload: unknown): Uint8Array {
   return new TextEncoder().encode(`data: ${JSON.stringify(payload)}\n\n`);
@@ -110,7 +107,7 @@ export async function POST(req: Request) {
   }
   const { message } = parsed.data;
 
-  const limit = await checkAiRateLimit(supabase, user.id, ADVISOR_LIMIT);
+  const limit = await checkAiRateLimit(supabase, user.id, AI_LIMITS.advisor);
   if (!limit.allowed) {
     return NextResponse.json(
       { error: "You've reached the chat limit for this hour. Please try again later." },
