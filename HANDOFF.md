@@ -46,7 +46,7 @@ applied by Pelumi the same day.
    modules: fetch failed"). If it does, run it with Node 24:
    `/usr/local/bin/node --env-file=.env.local scripts/sync-bootcamp-content.mjs`.
 3a. **Brochure pass (29 September).** Pelumi edited the cohort 1 brochure
-   (`../learnhub-launch/brochure/brochure.html`, outside this repo and not in
+   (`../learnhub-launch/brochure/phone.html` and `deck.html`, outside this repo and not in
    git). `CURRICULUM.md` now matches it: week 2 is "Prompt engineering",
    week 6 is "Identify your career, industry and business", Saturday 11am WAT
    live sessions, pods, 35 seats, career paths. The `bootcamp_modules`

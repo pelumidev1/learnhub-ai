@@ -6,7 +6,7 @@ which still describes the August outline (phone first, no Claude Code, no
 agents or automation). Where the two disagree, this file wins.
 
 Updated 2026-09-29 to match the cohort 1 brochure
-(`learnhub-launch/brochure/brochure.html`), which Pelumi edited that morning.
+(`learnhub-launch/brochure/phone.html` and `deck.html`), which Pelumi edited that morning.
 The brochure is what students are sold, so where it and this file disagree
 on what a week covers, match the brochure.
 
