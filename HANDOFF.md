@@ -85,8 +85,10 @@ applied by Pelumi the same day.
    `published: false`.** Prompting basics, your voice (with the AI tells),
    everyday prompts, and marketing prompts that produce the landing copy week
    3 builds on. Lesson 7 (Perplexity) waits on Pelumi confirming it stays.
-   Still to write for week 2: six test questions, and the assignment and
-   project briefs in `week-2/work/`.
+   Week 2's test (all ten questions) and its assignment and project briefs
+   were written the same day, also unpublished. The week 2 test had been
+   given copies of week 1's new agent questions by mistake in `b68aa00`; it
+   now carries the four prompting questions that moved with lessons 2 and 3.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.

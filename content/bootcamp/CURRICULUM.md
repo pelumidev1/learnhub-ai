@@ -164,9 +164,10 @@ generating.
 Lessons 2 and 3 are written and moved from week 1. Lessons 1, 4, 5 and 6 were
 drafted 2026-09-29, unpublished until Pelumi reads them, and carry Amaka as the
 running example. Lesson 7 is not drafted until Pelumi confirms it stays. The
-week 2 test starts with the four questions that moved with lessons 2 and 3
-(`week-2/work/test.json`) and needs six more. The assignment and project briefs
-in `week-2/work/` are not written yet.
+week 2 test (`week-2/work/test.json`) has all ten questions: two on lesson 1,
+the four that moved with lessons 2 and 3, two on lesson 4, and one each on 5
+and 6. None cover lesson 7. The assignment and project briefs are in
+`week-2/work/`. All of it is unpublished.
 
 Lesson 7 is not in the brochure. It was in the old week 2 outline, and week 1
 lesson 2 tells students they will use Perplexity properly in week two.

@@ -3,51 +3,123 @@
   "questions": [
     {
       "id": "q1",
-      "prompt": "What is the main difference between chat and an agent?",
+      "prompt": "You ask a model for \"a caption for my cake business\" and get something generic. What is the main reason?",
       "options": [
-        "Chat is free to use; an agent only works on a paid plan with credits",
-        "An agent is a chatbot that has been given a much larger memory to use",
-        "Chat gives you an answer; an agent takes a goal and returns finished work",
-        "Chat runs on your laptop; an agent always runs on a company's server"
+        "The model is not good at writing captions for small food businesses",
+        "Your prompt was too short, and longer prompts will always give you better answers",
+        "You used a free plan, which gives weaker answers than a paid plan does",
+        "It had no facts about your business, so it filled the gaps with the average"
       ],
-      "correct_index": 2,
-      "explanation": "With chat you get advice and do the job yourself. An agent takes a goal and does the work: files written, pages built, checks run."
+      "correct_index": 3,
+      "explanation": "The model knows a lot about cakes and nothing about yours. Context is the facts only you have: who it is for, what you sell, what makes you different."
     },
     {
       "id": "q2",
-      "prompt": "What three steps does Claude Code repeat until a goal is met?",
+      "prompt": "Which of these is a constraint, rather than context or a role?",
       "options": [
-        "Read the prompt, write one answer, then wait for your next message",
-        "Gather context, take action, then verify the results of what it did",
-        "Search the web, summarise the pages, then save a report file for you",
-        "Ask you a question, pick a model, then choose the fastest tool to use"
+        "\"Under 50 words, include the price, and no hashtags.\"",
+        "\"You write captions for a home bakery in Lekki, Lagos.\"",
+        "\"My customers mostly order birthday cakes at short notice.\"",
+        "\"Customers keep telling me my red velvet is not too sweet.\""
       ],
-      "correct_index": 1,
-      "explanation": "Every agent loops through gathering context, taking action and verifying results, often many times on one task."
+      "correct_index": 0,
+      "explanation": "Constraints set the shape of done: length, format, what must be included and what must be avoided. The others are a role and two pieces of context."
     },
     {
       "id": "q3",
-      "prompt": "Which goal gives an agent a clear point to stop?",
+      "prompt": "You have asked for the same thing four times with more words each time, and the answer keeps getting worse. What is the best move?",
       "options": [
-        "\"Build a price list page. It is done when every price reads on a phone.\"",
-        "\"Build me a nice price list page for my cake business, and make it good.\"",
-        "\"Build a price list page and keep improving it until it looks perfect.\"",
-        "\"Build a price list page, and just use your best judgement on the rest.\""
+        "Keep on rewording, because the right combination of words exists and you will find it",
+        "Tell the model firmly that it is wrong and ask it to try much harder this time",
+        "Stop rewording and change the process: add your own material, or split it into steps",
+        "Paste the exact same prompt into a different AI tool and compare the two answers"
       ],
-      "correct_index": 0,
-      "explanation": "\"It is done when...\" gives the agent a finish line it can check. Vague goals get vague stopping points."
+      "correct_index": 2,
+      "explanation": "The quality comes from a better process, not a better prompt. Arguing with a model instead of directing it is the habit to break."
     },
     {
       "id": "q4",
-      "prompt": "An agent starts forgetting rules you gave it early in a long session. What is the best fix?",
+      "prompt": "Why does asking AI to transform something work better than asking it to create from nothing?",
       "options": [
-        "Repeat every rule at the top of each new message in the same long chat",
-        "Keep the session open for longer so it has time to catch back up again",
-        "Switch to another model and paste the whole conversation into it again",
-        "Put the rules in CLAUDE.md and start a fresh session for each new goal"
+        "Transforming text uses fewer tokens, so the model can spend more effort on quality",
+        "From a blank page it has only an average; your rough draft gives it something of yours",
+        "Models cannot write anything new, so all they are able to do is rearrange what you give",
+        "Short tasks run faster, and a faster answer is usually a more accurate answer too"
+      ],
+      "correct_index": 1,
+      "explanation": "A blank page is where generic output comes from. Give it something rough and the result carries your fingerprints, because your material was the input."
+    },
+    {
+      "id": "q5",
+      "prompt": "What is the best way to get an honest critique of something AI wrote for you?",
+      "options": [
+        "Paste it into a new chat with no history and ask what is weak",
+        "Ask the same conversation to go back and check its own work",
+        "Ask the model to give its answer a score out of ten, honestly",
+        "Ask it how confident it is, and only trust answers above 90%"
+      ],
+      "correct_index": 0,
+      "explanation": "The same conversation defends what it already wrote. A fresh chat has no attachment to the draft, so it gives you the useful answer."
+    },
+    {
+      "id": "q6",
+      "prompt": "In the six-role chain, which role do people most often skip, and why does it matter?",
+      "options": [
+        "The Editor, so the writing runs long and repeats itself in places",
+        "The Researcher, so the draft has opinions but no facts behind them",
+        "The Skeptic, so nobody points out the typos before it all gets posted",
+        "The Strategist, so the writing feels like it could be about anything"
       ],
       "correct_index": 3,
-      "explanation": "When a session fills up, older instructions can get lost. CLAUDE.md is read at the start of every session, so rules there survive a fresh start."
+      "explanation": "The Strategist decides the angle, the audience and what not to say. Skip it and the Writer has nothing to aim at."
+    },
+    {
+      "id": "q7",
+      "prompt": "What should a voice skill be built from?",
+      "options": [
+        "A list of adjectives you would like people to use to describe you",
+        "Your voice described from five to ten pieces you wrote yourself",
+        "The most popular posts in your industry, so it copies what works",
+        "A prompt that tells the model to be a world-class copywriter"
+      ],
+      "correct_index": 1,
+      "explanation": "The model needs your real writing to match. Have it describe your voice from your own pieces, correct what it gets wrong, and put two or three of them in the skill as examples."
+    },
+    {
+      "id": "q8",
+      "prompt": "Which line is most likely to make a reader think AI wrote it?",
+      "options": [
+        "\"Order by 2pm and it reaches anywhere in Lekki today.\"",
+        "\"My first order was my cousin's wedding. I was scared.\"",
+        "\"It's not just a cake. It's a memory you'll treasure.\"",
+        "\"₦25,000 for an 8 inch. People say it's not too sweet.\""
+      ],
+      "correct_index": 2,
+      "explanation": "\"It's not just X. It's Y.\" is one of the patterns readers spot. The others are plain and specific: a time, a place, a price, a real detail."
+    },
+    {
+      "id": "q9",
+      "prompt": "Why add \"Use only the numbers I have given you\" to a prompt for a client proposal?",
+      "options": [
+        "It makes the model write the whole proposal faster and in fewer words",
+        "Proposals with fewer numbers are easier for clients to agree to",
+        "The model will then add a discount that helps you win the work",
+        "Models sometimes invent prices, discounts or terms you never offered"
+      ],
+      "correct_index": 3,
+      "explanation": "A model filling gaps can add a discount or guarantee you never agreed to. Give it your prices and terms, tell it to use only those, and check every number before you send."
+    },
+    {
+      "id": "q10",
+      "prompt": "In the landing page prompt, what is the [CHECK] instruction for?",
+      "options": [
+        "It marks any claim the model had to guess, so you can fix or cut it",
+        "It tells the model to check your spelling and grammar as it writes",
+        "It adds a checkbox to the page so visitors can pick what they want",
+        "It makes the model check that the page works well on a phone screen"
+      ],
+      "correct_index": 0,
+      "explanation": "Asking the model to mark guesses with [CHECK] catches invented claims before they go live. Replace each one with a true detail, or cut it."
     }
   ]
 }
