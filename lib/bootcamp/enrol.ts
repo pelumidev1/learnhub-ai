@@ -12,8 +12,9 @@ export type StartCheckoutResult =
 /**
  * Open a Paystack checkout for one person and one cohort.
  *
- * The price is decided here, on the server, from the early-bird deadline. It is never accepted from the caller: a client that can name its
- * own price will eventually name zero.
+ * The price is decided here, on the server, from the early-bird deadline. It
+ * is never accepted from the caller: a client that can name its own price
+ * will eventually name zero.
  */
 export async function startCheckout(input: {
   userId: string;

@@ -6,7 +6,21 @@ _Last updated 2026-09-21. Written for a fresh Claude Code session with **no acce
 
 **LearnHub AI** — the AI career coach for Africa's next generation of tech talent. A person takes a 2-minute assessment, gets an AI-reasoned ranked list of tech careers that fit them (with local salary ranges and honest timelines), generates a step-by-step learning roadmap of free-first resources, tracks progress to a certificate, and can ask a context-aware AI coach anything, 24/7. Free while in beta. Audience: students, graduates, and career changers across Africa, 18–35, mostly on mid-tier Android phones over metered connections — every technical decision serves that user.
 
-## Newest (28 September 2026): security fixes, new curriculum, bootcamp coursework
+## Newest (29 September 2026): cohort one repriced
+
+`f3c8994`, `66b4289`, pushed. Cohort one is now **₦150,000 early-bird and
+₦350,000 full price**, matching the brochure. The early-bird is date only and
+closes at the end of Saturday 10 October WAT (`FOUNDING_CLOSES_AT`); the
+August offer's 15-seat condition is gone. The tier is still stored as
+`founding` so no enrolment rows change. Everything lives in
+`lib/bootcamp/pricing.ts`.
+
+The paid seat cap for cohort one is now **35**. That number lives on the
+`cohorts` row (`paid_seat_cap`), not in code, and no migration in this repo
+sets it: the seed migration still says 25. **Confirm with Pelumi that the live
+row was changed** before relying on it.
+
+## 28 September 2026: security fixes, new curriculum, bootcamp coursework
 
 All pushed and live (`0cd40e8`, `e1e7b4d`, `825464a`); all three migrations
 applied by Pelumi the same day.
@@ -88,9 +102,7 @@ your inbox now", and no email is sent, because Resend was never connected. That
 is a promise the product cannot keep, in a product where honesty is a stated
 value. **Either take the page down or fix that line before anyone is sent to
 it.** It is linked from nowhere, which is the only reason this has not already
-cost anything. A paid enrolment, meanwhile, would now be priced `standard` —
-₦90,000, not the ₦55,000 founding price — though nothing can actually reach
-checkout.
+cost anything. (Pricing has since changed; see the 29 September note at the top.)
 
 The plain reading is that the 1 September launch did not happen as planned, or
 happened somewhere other than this codebase. **Ask Pelumi first: did the
