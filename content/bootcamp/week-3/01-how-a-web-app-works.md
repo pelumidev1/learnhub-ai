@@ -3,7 +3,7 @@ title: How a web app works, in plain English
 duration_minutes: 12
 published: false
 video_url:
-chapters: [{"label":"Website or web app","at":0},{"label":"The five parts","at":0},{"label":"Amaka's order page, part by part","at":0},{"label":"Which tool does which job","at":0},{"label":"A warm-up, if you want one","at":0}]
+chapters: [{"label":"Website or web app","at":0},{"label":"The five parts","at":0},{"label":"Amaka's order page, part by part","at":0},{"label":"How the whole thing fits together","at":0},{"label":"A warm-up, if you want one","at":0}]
 resources: [{"label":"How Claude Code works","url":"https://code.claude.com/docs/en/how-claude-code-works","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29
 ---
@@ -42,20 +42,23 @@ Amaka wants customers to order a cake without a long WhatsApp back and forth. He
 
 Written like that, it is a clear brief. "Build me a cake website" is not.
 
-## Which tool does which job
+## How the whole thing fits together
 
-Keep this straight and most confusion this week disappears:
+This is the setup every project this week follows, in the order the work happens:
 
-- **Claude Code** writes and changes the code, on your laptop.
-- **GitHub** keeps the code safe and remembers every version.
-- **Vercel** runs the code on the internet.
-- **Supabase** stores the data and handles sign-in.
+1. **Decide, in the Claude app.** Before any file exists, Claude interviews you and writes down what you are building, for whom, and what it must never look like. Most builds that go wrong went wrong here, before a line of code.
+2. **Context, in your project folder.** `CLAUDE.md` and your `context` folder from week one tell Claude Code the rules of this project, so you stop re-explaining it every session.
+3. **Build, in VS Code.** Claude Code writes the code. You read what it proposes, push back when it is wrong, and approve.
+4. **Save, on GitHub.** Every working step is saved as a version. It is your undo button.
+5. **Live, on Vercel.** Vercel watches GitHub and puts each new version on the internet. Supabase holds the data and the sign-ins.
 
-When something breaks, the first question is always *which of the four is it?* A page that looks wrong is front end. A form that says "saved" but nothing appears is the database. A link that will not open is hosting.
+You do not need to understand the code, but you do need to name what it is made of, because naming it makes Claude Code produce fewer mistakes. This week that is **Next.js** (the framework the site is built in), **TypeScript** (the careful kind of JavaScript it is written in) and **Tailwind** (how it gets styled).
+
+When something breaks, the first question is always *which part is it?* A page that looks wrong is front end. A form that says "saved" but nothing appears is the database. A link that will not open is hosting.
 
 ## A warm-up, if you want one
 
-If you would like to see a result before you open the terminal, try **v0** (v0.app) or **Lovable** (lovable.dev). You describe a page in a chat box and they build it in the browser. Both have free allowances.
+If you would like to see a result before you open VS Code, try **v0** (v0.app) or **Lovable** (lovable.dev). You describe a page in a chat box and they build it in the browser. Both have free allowances.
 
 They are good for sketching an idea in ten minutes. This week's project is built in Claude Code, because you own every file, it works with the setup from week one, and nothing limits what you can add later.
 

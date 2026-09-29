@@ -13,6 +13,8 @@ By the end of this week you have a setup that knows who you are, and proof that 
 3. **Your skill in use.** The skill from the assignment, used for real at least once.
 4. **A one-page site about you, live on the internet.** Made with Claude Code in that folder, published on Vercel. Who you are, what you are working toward, and how to reach you. Give Claude Code the goal with a clear "it is done when...", and let your skill and context shape the words.
 
+To put it live, ask Claude Code: *"Create a private GitHub repository for this folder, commit everything, and push it."* Then sign in to vercel.com, click **Add New**, then **Project**, find the repository and click **Import**, then **Deploy**. A minute later you have a link ending in `.vercel.app`. Week three explains every part of this properly; this week you only need it to work.
+
 ## What to hand in
 
 The live link to your site. In the note, paste your `CLAUDE.md`.

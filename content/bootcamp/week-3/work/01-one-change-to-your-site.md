@@ -10,10 +10,10 @@ Pick one real improvement to your "about me" site from week one. A new section, 
 
 1. Ask Claude Code for the change, in plan mode first.
 2. Check it on `localhost`.
-3. Commit it in GitHub Desktop with a note saying what changed, and push.
+3. Ask Claude Code to commit it with a note saying what changed, and push.
 4. Check it went live on your `.vercel.app` link, on your phone.
 
-If your week one site did not go live through GitHub, connect it now the way lesson three shows. That is part of the assignment.
+If your week one site did not go live through GitHub and Vercel, connect it now the way lesson three shows. That is part of the assignment.
 
 Hand in the live link. In the note, paste your commit message and one sentence on what you changed.
 

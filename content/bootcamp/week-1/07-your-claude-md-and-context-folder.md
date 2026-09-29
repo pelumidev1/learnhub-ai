@@ -67,7 +67,7 @@ A session can only hold so much. When it fills up, Claude Code shortens the olde
 The fix is simple:
 
 - Rules that matter every time go in `CLAUDE.md`, not in the chat.
-- Start a fresh session for each new goal. Type `/clear`, or close it and start `claude` again.
+- Start a fresh session for each new goal. Type `/clear`, or open a new Claude Code tab.
 
 You lose nothing by starting over. `CLAUDE.md` briefs it again from the first second.
 

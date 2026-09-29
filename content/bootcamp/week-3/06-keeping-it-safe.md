@@ -3,8 +3,8 @@ title: Keeping it safe and watching it: secrets, keys, security and monitoring
 duration_minutes: 16
 published: false
 video_url:
-chapters: [{"label":"Secrets stay secret","at":0},{"label":"Rules on every table","at":0},{"label":"Lock your accounts","at":0},{"label":"Ask for a security review","at":0},{"label":"Watching it after launch","at":0}]
-resources: [{"label":"Claude Code security","url":"https://code.claude.com/docs/en/security","kind":"doc","cost":"Free"},{"label":"Supabase docs","url":"https://supabase.com/docs","kind":"doc","cost":"Free"}]
+chapters: [{"label":"Secrets stay secret","at":0},{"label":"Rules on every table","at":0},{"label":"Lock your accounts","at":0},{"label":"Ask for a security review","at":0},{"label":"Watching it after launch","at":0},{"label":"The last 10 percent","at":0}]
+resources: [{"label":"Sentry for Next.js","url":"https://docs.sentry.io/platforms/javascript/guides/nextjs/","kind":"doc","cost":"Free Developer plan"},{"label":"Claude Code security","url":"https://code.claude.com/docs/en/security","kind":"doc","cost":"Free"},{"label":"Supabase docs","url":"https://supabase.com/docs","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29
 ---
 
@@ -49,16 +49,30 @@ A review is not a guarantee. It catches the common mistakes, and the common mist
 
 ## Watching it after launch
 
-A live site needs checking, the way a shop needs opening every morning.
+A live site needs checking, the way a shop needs opening every morning. Start with the tool that tells you something broke before a customer does.
+
+**Sentry** watches your live site and sends you an alert when something breaks for a real visitor. Its free Developer plan covers one person and 5,000 errors a month, which is plenty. Sign up at sentry.io with GitHub, then ask Claude Code:
+
+> *"Add Sentry to this Next.js app so I am told when something breaks for a real visitor, on the pages and on the server. Use Sentry's setup wizard. Add a friendly error page so visitors never see a raw crash. Then show me how to trigger a test error and where it appears in Sentry."*
+
+Trigger the test error, and check the alert arrives. An alarm you have never heard go off is not an alarm.
+
+Then the dashboards you already have:
 
 - **Vercel dashboard:** every deployment, and whether it worked. The **Logs** tab shows errors as they happen on the live site. Paste anything red into Claude Code.
 - **Vercel Analytics:** switch it on in your project to see how many people visit and which pages they use. It has a free allowance.
 - **Supabase dashboard:** check your tables for new rows, and the usage page, so you know before you hit a free-plan limit.
 
-Amaka checks all three every Monday morning. It takes five minutes. The first week, the logs showed an error every time someone typed a phone number with a space in it. She had lost three orders without knowing.
+Amaka checks Sentry whenever an alert arrives, and the three dashboards every Monday morning. It takes five minutes. In her first week, Sentry flagged an error every time someone typed a phone number with a space in it. Without it she would have lost those orders and never known why.
+
+## The last 10 percent
+
+In one good sitting, AI can take a project most of the way. The last part is not code, it is judgement: taking real photos of real cakes, writing prices you will actually honour, getting a real customer to try it, and deciding what not to ship yet.
+
+No tool does that part for you. It is also the part that makes the site yours.
 
 ## What you should be able to do after this
 
-Keep your secrets out of your code and out of the browser, check every table has the right rules, protect your accounts, get a security review before launch, and check your live site every week.
+Keep your secrets out of your code and out of the browser, check every table has the right rules, protect your accounts, get a security review before launch, and know within minutes when something breaks on your live site.
 
 ## Transcript

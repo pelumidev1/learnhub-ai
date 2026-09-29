@@ -3,7 +3,7 @@ title: Making it work on all devices, and fixing what breaks
 duration_minutes: 15
 published: false
 video_url:
-chapters: [{"label":"Phone first","at":0},{"label":"Check phone sizes on your laptop","at":0},{"label":"The real phone test","at":0},{"label":"Reporting a bug to Claude Code","at":0},{"label":"When a fix makes it worse","at":0}]
+chapters: [{"label":"Phone first","at":0},{"label":"Check phone sizes on your laptop","at":0},{"label":"The real phone test","at":0},{"label":"Reporting a bug to Claude Code","at":0},{"label":"Prove it before you fix it","at":0},{"label":"When a fix makes it worse","at":0}]
 resources: [{"label":"Chrome DevTools device mode","url":"https://developer.chrome.com/docs/devtools/device-mode","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29
 ---
@@ -53,16 +53,24 @@ A good bug report gets a fix in one try. Give it four things:
 3. **What happened:** *"The calendar opened half off the screen."*
 4. **What you expected:** *"The calendar fully visible."*
 
-Add a screenshot. Claude Code can read images: paste the screenshot straight into the terminal, or drag the file in.
+Add a screenshot. Claude Code can read images: paste the screenshot straight into the prompt box, or hold Shift and drag the file in.
 
-Then: *"Fix this. Tell me what caused it."* Knowing the cause is how you stop the same bug coming back.
+## Prove it before you fix it
+
+Do not ask for a fix straight away. Ask for the cause first:
+
+> *"Find out what causes this and show me the evidence. Do not change anything yet."*
+
+Sometimes the cause is not where you think. Amaka's "text cut off on phones" turned out to be the screenshot app cropping the image. The page was fine. A fix at that point would have broken something that worked.
+
+When the cause is proven: *"Now fix it, and tell me how to check the fix worked."* Knowing the cause is also how you stop the same bug coming back.
 
 ## When a fix makes it worse
 
 Sometimes a fix breaks something else. Do not keep piling fixes on top.
 
 - If you have not committed yet, ask Claude Code to undo its last change.
-- If you have, open GitHub Desktop, go to **History**, right-click the last commit and choose **Revert Changes in Commit**, then **Push origin**.
+- If you have: *"Go back to the last commit that worked, and push. Keep the history, so we can see what went wrong."*
 
 Then try again with a clearer bug report. This is why you commit after every step that works.
 

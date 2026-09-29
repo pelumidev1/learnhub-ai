@@ -33,9 +33,9 @@ Ask Claude Code where to put them. It will create a file called `.env.local` in 
 
 ## Let Claude Code build the table
 
-> *"Do the database step of PLAN.md. Create the tables in my Supabase project and connect the order form to them. Show me the SQL before you run anything, and explain each table in one line."*
+> *"Act as a senior backend engineer. Do the database step of PLAN.md. Design the Supabase tables this project needs, how they relate, and the security rules so people can only see what BUILD.md says they can. Keep it minimal but real. Show me the SQL before you run anything. Then explain the whole design in plain English, as if I have never seen a database, and flag anything that will cause me pain later if I get it wrong now."*
 
-Read the explanation. Amaka's says: *orders: one row per cake order, with name, phone, cake, date and address.* That matches her brief, so she approves.
+Read the explanation, especially the last part. Amaka's says: *orders: one row per cake order, with name, phone, cake, date and address.* It also flagged that storing the cake as free text would make her weekly totals messy, and suggested a short list of cakes instead. That matches her BUILD.md, so she approves.
 
 Then test it: submit the form on `localhost`, and open **Table Editor** in Supabase. Your test order should be there.
 
@@ -43,7 +43,7 @@ Then test it: submit the form on `localhost`, and open **Table Editor** in Supab
 
 Every table needs rules about who can read and write it. Supabase calls this **Row Level Security**, or RLS.
 
-With RLS on and no rules, nobody can read the table through your site. That is the safe starting point. Then you add rules for exactly what your brief says. Amaka's are:
+With RLS on and no rules, nobody can read the table through your site. That is the safe starting point. Then you add rules for exactly what your BUILD.md says. Amaka's are:
 
 - anyone can **add** an order
 - only Amaka, signed in, can **read** orders

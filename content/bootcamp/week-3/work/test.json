@@ -41,13 +41,13 @@
       "id": "q4",
       "prompt": "Your site looks like every other AI-built site: a purple gradient, a centred headline and three boxes with icons. What fixes it most reliably?",
       "options": [
-        "Ask Claude Code to make the page look more modern and unique",
-        "Write a design skill with your colours, fonts and a Never list",
+        "Ask Claude Code to make the whole page look more modern and unique",
+        "Write down your never list, colours and fonts before building",
         "Buy a website template and paste your own words into it",
         "Add more animation so the page feels more premium and new"
       ],
       "correct_index": 1,
-      "explanation": "A vague request gets the average look again. A design skill gives Claude Code your real colours and fonts, and a list of what to avoid, every time it builds a page."
+      "explanation": "A vague request gets the average look again. Deciding first, in writing, gives Claude Code your real colours and fonts and a list of what to avoid, every time it builds a page."
     },
     {
       "id": "q5",
@@ -63,7 +63,7 @@
     },
     {
       "id": "q6",
-      "prompt": "What is a commit in GitHub Desktop?",
+      "prompt": "What is a commit?",
       "options": [
         "A request to Vercel asking it to publish your site",
         "A copy of your site sent to a customer for review",
@@ -71,7 +71,7 @@
         "A message to Claude Code asking it to check work"
       ],
       "correct_index": 2,
-      "explanation": "A commit is a saved version. Committing after every working step means a bad change only costs you one step."
+      "explanation": "A commit is a saved version. Asking Claude Code to commit and push after every working step means a bad change only costs you one step."
     },
     {
       "id": "q7",
@@ -113,7 +113,7 @@
       "id": "q10",
       "prompt": "Your form is blocked by Supabase and will not save. What should you do?",
       "options": [
-        "Fix the RLS rule so it allows exactly what your brief says",
+        "Fix the RLS rule so it allows exactly what BUILD.md says",
         "Switch RLS off on that table so the form can save the orders",
         "Move the secret key into the page so it has full access",
         "Make a new table without any rules and save orders there"

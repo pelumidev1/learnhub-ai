@@ -1,142 +1,136 @@
 ---
-title: From idea to plan: getting Claude to write the plan before the code
-duration_minutes: 20
+title: From idea to plan: decide first, then get Claude to plan before it writes any code
+duration_minutes: 25
 published: false
 video_url:
-chapters: [{"label":"Why plan first","at":0},{"label":"Write a one-page brief","at":0},{"label":"Decide how it looks","at":0},{"label":"Plan mode","at":0},{"label":"Read the plan like a client","at":0},{"label":"Build in small steps","at":0}]
-resources: [{"label":"Plan before editing, Claude Code docs","url":"https://code.claude.com/docs/en/common-workflows","kind":"doc","cost":"Free"},{"label":"frontend-design plugin, Anthropic","url":"https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design","kind":"tool","cost":"Free"},{"label":"Install plugins, Claude Code docs","url":"https://code.claude.com/docs/en/discover-plugins","kind":"doc","cost":"Free"},{"label":"Google Fonts","url":"https://fonts.google.com","kind":"tool","cost":"Free"}]
+chapters: [{"label":"Why every AI website looks the same","at":0},{"label":"Decide first: the interview","at":0},{"label":"Save your reference sites","at":0},{"label":"Set up the project folder","at":0},{"label":"Plan mode","at":0},{"label":"Read the plan like a client","at":0},{"label":"Build one section at a time","at":0}]
+resources: [{"label":"Claude Code in VS Code","url":"https://code.claude.com/docs/en/vs-code","kind":"doc","cost":"Free"},{"label":"frontend-design plugin, Anthropic","url":"https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design","kind":"tool","cost":"Free"},{"label":"Install plugins, Claude Code docs","url":"https://code.claude.com/docs/en/discover-plugins","kind":"doc","cost":"Free"},{"label":"Google Fonts","url":"https://fonts.google.com","kind":"tool","cost":"Free"}]
 resources_checked_on: 2026-09-29
 ---
 
-The fastest way to waste an afternoon is to type "build me an app" and let Claude Code start. It will build something. It will not be what you meant, and you will spend hours arguing it back.
+Type "build me a modern website for my cake business" and Claude Code will build one. It will look like every other AI website: a purple gradient, a big centred headline, three boxes with icons, and a line about elevating your experience.
 
-Builders plan first. So does a good agent, if you ask it to.
+That is not because AI cannot design. "Modern" is not a decision, it is a mood. With nothing decided, the model gives you the average of every website it has seen.
 
-## Why plan first
+The fix is not a better prompt. It is deciding first, in writing, before the model gets a vote. Expect the deciding to take longer than the building. That is the point.
 
-A plan is cheap to change. Code is not. Moving a button in a plan takes one sentence. Moving it after three pages are built can break all three.
+## Decide first: the interview
 
-A plan also gives you something you can check. You may not be able to read code yet, but you can read a plan and say "no, customers do not need to sign in".
+You will not enjoy writing this document from a blank page, so make Claude pull it out of you. Open the Claude desktop app, in your **About me** project from week one so it already knows you, and paste this:
 
-## Write a one-page brief
+> *You are interviewing me before I build a website with you. Do not write any code, copy or design ideas yet. Your only job is to get decisions out of me.*
+>
+> *Ask me these questions one at a time, waiting for my answer before moving on:*
+>
+> *1. Who lands on this site, and what did they do in the thirty seconds before they arrived?*
+> *2. What is the single action I want them to take? Only one is allowed.*
+> *3. What do they have to believe before they will take it? List the doubts in the order they occur.*
+> *4. What must this site never look like? Three things, specific enough that a stranger could enforce them.*
+> *5. What is the headline and the first line, in my own words? Which words are banned?*
+> *6. What proof do I have that I could defend if someone checked it?*
+> *7. What are the hard constraints? Colours, fonts, motion, how light the pages must be.*
+> *8. What must the site save, and who is allowed to see it?*
+> *9. What is version one deliberately not doing? It must be small enough to finish this week.*
+> *10. It is done when...? Give checks anyone could do on a phone.*
+>
+> *Rules: one question at a time. Refuse vague answers. If I say "clean and modern", ask me what clean looks like and what it excludes. If I contradict something I said earlier, tell me.*
+>
+> *When all ten are answered, write it up as BUILD.md. Keep my exact words. Do not summarise me and do not improve my sentences. Then stop. Do not start building.*
 
-Before you open Claude Code, write this in a file called `BRIEF.md` in a new project folder. Use your landing copy from week two.
+That last line matters. The model will want to start building at question three. Let it, and you are back to the average website.
+
+For question 5, use the headline and offer you wrote in week two. The model can write a hundred versions of your line. It cannot find *your* line.
+
+A few of Amaka's answers, so you can see how specific "specific" is:
+
+- **The one action:** order a cake for a date.
+- **Their doubts, in order:** will it arrive on time, will it taste as good as it looks, can I trust paying someone I found on Instagram.
+- **Never:** purple or blue gradients; rows of three boxes with icons; stock photos, only her own cakes.
+- **Constraints:** cream background, cocoa brown text, red velvet buttons; Fraunces for headings, Nunito Sans for text, both free on Google Fonts; loads fast on a cheap Android phone on mobile data.
+- **Not in version one:** online payment, customer accounts, a blog.
+
+The "never" list is the most useful part of the whole document. A model is far better at avoiding a named thing than at inventing an unnamed one.
+
+## Save your reference sites
+
+Find two or three real websites you like. Not screenshots of them: save the actual page, so Claude Code can read how it was made instead of guessing.
+
+In Chrome, open the site, right-click, choose **Save as**, and pick **Webpage, Complete**. Save it into your project's `context/references` folder (you make the folder in the next step).
+
+Then add a line to `BUILD.md` for each one, saying what to **take** and what to **leave**:
+
+> *Bakery site: take how each cake photo fills the phone screen. Leave its colours and its pop-up.*
+> *Restaurant site: take the short menu on one page. Leave everything else.*
+
+That take-and-leave split is the single most useful thing you can give Claude Code about design.
+
+## Set up the project folder
+
+In VS Code, make and open a new folder for this project (Amaka's is `amakas-bakes`). Put `BUILD.md` and your saved references inside a `context` folder in it.
+
+Then give Claude Code better taste in general. Anthropic makes a free plugin called `frontend-design` that steers it away from the template look whenever it builds a page. In the Claude Code panel, type `/plugins` to open **Manage plugins**. On the **Plugins** tab, search for `frontend-design` and click **Install**, then choose **Install for you**, so it works in every project.
+
+If the list is empty, open the **Marketplaces** tab, add `anthropics/claude-plugins-official` (Anthropic's own plugin list), and search again.
+
+You never need to call it. The plugin makes pages good. Your `BUILD.md` makes them yours.
+
+Last, the project's `CLAUDE.md`, the file Claude Code reads at the start of every session (you met it in week one). Ask Claude Code to create it with this:
 
 ```
-# [Name of your product]
+# [Name of your project]
 
-## Who it is for
-[One sentence, from your week two positioning]
+@context/BUILD.md is the source of truth. If something is not in it, ask me. Do not guess.
 
-## What they can do
-- [Action one]
-- [Action two]
+## Stack
+Next.js, TypeScript and Tailwind. Supabase for the database and sign-in. Vercel for hosting.
+These tools change often: check their current documentation, not what you remember.
 
-## Pages
-- [Page]: [what is on it]
+## Rules
+- Write me a plan before you touch code. I approve it, then you build.
+- Build one section at a time.
+- Keep all the words on the site in one file, so I can change text without touching the design.
+- Never use Inter, Roboto or Arial.
 
-## What it saves
-- [Thing]: [what we store about it]
-
-## Who signs in
-[Nobody / only me / every customer]
-
-## It is done when
-- [A check anyone could do on a phone]
+## When you finish a task, tell me
+1. Which files changed, and what changed in each
+2. The checks you ran, and whether they passed
+3. What you could not do, and why
+4. Anything I now have to do myself
 ```
 
-Amaka's "done when" list: *a customer can order from a phone in under a minute; the order appears in my list; nobody but me can see the list; it works on a cheap Android phone.*
-
-## Decide how it looks
-
-Ask an AI to build a website with no guidance and you get the same site everyone gets: a purple gradient, a big centred headline, three boxes with icons in them, and a plain font. Visitors have seen it a thousand times, and it tells them nobody made a decision.
-
-You fix this before any code exists, in two steps.
-
-**1. Give Claude Code better taste.** Anthropic makes a free plugin called `frontend-design` that steers Claude Code away from the template look whenever it builds a page. In Claude Code, type:
-
-```
-/plugin install frontend-design@claude-plugins-official
-```
-
-Choose **Install for you**, so it works in every project. You do not need to call it. From now on, Claude Code uses it on its own for any page work.
-
-**2. Make it yours with a design skill.** The plugin gives good taste in general. It does not know your brand. For that, you write a skill, exactly as you did in week one, and save it in your project as `.claude/skills/my-design/SKILL.md`.
-
-It needs four things:
-
-- **Colours.** Two or three, as hex codes. Take them from your logo, your product photos or your shop sign, not from a list of "nice colours".
-- **Fonts.** One for headings, one for body text, both from Google Fonts, which are free.
-- **Examples.** Two or three real sites you like, and one sentence each on *what* you like. "The photos are huge" is useful. "It looks nice" is not.
-- **Never.** The things you do not want. This is the section that does the most work, as it was in week one.
-
-Here is Amaka's:
-
-```
----
-name: my-design
-description: Use when building or changing any page of the Amaka's Bakes site
----
-
-# How Amaka's Bakes looks
-
-## Colours
-- Background: warm cream #FFF8F0
-- Text: cocoa brown #4A2C2A
-- Buttons and highlights: red velvet #B3262E
-
-## Fonts
-- Headings: Fraunces
-- Body: Nunito Sans
-
-## Examples I like
-- A bakery site where each cake photo fills the screen on a phone
-- A restaurant site with one short menu and no pop-ups
-
-## Never
-- Purple or blue gradients
-- Rows of three boxes with icons
-- Stock photos. Only my own cake photos
-- Emoji in headings
-- More than one button colour
-```
-
-The plugin makes the page good. The skill makes it look like hers.
+That last section means you always know what just happened, even when you cannot read the code.
 
 ## Plan mode
 
-Open the folder in Claude Code and switch to **plan mode**. Press **Shift+Tab** until the bar at the bottom shows **plan mode on**. In plan mode Claude Code reads and thinks, but it does not change any files until you approve.
+In plan mode, Claude Code reads and thinks but changes nothing until you approve. In the Claude Code panel, type `/plan`, then:
 
-Then:
+> *"Read BUILD.md and the reference sites in context/references. Write me a detailed plan before you touch code. The plan must include: for each reference site, what we take and what we leave; every page, with its sections in order and one sentence on why each section exists; the stack decisions and why; what you are assuming and what you need to ask me; and the checks that will prove it is done. Keep version one as small as BUILD.md says."*
 
-> *"Read BRIEF.md. Ask me any questions you need answered before you plan. Then write a step-by-step build plan. Use Next.js, Supabase and Vercel, and follow my design skill for how every page looks. Keep it as simple as possible: no features I have not asked for."*
-
-Answer its questions. They are usually the gaps in your brief.
-
-"Next.js, Supabase and Vercel" is not a rule. It is the combination all three companies document best, so when something goes wrong, the answer is easy to find.
+Answer its questions. They are usually the gaps in your document.
 
 ## Read the plan like a client
 
-Read the plan slowly. You are checking three things:
+Read it slowly. You are checking four things:
 
-1. **Did it add anything you did not ask for?** Payments, a blog, customer accounts. Cut them. Every extra feature is extra to break.
-2. **Did it miss anything from your brief?** Point at the line.
-3. **Is the order sensible?** Pages first, then the database, then sign-in, then going live is a good default.
+1. **The sections.** Argue with the list of sections until it is right. A wrong section costs one sentence now and a rebuild later.
+2. **Anything you did not ask for.** Payments, a blog, customer accounts. Cut them. Every extra feature is extra to break.
+3. **Anything missing from BUILD.md.** Point at the line.
+4. **Its assumptions.** An assumption it states out loud is fine. One it buried is how you get a surprise in step six.
 
-Say what to change in plain words. When the plan is right, ask it to save the plan as `PLAN.md` in the folder so every future session can read it.
+Say what to change in plain words. When the plan is right, ask it to save the plan as `PLAN.md` in the project so every future session can read it.
 
-## Build in small steps
+## Build one section at a time
 
-Now leave plan mode (Shift+Tab again) and build **one step of the plan at a time**:
+Now leave plan mode and build **one step of the plan at a time**:
 
 > *"Do step 1 of PLAN.md only. Tell me how to check it worked."*
 
-Check it. If it works, save a version in GitHub Desktop (the next lesson shows you how) before the next step. If a step goes wrong, you go back to the last version that worked, not to the beginning.
+Check it. If it works, save it: *"Commit this with a short note saying what changed, and push."* If a later step goes wrong, you go back to the last version that worked, not to the beginning.
 
-One step per request is slower on paper and much faster in practice.
+Ask for a whole page at once and you get a whole page of things to fix at once, and you will accept choices you do not like because rejecting them means starting over. One section at a time is slower on paper and much faster in practice.
 
 ## What you should be able to do after this
 
-Turn your idea into a one-page brief, decide how it looks with the design plugin and your own design skill, get a plan from Claude Code in plan mode, correct it, and build it one checked step at a time.
+Get your decisions out of your head and into `BUILD.md` through an interview, give Claude Code references it can actually read, set up a project it understands from the first session, and turn all of it into a plan you have checked before a line of code is written.
 
 ## Transcript
