@@ -81,6 +81,12 @@ applied by Pelumi the same day.
    enrolment exists (comped), so nothing real is lost. The week 1 test's
    questions 4 to 7 changed with the move; the old four are the start of
    `week-2/work/test.json`.
+3d. **Week 2 lessons 1, 4, 5 and 6 drafted (29 September), not synced,
+   `published: false`.** Prompting basics, your voice (with the AI tells),
+   everyday prompts, and marketing prompts that produce the landing copy week
+   3 builds on. Lesson 7 (Perplexity) waits on Pelumi confirming it stays.
+   Still to write for week 2: six test questions, and the assignment and
+   project briefs in `week-2/work/`.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.

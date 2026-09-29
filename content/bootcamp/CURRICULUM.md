@@ -161,8 +161,12 @@ generating.
 | 6 | Prompts for marketing: offers, landing pages and launch copy |
 | 7 | Research you can trust: Perplexity, sources and fact-checking |
 
-Lessons 2 and 3 are in `week-2/` already. The week 2 test starts with the four
-questions that moved with them (`week-2/work/test.json`) and needs six more.
+Lessons 2 and 3 are written and moved from week 1. Lessons 1, 4, 5 and 6 were
+drafted 2026-09-29, unpublished until Pelumi reads them, and carry Amaka as the
+running example. Lesson 7 is not drafted until Pelumi confirms it stays. The
+week 2 test starts with the four questions that moved with lessons 2 and 3
+(`week-2/work/test.json`) and needs six more. The assignment and project briefs
+in `week-2/work/` are not written yet.
 
 Lesson 7 is not in the brochure. It was in the old week 2 outline, and week 1
 lesson 2 tells students they will use Perplexity properly in week two.
