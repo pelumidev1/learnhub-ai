@@ -3,7 +3,7 @@ title: Build your first skill
 duration_minutes: 18
 published: true
 video_url:
-chapters: [{"label":"Find the repetition","at":0},{"label":"Write it like an SOP","at":0},{"label":"Spend your effort on the description","at":0},{"label":"The negatives do the heavy lifting","at":0},{"label":"Where to put it","at":0},{"label":"This week's ship","at":0}]
+chapters: [{"label":"Find the repetition","at":0},{"label":"Write it like an SOP","at":0},{"label":"Spend your effort on the description","at":0},{"label":"The negatives do the heavy lifting","at":0},{"label":"Where to put it","at":0},{"label":"The template, filled in","at":0},{"label":"This week's ship","at":0}]
 resources: [{"label":"Agent Skills, Anthropic docs","url":"https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview","kind":"doc","cost":"Free"},{"label":"Anthropic Academy","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free"}]
 resources_checked_on: 2026-08-22
 ---
@@ -68,6 +68,42 @@ description: Use when [exact words you type]
 ```
 
 That last section earns its place. One real example of the output you want will teach the model more than three paragraphs describing it.
+
+## The template, filled in
+
+Here is Amaka's skill from the last lesson, complete. Use it as a model, then write yours about your own work.
+
+```
+---
+name: amakas-captions
+description: Use when I ask for an Instagram caption, a WhatsApp status, or a post about my cakes
+---
+
+# Captions for Amaka's Bakes
+
+## Use this when
+Any Instagram caption, WhatsApp status or post that sells a cake.
+
+## Steps
+1. Ask me which cake and which occasion if I have not said.
+2. Write two options, each under 50 words.
+
+## Rules
+- Mention same-day delivery in Lekki for orders before 2pm.
+- Include the price in naira if I give one.
+- Warm and short. Talk to one customer, not "everyone".
+
+## Never
+- The words indulge, delectable, mouthwatering or treat yourself.
+- Hashtags. Exclamation marks in every sentence.
+
+## What good looks like
+"Forgot it's her birthday tonight? Order before 2pm and a red velvet
+reaches anywhere in Lekki today. ₦25,000 for an 8 inch. Not too sweet,
+which is what everyone says after the first slice."
+```
+
+Every line in it came from something she was already typing, or something she was tired of fixing.
 
 ## This week you ship
 

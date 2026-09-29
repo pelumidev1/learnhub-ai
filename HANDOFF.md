@@ -45,6 +45,24 @@ applied by Pelumi the same day.
    at a time, while curl works (the sync now stops with "Could not read
    modules: fetch failed"). If it does, run it with Node 24:
    `/usr/local/bin/node --env-file=.env.local scripts/sync-bootcamp-content.mjs`.
+3a. **Brochure pass (29 September).** Pelumi edited the cohort 1 brochure
+   (`../learnhub-launch/brochure/brochure.html`, outside this repo and not in
+   git). `CURRICULUM.md` now matches it: week 2 is "Prompt engineering",
+   week 6 is "Identify your career, industry and business", Saturday 11am WAT
+   live sessions, pods, 35 seats, career paths. Still behind the brochure:
+   the `bootcamp_modules` titles, summaries and ship lines for weeks 2, 3, 4
+   and 6 (set by `20260928130000`, needs a new migration, keep the slugs), and
+   `learnhub-social-launch.md`, whose About section and days 8 to 14 carry the
+   August syllabus and ₦90,000 / 30 seats. It now has a warning banner at the
+   top. The master context's sections 5 and 6 carry "superseded" notes. A
+   copy of `learnhub-launch` from before these edits is in the 29 September
+   session's scratchpad only, so do not count on it. **Pelumi is reworking
+   the social plan himself; do not rewrite it unless he asks.**
+3b. **Unsynced lesson edits: do not run `bootcamp:sync` without asking.**
+   Week 1 lessons 1, 2, 6, 7, 8 and 9 have worked examples added on
+   29 September (one running example, Amaka, who sells cakes in Lagos). 1 and
+   6 to 9 are already published, so a sync would put the examples in front
+   of students. Pelumi is holding them back for now.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.

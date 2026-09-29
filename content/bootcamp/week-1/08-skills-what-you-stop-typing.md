@@ -3,7 +3,7 @@ title: Skills, or what you stop typing
 duration_minutes: 15
 published: true
 video_url:
-chapters: [{"label":"A prompt is what you type","at":0},{"label":"What a skill actually is","at":0},{"label":"Progressive disclosure","at":0},{"label":"Your description is a trigger, not a summary","at":0},{"label":"One skill, one job","at":0}]
+chapters: [{"label":"A prompt is what you type","at":0},{"label":"What a skill actually is","at":0},{"label":"Progressive disclosure","at":0},{"label":"Your description is a trigger, not a summary","at":0},{"label":"What it looks like in real life","at":0},{"label":"One skill, one job","at":0}]
 resources: [{"label":"Anthropic Academy","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free, issues certificates"},{"label":"Agent Skills, Anthropic docs","url":"https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-08-22
 ---
@@ -29,6 +29,19 @@ Which leads to the single most important line in this lesson:
 **Your description is a trigger, not a summary.**
 
 Most skills that fail do not fail because the instructions are bad. They fail because the description never matched anything the person actually typed. If you write "Write a LinkedIn post", your description needs those words in it, not "leverages professional social platform copywriting methodology".
+
+## What it looks like in real life
+
+By now Amaka notices she starts every caption chat the same way. The same paragraph, pasted every time: the business name, same-day delivery in Lekki before 2pm, prices, warm and short, no hashtags, never say "indulge".
+
+That paragraph is a skill waiting to happen. She saves it as a skill called `amakas-captions`.
+
+Look at two descriptions she could give it:
+
+- **Weak:** *"Social media content generation for a bakery brand."* She never types those words, so the skill never opens.
+- **Strong:** *"Use when I ask for an Instagram caption, a WhatsApp status, or a post about my cakes."* Those are her words. When she types "caption for this week's red velvet", it matches, the skill opens, and the paragraph she used to paste arrives on its own.
+
+Same instructions in both. Only one of them ever gets used.
 
 ## One skill, one job
 
