@@ -1,7 +1,22 @@
 "use server";
 
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { createServiceClient } from "@/lib/supabase/service";
+import { getAuthUser } from "@/lib/supabase/server";
+import { startCheckout } from "@/lib/bootcamp/enrol";
+import { getCurrentCohort } from "@/lib/bootcamp/queries";
 import { WaitlistInput } from "@/lib/validations/waitlist";
+
+/* Same rule as the auth actions: prefer the configured site URL over the
+   Origin header, which the client controls. This one ends up as Paystack's
+   callback_url, so a spoofed header would send a paying buyer somewhere else
+   to be told whether they are enrolled. */
+async function siteOrigin() {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  const h = await headers();
+  return h.get("origin") ?? "http://localhost:3000";
+}
 
 export type JoinWaitlistResult =
   | { ok: true; status: "joined" | "already" }
@@ -41,4 +56,41 @@ export async function joinWaitlist(raw: unknown): Promise<JoinWaitlistResult> {
   }
 
   return { ok: true, status: "joined" };
+}
+
+/**
+ * Take a signed-in buyer to Paystack for the open cohort.
+ *
+ * The price, the tier and the seat check all happen in `startCheckout`, on the
+ * server, from the cohort row and the early-bird deadline. Nothing about the
+ * amount is accepted from the browser: a client that can name its own price
+ * will eventually name zero.
+ *
+ * Signed out is the ordinary case rather than an error. `startCheckout` needs a
+ * user id to hang the enrolment row on, so anyone without an account is sent to
+ * sign up and comes straight back here. That is also why this is an action and
+ * not a link: the destination depends on who is asking.
+ */
+export async function beginCheckout(): Promise<{ ok: false; error: string } | never> {
+  const user = await getAuthUser();
+  if (!user?.email) redirect("/signup?redirect=/enrol");
+
+  const cohort = await getCurrentCohort();
+  if (!cohort || cohort.status !== "open") {
+    return { ok: false, error: "Enrolment is not open right now." };
+  }
+
+  const result = await startCheckout({
+    userId: user.id,
+    email: user.email,
+    cohortId: cohort.id,
+    paidSeatCap: cohort.paid_seat_cap,
+    origin: await siteOrigin(),
+  });
+
+  if (!result.ok) return result;
+
+  /* redirect() throws, so it cannot sit inside the try in startCheckout and
+     cannot be the last statement of a branch that also returns a value. */
+  redirect(result.authorizationUrl);
 }
