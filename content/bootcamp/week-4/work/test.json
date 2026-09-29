@@ -1,0 +1,125 @@
+{
+  "published": false,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "You are studying a reference ad frame by frame. Which note will help you most when you make your own?",
+      "options": [
+        "It looks professional and the colours all feel very modern",
+        "A new shot every three seconds, text building word by word",
+        "The music is trending and the video has lots of views",
+        "It was clearly made by a big agency with a large budget"
+      ],
+      "correct_index": 1,
+      "explanation": "Write what the video actually does, in things you can copy: pace, how text appears, how the camera moves. \"Professional\" gives you nothing to build."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which is the strongest hook for a 30-second cake ad?",
+      "options": [
+        "Hi everyone, welcome back to Amaka's Bakes page",
+        "Did you know we make the best cakes in all of Lagos?",
+        "Amaka's Bakes: quality cakes for every occasion",
+        "She forgot the cake. It's 1pm and the party is at 6."
+      ],
+      "correct_index": 3,
+      "explanation": "A hook is the thing your viewer is already thinking, in the first two seconds. Greetings, brand names and \"Did you know\" give them a reason to scroll on."
+    },
+    {
+      "id": "q3",
+      "prompt": "What single change most improves how much an AI video shot looks like your real product?",
+      "options": [
+        "Starting the shot from a real photo of your real product",
+        "Adding more adjectives like stunning and cinematic",
+        "Asking for the highest quality mode on every attempt",
+        "Generating the whole 30-second ad in one single generation"
+      ],
+      "correct_index": 0,
+      "explanation": "Start from a real image. Words alone get you a cake. Your photo gets you your cake."
+    },
+    {
+      "id": "q4",
+      "prompt": "You have Google Flow's free daily credits. What is the best way to use them?",
+      "options": [
+        "Save them all up for a week, then make one long video",
+        "Use the high-quality mode for every shot you try out",
+        "Draft each shot in the fast mode, change one thing each time",
+        "Repeat the same prompt again and again until one looks right"
+      ],
+      "correct_index": 2,
+      "explanation": "Fast mode costs a fifth of the high-quality mode, and free credits do not roll over. Draft cheaply, change one thing between attempts, and pay only for the shot you know you need."
+    },
+    {
+      "id": "q5",
+      "prompt": "Which of these crosses the honest line in a UGC-style ad?",
+      "options": [
+        "You talking to your phone camera about your own product",
+        "Hands cutting your real cake, filmed in your own kitchen",
+        "An AI actor saying \"I ordered this and loved it\"",
+        "A real customer review, shown as text, with permission"
+      ],
+      "correct_index": 2,
+      "explanation": "An AI person must never pretend to be a customer. That is a fake testimonial. The other three are honest."
+    },
+    {
+      "id": "q6",
+      "prompt": "Most people watch short videos with the sound off. What does that mean for your ad?",
+      "options": [
+        "Every spoken line needs captions that are easy to read",
+        "Music matters more than the words, so pick a trend",
+        "The voiceover should be louder than in a normal video",
+        "Keep every video under ten seconds so no one gets bored"
+      ],
+      "correct_index": 0,
+      "explanation": "If it only works with sound, it does not work for most viewers. Caption every spoken line, big and clear of the app's buttons."
+    },
+    {
+      "id": "q7",
+      "prompt": "You want to use an AI voice in an ad that sells your product. What do you need?",
+      "options": [
+        "Any voice from the free plan, since free means allowed",
+        "A famous person's voice, cloned so it sounds familiar",
+        "A voice from a video you found online, sped up a little bit",
+        "A plan with a commercial licence, cloning only your voice"
+      ],
+      "correct_index": 3,
+      "explanation": "ElevenLabs' free plan has no commercial licence. And only ever clone your own voice, or one you have written permission to use."
+    },
+    {
+      "id": "q8",
+      "prompt": "What is the best way to brief Claude Code for a Remotion motion graphic?",
+      "options": [
+        "Ask for a nice, modern animated intro for my brand",
+        "Describe the movement beat by beat, with frame timings",
+        "Send the logo and let it pick whatever looks best",
+        "Ask for the whole video, then fix everything at the end"
+      ],
+      "correct_index": 1,
+      "explanation": "Describe movement, not results: what arrives when, how text builds, where the cuts land. Then approve a scene-by-scene plan before it builds."
+    },
+    {
+      "id": "q9",
+      "prompt": "Why keep every timing, colour and piece of text in one config file?",
+      "options": [
+        "So you can change them without touching the animation",
+        "Because Remotion will not render any video without one",
+        "So the video file comes out smaller for your phone",
+        "Because Claude Code cannot edit more than one file"
+      ],
+      "correct_index": 0,
+      "explanation": "One file for everything you might change means next month's version, or a new price, takes minutes instead of a rebuild."
+    },
+    {
+      "id": "q10",
+      "prompt": "You are editing a talking video in CapCut. What should you lay down first?",
+      "options": [
+        "The music, so the edit follows the beat of the song",
+        "The captions, so you know where each line will sit",
+        "The voice, since it sets the timing for everything",
+        "The AI shots, since they took the longest to make"
+      ],
+      "correct_index": 2,
+      "explanation": "The voice sets the timing. Cut it tight first, then fit the other shots and the captions around it."
+    }
+  ]
+}
