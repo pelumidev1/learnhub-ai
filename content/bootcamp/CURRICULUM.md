@@ -114,7 +114,7 @@ prompts.
 | 2 | Claude, ChatGPT and Gemini: what each is best at | Drafted |
 | 3 | Setting up Claude properly: Pro, desktop app, Projects, memory | Drafted |
 | 4 | ChatGPT, Codex and Gemini: Projects, Gems and when to use which | Drafted |
-| 5 | Your builder setup: terminal basics, Claude Code, GitHub, Supabase, Vercel | Drafted |
+| 5 | Your builder setup: VS Code, Claude Code, GitHub, Supabase, Vercel | Drafted |
 | 6 | Chat vs agents: the loop, and defining done | Drafted |
 | 7 | Your CLAUDE.md and context folder | Drafted |
 | 8 | Skills: what you stop typing | Written |
@@ -137,7 +137,7 @@ Lesson 2 also names the assistants students will hear about but do not set
 up (Perplexity, Meta AI, Copilot, DeepSeek, Grok). It names Perplexity as one
 option for the source checking taught in week 2 lesson 6.
 
-- **Tools:** Claude, Claude Code, ChatGPT, Codex, Gemini, GitHub, Supabase, Vercel.
+- **Tools:** Claude, Claude Code, VS Code, ChatGPT, Codex, Gemini, GitHub, Supabase, Vercel.
 - **Assignment:** screenshot of every tool signed in, plus your first skill.
 - **Project: your AI workspace.** A Claude Project loaded with your own context
   (who you are, your goal sentence, your work), one skill you built, and a
@@ -186,13 +186,24 @@ Perplexity gets one line as an option and is not a tool students set up.
 
 ### Week 3: Build websites and web apps
 
-Claude Code as the main tool. v0 or Lovable as a warm-up for anyone who wants
-to see a result before opening the terminal.
+Claude Code in VS Code as the main tool. v0 or Lovable as a warm-up for anyone
+who wants to see a result before opening VS Code.
+
+**Taught the way Pelumi builds** (29 September, from
+`../build-stack-page/pelumi-build-stack.md`, `../thumbnails/the-build-doc.md`
+and his `build-brief` skill): decide first by interview in the Claude app,
+written up as `BUILD.md` in the student's own words (including the never list,
+constraints, and reference sites saved as full HTML with what to take and
+leave from each); a project `CLAUDE.md` that points at it, names the stack
+(Next.js, TypeScript, Tailwind, Supabase, Vercel), keeps all copy in one file,
+and asks for a four-part report after every task; a plan before any code;
+one section at a time; Claude Code commits and pushes; prove a bug before
+fixing it; Sentry for monitoring; an optional Namecheap domain.
 
 | # | Lesson |
 |---|---|
 | 1 | How a web app works: front end, database, login, hosting, in plain English |
-| 2 | From idea to plan: getting Claude to write the plan before the code, and deciding how it looks (the `frontend-design` plugin and your own design skill) |
+| 2 | From idea to plan: deciding first (the interview and `BUILD.md`, reference sites, the `frontend-design` plugin, the project `CLAUDE.md`), then the plan before any code |
 | 3 | Building a website with Claude Code and putting it live on Vercel |
 | 4 | Adding a database and sign-in with Supabase |
 | 5 | Making it work on all devices, and fixing what breaks |
@@ -202,8 +213,8 @@ All six lessons, the assignment, the project brief and the ten-question test
 were drafted 2026-09-29, unpublished. Amaka's running example is an order page
 for her cakes: a menu, an order form saved to Supabase, and a signed-in list
 only she can read. Choices made in the drafts: Next.js as the default stack
-(best documented by Vercel and Supabase); GitHub Desktop rather than git on
-the command line; Supabase's new publishable and secret keys, with a line on
+(best documented by Vercel and Supabase); Claude Code doing the commits and
+pushes, with the GitHub CLI sign-in done once in week 1 lesson 5; Supabase's new publishable and secret keys, with a line on
 the older anon and service_role names. Supabase and Vercel pages are blocked
 from the session that wrote them, so their button and menu names came from
 search results, not the live dashboards: check them on a real screen before
@@ -214,7 +225,7 @@ website (a waitlist or enquiry form is enough), because weeks 4 and 5 need
 somewhere for the traffic and the agent to go.
 
 - **Assignment:** one change to your week 1 site, made and deployed by you.
-- **Tools:** Claude Code, GitHub Desktop, Supabase, Vercel, v0, Lovable.
+- **Tools:** Claude Code, VS Code, GitHub, Supabase, Vercel, Sentry, v0, Lovable.
 - **Project: a live product.** A website or web app at a live URL that works
   on all devices, using the landing copy from week 2. Grows from week 2.
 
@@ -225,15 +236,41 @@ plenty of people will never want to be filmed.
 
 | # | Lesson |
 |---|---|
-| 1 | Scripting video with AI: hooks, structure, 30 to 60 seconds |
+| 1 | Scripting video with AI: the brief, references studied frame by frame, hooks, 30 to 60 seconds, the shot list |
 | 2 | Realistic AI video: Veo, Kling and Higgsfield, and which tool is best for what |
-| 3 | UGC-style ads: making content that looks like a real customer made it |
-| 4 | Voice and avatars: ElevenLabs, and when an avatar helps or hurts |
+| 3 | UGC-style ads: content that looks like a real person made it, and the honest line (no AI person posing as a customer) |
+| 4 | Voice and avatars: ElevenLabs, your digital twin, and when an avatar helps or hurts |
 | 5 | Motion graphics as code: Remotion with Claude Code |
 | 6 | Editing videos using agents, and repurposing one long video into many short ones with CapCut |
 
-- **Assignment:** one AI-generated shot that could pass as filmed.
-- **Tools:** Veo, Kling, Higgsfield, ElevenLabs, Remotion, CapCut.
+All six lessons, the assignment, the project brief and the ten-question test
+were drafted 2026-09-29, unpublished, taught the way Pelumi makes video: a
+`BRIEF.md` first, from references studied frame by frame (what they actually
+do, the pace rule of a beat every half-second to a second and a shot every two
+to four, a shot list with timings); AI video started from a real product photo;
+his Higgsfield digital-twin route as the paid option; Remotion built through
+Claude Code with every timing, colour and word in one config file. Amaka's
+running example is a 30-second "She forgot the cake. It's 1pm." ad and a
+10-second menu motion graphic.
+
+Free tiers, checked 2026-09-29 and stated plainly in lesson 2: Google Flow
+gives 50 credits a day (a fast Veo clip costs 20, the quality mode 100); Kling's
+free clips are watermarked and not for commercial use; Higgsfield has no free
+plan; ElevenLabs' free plan has no voice cloning and no commercial licence
+(Starter is $6 a month); Remotion is free for individuals and teams of up to 3.
+The project forbids free-plan output that bars commercial use.
+
+Honest line, enforced in lesson 3 and the project approval: no AI person posing
+as a customer, no invented reviews or numbers, and the platform's AI label on
+realistic AI shots. Plugins are installed through `/plugins` (Manage plugins)
+in the VS Code panel, not typed commands. `video-use` (browser-use, open
+source) is taught as the agent-editing step up; CapCut is the default for
+everyone, because video-use needs Python, ffmpeg and an ElevenLabs key and is
+smoothest on a Mac.
+
+- **Assignment:** one AI-generated shot that could pass as filmed, started
+  from a real photo, with the prompt and attempt count in the note.
+- **Tools:** Google Flow (Veo), Kling, Higgsfield, ElevenLabs, Remotion, CapCut, video-use.
 - **Project: the launch video.** One UGC-style ad and one motion graphic for the
   product from week 3, both published. Grows from week 3.
 
@@ -267,7 +304,18 @@ use. Zapier connects the most apps and is the easiest; Make is cheaper for
 visual logic; n8n is the strongest for AI agents. n8n is taught in depth;
 Zapier and Make get one lesson so students recognise them in job descriptions.
 
-- **Tools:** Claude console, Google Opal, n8n, Zapier, Make.
+Lesson 5 (chatbot on your website) drafted 2026-09-30, unpublished, from
+Pelumi's old "AI Chatbots full course" deck, brought up to date: the four-step
+answer flow and embeddings are kept; chunking is taught as needed only for
+large knowledge (under ~500 pages, the whole file goes in the prompt with
+caching, per Anthropic); the deck's prompt tricks (EmotionPrompt, "take a deep
+breath", accuracy percentages, temperature 0) are replaced by facts, a goal and
+reasoned rules; Dante and the AWS custom-code stack (S3, Lambda, LLRT) are
+dropped for Chatbase as a ten-minute trial and a bot built into the week 3 site
+on Claude Haiku 4.5. Students need an API account for this (Claude Pro does
+not cover a site's bot), with a spend limit set first.
+
+- **Tools:** Claude console, Claude API, Chatbase (trial), Google Opal, n8n, Zapier, Make.
 - **Assignment:** one n8n automation that runs on a schedule.
 - **Project: your product, automated.** A chatbot agent live on the week 3
   site, plus one automation that does real work for it (for example, new

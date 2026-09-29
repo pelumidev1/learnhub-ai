@@ -97,15 +97,33 @@ applied by Pelumi the same day.
    sites (blocked by that session's network), from search results: walk
    through them on a real screen before publishing. `CURRICULUM.md` lists
    the other choices made.
-   **Design (done 29 September, not synced):** week 3 lesson 2 now has a
-   "Decide how it looks" section between the brief and plan mode. Students
-   install `frontend-design@claude-plugins-official` (checked in Anthropic's
-   marketplace.json that day) and write a design skill at
-   `.claude/skills/my-design/SKILL.md`: colours, fonts, examples, Never
-   list; Amaka's is the worked example. The plan-mode prompt tells Claude
-   Code to follow it. The project hands in the skill and has a design
-   approval line. Test q4 (cut unrequested features) became a design
-   question, still answer position 1. **Next: week 4.**
+   **Rewritten to Pelumi's own method (29 September, not synced).** His
+   choices: Claude Code in the **VS Code extension** (not the terminal),
+   **Claude Code commits and pushes** (GitHub Desktop removed; week 1
+   lesson 5 now installs VS Code and signs in with `gh auth login`), and
+   **design decisions live in `BUILD.md`** (the separate design skill is
+   gone; the `frontend-design` plugin stays). Lesson 2 is his
+   "decide first" interview producing `BUILD.md`, reference sites saved as
+   full HTML with take and leave, and a project `CLAUDE.md` with his
+   four-part "when you finish, tell me" report. Also: TypeScript and
+   Tailwind named, all copy in one file, prove a bug before fixing, Sentry
+   in lesson 6 and the project, an optional Namecheap domain, and "the last
+   10 percent". Sources are listed in `CURRICULUM.md` under week 3. The
+   week 1 project now says how to put the site live, and week 1 lesson 5
+   now installs Node.js (week 3 and 4 need it; it was missing).
+3f. **Week 4 drafted (29 September), not synced, all `published: false`.**
+   Six lessons, assignment, project and ten-question test in
+   `content/bootcamp/week-4/`, taught Pelumi's way (brief first, references
+   frame by frame, real photo into AI video, Remotion via Claude Code).
+   Free-tier facts and the honest line are in `CURRICULUM.md` under week 4.
+   Open: week 1's test has three questions (q1, q4, q9) whose right answer is
+   the longest option, the giveaway `content/bootcamp/README.md` warns about;
+   not changed, as another session wrote them. **Next: week 5.**
+3g. **Week 5 lesson 5 drafted (30 September), not synced, unpublished:**
+   `content/bootcamp/week-5/05-a-chatbot-agent-on-your-website.md`, the only
+   week 5 file so far. Made from Pelumi's 2024 chatbot deck
+   (`~/Downloads/Folders/AI COURSE/Copy of AI Chatbots full course.pptx`),
+   updated; `CURRICULUM.md` under week 5 lists what was kept and dropped.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.
