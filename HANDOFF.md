@@ -119,11 +119,15 @@ applied by Pelumi the same day.
    Open: week 1's test has three questions (q1, q4, q9) whose right answer is
    the longest option, the giveaway `content/bootcamp/README.md` warns about;
    not changed, as another session wrote them. **Next: week 5.**
-3g. **Week 5 lesson 5 drafted (30 September), not synced, unpublished:**
-   `content/bootcamp/week-5/05-a-chatbot-agent-on-your-website.md`, the only
-   week 5 file so far. Made from Pelumi's 2024 chatbot deck
+3g. **Weeks 5 and 6 drafted (30 September), not synced, all unpublished.**
+   Every lesson, assignment, project and test in `content/bootcamp/week-5/`
+   and `week-6/`. Week 5 lesson 5 (chatbot) came from Pelumi's 2024 deck
    (`~/Downloads/Folders/AI COURSE/Copy of AI Chatbots full course.pptx`),
-   updated; `CURRICULUM.md` under week 5 lists what was kept and dropped.
+   updated; lesson 6 from his Agent OS; week 6 lesson 5 from his offer notes.
+   `CURRICULUM.md` records the choices under each week. All six weeks now
+   exist as drafts. **Next:** Pelumi reads and publishes week by week; the
+   module-title migration `20260929120000` still needs applying; week 1's
+   test q1, q4 and q9 still give away the answer by length.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.

@@ -304,6 +304,21 @@ use. Zapier connects the most apps and is the easiest; Make is cheaper for
 visual logic; n8n is the strongest for AI agents. n8n is taught in depth;
 Zapier and Make get one lesson so students recognise them in job descriptions.
 
+All eight lessons, the assignment, the project brief and the ten-question
+test drafted 2026-09-30, unpublished. Lesson 3 is where students open their
+API account and set a spend limit (lessons 5 and 7 reuse it); the Claude
+console agent is a managed agent set up through Claude Code's guided
+`/claude-api managed-agents-onboard`, since managed agents have no no-code
+console screen. Lesson 4's rule, repeated in lesson 6 and the project: an agent
+may draft anything, nothing leaves without a person approving it. Lesson 6 is
+modelled on Pelumi's own Agent OS (`../Pelumi Agent OS/Brain/CLAUDE.md`): a
+North Star `CLAUDE.md`, a routing table, context files, a self-kept
+`memory.md` and hard rules. Lesson 7 runs n8n free on the laptop (`npx n8n`,
+needs the Node.js from week 1) or on the 14-day cloud trial, because n8n
+Cloud has no free plan and laptop schedules only run while the laptop is on.
+Free plans checked 2026-09-30: Zapier 100 tasks a month, two-step Zaps; Make
+1,000 credits a month, two scenarios, 15-minute minimum interval.
+
 Lesson 5 (chatbot on your website) drafted 2026-09-30, unpublished, from
 Pelumi's old "AI Chatbots full course" deck, brought up to date: the four-step
 answer flow and embeddings are kept; chunking is taught as needed only for
@@ -335,7 +350,19 @@ choosing which path to take.
 | 5 | Building a business: offer, pricing and first clients |
 | 6 | Presenting your work: preparing for demo day |
 
-- **Tools:** Claude, ChatGPT, LinkedIn.
+All six lessons, the assignment, the project brief and the ten-question test
+drafted 2026-09-30, unpublished, in Learnhub's voice (no founder story). Lesson
+5 teaches Pelumi's offer method from `../offer-breakdown.md`: an offer is one
+outcome, a fixed scope with exclusions, a fixed turnaround and one price, on a
+three-step ladder; first clients come from people and public proof ("How did
+you build that?"), never faked scarcity or testimonials. A second running
+example, Chidi (an accounting graduate heading for automation roles), carries
+the job route; Amaka carries the business route. Lesson 4 includes spotting
+job scams. The project lets students choose Route A (a live offer and one
+outreach) or Route B (three tailored applications). Amaka's naira prices in
+lesson 5 are labelled as her own, for her market.
+
+- **Tools:** Claude, ChatGPT, LinkedIn, Selar, Paystack.
 - **Assignment:** your rebuilt CV and LinkedIn headline.
 - **Project: your next step.** Either a live offer with a price and one
   outreach sent, or three tailored job applications sent. Grows from all

@@ -83,7 +83,7 @@ One short example shows the tone. Two or three that differ from each other are b
 
 This uses the same loop as week three: plan first, one step at a time, commit what works.
 
-First, an **API account**. Your Claude Pro plan covers you using Claude, but not a bot answering strangers on your site. That needs an API account at platform.claude.com, paid by usage. Add a few dollars of credit, then go to **Settings**, then **Billing**, and set a **spend limit**, so a busy week can never surprise you. Create an API key and treat it like the Supabase secret key: it never goes in the browser, a screenshot or GitHub.
+First, the **API account** you set up in lesson three. Your Claude Pro plan covers you using Claude, but not a bot answering strangers on your site, so the bot runs on that account, paid by usage. Check your **spend limit** is set before the bot goes live, so a busy week can never surprise you. Use a new API key just for the site, and treat it like the Supabase secret key: it never goes in the browser, a screenshot or GitHub.
 
 Then write your knowledge file, `context/knowledge.md`, from your `BUILD.md` and your site's copy, and ask Claude Code in plan mode:
 

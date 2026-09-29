@@ -1,0 +1,125 @@
+{
+  "published": false,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Why choose one path before rebuilding your CV and LinkedIn page?",
+      "options": [
+        "Recruiters only accept candidates with a single skill",
+        "A page that points everywhere tells nobody what you do",
+        "LinkedIn will not let you list more than one job title",
+        "Employers check that you finished every course week"
+      ],
+      "correct_index": 1,
+      "explanation": "One clear direction lets an employer or client see at a glance what you do and for whom."
+    },
+    {
+      "id": "q2",
+      "prompt": "What is the most useful way to check demand for your path in your own city?",
+      "options": [
+        "Read global reports on which jobs AI will replace",
+        "Wait until a recruiter contacts you on LinkedIn",
+        "Search real adverts and talk to local businesses",
+        "Ask a chatbot which careers pay the most money"
+      ],
+      "correct_index": 2,
+      "explanation": "Real adverts show the words employers use; five conversations show what people will actually pay for. Both beat global statistics."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which line belongs on your CV?",
+      "options": [
+        "Built an n8n automation that sends a daily delivery plan",
+        "Highly skilled in all of the latest AI tools and platforms",
+        "Passionate, hardworking and a fast learner with AI",
+        "Expert in artificial intelligence and automation"
+      ],
+      "correct_index": 0,
+      "explanation": "Every line should pass one test: could someone check it? Specific work with the tool named is proof; adjectives are claims."
+    },
+    {
+      "id": "q4",
+      "prompt": "You have little work history in this field. What should go near the top of your CV?",
+      "options": [
+        "A long list of every AI tool you have ever tried",
+        "Your school grades and a detailed list of hobbies",
+        "A photo and a personal statement about your goals",
+        "A Projects section with links to what you built"
+      ],
+      "correct_index": 3,
+      "explanation": "Your projects are your experience. Lead with them, each with its link, the tools named, and an honest result."
+    },
+    {
+      "id": "q5",
+      "prompt": "What makes a cover note stand out today?",
+      "options": [
+        "It is long and lists every skill in full detail",
+        "It could only have been sent to that one company",
+        "It uses formal phrases like 'I am writing to express'",
+        "It was sent to hundreds of companies the same day"
+      ],
+      "correct_index": 1,
+      "explanation": "Generic AI-written notes are everywhere. One written for this company's real problem, leading with your closest project, gets read."
+    },
+    {
+      "id": "q6",
+      "prompt": "A company offers you a job but asks you to pay a training fee first. What should you do?",
+      "options": [
+        "Pay it, because training is a good investment",
+        "Pay half now and the other half after you start",
+        "Walk away, because real employers pay you",
+        "Send your bank details so they can refund it"
+      ],
+      "correct_index": 2,
+      "explanation": "A real employer never asks you to pay to get a job. Fees before starting, no real interview, or requests for bank details are scam signs."
+    },
+    {
+      "id": "q7",
+      "prompt": "Which of these is an offer rather than a service?",
+      "options": [
+        "I build websites and chatbots for all businesses",
+        "I do AI automation for companies of any size",
+        "I help brands make better content with AI tools",
+        "A bakery chatbot, set up in 5 days, for ₦80,000"
+      ],
+      "correct_index": 3,
+      "explanation": "An offer has one outcome, a fixed scope, a turnaround and a price. The other three have no edges, so every enquiry becomes a negotiation."
+    },
+    {
+      "id": "q8",
+      "prompt": "Why add a small, cheap step below your main offer?",
+      "options": [
+        "Buyers not ready for the main offer can start small",
+        "Small offers always make more money than the big ones do",
+        "Every business must legally offer a cheap version",
+        "It lets you charge less for the main offer later"
+      ],
+      "correct_index": 0,
+      "explanation": "A ladder gives people a low-risk first step. Many move up once they trust you."
+    },
+    {
+      "id": "q9",
+      "prompt": "Where do most first clients come from?",
+      "options": [
+        "Paid adverts aimed at people who have never heard of you",
+        "People who know you, or who have seen your work",
+        "Big companies who find you through search engines",
+        "Freelance sites where you offer the lowest price"
+      ],
+      "correct_index": 1,
+      "explanation": "Tell people you know, and show your work in public with a live link. Proof and trust come before strangers pay."
+    },
+    {
+      "id": "q10",
+      "prompt": "Your internet cuts out in the middle of your demo day presentation. What is the best move?",
+      "options": [
+        "Apologise at length and ask to present another day",
+        "Keep refreshing the page until the network returns",
+        "Play the backup recording of the demo you prepared",
+        "Skip the demo and describe what it would have shown"
+      ],
+      "correct_index": 2,
+      "explanation": "Prepare a recorded backup and screenshots. A calm switch to the recording is remembered; panic is remembered more."
+    }
+  ]
+}
