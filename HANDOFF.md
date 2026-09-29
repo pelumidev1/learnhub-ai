@@ -49,9 +49,11 @@ applied by Pelumi the same day.
    (`../learnhub-launch/brochure/brochure.html`, outside this repo and not in
    git). `CURRICULUM.md` now matches it: week 2 is "Prompt engineering",
    week 6 is "Identify your career, industry and business", Saturday 11am WAT
-   live sessions, pods, 35 seats, career paths. Still behind the brochure:
-   the `bootcamp_modules` titles, summaries and ship lines for weeks 2, 3, 4
-   and 6 (set by `20260928130000`, needs a new migration, keep the slugs), and
+   live sessions, pods, 35 seats, career paths. The `bootcamp_modules`
+   titles, summaries and ship lines for weeks 2, 3, 4 and 6 are caught up by
+   `20260929120000_bootcamp_modules_brochure.sql` (slugs unchanged; checked
+   against a scratch Postgres on 29 September), **written but not yet
+   applied**: Pelumi runs it in the SQL Editor. Still behind the brochure:
    `learnhub-social-launch.md`, whose About section and days 8 to 14 carry the
    August syllabus and ₦90,000 / 30 seats. It now has a warning banner at the
    top. The master context's sections 5 and 6 carry "superseded" notes. A
