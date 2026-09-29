@@ -33,7 +33,8 @@ export const FOUNDING_CLOSES_AT = new Date("2026-10-11T00:00:00+01:00");
  *
  * Date only. The August offer also ended after 15 seats; the early-bird does
  * not, so every paid seat sold before the deadline is at the early-bird price.
- * The 25 seat cap still applies, separately, through paidSeatsAvailable.
+ * The paid seat cap (35 for cohort one, set on the `cohorts` row) still
+ * applies, separately, through paidSeatsAvailable.
  */
 export function currentTier(now: Date = new Date()): PaidTier {
   return now < FOUNDING_CLOSES_AT ? "founding" : "standard";
@@ -42,7 +43,7 @@ export function currentTier(now: Date = new Date()): PaidTier {
 /**
  * Whether the cohort can still take a paid enrolment at all.
  *
- * The 25 seat cap is stated publicly and comes out of the delivery model: a
+ * The paid seat cap is stated publicly and comes out of the delivery model: a
  * live call with 40 people is a webinar, and people stop turning up to those.
  * So it is a real limit the server enforces, not a marketing line.
  */
