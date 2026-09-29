@@ -63,6 +63,22 @@ applied by Pelumi the same day.
    29 September (one running example, Amaka, who sells cakes in Lagos). 1 and
    6 to 9 are already published, so a sync would put the examples in front
    of students. Pelumi is holding them back for now.
+3c. **Week 1 lessons 6 and 7 moved to week 2 (29 September).** Week 1 now
+   teaches "Chat vs agents" and "Your CLAUDE.md and context folder" at 6 and
+   7 (drafted, unpublished). "Why prompting stops working" and "Workflows
+   over prompts" are in `content/bootcamp/week-2/` as lessons 2 and 3. The
+   sync never deletes, so **the next real sync leaves the old copies
+   published in week 1**, beside the new 6 and 7. Right after that sync, run
+   in the Supabase SQL Editor:
+   ```sql
+   delete from public.lessons
+   where slug in ('why-prompting-stops-working', 'workflows-over-prompts')
+     and module_id = (select id from public.bootcamp_modules where slug = 'set-up-your-ai-stack');
+   ```
+   Deleting a lesson also deletes its `lesson_progress` rows. Only one
+   enrolment exists (comped), so nothing real is lost. The week 1 test's
+   questions 4 to 7 changed with the move; the old four are the start of
+   `week-2/work/test.json`.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.

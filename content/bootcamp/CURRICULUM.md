@@ -115,12 +115,19 @@ prompts.
 | 3 | Setting up Claude properly: Pro, desktop app, Projects, memory | Drafted |
 | 4 | ChatGPT, Codex and Gemini: Projects, Gems and when to use which | Drafted |
 | 5 | Your builder setup: terminal basics, Claude Code, GitHub, Supabase, Vercel | Drafted |
-| 6 | Why prompting stops working | Written |
-| 7 | Workflows over prompts | Written |
+| 6 | Chat vs agents: the loop, and defining done | Drafted |
+| 7 | Your CLAUDE.md and context folder | Drafted |
 | 8 | Skills: what you stop typing | Written |
 | 9 | Build your first skill | Written |
 
 Lessons 2 to 5 were drafted 2026-09-28, unpublished until Pelumi reads them.
+Lessons 6 and 7 were drafted 2026-09-29 and replace "Why prompting stops
+working" and "Workflows over prompts", which moved to week 2. Claude Code is an
+agent and students use it from this week's project onward, so how agents work,
+defining done, CLAUDE.md and a context folder come before weeks 3 and 4 build
+with it. The source was Open Residency's "AI Agent Playbook" (episode 37),
+taught in Learnhub's own words and checked against Claude Code's docs. Test
+questions 4 to 7 moved to week 2 with the two lessons.
 Lesson 4 no longer teaches custom GPTs: OpenAI stopped personal accounts
 (Free, Go, Plus and Pro) creating new GPTs and retires them on 11 December
 2026, moving them to plugins where a GPT's instructions become a skill. It
@@ -147,12 +154,17 @@ generating.
 | # | Lesson |
 |---|---|
 | 1 | How to prompt any AI model: context, roles and constraints |
-| 2 | Teaching AI your voice, so the writing sounds like you (including removing the AI tells readers spot) |
-| 3 | Prompts for everyday work: posts, emails, proposals and captions |
-| 4 | Prompts for marketing: offers, landing pages and launch copy |
-| 5 | Research you can trust: Perplexity, sources and fact-checking |
+| 2 | Why prompting stops working (written, moved from week 1) |
+| 3 | Workflows over prompts, the six roles (written, moved from week 1) |
+| 4 | Teaching AI your voice, so the writing sounds like you (including removing the AI tells readers spot) |
+| 5 | Prompts for everyday work: posts, emails, proposals and captions |
+| 6 | Prompts for marketing: offers, landing pages and launch copy |
+| 7 | Research you can trust: Perplexity, sources and fact-checking |
 
-Lesson 5 is not in the brochure. It was in the old week 2 outline, and week 1
+Lessons 2 and 3 are in `week-2/` already. The week 2 test starts with the four
+questions that moved with them (`week-2/work/test.json`) and needs six more.
+
+Lesson 7 is not in the brochure. It was in the old week 2 outline, and week 1
 lesson 2 tells students they will use Perplexity properly in week two.
 Pelumi to confirm it stays; if it goes, change that line in week 1 lesson 2.
 
@@ -216,13 +228,19 @@ automations that run on their own.
 
 | # | Lesson |
 |---|---|
-| 1 | What an agent is, and how it differs from a chatbot and an automation |
-| 2 | No-code agents: Google Opal, custom GPTs and Claude Projects as agents |
+| 1 | Agents, chatbots and automations: which one a job needs |
+| 2 | No-code agents: Google Opal and Claude Projects as agents |
 | 3 | Building an agent in the Claude console |
-| 4 | A chatbot agent on your website |
-| 5 | Your AI operating system: an agent that plans, drafts and remembers for you |
-| 6 | Automation with n8n: triggers, steps, and an AI step in the middle |
-| 7 | Zapier and Make: what they are, and when a company will expect them |
+| 4 | Giving your agent tools: connectors, MCP, and an approval step before anything goes live |
+| 5 | A chatbot agent on your website |
+| 6 | Your AI operating system: context, skills, tools and memory in one folder |
+| 7 | Automation with n8n: triggers, steps, and an AI step in the middle |
+| 8 | Zapier and Make: what they are, and when a company will expect them |
+
+Week 1 lessons 6 and 7 now teach the agent loop, defining done, CLAUDE.md and
+the context folder, so this week builds on them rather than introducing them.
+Lesson 2 no longer names custom GPTs, which OpenAI retires on 11 December
+2026 (see week 1 lesson 4).
 
 Automation tool choice (researched 2026-09-28): all three are still in wide
 use. Zapier connects the most apps and is the easiest; Make is cheaper for

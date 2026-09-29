@@ -9,12 +9,13 @@ By the end of this week you have a setup that knows who you are, and proof that 
 ## What to build
 
 1. **A Claude Project about you.** Add who you are, what you do, the one sentence you wrote in week 0 about what you want to build or sell, and three or four real pieces of your own writing. From now on, work that is about you starts here instead of in a blank chat.
-2. **Your skill in use.** The skill from the assignment, used for real at least once.
-3. **A one-page site about you, live on the internet.** Made with Claude Code, published on Vercel. Who you are, what you are working toward, and how to reach you. Write the words through your skill and the six roles, not by typing straight into Claude Code.
+2. **Your context folder.** A `CLAUDE.md` and a `context` folder in your `learnhub` folder, built the way lesson seven shows, so Claude Code knows who you are in every session.
+3. **Your skill in use.** The skill from the assignment, used for real at least once.
+4. **A one-page site about you, live on the internet.** Made with Claude Code in that folder, published on Vercel. Who you are, what you are working toward, and how to reach you. Give Claude Code the goal with a clear "it is done when...", and let your skill and context shape the words.
 
 ## What to hand in
 
-The live link to your site. In the note, add one sentence on what your Claude Project now knows about you.
+The live link to your site. In the note, paste your `CLAUDE.md`.
 
 ## What approval looks like
 

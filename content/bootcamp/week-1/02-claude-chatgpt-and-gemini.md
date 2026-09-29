@@ -38,7 +38,7 @@ Here is the working rule for the next six weeks.
 
 **Claude is your home base.** Your context, your projects and your skills live there. Most work starts there.
 
-**ChatGPT and Gemini are your second opinions.** When something matters, paste Claude's output into one of them, with no history, and ask what is weak. In lesson six you will see why a different model catches things the first one defends.
+**ChatGPT and Gemini are your second opinions.** When something matters, paste Claude's output into one of them, with no history, and ask what is weak. In week two you will see why a different model catches things the first one defends.
 
 **Use the others for what they do best.** Images in ChatGPT. Anything inside your Google files in Gemini.
 

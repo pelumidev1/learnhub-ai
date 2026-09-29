@@ -1,0 +1,53 @@
+{
+  "published": false,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the main difference between chat and an agent?",
+      "options": [
+        "Chat is free to use; an agent only works on a paid plan with credits",
+        "An agent is a chatbot that has been given a much larger memory to use",
+        "Chat gives you an answer; an agent takes a goal and returns finished work",
+        "Chat runs on your laptop; an agent always runs on a company's server"
+      ],
+      "correct_index": 2,
+      "explanation": "With chat you get advice and do the job yourself. An agent takes a goal and does the work: files written, pages built, checks run."
+    },
+    {
+      "id": "q2",
+      "prompt": "What three steps does Claude Code repeat until a goal is met?",
+      "options": [
+        "Read the prompt, write one answer, then wait for your next message",
+        "Gather context, take action, then verify the results of what it did",
+        "Search the web, summarise the pages, then save a report file for you",
+        "Ask you a question, pick a model, then choose the fastest tool to use"
+      ],
+      "correct_index": 1,
+      "explanation": "Every agent loops through gathering context, taking action and verifying results, often many times on one task."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which goal gives an agent a clear point to stop?",
+      "options": [
+        "\"Build a price list page. It is done when every price reads on a phone.\"",
+        "\"Build me a nice price list page for my cake business, and make it good.\"",
+        "\"Build a price list page and keep improving it until it looks perfect.\"",
+        "\"Build a price list page, and just use your best judgement on the rest.\""
+      ],
+      "correct_index": 0,
+      "explanation": "\"It is done when...\" gives the agent a finish line it can check. Vague goals get vague stopping points."
+    },
+    {
+      "id": "q4",
+      "prompt": "An agent starts forgetting rules you gave it early in a long session. What is the best fix?",
+      "options": [
+        "Repeat every rule at the top of each new message in the same long chat",
+        "Keep the session open for longer so it has time to catch back up again",
+        "Switch to another model and paste the whole conversation into it again",
+        "Put the rules in CLAUDE.md and start a fresh session for each new goal"
+      ],
+      "correct_index": 3,
+      "explanation": "When a session fills up, older instructions can get lost. CLAUDE.md is read at the start of every session, so rules there survive a fresh start."
+    }
+  ]
+}

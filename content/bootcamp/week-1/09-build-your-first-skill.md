@@ -107,9 +107,9 @@ Every line in it came from something she was already typing, or something she wa
 
 ## This week you ship
 
-Your AI workspace: a Claude Project that knows who you are, the skill you build in this lesson, and a one-page site about you, made with Claude Code and live on the internet. The full brief is on this week's work page.
+Your AI workspace: a Claude Project that knows who you are, your `CLAUDE.md` and context folder, the skill you build in this lesson, and a one-page site about you, made with Claude Code and live on the internet. The full brief is on this week's work page.
 
-Build the page **through your skill and a chain**, not by typing into a box. Write the skill that encodes how you want to be described. Run the six roles on it. Put the result live. You will have shipped two things: the work, and the thing that makes the work repeatable.
+Build the page **through your skill and your context folder**, not by typing into a box. Write the skill that encodes how you want to be described. Give Claude Code the goal, with a clear "it is done when...". Put the result live. You will have shipped two things: the work, and the thing that makes the work repeatable.
 
 ## What you should be able to do after this
 

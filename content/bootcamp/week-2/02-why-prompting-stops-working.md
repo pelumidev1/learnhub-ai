@@ -62,7 +62,7 @@ The exact words Amaka uses, in a fresh chat, ideally in a different tool:
 
 ## What you should be able to do after this
 
-Notice when you are arguing with a model instead of directing it, and stop. That is the skill. The next two lessons are what you do instead.
+Notice when you are arguing with a model instead of directing it, and stop. That is the skill. The next lesson is what you do instead.
 
 ## Transcript
 

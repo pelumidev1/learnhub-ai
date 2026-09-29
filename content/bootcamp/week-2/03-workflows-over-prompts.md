@@ -47,7 +47,7 @@ Six short conversations, maybe half an hour. Compare that with an hour of arguin
 
 ## Your turn
 
-Take something you actually need to make this week. Run all six. Keep every intermediate output, because next week you will notice that four of these six steps are the same every time you do this, and that observation is the whole of lesson nine.
+Take something you actually need to make this week. Run all six. Keep every intermediate output. You will notice that four of these six steps are the same every time you do this. Those four belong in a skill, the way you built one in week one.
 
 ## What you should be able to do after this
 
