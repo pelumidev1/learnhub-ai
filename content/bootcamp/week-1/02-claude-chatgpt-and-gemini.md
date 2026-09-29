@@ -56,7 +56,7 @@ One more thing. All three companies ship changes every few weeks, so any ranking
 
 There are more assistants than these three. You do not need to set any of them up this week, but you should know what they are when someone mentions one.
 
-- **Perplexity** answers questions by searching the web and showing you the sources it used. It is built for research, and you will use it properly in week two, when the lesson is about research you can trust.
+- **Perplexity** answers questions by searching the web and showing you the sources it used. It is built for research. In week two you learn to check sources with whichever tool you use, and Perplexity is one option.
 - **Meta AI** is the assistant inside WhatsApp, Instagram and Facebook. For many people it is the first AI they ever used, because it was already on their phone. Handy for quick questions, not where you do serious work.
 - **Microsoft Copilot** is built into Windows and Microsoft's Office apps. Companies that run on Microsoft use it, so you will see it in job adverts.
 - **DeepSeek** is a Chinese model that is free and capable. Its own privacy policy says what you type is stored in China, so never paste anything private or anything belonging to a client into it.

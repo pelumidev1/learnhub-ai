@@ -134,8 +134,8 @@ Lesson 4 no longer teaches custom GPTs: OpenAI stopped personal accounts
 teaches ChatGPT Projects and a Gemini Gem instead, and points at lessons 8 and
 9 as the version that replaces GPTs.
 Lesson 2 also names the assistants students will hear about but do not set
-up (Perplexity, Meta AI, Copilot, DeepSeek, Grok). Perplexity is taught
-properly in week 2 lesson 6.
+up (Perplexity, Meta AI, Copilot, DeepSeek, Grok). It names Perplexity as one
+option for the source checking taught in week 2 lesson 6.
 
 - **Tools:** Claude, Claude Code, ChatGPT, Codex, Gemini, GitHub, Supabase, Vercel.
 - **Assignment:** screenshot of every tool signed in, plus your first skill.
@@ -158,20 +158,20 @@ generating.
 | 3 | Workflows over prompts, the six roles (written, moved from week 1) |
 | 4 | Teaching AI your voice, so the writing sounds like you (including removing the AI tells readers spot) |
 | 5 | Prompts for everyday work: posts, emails, proposals and captions |
-| 6 | Prompts for marketing: offers, landing pages and launch copy |
-| 7 | Research you can trust: Perplexity, sources and fact-checking |
+| 6 | Prompts for marketing: offers, landing pages and launch copy (including checking every fact against a source you have opened) |
 
 Lessons 2 and 3 are written and moved from week 1. Lessons 1, 4, 5 and 6 were
 drafted 2026-09-29, unpublished until Pelumi reads them, and carry Amaka as the
-running example. Lesson 7 is not drafted until Pelumi confirms it stays. The
-week 2 test (`week-2/work/test.json`) has all ten questions: two on lesson 1,
-the four that moved with lessons 2 and 3, two on lesson 4, and one each on 5
-and 6. None cover lesson 7. The assignment and project briefs are in
+running example. The week 2 test (`week-2/work/test.json`) has all ten
+questions: two on lesson 1, the four that moved with lessons 2 and 3, two on
+lesson 4, and one each on 5 and 6. The assignment and project briefs are in
 `week-2/work/`. All of it is unpublished.
 
-Lesson 7 is not in the brochure. It was in the old week 2 outline, and week 1
-lesson 2 tells students they will use Perplexity properly in week two.
-Pelumi to confirm it stays; if it goes, change that line in week 1 lesson 2.
+Week 2 stays at six lessons, as in the brochure (Pelumi, 2026-09-29). The old
+outline's "Research you can trust" lesson became the "Check the facts"
+section of lesson 6: ask for sources, open them, and put no number on the page
+that is not yours or sourced. It is taught with Claude or ChatGPT web search.
+Perplexity gets one line as an option and is not a tool students set up.
 
 - **Tools:** Claude, ChatGPT, skills.
 - **Assignment:** your voice skill, tested on one paragraph.

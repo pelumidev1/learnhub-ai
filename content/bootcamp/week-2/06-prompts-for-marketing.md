@@ -1,9 +1,9 @@
 ---
 title: Prompts for marketing: offers, landing pages and launch copy
-duration_minutes: 17
+duration_minutes: 20
 published: false
 video_url:
-chapters: [{"label":"Positioning before copy","at":0},{"label":"Your offer in one line","at":0},{"label":"Landing page copy","at":0},{"label":"Launch copy","at":0},{"label":"Check it like a customer","at":0}]
+chapters: [{"label":"Positioning before copy","at":0},{"label":"Your offer in one line","at":0},{"label":"Landing page copy","at":0},{"label":"Launch copy","at":0},{"label":"Check the facts","at":0},{"label":"Check it like a customer","at":0}]
 resources: [{"label":"Prompt engineering overview, Anthropic docs","url":"https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29
 ---
@@ -49,6 +49,22 @@ Launch copy tells people the thing now exists. You need three short pieces:
 3. **A follow-up** for three days later, with one new reason to act: a deadline, a first customer's reaction, a detail you did not mention.
 
 Run each through your voice skill. Launch copy is where writing drifts back into "We are thrilled to announce", which is a phrase no customer has ever cared about.
+
+## Check the facts
+
+Marketing copy is where invented facts do the most damage. A statistic nobody can find, a "study" that does not exist, a claim about a competitor that is not true. You learned in week one that models make up sources. A customer who catches one stops trusting everything else on the page.
+
+When your copy leans on a fact you did not supply, ask for the source. Claude and ChatGPT can both search the web and show you links to what they found:
+
+> *"Search the web for this claim and give me the sources, with links. If you cannot find a real source, say so. Do not guess: [paste the claim]"*
+
+Then open the links yourself. You are checking two things: the page exists, and it says what the model claims it says. Models sometimes link a real page that does not back up the claim at all.
+
+Tools built for research, such as Perplexity, work the same way. Use whichever you like. Opening the link is the part that matters.
+
+Amaka's first draft said *"Nigerians spend over ₦50 billion on cakes every year."* She asked for the source. The model found nothing it could link to, so she cut the line. Her own number went in instead: 212 orders delivered this year, which she can prove.
+
+Your rule: every number on the page is either yours, or has a source you have opened.
 
 ## Check it like a customer
 

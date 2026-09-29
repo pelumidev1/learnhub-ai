@@ -84,7 +84,9 @@ applied by Pelumi the same day.
 3d. **Week 2 lessons 1, 4, 5 and 6 drafted (29 September), not synced,
    `published: false`.** Prompting basics, your voice (with the AI tells),
    everyday prompts, and marketing prompts that produce the landing copy week
-   3 builds on. Lesson 7 (Perplexity) waits on Pelumi confirming it stays.
+   3 builds on. Week 2 stays at six lessons (Pelumi, 29 September): the
+   old research lesson is a "Check the facts" section in lesson 6, and week
+   1 lesson 2's Perplexity line now points there (file edited, not synced).
    Week 2's test (all ten questions) and its assignment and project briefs
    were written the same day, also unpublished. The week 2 test had been
    given copies of week 1's new agent questions by mistake in `b68aa00`; it
