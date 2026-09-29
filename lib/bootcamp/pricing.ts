@@ -1,49 +1,42 @@
 /**
- * Cohort one pricing. Settled 21 August, section 6 of
- * learnhub-master-context.md. Change it here, nowhere else.
+ * Cohort one pricing. Changed 2026-09-29 from the August numbers (₦55,000
+ * founding, ₦90,000 standard) to ₦150,000 early-bird and ₦350,000 full price,
+ * matching the brochure in learnhub-launch/brochure/. Change it here, nowhere
+ * else.
+ *
+ * `founding` is the early-bird tier. The key keeps its old name because it is
+ * stored on every enrolment row (`enrollments.tier`), and renaming it would
+ * mean a migration for a word nobody sees.
  *
  * Kobo throughout, because that is the unit Paystack charges and settles in.
  * Naira as a float is how a reconciliation ends up three kobo short.
  */
 export const PRICING = {
-  founding: { kobo: 5_500_000, naira: 55_000, label: "₦55,000" },
-  standard: { kobo: 9_000_000, naira: 90_000, label: "₦90,000" },
+  founding: { kobo: 15_000_000, naira: 150_000, label: "₦150,000" },
+  standard: { kobo: 35_000_000, naira: 350_000, label: "₦350,000" },
 } as const;
 
 export type PaidTier = keyof typeof PRICING;
 
-/** The founding tier is the first 15 paid seats. */
-export const FOUNDING_SEATS = 15;
-
 /**
- * And it closes at midnight on 31 August, West Africa Time.
+ * The early-bird closes at the end of Saturday 10 October, West Africa Time.
  *
  * WAT is UTC+1 and does not observe daylight saving, so the offset is a
  * constant rather than something to look up. Written as the first instant of
- * 1 September: "midnight on the 31st" in the copy means the end of that day,
+ * 11 October: "until 10 October" in the brochure means the end of that day,
  * and getting that backwards would close the offer a full day early.
  */
-export const FOUNDING_CLOSES_AT = new Date("2026-09-01T00:00:00+01:00");
+export const FOUNDING_CLOSES_AT = new Date("2026-10-11T00:00:00+01:00");
 
 /**
  * Which tier a buyer gets right now.
  *
- * Both conditions have to hold, because the offer is "first 15 seats, or until
- * 31 August, whichever comes first". Either one running out ends it.
- *
- * Seats are counted from paid, active enrolments only. Somebody mid-checkout
- * has not taken a seat: holding one for them would let anyone exhaust the
- * founding tier by starting checkouts they never finish.
+ * Date only. The August offer also ended after 15 seats; the early-bird does
+ * not, so every paid seat sold before the deadline is at the early-bird price.
+ * The 25 seat cap still applies, separately, through paidSeatsAvailable.
  */
-export function currentTier(paidSeatsTaken: number, now: Date = new Date()): PaidTier {
-  const seatsLeft = paidSeatsTaken < FOUNDING_SEATS;
-  const stillOpen = now < FOUNDING_CLOSES_AT;
-  return seatsLeft && stillOpen ? "founding" : "standard";
-}
-
-/** Founding seats still available, floored at zero for display. */
-export function foundingSeatsLeft(paidSeatsTaken: number): number {
-  return Math.max(0, FOUNDING_SEATS - paidSeatsTaken);
+export function currentTier(now: Date = new Date()): PaidTier {
+  return now < FOUNDING_CLOSES_AT ? "founding" : "standard";
 }
 
 /**

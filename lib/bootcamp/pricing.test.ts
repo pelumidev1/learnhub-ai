@@ -1,53 +1,30 @@
 import { describe, expect, it } from "vitest";
-import {
-  FOUNDING_SEATS,
-  PRICING,
-  currentTier,
-  foundingSeatsLeft,
-  paidSeatsAvailable,
-} from "./pricing";
+import { PRICING, currentTier, paidSeatsAvailable } from "./pricing";
 
 /**
- * The founding offer is "first 15 seats, or until 31 August midnight,
- * whichever comes first". Two conditions that both have to hold, and the kind
- * of rule that is quietly wrong in one direction for a week: too generous and
- * you undercharge every buyer, too strict and you break a promise made in
- * public on the pricing page.
+ * The early-bird is "₦150,000 until 10 October", then ₦350,000. A date rule
+ * that is quietly wrong in one direction for a day: too generous and you
+ * undercharge every buyer, too strict and you break a price printed in the
+ * brochure.
  */
 
-const before = new Date("2026-08-25T12:00:00+01:00");
-const lastMinute = new Date("2026-08-31T23:59:00+01:00");
-const justAfter = new Date("2026-09-01T00:00:01+01:00");
+const before = new Date("2026-10-01T12:00:00+01:00");
+const lastMinute = new Date("2026-10-10T23:59:00+01:00");
+const justAfter = new Date("2026-10-11T00:00:01+01:00");
 
 describe("currentTier", () => {
-  it("gives founding to the first buyer, well before the deadline", () => {
-    expect(currentTier(0, before)).toBe("founding");
+  it("gives the early-bird price well before the deadline", () => {
+    expect(currentTier(before)).toBe("founding");
   });
 
-  it("still gives founding on the 15th seat, since the offer is the first 15", () => {
-    expect(currentTier(FOUNDING_SEATS - 1, before)).toBe("founding");
+  it("holds the early-bird right up to the end of 10 October", () => {
+    // "Until 10 October" means the end of that day. Closing a day early would
+    // break a price printed in the brochure.
+    expect(currentTier(lastMinute)).toBe("founding");
   });
 
-  it("switches to standard once 15 seats are gone", () => {
-    expect(currentTier(FOUNDING_SEATS, before)).toBe("standard");
-  });
-
-  it("holds founding right up to midnight on the 31st", () => {
-    // "Midnight on the 31st" means the end of that day. Closing a day early
-    // would break a promise made publicly on the pricing page.
-    expect(currentTier(0, lastMinute)).toBe("founding");
-  });
-
-  it("switches to standard one second into 1 September", () => {
-    expect(currentTier(0, justAfter)).toBe("standard");
-  });
-
-  it("switches when the deadline passes even with seats left", () => {
-    expect(currentTier(1, justAfter)).toBe("standard");
-  });
-
-  it("switches when seats run out even before the deadline", () => {
-    expect(currentTier(20, before)).toBe("standard");
+  it("switches to full price one second into 11 October", () => {
+    expect(currentTier(justAfter)).toBe("standard");
   });
 });
 
@@ -57,22 +34,13 @@ describe("pricing amounts", () => {
     expect(PRICING.standard.kobo).toBe(PRICING.standard.naira * 100);
   });
 
-  it("matches the settled prices", () => {
-    expect(PRICING.founding.naira).toBe(55_000);
-    expect(PRICING.standard.naira).toBe(90_000);
+  it("matches the brochure", () => {
+    expect(PRICING.founding.naira).toBe(150_000);
+    expect(PRICING.standard.naira).toBe(350_000);
   });
 });
 
-describe("seat counting", () => {
-  it("counts founding seats down", () => {
-    expect(foundingSeatsLeft(0)).toBe(15);
-    expect(foundingSeatsLeft(14)).toBe(1);
-  });
-
-  it("never shows a negative number of seats", () => {
-    expect(foundingSeatsLeft(40)).toBe(0);
-  });
-
+describe("seat cap", () => {
   it("closes paid enrolment at the cap", () => {
     expect(paidSeatsAvailable(24, 25)).toBe(true);
     expect(paidSeatsAvailable(25, 25)).toBe(false);
