@@ -91,6 +91,12 @@ applied by Pelumi the same day.
    were written the same day, also unpublished. The week 2 test had been
    given copies of week 1's new agent questions by mistake in `b68aa00`; it
    now carries the four prompting questions that moved with lessons 2 and 3.
+3e. **Week 3 drafted (29 September), not synced, all `published: false`.**
+   Six lessons, assignment, project and test in `content/bootcamp/week-3/`.
+   The Supabase and Vercel click paths were written without access to those
+   sites (blocked by that session's network), from search results: walk
+   through them on a real screen before publishing. `CURRICULUM.md` lists
+   the other choices made.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.

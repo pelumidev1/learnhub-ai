@@ -1,0 +1,66 @@
+---
+title: How a web app works, in plain English
+duration_minutes: 12
+published: false
+video_url:
+chapters: [{"label":"Website or web app","at":0},{"label":"The five parts","at":0},{"label":"Amaka's order page, part by part","at":0},{"label":"Which tool does which job","at":0},{"label":"A warm-up, if you want one","at":0}]
+resources: [{"label":"How Claude Code works","url":"https://code.claude.com/docs/en/how-claude-code-works","kind":"doc","cost":"Free"}]
+resources_checked_on: 2026-09-29
+---
+
+This week you build something real and put it on the internet. You will not write the code yourself. Claude Code will. Your job is to know what you are asking for, and that starts with knowing what the parts are called.
+
+## Website or web app
+
+A **website** shows the same thing to everyone. Your week one "about me" page is a website.
+
+A **web app** remembers things and responds to who is using it. People can fill in a form, sign in, and see their own information. If it saves anything, it is an app.
+
+Both are built the same way this week. An app just has more parts switched on.
+
+## The five parts
+
+| Part | What it does | Your tool |
+|---|---|---|
+| **Front end** | What people see and tap: pages, buttons, forms | Built by Claude Code |
+| **Back end** | The work people do not see: checking a form, saving an order | Built by Claude Code |
+| **Database** | Where information is kept, in tables, like a spreadsheet that code can read | Supabase |
+| **Sign-in** | Knowing who someone is, so they only see what is theirs | Supabase |
+| **Hosting** | A computer that is always on and serves your site at a link | Vercel |
+
+**GitHub** sits in the middle. It stores every version of your code, and Vercel watches it. When your code changes on GitHub, Vercel puts the new version live.
+
+## Amaka's order page, part by part
+
+Amaka wants customers to order a cake without a long WhatsApp back and forth. Here is her idea in those five parts:
+
+- **Front end:** a page with her four cakes, prices and photos, and an order form: name, phone number, cake, date, delivery address.
+- **Back end:** checks the form is filled in properly and saves it.
+- **Database:** an `orders` table with one row per order.
+- **Sign-in:** only Amaka can sign in, to see the list of orders. Customers do not need an account.
+- **Hosting:** live on Vercel, at a link she puts in her Instagram bio.
+
+Written like that, it is a clear brief. "Build me a cake website" is not.
+
+## Which tool does which job
+
+Keep this straight and most confusion this week disappears:
+
+- **Claude Code** writes and changes the code, on your laptop.
+- **GitHub** keeps the code safe and remembers every version.
+- **Vercel** runs the code on the internet.
+- **Supabase** stores the data and handles sign-in.
+
+When something breaks, the first question is always *which of the four is it?* A page that looks wrong is front end. A form that says "saved" but nothing appears is the database. A link that will not open is hosting.
+
+## A warm-up, if you want one
+
+If you would like to see a result before you open the terminal, try **v0** (v0.app) or **Lovable** (lovable.dev). You describe a page in a chat box and they build it in the browser. Both have free allowances.
+
+They are good for sketching an idea in ten minutes. This week's project is built in Claude Code, because you own every file, it works with the setup from week one, and nothing limits what you can add later.
+
+## What you should be able to do after this
+
+Describe your own project idea in the five parts, and say which tool handles each one.
+
+## Transcript

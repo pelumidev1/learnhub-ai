@@ -198,8 +198,23 @@ to see a result before opening the terminal.
 | 5 | Making it work on all devices, and fixing what breaks |
 | 6 | Keeping it safe and watching it: secrets, keys, cybersecurity best practices and monitoring |
 
+All six lessons, the assignment, the project brief and the ten-question test
+were drafted 2026-09-29, unpublished. Amaka's running example is an order page
+for her cakes: a menu, an order form saved to Supabase, and a signed-in list
+only she can read. Choices made in the drafts: Next.js as the default stack
+(best documented by Vercel and Supabase); GitHub Desktop rather than git on
+the command line; Supabase's new publishable and secret keys, with a line on
+the older anon and service_role names. Supabase and Vercel pages are blocked
+from the session that wrote them, so their button and menu names came from
+search results, not the live dashboards: check them on a real screen before
+publishing.
+
+The project requires one form that saves to Supabase, even for a plain
+website (a waitlist or enquiry form is enough), because weeks 4 and 5 need
+somewhere for the traffic and the agent to go.
+
 - **Assignment:** one change to your week 1 site, made and deployed by you.
-- **Tools:** Claude Code, Supabase, Vercel, v0, Lovable.
+- **Tools:** Claude Code, GitHub Desktop, Supabase, Vercel, v0, Lovable.
 - **Project: a live product.** A website or web app at a live URL that works
   on all devices, using the landing copy from week 2. Grows from week 2.
 

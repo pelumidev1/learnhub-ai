@@ -1,0 +1,125 @@
+{
+  "published": false,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "A customer submits your order form and it says \"saved\", but nothing appears in your list. Which part is most likely at fault?",
+      "options": [
+        "Hosting, because Vercel has taken the whole site offline for a while",
+        "The front end, because the page design looks different on a phone",
+        "The database, because the order was not stored where it should be",
+        "GitHub, because the latest version of the code was never committed"
+      ],
+      "correct_index": 2,
+      "explanation": "The page worked and the link opened, so it is not the front end or hosting. \"Saved\" but missing points at the database, or the rules on it."
+    },
+    {
+      "id": "q2",
+      "prompt": "What makes something a web app rather than a website?",
+      "options": [
+        "It saves information and responds to who is using it",
+        "It is built with Claude Code instead of written by hand",
+        "It is hosted on Vercel rather than on a different host",
+        "It has more than five pages and a menu to move between"
+      ],
+      "correct_index": 0,
+      "explanation": "A website shows everyone the same thing. An app remembers things, like orders or sign-ins, and responds to the person using it."
+    },
+    {
+      "id": "q3",
+      "prompt": "What does plan mode in Claude Code do?",
+      "options": [
+        "It writes the whole app at once and then explains what it built",
+        "It picks the cheapest tools for the job and then installs them for you",
+        "It turns your brief into a finished design you can show a client",
+        "It reads and proposes a plan, but changes no files until you approve"
+      ],
+      "correct_index": 3,
+      "explanation": "In plan mode Claude Code can read and think but cannot edit anything. You approve the plan before any code is written."
+    },
+    {
+      "id": "q4",
+      "prompt": "Claude Code's plan includes customer accounts and online payments. Your brief asked for neither. What should you do?",
+      "options": [
+        "Keep them, because more features make the product more valuable",
+        "Cut them, because every extra feature is one more thing to break",
+        "Keep them for now and remove them later if customers never use them",
+        "Start again in a new project folder with a much shorter brief"
+      ],
+      "correct_index": 1,
+      "explanation": "Build only what the brief asks for. Extra features add work, cost and things to go wrong, before anyone has asked for them."
+    },
+    {
+      "id": "q5",
+      "prompt": "You pushed a change and the Vercel build failed. What happens to your live site?",
+      "options": [
+        "It goes offline until you fix the error and push again",
+        "It shows the error message to every visitor who opens it",
+        "It keeps showing the last version that built successfully",
+        "It switches over to the version still running on your laptop"
+      ],
+      "correct_index": 2,
+      "explanation": "A failed build never replaces the live site. Visitors keep seeing the last working version while you fix it."
+    },
+    {
+      "id": "q6",
+      "prompt": "What is a commit in GitHub Desktop?",
+      "options": [
+        "A request to Vercel asking it to publish your site",
+        "A copy of your site sent to a customer for review",
+        "A saved version of your code you can go back to",
+        "A message to Claude Code asking it to check work"
+      ],
+      "correct_index": 2,
+      "explanation": "A commit is a saved version. Committing after every working step means a bad change only costs you one step."
+    },
+    {
+      "id": "q7",
+      "prompt": "Which Supabase key must never appear in a web page or a screenshot?",
+      "options": [
+        "The secret key, because it ignores every rule on every table",
+        "The publishable key, because it lets anyone change your data",
+        "The project URL, because it shows where your database lives",
+        "The anon key, because it can delete your whole project fast"
+      ],
+      "correct_index": 0,
+      "explanation": "The secret key (service_role on older projects) has full access and bypasses RLS. The publishable key is designed to be used in the browser."
+    },
+    {
+      "id": "q8",
+      "prompt": "You add your Supabase keys in Vercel's Environment Variables, but the live site still cannot reach the database. What is the most likely reason?",
+      "options": [
+        "The keys only work on your laptop and cannot be used online",
+        "You need to delete the project in Vercel and import it again",
+        "Supabase blocks every request that comes from a Vercel site",
+        "The change only applies to a new deployment, so redeploy it"
+      ],
+      "correct_index": 3,
+      "explanation": "Environment variable changes apply to new deployments only. Redeploy the latest deployment and the site picks up the keys."
+    },
+    {
+      "id": "q9",
+      "prompt": "Which bug report is most likely to get a fix in one try?",
+      "options": [
+        "\"The site is broken on all our phones, please fix it for me.\"",
+        "\"Order page, Android, tapped date: calendar half off-screen.\"",
+        "\"Something is wrong with the order form, it looks strange.\"",
+        "\"Make the whole site work better on every kind of device.\""
+      ],
+      "correct_index": 1,
+      "explanation": "Say where, what you did, what happened and what you expected, with a screenshot. Vague reports get vague fixes."
+    },
+    {
+      "id": "q10",
+      "prompt": "Your form is blocked by Supabase and will not save. What should you do?",
+      "options": [
+        "Fix the RLS rule so it allows exactly what your brief says",
+        "Switch RLS off on that table so the form can save the orders",
+        "Move the secret key into the page so it has full access",
+        "Make a new table without any rules and save orders there"
+      ],
+      "correct_index": 0,
+      "explanation": "Never switch RLS off or use the secret key to get round it. If something is blocked, the rule is wrong, so fix the rule."
+    }
+  ]
+}
