@@ -192,7 +192,7 @@ to see a result before opening the terminal.
 | # | Lesson |
 |---|---|
 | 1 | How a web app works: front end, database, login, hosting, in plain English |
-| 2 | From idea to plan: getting Claude to write the plan before the code |
+| 2 | From idea to plan: getting Claude to write the plan before the code, and deciding how it looks (the `frontend-design` plugin and your own design skill) |
 | 3 | Building a website with Claude Code and putting it live on Vercel |
 | 4 | Adding a database and sign-in with Supabase |
 | 5 | Making it work on all devices, and fixing what breaks |

@@ -97,14 +97,15 @@ applied by Pelumi the same day.
    sites (blocked by that session's network), from search results: walk
    through them on a real screen before publishing. `CURRICULUM.md` lists
    the other choices made.
-   **Next, agreed in principle on 29 September, not yet written:** a "Decide
-   how it looks" section in week 3 lesson 2 (no seventh lesson). Students
-   install Anthropic's official `frontend-design` plugin
-   (`/plugin install frontend-design@claude-plugins-official`, confirmed in
-   anthropics/claude-code and anthropics/skills on GitHub), then write their
-   own design skill: colours, fonts, example sites, and a Never list against
-   the template look. Also add a design line to the week 3 project approval
-   and swap one test question for a design one. Then week 4.
+   **Design (done 29 September, not synced):** week 3 lesson 2 now has a
+   "Decide how it looks" section between the brief and plan mode. Students
+   install `frontend-design@claude-plugins-official` (checked in Anthropic's
+   marketplace.json that day) and write a design skill at
+   `.claude/skills/my-design/SKILL.md`: colours, fonts, examples, Never
+   list; Amaka's is the worked example. The plan-mode prompt tells Claude
+   Code to follow it. The project hands in the skill and has a design
+   approval line. Test q4 (cut unrequested features) became a design
+   question, still answer position 1. **Next: week 4.**
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.

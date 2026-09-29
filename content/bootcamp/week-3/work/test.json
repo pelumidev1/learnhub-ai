@@ -39,15 +39,15 @@
     },
     {
       "id": "q4",
-      "prompt": "Claude Code's plan includes customer accounts and online payments. Your brief asked for neither. What should you do?",
+      "prompt": "Your site looks like every other AI-built site: a purple gradient, a centred headline and three boxes with icons. What fixes it most reliably?",
       "options": [
-        "Keep them, because more features make the product more valuable",
-        "Cut them, because every extra feature is one more thing to break",
-        "Keep them for now and remove them later if customers never use them",
-        "Start again in a new project folder with a much shorter brief"
+        "Ask Claude Code to make the page look more modern and unique",
+        "Write a design skill with your colours, fonts and a Never list",
+        "Buy a website template and paste your own words into it",
+        "Add more animation so the page feels more premium and new"
       ],
       "correct_index": 1,
-      "explanation": "Build only what the brief asks for. Extra features add work, cost and things to go wrong, before anyone has asked for them."
+      "explanation": "A vague request gets the average look again. A design skill gives Claude Code your real colours and fonts, and a list of what to avoid, every time it builds a page."
     },
     {
       "id": "q5",
