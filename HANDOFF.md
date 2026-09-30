@@ -114,7 +114,7 @@ applied by Pelumi the same day.
 3f. **Week 4 drafted (29 September), not synced, all `published: false`.**
    Six lessons, assignment, project and ten-question test in
    `content/bootcamp/week-4/`, taught Pelumi's way (brief first, references
-   frame by frame, real photo into AI video, Remotion via Claude Code).
+   frame by frame, real photo into AI video, Remotion or HyperFrames via Claude Code).
    Free-tier facts and the honest line are in `CURRICULUM.md` under week 4.
    Open: week 1's test has three questions (q1, q4, q9) whose right answer is
    the longest option, the giveaway `content/bootcamp/README.md` warns about;

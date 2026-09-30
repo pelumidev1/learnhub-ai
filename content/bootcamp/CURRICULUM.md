@@ -240,7 +240,7 @@ plenty of people will never want to be filmed.
 | 2 | Realistic AI video: Veo, Kling and Higgsfield, and which tool is best for what |
 | 3 | UGC-style ads: content that looks like a real person made it, and the honest line (no AI person posing as a customer) |
 | 4 | Voice and avatars: ElevenLabs, your digital twin, and when an avatar helps or hurts |
-| 5 | Motion graphics as code: Remotion with Claude Code |
+| 5 | Motion graphics as code: Remotion and HyperFrames with Claude Code |
 | 6 | Editing videos using agents, and repurposing one long video into many short ones with CapCut |
 
 All six lessons, the assignment, the project brief and the ten-question test
@@ -248,7 +248,7 @@ were drafted 2026-09-29, unpublished, taught the way Pelumi makes video: a
 `BRIEF.md` first, from references studied frame by frame (what they actually
 do, the pace rule of a beat every half-second to a second and a shot every two
 to four, a shot list with timings); AI video started from a real product photo;
-his Higgsfield digital-twin route as the paid option; Remotion built through
+his Higgsfield digital-twin route as the paid option; Remotion or HyperFrames built through
 Claude Code with every timing, colour and word in one config file. Amaka's
 running example is a 30-second "She forgot the cake. It's 1pm." ad and a
 10-second menu motion graphic.
@@ -257,7 +257,9 @@ Free tiers, checked 2026-09-29 and stated plainly in lesson 2: Google Flow
 gives 50 credits a day (a fast Veo clip costs 20, the quality mode 100); Kling's
 free clips are watermarked and not for commercial use; Higgsfield has no free
 plan; ElevenLabs' free plan has no voice cloning and no commercial licence
-(Starter is $6 a month); Remotion is free for individuals and teams of up to 3.
+(Starter is $6 a month); Remotion is free for individuals and teams of up to 3; HyperFrames (HeyGen, open
+source, Apache 2.0) is free for anyone and needs FFmpeg, so lesson 5 suggests it
+first when unsure. Both are installed as Claude Code plugins through `/plugins`.
 The project forbids free-plan output that bars commercial use.
 
 Honest line, enforced in lesson 3 and the project approval: no AI person posing
@@ -270,7 +272,7 @@ smoothest on a Mac.
 
 - **Assignment:** one AI-generated shot that could pass as filmed, started
   from a real photo, with the prompt and attempt count in the note.
-- **Tools:** Google Flow (Veo), Kling, Higgsfield, ElevenLabs, Remotion, CapCut, video-use.
+- **Tools:** Google Flow (Veo), Kling, Higgsfield, ElevenLabs, Remotion, HyperFrames, CapCut, video-use.
 - **Project: the launch video.** One UGC-style ad and one motion graphic for the
   product from week 3, both published. Grows from week 3.
 

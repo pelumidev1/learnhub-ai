@@ -87,7 +87,7 @@
     },
     {
       "id": "q8",
-      "prompt": "What is the best way to brief Claude Code for a Remotion motion graphic?",
+      "prompt": "What is the best way to brief Claude Code for a motion graphic in Remotion or HyperFrames?",
       "options": [
         "Ask for a nice, modern animated intro for my brand",
         "Describe the movement beat by beat, with frame timings",
@@ -102,7 +102,7 @@
       "prompt": "Why keep every timing, colour and piece of text in one config file?",
       "options": [
         "So you can change them without touching the animation",
-        "Because Remotion will not render any video without one",
+        "Because the finished video will not render at all without one",
         "So the video file comes out smaller for your phone",
         "Because Claude Code cannot edit more than one file"
       ],

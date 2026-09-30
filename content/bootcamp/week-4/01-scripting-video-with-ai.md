@@ -94,7 +94,7 @@ Put it all in one file, `BRIEF.md`, in a new folder for this week's videos:
 [The table from Claude, corrected by you]
 ```
 
-Every tool this week, from Flow to Remotion, starts by reading this file.
+Every tool this week, from Flow to Remotion and HyperFrames, starts by reading this file.
 
 ## What you should be able to do after this
 

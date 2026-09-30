@@ -10,7 +10,7 @@ Two short videos that send people to the product you built in week three, both p
 
 1. **A brief.** `BRIEF.md` from lesson one: the one action, what your references actually do, your rules and never list, the script and the shot list.
 2. **A UGC-style ad,** 15 to 30 seconds, vertical. A mix of filmed and AI shots, with captions on every spoken line. You on camera, a faceless voiceover, or a digital twin: your choice, as lesson four sets out.
-3. **A motion graphic,** 6 to 15 seconds, vertical, made in Remotion with Claude Code, using the colours and fonts from your site.
+3. **A motion graphic,** 6 to 15 seconds, vertical, made in Remotion or HyperFrames with Claude Code, using the colours and fonts from your site.
 4. **Both published** on Instagram, TikTok, LinkedIn or X, with the link to your week three product.
 
 ## What to hand in
