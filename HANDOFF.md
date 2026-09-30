@@ -128,6 +128,13 @@ applied by Pelumi the same day.
    exist as drafts. **Next:** Pelumi reads and publishes week by week; the
    module-title migration `20260929120000` still needs applying; week 1's
    test q1, q4 and q9 still give away the answer by length.
+3h. **Reviewing drafts: `/draft-preview` (30 September).** Run `npm run dev
+   -- -p 3001` and open `http://localhost:3001/draft-preview`: every week's
+   lessons read straight from `content/bootcamp` in the real lesson layout,
+   plus briefs and tests with the right answers marked. It 404s outside
+   `next dev`, so it never exposes drafts on the live site. Pelumi chose this
+   over publishing (the one enrolled student would see drafts) and over an
+   admin preview. Edits show on refresh; no sync needed to review.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.
