@@ -46,8 +46,7 @@ applied by Pelumi the same day.
    modules: fetch failed"). If it does, run it with Node 24:
    `/usr/local/bin/node --env-file=.env.local scripts/sync-bootcamp-content.mjs`.
 3a. **Brochure pass (29 September).** Pelumi edited the cohort 1 brochure
-   (`../learnhub-launch/brochure/phone.html` and `deck.html`, outside this repo and not in
-   git). `CURRICULUM.md` now matches it: week 2 is "Prompt engineering",
+   (`learnhub-launch/brochure/phone.html` and `deck.html`). `CURRICULUM.md` now matches it: week 2 is "Prompt engineering",
    week 6 is "Identify your career, industry and business", Saturday 11am WAT
    live sessions, pods, 35 seats, career paths. The `bootcamp_modules`
    titles, summaries and ship lines for weeks 2, 3, 4 and 6 are caught up by
@@ -58,7 +57,8 @@ applied by Pelumi the same day.
    August syllabus and ₦90,000 / 30 seats. It now has a warning banner at the
    top. The master context's sections 5 and 6 carry "superseded" notes. A
    copy of `learnhub-launch` from before these edits is in the 29 September
-   session's scratchpad only, so do not count on it. **Pelumi is reworking
+   session's scratchpad only; the folder is in git from 30 September, so
+   everything after that date has proper history. **Pelumi is reworking
    the social plan himself; do not rewrite it unless he asks.**
 3b. **Unsynced lesson edits: do not run `bootcamp:sync` without asking.**
    Week 1 lessons 1, 2, 6, 7, 8 and 9 have worked examples added on
@@ -471,11 +471,19 @@ also the LMS for a **paid six week AI bootcamp** launching **1 September 2026**,
 with masterclass registration due **26 or 27 August**. `PRD.md` still describes
 the free product only and has not been updated.
 
-The launch documents live **outside this repo**, in `../learnhub-launch/`:
+The launch documents live in `learnhub-launch/`, moved into this repo on
+30 September 2026 so that cloud sessions can reach them and so the calendar
+and scripts have history. Before that date they sat beside the repo, untracked,
+which is why older notes say "outside this repo" and write the path with `../`.
+
 `learnhub-master-context.md` (positioning, curriculum, pricing, voice),
 `learnhub-masterclass-copy.md` (page and email copy, paste-ready),
-`learnhub-lms-notes.md` (feature requirements and the build order). They are not
-version controlled. Read them before building anything bootcamp-related.
+`learnhub-lms-notes.md` (feature requirements and the build order),
+`learnhub-social-launch.md` (bios and social copy), `learnhub-calendar.html`
+(the two-week launch calendar) and `learnhub-video-scripts.html` (ten Reels and
+TikTok scripts), plus `brochure/` — the cohort 1 brochure in phone and deck
+form, which is what students are actually sold. Read them before building
+anything bootcamp-related.
 
 ### Four traps, in the order they will bite you
 

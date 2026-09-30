@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Learnhub AI Bootcamp</title>
+<style>
+@font-face { font-family: "Switzer"; src: url(assets/Switzer-Variable.woff2) format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "General Sans"; src: url(assets/GeneralSans-Variable.woff2) format("woff2"); font-weight: 200 700; }
+@font-face { font-family: "Geist Mono"; src: url(assets/GeistMono-Regular.woff2) format("woff2"); font-weight: 400; }
+@font-face { font-family: "Geist Mono"; src: url(assets/GeistMono-Medium.woff2) format("woff2"); font-weight: 500; }
+
+:root {
+  --blue: #1F33CC; --blue-600: #182AB0; --blue-500: #2A46F0; --sky: #3B6FF0; --sky-2: #4C93F0;
+  --ink: #0B0F1A; --ink-2: #1A2234; --paper: #F6F7FB; --paper-2: #EFF2F8;
+  --silver: #E7EAF1; --silver-2: #D8DEEA; --muted: #5B6472; --muted-2: #8A93A6;
+  --line-dark: rgba(255,255,255,.12); --soft: #AEB7C9;
+}
+@page { size: 1600px 900px; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: "General Sans", sans-serif; color: var(--ink); font-size: 18px; line-height: 1.5; font-feature-settings: "ss01"; }
+
+/* Page */
+.page { width: 1600px; height: 900px; position: relative; overflow: hidden; break-after: page;
+  background: #fff; padding: 104px 120px 110px; }
+.paper { background: var(--paper); }
+.ink { background: var(--ink); color: #fff; }
+.meta { position: absolute; left: 120px; right: 120px; bottom: 48px; display: flex; justify-content: space-between;
+  align-items: center; font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted-2); }
+.ink .meta { color: #6E7890; }
+.meta .brand { display: flex; align-items: center; gap: 12px; }
+.meta img { height: 18px; }
+
+/* Type */
+h1, h2, h3, .display { font-family: "Switzer", sans-serif; letter-spacing: -.035em; }
+h2 { font-size: 84px; line-height: .98; font-weight: 700; }
+.ink h2 { color: #F1F4FA; }
+.label { font-family: "Geist Mono", monospace; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); font-weight: 500; }
+.ink .label { color: var(--sky-2); }
+.muted { color: var(--muted); }
+.ink .muted { color: var(--soft); }
+.rule { border-top: 1px solid var(--silver-2); }
+.ink .rule { border-top-color: var(--line-dark); }
+.glow { position: absolute; border-radius: 50%; pointer-events: none; }
+
+/* The orbit mark, in metal: the brand vector used as a mask over a lit gradient */
+.orbit { position: absolute; -webkit-mask: url(assets/logo-mark.svg) center / contain no-repeat; mask: url(assets/logo-mark.svg) center / contain no-repeat;
+  background: linear-gradient(155deg, #F4F7FF 0%, #BFD0F7 22%, #5E86EE 46%, #2A46F0 64%, #182AB0 82%, #0E1A6E 100%); }
+.orbit.soft { background: linear-gradient(155deg, rgba(76,147,240,.26), rgba(31,51,204,.08)); }
+
+/* ---- 1 Cover */
+.cover { padding: 88px 120px; }
+.cover .lockup { display: flex; align-items: center; gap: 14px; font-family: "Switzer"; font-weight: 700; font-size: 26px; letter-spacing: -.02em; position: relative; }
+.cover .lockup img { height: 34px; }
+.cover h1 { position: relative; font-size: 150px; line-height: .9; font-weight: 750; color: #F1F4FA; margin-top: 150px; letter-spacing: -.045em; }
+.cover .cohort { position: relative; font-family: "Switzer"; font-size: 44px; font-weight: 500; color: var(--soft); margin-top: 22px; letter-spacing: -.02em; }
+.cover .facts { position: absolute; left: 120px; right: 120px; bottom: 88px; display: grid; grid-template-columns: repeat(4, 1fr); }
+.cover .facts div { border-top: 1px solid var(--line-dark); padding-top: 20px; }
+.cover .facts span { display: block; font-family: "Geist Mono"; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #6E7890; }
+.cover .facts b { display: block; font-family: "Switzer"; font-weight: 600; font-size: 26px; letter-spacing: -.02em; margin-top: 8px; color: #F1F4FA; }
+
+/* ---- 2 Who it is for */
+.split { display: grid; grid-template-columns: 1fr 1fr; padding: 0; }
+.split .bleed { background: center / cover no-repeat; height: 900px; }
+.split .side { padding: 104px 104px 110px 96px; position: relative; }
+.split .side .meta { left: 96px; right: 104px; }
+.audience { margin-top: 56px; }
+.audience li { list-style: none; display: grid; grid-template-columns: 56px 1fr; padding: 22px 0; border-top: 1px solid var(--silver-2); }
+.audience li:last-child { border-bottom: 1px solid var(--silver-2); }
+.audience .n { font-family: "Geist Mono"; font-size: 13px; color: var(--blue); padding-top: 6px; letter-spacing: .06em; }
+.audience p { font-size: 20px; line-height: 1.45; color: var(--muted); }
+.audience b { color: var(--ink); font-weight: 600; }
+.need { margin-top: 40px; display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: baseline; }
+.need p { font-size: 17px; color: var(--muted); }
+
+/* ---- 3 Outcomes */
+.numbers { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 40px; margin-top: 88px; }
+.numbers div { border-top: 1px solid var(--silver-2); padding-top: 28px; }
+.numbers b { display: block; font-family: "Switzer"; font-weight: 750; font-size: 168px; line-height: .85; letter-spacing: -.06em; color: var(--blue); }
+.numbers p { margin-top: 26px; font-size: 19px; color: var(--muted); line-height: 1.45; max-width: 290px; }
+.statement { margin-top: 72px; display: grid; grid-template-columns: 520px 1fr; column-gap: 40px; border-top: 1px solid var(--silver-2); padding-top: 28px; }
+.statement h3 { font-size: 34px; font-weight: 650; line-height: 1.1; }
+.statement p { font-size: 20px; color: var(--muted); }
+
+/* ---- Two-column pages: heading left, content right */
+.cols { display: grid; grid-template-columns: 440px 1fr; column-gap: 80px; height: 100%; }
+
+/* ---- 4 How each week works */
+.steps li { list-style: none; display: grid; grid-template-columns: 64px 320px 1fr; column-gap: 24px; padding: 22px 0; border-top: 1px solid var(--silver-2); align-items: baseline; }
+.steps li:last-child { border-bottom: 1px solid var(--silver-2); }
+.steps .n { font-family: "Geist Mono"; font-size: 13px; color: var(--blue); letter-spacing: .06em; }
+.steps h3 { font-size: 26px; font-weight: 650; letter-spacing: -.025em; }
+.steps p { font-size: 18px; color: var(--muted); }
+
+/* ---- 5 Roadmap */
+.timeline { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); column-gap: 36px; margin-top: 150px; }
+.timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 11px; height: 2px;
+  background: linear-gradient(90deg, rgba(76,147,240,.2), var(--sky-2) 18%, var(--blue-500) 70%, rgba(42,70,240,.25)); }
+.timeline .stop { position: relative; padding-top: 58px; }
+.timeline .stop::before { content: ""; position: absolute; top: 0; left: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); border: 2px solid var(--sky-2); }
+.timeline .stop.arc::before { background: var(--sky-2); box-shadow: 0 0 0 8px rgba(76,147,240,.16), 0 0 32px rgba(76,147,240,.5); }
+.timeline h3 { font-size: 30px; font-weight: 650; line-height: 1.08; margin-top: 12px; color: #F1F4FA; }
+.timeline p { font-size: 17px; color: var(--soft); margin-top: 12px; line-height: 1.5; }
+
+/* ---- 6-8 Modules */
+.arcnum { font-family: "Switzer"; font-weight: 800; font-size: 250px; line-height: .78; letter-spacing: -.07em; color: transparent; -webkit-text-stroke: 1.5px var(--silver-2); }
+.module .left h2 { font-size: 64px; margin-top: 28px; }
+.module .left .label { margin-top: 72px; display: block; }
+.weeks { display: grid; grid-template-columns: 1fr 1fr; column-gap: 56px; }
+.week { border-top: 2px solid var(--ink); padding-top: 22px; }
+.week h3 { font-size: 29px; font-weight: 650; line-height: 1.12; margin-top: 12px; letter-spacing: -.028em; min-height: 66px; }
+.week ul { margin-top: 18px; }
+.week li { list-style: none; font-size: 16.5px; line-height: 1.45; color: var(--ink-2); padding: 10px 0; border-top: 1px solid var(--silver-2); }
+.week .tools { margin-top: 16px; font-family: "Geist Mono"; font-size: 12.5px; letter-spacing: .04em; color: var(--muted-2); line-height: 1.7; }
+.week .ship { margin-top: 20px; border-left: 3px solid var(--blue); padding: 4px 0 4px 18px; }
+.week .ship span { display: block; font-family: "Geist Mono"; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); }
+.week .ship p { font-size: 17px; margin-top: 4px; line-height: 1.45; }
+
+/* ---- 9 Final project */
+.arcs3 { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 48px; margin-top: 72px; }
+.arcs3 div { border-top: 1px solid var(--line-dark); padding-top: 26px; }
+.arcs3 b { display: block; font-family: "Switzer"; font-size: 72px; font-weight: 750; line-height: .9; letter-spacing: -.05em; color: var(--sky-2); }
+.arcs3 p { font-family: "Switzer"; font-size: 28px; font-weight: 600; letter-spacing: -.02em; line-height: 1.15; margin-top: 18px; color: #F1F4FA; }
+.cert { margin-top: 72px; border-radius: 28px; padding: 40px 44px; position: relative; overflow: hidden;
+  background: linear-gradient(180deg, #151C2E, #10162A); border: 1px solid rgba(255,255,255,.08); }
+.cert-head { display: flex; justify-content: space-between; align-items: baseline; }
+.cert h3 { font-size: 34px; font-weight: 650; color: #F1F4FA; margin-top: 10px; }
+.checks { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 28px; margin-top: 28px; }
+.checks div { display: flex; gap: 12px; align-items: flex-start; font-size: 18px; color: #D6DCE8; line-height: 1.4; }
+.tick { flex: none; width: 22px; height: 22px; border-radius: 50%; margin-top: 2px;
+  background: var(--blue-500) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+.cert .note { font-size: 15px; color: #8C97AD; margin-top: 24px; }
+
+/* ---- 10 Careers */
+.roles { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 48px; row-gap: 36px; margin-top: 64px; }
+.roles div { border-top: 1px solid var(--silver-2); padding-top: 20px; }
+.roles h3 { font-size: 27px; font-weight: 650; letter-spacing: -.025em; line-height: 1.12; }
+.roles p { font-size: 17px; color: var(--muted); margin-top: 8px; }
+.roles .wk { font-family: "Geist Mono"; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-top: 12px; }
+.own { margin-top: 44px; background: var(--ink); color: #fff; border-radius: 24px; padding: 28px 36px; display: grid; grid-template-columns: 420px 1fr; align-items: center; column-gap: 40px; position: relative; overflow: hidden; }
+.own h3 { font-size: 30px; font-weight: 650; color: #F1F4FA; }
+.own p { font-size: 18px; color: var(--soft); }
+.fine { font-size: 14px; color: var(--muted-2); margin-top: 18px; }
+
+/* ---- 11 Demand */
+.table { margin-top: 8px; }
+.table .row { display: grid; grid-template-columns: 330px 1fr 1fr; column-gap: 48px; padding: 16px 0; border-top: 1px solid var(--line-dark); align-items: baseline; }
+.table .row:last-child { border-bottom: 1px solid var(--line-dark); }
+.table .th { padding: 0 0 14px; border-top: none; }
+.table .th span { font-family: "Geist Mono"; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #6E7890; }
+.table h3 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; color: #F1F4FA; }
+.table p { font-size: 17px; color: var(--soft); line-height: 1.45; }
+.table p.who { color: var(--sky-2); }
+
+/* ---- 12 After */
+.after li { list-style: none; display: grid; grid-template-columns: 56px 1fr; padding: 22px 0; border-top: 1px solid var(--silver-2); }
+.after li:last-child { border-bottom: 1px solid var(--silver-2); }
+.after .n { font-family: "Geist Mono"; font-size: 13px; color: var(--blue); padding-top: 8px; }
+.after h3 { font-size: 26px; font-weight: 650; letter-spacing: -.025em; }
+.after p { font-size: 18px; color: var(--muted); margin-top: 4px; }
+.frame { border-radius: 28px; background: center / cover no-repeat; box-shadow: 0 1px 2px rgba(11,15,26,.06), 0 30px 80px -30px rgba(11,15,26,.35); }
+
+/* ---- 13 Investment */
+.price { display: grid; grid-template-columns: 1.15fr 1fr; column-gap: 64px; margin-top: 56px; }
+.hero-price { background: var(--ink); color: #fff; border-radius: 32px; padding: 44px 48px 40px; position: relative; overflow: hidden; }
+.pill { display: inline-block; font-family: "Geist Mono"; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px;
+  background: linear-gradient(180deg, var(--blue-500), var(--blue-600)); box-shadow: inset 0 1px 0 rgba(255,255,255,.3); position: relative; }
+.hero-price .amount { font-family: "Switzer"; font-size: 132px; font-weight: 750; letter-spacing: -.055em; line-height: .9; margin-top: 30px; color: #F1F4FA; position: relative; }
+.hero-price .was { font-family: "Switzer"; font-size: 30px; font-weight: 500; color: #6E7890; text-decoration: line-through; margin-top: 14px; position: relative; letter-spacing: -.02em; }
+.hero-price p { font-size: 18px; color: var(--soft); margin-top: 18px; position: relative; }
+.tiers { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; margin-top: 28px; }
+.tiers div { border-top: 1px solid var(--silver-2); padding-top: 16px; }
+.tiers b { display: block; font-family: "Switzer"; font-size: 32px; font-weight: 700; letter-spacing: -.03em; margin-top: 8px; }
+.tiers p { font-size: 16px; color: var(--muted); margin-top: 4px; }
+.included li { list-style: none; display: flex; gap: 14px; align-items: flex-start; font-size: 19px; padding: 15px 0; border-top: 1px solid var(--silver-2); }
+.included li:last-child { border-bottom: 1px solid var(--silver-2); }
+.included .tick { margin-top: 3px; }
+.small { font-size: 15px; color: var(--muted); margin-top: 18px; line-height: 1.5; }
+.seats { margin-top: 26px; font-family: "Geist Mono"; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--blue); }
+
+/* ---- 14 Questions */
+.faq div { padding: 22px 0; border-top: 1px solid var(--line-dark); }
+.faq div:last-child { border-bottom: 1px solid var(--line-dark); }
+.faq h3 { font-size: 23px; font-weight: 600; letter-spacing: -.02em; color: #F1F4FA; }
+.faq p { font-size: 17px; color: var(--soft); margin-top: 6px; }
+.cta { display: block; text-align: center; padding: 26px; border-radius: 999px; font-family: "Switzer"; font-weight: 700; font-size: 28px; letter-spacing: -.02em;
+  color: #fff; text-decoration: none; background: linear-gradient(180deg, var(--blue-500), var(--blue) 50%, var(--blue-600));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.32), 0 30px 70px -24px rgba(42,70,240,.75); position: relative; }
+.url { text-align: center; font-family: "Geist Mono"; font-size: 17px; color: var(--sky-2); margin-top: 18px; letter-spacing: .02em; position: relative; }
+.socials { margin-top: 64px; position: relative; }
+.socials a { display: flex; justify-content: space-between; align-items: baseline; padding: 16px 0; border-top: 1px solid var(--line-dark); text-decoration: none; color: #F1F4FA; font-size: 19px; }
+.socials a:last-child { border-bottom: 1px solid var(--line-dark); }
+.socials a span { font-family: "Geist Mono"; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #6E7890; }
+</style>
+</head>
+<body>
+
+<!-- 1 · Cover -->
+<section class="page ink cover">
+  <div class="glow" style="width:1100px;height:1100px;right:-380px;top:-240px;background:radial-gradient(circle, rgba(42,70,240,.42), rgba(31,51,204,.12) 45%, transparent 68%);"></div>
+  <div class="glow" style="width:700px;height:700px;left:-300px;bottom:-360px;background:radial-gradient(circle, rgba(76,147,240,.18), transparent 70%);"></div>
+  <svg viewBox="0 0 290 329" style="position:absolute;width:430px;height:488px;right:110px;top:150px;" aria-hidden="true"><defs><linearGradient id="om" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F7FF"/><stop offset=".22" stop-color="#BFD0F7"/><stop offset=".46" stop-color="#5E86EE"/><stop offset=".64" stop-color="#2A46F0"/><stop offset=".82" stop-color="#182AB0"/><stop offset="1" stop-color="#0E1A6E"/></linearGradient></defs><path fill-rule="evenodd" d="M168.52 288.08A145.0 145.0 0 1 1 267.63 222.37A67.3 67.3 0 0 0 168.52 288.08ZM68.00 145.00a77.0 77.0 0 1 0 154.0 0a77.0 77.0 0 1 0 -154.0 0Z" fill="url(#om)"/><path d="M188.00 281.50a47.5 47.5 0 1 0 95.0 0a47.5 47.5 0 1 0 -95.0 0Z" fill="url(#om)"/></svg>
+  <div class="lockup"><img src="assets/logo-mark-reverse.svg" alt="">Learnhub</div>
+  <h1>AI Bootcamp</h1>
+  <p class="cohort">Cohort 1</p>
+  <div class="facts">
+    <div><span>Starts</span><b>Mon 12 October 2026</b></div>
+    <div><span>Live sessions</span><b>Saturdays, 11am WAT</b></div>
+    <div><span>Format</span><b>6 weeks + final project</b></div>
+    <div><span>Cohort size</span><b>35 seats</b></div>
+  </div>
+</section>
+
+<!-- 2 · Who it is for -->
+<section class="page split">
+  <div class="bleed" style="background-image:url(assets/students-hero-1700.jpg);background-position:60% 50%;"></div>
+  <div class="side">
+    <h2>Who it is for</h2>
+    <ul class="audience">
+      <li><span class="n">01</span><p><b>Students and graduates</b> who want skills employers are hiring for now.</p></li>
+      <li><span class="n">02</span><p><b>Career changers</b> looking for a practical way into tech.</p></li>
+      <li><span class="n">03</span><p><b>Marketers, founders and freelancers</b> who want AI doing real work for them.</p></li>
+      <li><span class="n">04</span><p><b>Anyone done with tutorials</b> who wants to build.</p></li>
+    </ul>
+    <div class="need"><span class="label">What you need</span><p>A laptop, a Claude Pro plan ($20 a month) and time to build every week. No coding experience needed.</p></div>
+    <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>02</span></div>
+  </div>
+</section>
+
+<!-- 3 · What you walk away with -->
+<section class="page paper">
+  <h2>What you walk away with</h2>
+  <div class="numbers">
+    <div><b>7</b><p>Projects shipped: one every week, plus a final project</p></div>
+    <div><b>1</b><p>Live product on the internet, with an AI agent running it</p></div>
+    <div><b>20+</b><p>Tools set up and used for real work</p></div>
+    <div><b>1</b><p>Certificate, earned only by completing all of the work</p></div>
+  </div>
+  <div class="statement"><h3>Use AI better than most people</h3><p>You will use Claude and ChatGPT far beyond the average user: with context, workflows and skills.</p></div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>03</span></div>
+</section>
+
+<!-- 4 · How each week works -->
+<section class="page">
+  <div class="cols">
+    <h2>How each week works</h2>
+    <ul class="steps">
+      <li><span class="n">01</span><h3>Lessons</h3><p>Short video lessons, each with a full written version, so you can learn on your phone and build at your laptop.</p></li>
+      <li><span class="n">02</span><h3>Live session, Saturdays 11am WAT</h3><p>Walkthroughs, questions answered and builds reviewed live, every week.</p></li>
+      <li><span class="n">03</span><h3>Assignment</h3><p>A practical task on the week's lessons.</p></li>
+      <li><span class="n">04</span><h3>Weekly test</h3><p>Ten questions. 80% to pass.</p></li>
+      <li><span class="n">05</span><h3>Weekly project</h3><p>Submitted every week and reviewed.</p></li>
+      <li><span class="n">06</span><h3>Your pod</h3><p>A small group from your cohort to build alongside, so nobody gets stuck alone.</p></li>
+    </ul>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>04</span></div>
+</section>
+
+<!-- 5 · The roadmap -->
+<section class="page ink">
+  <div class="glow" style="width:1000px;height:1000px;right:-420px;top:-520px;background:radial-gradient(circle, rgba(42,70,240,.4), transparent 66%);"></div>
+  <svg viewBox="0 0 290 329" style="position:absolute;width:420px;height:477px;right:-60px;bottom:-150px;" aria-hidden="true"><defs><linearGradient id="os1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4C93F0" stop-opacity=".28"/><stop offset="1" stop-color="#1F33CC" stop-opacity=".06"/></linearGradient></defs><path fill-rule="evenodd" d="M168.52 288.08A145.0 145.0 0 1 1 267.63 222.37A67.3 67.3 0 0 0 168.52 288.08ZM68.00 145.00a77.0 77.0 0 1 0 154.0 0a77.0 77.0 0 1 0 -154.0 0Z" fill="url(#os1)"/><path d="M188.00 281.50a47.5 47.5 0 1 0 95.0 0a47.5 47.5 0 1 0 -95.0 0Z" fill="url(#os1)"/></svg>
+  <h2 style="position:relative;">The roadmap</h2>
+  <div class="timeline">
+    <div class="stop"><p class="label">Week 0 · Before you start</p><h3>Get set up</h3><p>Laptop check, accounts ready, meet your pod, and set your goal for the six weeks.</p></div>
+    <div class="stop arc"><p class="label">Arc 1 · Weeks 1 and 2</p><h3>Your AI foundation</h3><p>A working AI setup, and prompting that gets you the results you want.</p></div>
+    <div class="stop arc"><p class="label">Arc 2 · Weeks 3 and 4</p><h3>Build and create</h3><p>A live website or web app, and professional AI-generated videos that companies and individuals will pay you for.</p></div>
+    <div class="stop arc"><p class="label">Arc 3 · Weeks 5 and 6</p><h3>Automate and earn</h3><p>AI agents and automations working for you, and a career or business plan built on them.</p></div>
+    <div class="stop"><p class="label">Demo day · End of week 6</p><h3>Launch one real thing</h3><p>Present your final project live, then get certified.</p></div>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-reverse.svg" alt="">AI Bootcamp · Cohort 1</span><span>05</span></div>
+</section>
+
+<!-- 6 · Arc 1 -->
+<section class="page paper module">
+  <div class="cols">
+    <div class="left"><div class="arcnum">01</div><span class="label">Arc 1 · Weeks 1 and 2</span><h2>Your AI foundation</h2></div>
+    <div class="weeks">
+      <div class="week">
+        <p class="label">Week 1</p>
+        <h3>Set up your AI stack and use it properly</h3>
+        <ul>
+          <li>What AI actually is, and why it gives the answers it does</li>
+          <li>Claude, ChatGPT and Gemini: what each one is best at</li>
+          <li>Your builder setup: Claude Code, GitHub, Supabase and Vercel</li>
+          <li>How agents work: CLAUDE.md, context and skills</li>
+        </ul>
+        <p class="tools">Claude · Claude Code · ChatGPT · Codex · Gemini · GitHub · Supabase · Vercel</p>
+        <div class="ship"><span>You ship</span><p>Your AI workspace: a Claude Project that knows you, your first skill, and a one-page site live on the internet.</p></div>
+      </div>
+      <div class="week">
+        <p class="label">Week 2</p>
+        <h3>Prompt engineering: writing and marketing with AI</h3>
+        <ul>
+          <li>How to prompt any AI model: context, roles and constraints</li>
+          <li>Teaching AI your voice, so the writing sounds like you</li>
+          <li>Prompts for everyday work: posts, emails, proposals and captions</li>
+          <li>Prompts for marketing: offers, landing pages and launch copy</li>
+        </ul>
+        <p class="tools">Claude · ChatGPT · Skills</p>
+        <div class="ship"><span>You ship</span><p>Your own prompt library and voice skill, and published writing in your voice.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>06</span></div>
+</section>
+
+<!-- 7 · Arc 2 -->
+<section class="page paper module">
+  <div class="cols">
+    <div class="left"><div class="arcnum">02</div><span class="label">Arc 2 · Weeks 3 and 4</span><h2>Build and create</h2></div>
+    <div class="weeks">
+      <div class="week">
+        <p class="label">Week 3</p>
+        <h3>Build websites and web apps</h3>
+        <ul>
+          <li>How a web app works</li>
+          <li>Getting AI to plan before it writes a single line of code</li>
+          <li>Adding a database and sign-in, then putting it live</li>
+          <li>Making it work on all devices, and monitoring it with cybersecurity best practices</li>
+        </ul>
+        <p class="tools">Claude Code · Supabase · Vercel · v0 · Lovable</p>
+        <div class="ship"><span>You ship</span><p>A live website or web app that works on all devices.</p></div>
+      </div>
+      <div class="week">
+        <p class="label">Week 4</p>
+        <h3>Video, UGC and motion graphics with AI</h3>
+        <ul>
+          <li>Realistic AI video, and which tool is best for what</li>
+          <li>UGC-style ads</li>
+          <li>AI voice, avatars and motion graphics</li>
+          <li>Editing videos using agents</li>
+        </ul>
+        <p class="tools">Veo · Kling · Higgsfield · ElevenLabs · Remotion · CapCut</p>
+        <div class="ship"><span>You ship</span><p>A UGC-style ad and a motion graphic that launch your week 3 product.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>07</span></div>
+</section>
+
+<!-- 8 · Arc 3 -->
+<section class="page paper module">
+  <div class="cols">
+    <div class="left"><div class="arcnum">03</div><span class="label">Arc 3 · Weeks 5 and 6</span><h2>Automate and earn</h2></div>
+    <div class="weeks">
+      <div class="week">
+        <p class="label">Week 5</p>
+        <h3>Agents and automation</h3>
+        <ul>
+          <li>Giving agents tools, with your approval before anything goes live</li>
+          <li>Building agents without code, and in the Claude console</li>
+          <li>A chatbot on your website, and your own AI operating system</li>
+          <li>Automations that run on their own, and the tools companies use</li>
+        </ul>
+        <p class="tools">Claude console · Google Opal · n8n · Zapier · Make</p>
+        <div class="ship"><span>You ship</span><p>An AI chatbot live on your site, and an automation doing real work for it.</p></div>
+      </div>
+      <div class="week">
+        <p class="label">Week 6</p>
+        <h3>Identify your career, industry and business</h3>
+        <ul>
+          <li>Choose your path: AI automation specialist, AI UGC ad creator, AI copywriter, AI web product builder or AI product marketer</li>
+          <li>Your CV and LinkedIn, rebuilt around what you built</li>
+          <li>Finding and applying for jobs with AI</li>
+          <li>Building a business: offer, pricing and first clients</li>
+        </ul>
+        <p class="tools">Claude · ChatGPT · LinkedIn</p>
+        <div class="ship"><span>You ship</span><p>A live offer with outreach sent, or three tailored job applications.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>08</span></div>
+</section>
+
+<!-- 9 · Final project and demo day -->
+<section class="page ink">
+  <div class="glow" style="width:900px;height:900px;left:-360px;bottom:-520px;background:radial-gradient(circle, rgba(42,70,240,.38), transparent 66%);"></div>
+  <h2 style="position:relative;">Final project and demo day</h2>
+  <div class="arcs3" style="position:relative;">
+    <div><b>01</b><p class="label" style="margin-top:22px;">Arc 1</p><p style="margin-top:8px;">Your prompts, voice and copy</p></div>
+    <div><b>02</b><p class="label" style="margin-top:22px;">Arc 2</p><p style="margin-top:8px;">Your live product and AI videos</p></div>
+    <div><b>03</b><p class="label" style="margin-top:22px;">Arc 3</p><p style="margin-top:8px;">Your AI agent and automations</p></div>
+  </div>
+  <div class="cert">
+    <svg viewBox="0 0 290 329" style="position:absolute;width:260px;height:295px;right:-40px;top:-60px;" aria-hidden="true"><defs><linearGradient id="os2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4C93F0" stop-opacity=".28"/><stop offset="1" stop-color="#1F33CC" stop-opacity=".06"/></linearGradient></defs><path fill-rule="evenodd" d="M168.52 288.08A145.0 145.0 0 1 1 267.63 222.37A67.3 67.3 0 0 0 168.52 288.08ZM68.00 145.00a77.0 77.0 0 1 0 154.0 0a77.0 77.0 0 1 0 -154.0 0Z" fill="url(#os2)"/><path d="M188.00 281.50a47.5 47.5 0 1 0 95.0 0a47.5 47.5 0 1 0 -95.0 0Z" fill="url(#os2)"/></svg>
+    <p class="label" style="position:relative;">Certification</p>
+    <h3 style="position:relative;">To get certified</h3>
+    <div class="checks" style="position:relative;">
+      <div><span class="tick"></span>All six weekly projects approved</div>
+      <div><span class="tick"></span>Every assignment handed in</div>
+      <div><span class="tick"></span>All six weekly tests passed</div>
+      <div><span class="tick"></span>Final project approved and presented</div>
+    </div>
+    <p class="note" style="position:relative;">Every certificate has a public verification link, so anyone can check it is real.</p>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-reverse.svg" alt="">AI Bootcamp · Cohort 1</span><span>09</span></div>
+</section>
+
+<!-- 10 · Career paths -->
+<section class="page">
+  <h2>Career paths</h2>
+  <div class="roles">
+    <div><h3>AI Automation Specialist</h3><p>Builds workflows that save a business hours every week.</p><p class="wk">Weeks 1 · 5</p></div>
+    <div><h3>AI UGC Ad Creator</h3><p>Makes AI video ads for brands and businesses.</p><p class="wk">Weeks 2 · 4</p></div>
+    <div><h3>AI Copywriter</h3><p>Writes posts, pages and campaigns with AI, in the client's voice.</p><p class="wk">Week 2</p></div>
+    <div><h3>AI Web Product Builder</h3><p>Ships websites and web apps for clients.</p><p class="wk">Weeks 1 · 3</p></div>
+    <div><h3>AI Product Marketer</h3><p>Launches products with AI copy, video and automation.</p><p class="wk">Weeks 2 · 4 · 5</p></div>
+    <div><h3>AI Agent Builder</h3><p>Sets up chatbots and agents for support and sales.</p><p class="wk">Week 5</p></div>
+  </div>
+  <div class="own">
+    <div class="glow" style="width:500px;height:500px;right:-200px;top:-260px;background:radial-gradient(circle, rgba(42,70,240,.5), transparent 68%);"></div>
+    <h3 style="position:relative;">Or build your own business</h3>
+    <p style="position:relative;">Package what you built into an offer, price it, and find your first clients. Week 6 walks you through it.</p>
+  </div>
+  <p class="fine">No bootcamp can promise you a job. This one makes sure you have the work to show for it.</p>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>10</span></div>
+</section>
+
+<!-- 11 · Where the demand is -->
+<section class="page ink">
+  <div class="glow" style="width:900px;height:900px;right:-460px;bottom:-460px;background:radial-gradient(circle, rgba(42,70,240,.36), transparent 66%);"></div>
+  <div style="position:relative;">
+    <h2>Where the demand is</h2>
+    <div class="table" style="margin-top:44px;">
+      <div class="row th"><span>Industry</span><span>What is changing</span><span>Who is needed</span></div>
+      <div class="row"><h3>Marketing and media</h3><p>Content, ads and video made in hours.</p><p class="who">People who can direct AI and keep the quality high.</p></div>
+      <div class="row"><h3>Customer service</h3><p>AI agents answer the first line of questions.</p><p class="who">People who can build and manage them.</p></div>
+      <div class="row"><h3>Operations and admin</h3><p>Data entry, scheduling and reporting are being automated.</p><p class="who">People who can design those workflows.</p></div>
+      <div class="row"><h3>Finance and accounting</h3><p>Bookkeeping and routine checks are going automatic.</p><p class="who">People who can set it up and check the output.</p></div>
+      <div class="row"><h3>Legal and professional services</h3><p>Research and first drafts take a fraction of the time.</p><p class="who">People who know where AI helps and where it fails.</p></div>
+      <div class="row"><h3>Small businesses</h3><p>Owners want websites, content and automation, without a big team.</p><p class="who">Freelancers who can deliver all three.</p></div>
+    </div>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-reverse.svg" alt="">AI Bootcamp · Cohort 1</span><span>11</span></div>
+</section>
+
+<!-- 12 · What comes after -->
+<section class="page">
+  <div class="cols" style="grid-template-columns:1fr 600px;column-gap:88px;">
+    <div>
+      <h2>What comes after</h2>
+      <ul class="after" style="margin-top:48px;">
+        <li><span class="n">01</span><div><h3>A portfolio of seven projects</h3><p>Real work you can link to in job applications, pitches and your LinkedIn.</p></div></li>
+        <li><span class="n">02</span><div><h3>A verifiable certificate</h3><p>Proof you did the work, checkable by anyone with one link.</p></div></li>
+        <li><span class="n">03</span><div><h3>The Learnhub community</h3><p>Your cohort and pod stay together after demo day.</p></div></li>
+        <li><span class="n">04</span><div><h3>Going further</h3><p>1:1 mentorship for graduates who want more time and deeper builds.</p></div></li>
+      </ul>
+    </div>
+    <div class="frame" style="height:640px;background-image:url(assets/after-proof.webp);background-position:48% 40%;"></div>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>12</span></div>
+</section>
+
+<!-- 13 · Your investment -->
+<section class="page paper">
+  <h2>Your investment</h2>
+  <div class="price">
+    <div>
+      <div class="hero-price">
+        <div class="glow" style="width:620px;height:620px;right:-260px;top:-300px;background:radial-gradient(circle, rgba(42,70,240,.6), transparent 68%);"></div>
+        <span class="pill">Early-bird · until Sat 10 October</span>
+        <div class="amount">₦150,000</div>
+        <div class="was">₦350,000</div>
+        <p>Pay in full before Saturday 10 October and save ₦200,000.</p>
+      </div>
+      <div class="tiers">
+        <div><p class="label">Full price</p><b>₦350,000</b><p>From Sunday 11 October, paid in full.</p></div>
+        <div><p class="label">Payment plan</p><b>₦200,000 + ₦150,000</b><p>Second payment due before week three.</p></div>
+      </div>
+    </div>
+    <div>
+      <p class="label">Included</p>
+      <ul class="included" style="margin-top:18px;">
+        <li><span class="tick"></span>All six weeks of lessons, video and written</li>
+        <li><span class="tick"></span>A live session every Saturday</li>
+        <li><span class="tick"></span>Review and feedback on every project</li>
+        <li><span class="tick"></span>Your pod and the cohort community</li>
+        <li><span class="tick"></span>Demo day and your verifiable certificate</li>
+      </ul>
+      <p class="small">Not included: your laptop and a Claude Pro plan ($20 a month). Other tools are taught on their free tiers first.</p>
+      <p class="seats">35 seats in Cohort 1.</p>
+    </div>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-primary.svg" alt="">AI Bootcamp · Cohort 1</span><span>13</span></div>
+</section>
+
+<!-- 14 · Questions -->
+<section class="page ink">
+  <div class="glow" style="width:1100px;height:1100px;right:-500px;top:-200px;background:radial-gradient(circle, rgba(42,70,240,.42), transparent 64%);"></div>
+  <div class="cols" style="position:relative;grid-template-columns:1fr 520px;column-gap:112px;">
+    <div>
+      <h2>Questions</h2>
+      <div class="faq" style="margin-top:48px;">
+        <div><h3>Do I need to know how to code?</h3><p>No. You will build websites and apps by directing AI, and every step is taught from zero.</p></div>
+        <div><h3>Do I need a laptop?</h3><p>Yes. Lessons read well on a phone, but the building happens on a laptop.</p></div>
+        <div><h3>What if I miss a Saturday session?</h3><p>Sessions are recorded, so you can catch up the same week.</p></div>
+        <div><h3>What if I fall behind?</h3><p>Your pod and the live sessions are there for exactly that. Tests can be retaken as many times as you need.</p></div>
+      </div>
+    </div>
+    <div style="padding-top:168px;">
+      <a class="cta" href="https://learnhub.dev/enrol">Join the waitlist</a>
+      <p class="url">learnhub.dev/enrol</p>
+      <div class="socials">
+        <p class="label" style="margin-bottom:14px;">Follow Learnhub</p>
+        <a href="https://instagram.com/learnhubglobalacademy/"><span>Instagram</span>@learnhubglobalacademy</a>
+        <a href="https://x.com/LearnhubGlobal"><span>X</span>@LearnhubGlobal</a>
+        <a href="https://linkedin.com/company/learnhub-global-academy/"><span>LinkedIn</span>Learnhub Global Academy</a>
+      </div>
+    </div>
+  </div>
+  <div class="meta"><span class="brand"><img src="assets/logo-mark-reverse.svg" alt="">AI Bootcamp · Cohort 1</span><span>14</span></div>
+</section>
+
+</body>
+</html>
