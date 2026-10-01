@@ -4,6 +4,7 @@
 |---|---|---|---|
 | `Switzer-Variable.woff2` | Switzer (display) | [fontshare.com/fonts/switzer](https://www.fontshare.com/fonts/switzer) | ITF Free Font Licence — free for personal **and** commercial use |
 | `GeneralSans-Variable.woff2` | General Sans (text) | [fontshare.com/fonts/general-sans](https://www.fontshare.com/fonts/general-sans) | ITF Free Font Licence — free for personal **and** commercial use |
+| `InstrumentSerif-Regular.woff2`, `-Italic.woff2` | Instrument Serif (landing headings) | [fonts.google.com/specimen/Instrument+Serif](https://fonts.google.com/specimen/Instrument+Serif) | SIL Open Font License 1.1 — free for commercial use. Latin subset |
 
 Both are variable: one file each covers every weight we use.
 

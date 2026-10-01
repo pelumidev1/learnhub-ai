@@ -29,3 +29,23 @@ export const sansFont = localFont({
   weight: "200 700",
   fallback: ["system-ui", "sans-serif"],
 });
+
+/**
+ * Instrument Serif, for the landing page's headings only (decided 2026-10-02,
+ * modelled on artisan.co). A serif at large sizes is most of what makes that
+ * page read as premium, and it is the one place the product is selling rather
+ * than working, so the app itself stays on Switzer.
+ *
+ * Applied on the landing page's own wrapper rather than the root layout, so its
+ * 15KB is only preloaded where it is used. One weight: it is a display face.
+ * Latin subset only; the ₦ sign is not in it, so prices stay in General Sans.
+ */
+export const serifFont = localFont({
+  src: [
+    { path: "./fonts/InstrumentSerif-Regular.woff2", style: "normal", weight: "400" },
+    { path: "./fonts/InstrumentSerif-Italic.woff2", style: "italic", weight: "400" },
+  ],
+  variable: "--font-serif",
+  display: "swap",
+  fallback: ["Georgia", "serif"],
+});

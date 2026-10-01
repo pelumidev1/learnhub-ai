@@ -8,14 +8,21 @@ import { Faq } from "@/components/marketing/landing/faq";
 import { Reveal } from "@/components/marketing/landing/reveal";
 import { HowItWorksSection } from "@/components/marketing/landing/how-it-works-section";
 import { LifeAfterMatch } from "@/components/marketing/landing/life-after-match";
-import { HeroExploreCard } from "@/components/marketing/landing/hero-explore-card";
 import { DecisionCards, type DecisionStep } from "@/components/marketing/landing/decision-card";
 import { Kicker } from "@/components/marketing/landing/kicker";
 import { SplitText } from "@/components/marketing/landing/split-text";
 import { ScrambleText } from "@/components/marketing/landing/scramble-text";
 import { StatementMedia } from "@/components/marketing/landing/statement-media";
 import { CONTACT_EMAIL } from "@/lib/site";
+import { BootcampHero } from "@/components/marketing/landing/bootcamp-hero";
+import { ToolsStrip } from "@/components/marketing/landing/tools-strip";
+import { RoadmapSection } from "@/components/marketing/landing/roadmap-section";
+import { serifFont } from "@/app/fonts";
 import "./landing.css";
+
+/* Hourly, so the hero's early-bird price turns over within an hour of its
+   deadline without a deploy (see BootcampHero). Still a cached page. */
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   description:
@@ -39,9 +46,6 @@ function ArrowIcon({ className = "" }: { className?: string }) {
     </svg>
   );
 }
-
-/** Staggered hero load-in delay (CSS var read by .lh-hero-in). */
-const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 
 /**
  * The three steps under "LearnHub makes the choice clear".
@@ -103,103 +107,14 @@ const DECISION_STEPS: DecisionStep[] = [
 
 export default function LandingPage() {
   return (
-    <div className="lh-landing bg-white text-ink">
-      {/* The hero photograph is a CSS background (it needs a fallback layer
-          underneath — see .lh-hero-photo), so the browser cannot discover it
-          until the stylesheet has downloaded and parsed. On a phone over slow
-          data that leaves the hero on its fallback for the whole of that wait.
-          Preloading starts the fetch during HTML parse instead, in parallel
-          with the CSS. React hoists this into <head>. Keep the href in step
-          with the --photo url below, or this fetches a file nothing uses. */}
-      <link rel="preload" as="image" href="/brand/students-hero.webp" fetchPriority="high" />
-
+    <div className={`${serifFont.variable} lh-landing bg-white text-ink`}>
       <LandingNav />
 
-      {/* ================================================================ HERO
-          Full-bleed photography; the headline is split into letters that rise
-          out of their masks on load, line by line. */}
-      <section className="relative overflow-hidden bg-ink">
-        <div
-          className="lh-photo lh-hero-photo absolute inset-0"
-          style={
-            {
-              "--photo": "url(/brand/students-hero.webp)",
-            } as React.CSSProperties
-          }
-          aria-hidden
-        />
-        {/* Scrims are deliberately light in the middle and right so the photograph
-            stays vivid; the text side and the bottom hand-off carry the weight. */}
-        <div
-          className="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/10 to-ink"
-          aria-hidden
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/40 to-transparent sm:via-ink/20"
-          aria-hidden
-        />
-        <div className="lh-noise pointer-events-none absolute inset-0" aria-hidden />
+      <BootcampHero />
 
-        {/* The reference's hero layout, measured off its rendered page at
-            1440x900 and rebuilt here: header on a 100px gutter, the headline
-            left and roughly centred in the space below it, and a bottom row
-            that pins to the floor — a floating pill card on the left and the
-            primary action on the right, bottoms aligned.
+      <ToolsStrip />
 
-            Theirs: h1 at y=368, bottom row at y=704. This does it with flex
-            rather than fixed offsets so it holds at every height. */}
-        <div className="relative mx-auto flex min-h-svh w-full max-w-[1440px] flex-col px-5 pb-14 pt-28 sm:pb-20 lg:px-[100px]">
-          <div className="flex flex-1 items-center">
-            <div>
-              <span
-                className="lh-hero-in lh-metal-card inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold text-white"
-                style={d(0)}
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-sky-2" /> Free while in beta
-              </span>
-
-              {/* 80px / 0.9 / -0.05em is the reference's headline exactly. Ours
-                  was already 80px but set looser at 1.02 and -0.035em, which is
-                  what kept it from reading as the same typographic voice. Case
-                  and the sky accent stay ours. */}
-              {/* Scramble rather than the masked rise. Delays run each line in
-                  after the one above it has finished resolving: 11 characters
-                  at 40ms is ~440ms, so 0 / 380 / 760 reads as three lines
-                  landing in sequence rather than three racing each other. */}
-              <h1 className="mt-5 max-w-[15ch] font-display text-[2.75rem] font-bold leading-[0.92] tracking-[-0.04em] text-white sm:mt-6 sm:text-[5rem] sm:leading-[0.9] sm:tracking-[-0.05em]">
-                <ScrambleText text="Discover the" />
-                <ScrambleText text="tech career" delay={380} className="text-sky-2" />
-                <ScrambleText text="built for you" delay={760} />
-              </h1>
-            </div>
-          </div>
-
-          {/* Bottom row. Card left, primary action right, bottoms aligned — the
-              reference lands both on the same baseline off the floor. The gap
-              and the section's bottom padding both clear the card's ghost
-              stack, which hangs 34px below the card itself. */}
-          <div className="grid gap-14 sm:grid-cols-2 sm:items-end sm:gap-10">
-            <div className="lh-hero-in" style={d(640)}>
-              <HeroExploreCard />
-            </div>
-
-            <div className="lh-hero-in sm:justify-self-end" style={d(760)}>
-              {/* Through buttonClasses rather than a hand-written copy of it,
-                  so the metal on a primary button is defined once. Only the
-                  size and the lift are this button's own. */}
-              <Link
-                href="/enrol"
-                className={buttonClasses(
-                  "primary",
-                  "px-10 py-[23px] text-base hover:-translate-y-0.5",
-                )}
-              >
-                Get started <ArrowIcon className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RoadmapSection />
 
       {/* =========================================================== STATEMENT
           One giant centred statement with the footage running through the

@@ -1108,3 +1108,98 @@
     }
   }
 }
+
+/* ======================================================= BOOTCAMP HERO
+   Added 2026-10-02 (artisan.co pattern, see bootcamp-hero.tsx).
+
+   The wash: deep royal blue at the top, where the white headline needs the
+   contrast, paling through sky as it falls so the white product window lands
+   on a light ground and the hero hands off to the white page without a seam.
+   All stops are palette values. */
+.lh-wash {
+  background: linear-gradient(
+    180deg,
+    #182ab0 0%,
+    #1f33cc 34%,
+    #3b6ff0 62%,
+    #4c93f0 78%,
+    #eff2f8 94%,
+    #ffffff 100%
+  );
+}
+
+/* The far plane: a soft pool of light behind the window, so it reads as lit
+   from within the page rather than pasted on a gradient. */
+.lh-hero-glow {
+  background: radial-gradient(60% 55% at 50% 45%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%);
+}
+
+/* The lesson video's poster: the brand's metal, not a photograph. */
+.lh-mock-video {
+  background:
+    radial-gradient(80% 90% at 20% 0%, rgba(76, 147, 240, 0.9), rgba(76, 147, 240, 0) 60%),
+    linear-gradient(160deg, #2a46f0 0%, #1f33cc 45%, #0b0f1a 130%);
+}
+
+/* Depth. HeroDepth writes --p (0 to 1) as the hero scrolls away; each plane
+   reads it at its own rate. Far moves with the scroll (lags behind the page),
+   the window flattens out of a slight tilt, and the near cards rise faster
+   than the window. Transforms only, so this is compositor work on a phone.
+
+   Gated on no-preference: with reduced motion --p is never set, and outside
+   this block nothing transforms, so the hero is static and flat. */
+@media (prefers-reduced-motion: no-preference) {
+  .lh-depth-stage {
+    perspective: 1600px;
+  }
+  .lh-depth-back {
+    transform: translate3d(0, calc(var(--p, 0) * 160px), 0);
+  }
+  .lh-depth-panel {
+    transform-origin: 50% 100%;
+    transform: rotateX(calc(9deg * (1 - min(var(--p, 0) * 3.5, 1))));
+  }
+  .lh-depth-near {
+    transform: translate3d(0, calc(var(--p, 0) * -140px), 0);
+  }
+  .lh-depth-near-2 {
+    transform: translate3d(0, calc(var(--p, 0) * -90px), 0);
+  }
+}
+
+/* On a phone the coach card hangs below the window rather than over it, and
+   travels less, or its rise would carry it over the lesson title. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 639px) {
+  .lh-depth-near-2 {
+    transform: translate3d(0, calc(var(--p, 0) * -40px), 0);
+  }
+}
+
+/* ===================================================== TOOLS + ROADMAP
+   Added 2026-10-02 with the hero (artisan.co pattern). */
+
+/* The roadmap's picture cards: paper, lifting into a faint sky tint at the
+   foot, the light version of the hero's wash. */
+.lh-roadmap-stage {
+  background:
+    radial-gradient(90% 60% at 50% 100%, rgba(76, 147, 240, 0.16), rgba(76, 147, 240, 0) 70%),
+    #f6f7fb;
+}
+
+/* Items inside a mockup rise in one after another once their row is revealed.
+   Keyed off Reveal's own classes, so there is no extra JS, and content that
+   Reveal never hides (reduced motion, no JS, already on screen) never hides. */
+.lh-reveal-hidden .lh-stagger > * {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.lh-reveal-in .lh-stagger > * {
+  transition:
+    opacity 0.45s ease-out,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lh-reveal-in .lh-stagger > :nth-child(1) { transition-delay: 250ms; }
+.lh-reveal-in .lh-stagger > :nth-child(2) { transition-delay: 330ms; }
+.lh-reveal-in .lh-stagger > :nth-child(3) { transition-delay: 410ms; }
+.lh-reveal-in .lh-stagger > :nth-child(4) { transition-delay: 490ms; }
+.lh-reveal-in .lh-stagger > :nth-child(5) { transition-delay: 570ms; }
