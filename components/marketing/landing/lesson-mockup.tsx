@@ -1,4 +1,3 @@
-import { LogoMark } from "@/components/ui/logo";
 
 /**
  * The framed product shot under the hero headline: the bootcamp's lesson
@@ -120,26 +119,28 @@ export function LessonMockup() {
           </span>
           <span className="text-left">
             <span className="block text-[12px] font-semibold text-ink sm:text-[13px]">Week 2 project approved</span>
-            <span className="block text-[11px] text-muted">Your launch page is live</span>
+            <span className="block text-[11px] text-muted">Your launch kit</span>
           </span>
         </div>
       </div>
 
       <div className="lh-depth-near-2 absolute -bottom-40 -right-1 w-[86%] max-w-[330px] sm:-right-8 sm:bottom-auto sm:top-[40%] lg:-right-14">
+        {/* Week 3's assignment, word for word from CURRICULUM.md. This card
+            was an AI coach chat until it turned out the bootcamp's lessons have
+            no coach (the AI advisor belongs to the career app): the hero shows
+            only what a student actually gets. */}
         <div className="rounded-2xl border border-white/70 bg-white/95 p-3.5 text-left shadow-[0_1px_2px_rgba(11,15,26,.06),0_16px_40px_-8px_rgba(11,15,26,.26)] backdrop-blur-md sm:p-4">
-          <div className="flex items-center gap-2">
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-blue text-white">
-              <LogoMark className="h-3.5 w-3.5" />
-            </span>
-            <span className="text-[12px] font-semibold text-ink">AI coach</span>
-            <span className="rounded-full bg-paper-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-blue">AI</span>
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue">Today&apos;s assignment</span>
+            <span className="font-mono text-[10px] text-muted-2">Week 3</span>
           </div>
-          <p className="ml-auto mt-3 w-fit max-w-[88%] rounded-2xl rounded-br-md bg-blue px-3 py-2 text-[11.5px] leading-snug text-white sm:text-[12px]">
-            My site works on my laptop, but Vercel shows a blank page.
+          <p className="mt-2 text-[13px] font-semibold leading-snug text-ink sm:text-sm">
+            One change to your week 1 site, made and deployed by you.
           </p>
-          <p className="mt-2 max-w-[92%] rounded-2xl rounded-bl-md bg-paper px-3 py-2 text-[11.5px] leading-snug text-ink sm:text-[12px]">
-            Check the build log first. A missing environment variable is the usual cause. Want to go through it together?
-          </p>
+          <div className="mt-3 flex items-center gap-2 rounded-xl border border-silver bg-paper px-3 py-2">
+            <span className="flex-1 truncate font-mono text-[11px] text-muted-2">aboutme.vercel.app</span>
+            <span className="rounded-full bg-blue px-3 py-1 text-[11px] font-semibold text-white">Submit</span>
+          </div>
         </div>
       </div>
     </div>

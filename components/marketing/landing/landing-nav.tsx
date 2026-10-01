@@ -8,8 +8,8 @@ import { RollText } from "./roll-text";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 const LINKS = [
-  { href: "#how", label: "How it works" },
-  { href: "#what", label: "What you get" },
+  { href: "#roadmap", label: "Roadmap" },
+  { href: "#ship", label: "What you'll ship" },
   { href: "/careers", label: "Careers" },
   { href: "#faq", label: "FAQ" },
 ];

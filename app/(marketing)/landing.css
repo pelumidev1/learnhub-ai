@@ -1203,3 +1203,15 @@
 .lh-reveal-in .lh-stagger > :nth-child(3) { transition-delay: 410ms; }
 .lh-reveal-in .lh-stagger > :nth-child(4) { transition-delay: 490ms; }
 .lh-reveal-in .lh-stagger > :nth-child(5) { transition-delay: 570ms; }
+
+/* "What you'll ship": the second chip row runs the other way. Same keyframes
+   as every .lh-marquee, played backwards, so it still loops on one copy. */
+.lh-marquee-reverse {
+  animation-direction: reverse;
+}
+
+/* A faint sky band behind the chips, the roadmap cards' tint at section scale,
+   so the white chips have something to sit on. */
+.lh-ship {
+  background: linear-gradient(180deg, #ffffff 0%, #f6f7fb 30%, #eef3fd 70%, #ffffff 100%);
+}
