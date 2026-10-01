@@ -144,7 +144,7 @@ export function LandingNav() {
               Contact
             </a>
             <Link
-              href="/signup"
+              href="/enrol"
               onClick={() => setOpen(false)}
               className={buttonClasses("primary", "w-full py-3 text-sm")}
             >

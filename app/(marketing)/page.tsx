@@ -188,7 +188,7 @@ export default function LandingPage() {
                   so the metal on a primary button is defined once. Only the
                   size and the lift are this button's own. */}
               <Link
-                href="/signup"
+                href="/enrol"
                 className={buttonClasses(
                   "primary",
                   "px-10 py-[23px] text-base hover:-translate-y-0.5",
@@ -468,7 +468,7 @@ export default function LandingPage() {
                 visible — and a flat white pill on a lit blue card was the one
                 thing here still reading as a sticker. */}
             <Link
-              href="/signup"
+              href="/enrol"
               className="lh-metal-light mt-8 inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-bold text-blue transition hover:-translate-y-0.5 hover:brightness-[1.02]"
             >
               Get started free <ArrowIcon className="h-4 w-4" />

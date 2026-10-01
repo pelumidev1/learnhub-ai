@@ -14,7 +14,7 @@ export function PublicHeader() {
             Log in
           </Link>
           <Link
-            href="/signup"
+            href="/enrol"
             className="rounded-full bg-blue px-4 py-2 text-white shadow-glow transition hover:brightness-110"
           >
             Get started
