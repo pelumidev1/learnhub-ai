@@ -10,6 +10,7 @@ import {
   type TaskKind,
 } from "./certification";
 import { getCurrentCohort } from "./queries";
+import { isAdmin } from "@/lib/admin/queries";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
 
@@ -20,6 +21,8 @@ export type Task = {
   title: string;
   brief: string | null;
   position: number;
+  /** Only ever false for the admin, whom RLS lets see drafts. */
+  is_published: boolean;
 };
 
 export type Submission = {
@@ -40,7 +43,7 @@ export type TestSummary = {
 };
 
 export type ModuleWork = {
-  module: { id: string; week_number: number | null; slug: string; title: string };
+  module: { id: string; week_number: number | null; slug: string; title: string; is_published: boolean };
   tasks: Task[];
   submissions: Map<string, Submission>;
   test: TestSummary | null;
@@ -71,8 +74,7 @@ export async function getVisibleModule(
 ) {
   const query = supabase
     .from("bootcamp_modules")
-    .select("id, week_number, slug, title")
-    .eq("is_published", true);
+    .select("id, week_number, slug, title, is_published");
   const { data } = await ("slug" in by ? query.eq("slug", by.slug) : query.eq("id", by.id)).maybeSingle();
   return data as ModuleWork["module"] | null;
 }
@@ -86,13 +88,11 @@ export async function getVisibleModule(
  */
 export async function loadModuleTest(
   moduleId: string,
+  { includeDrafts = false }: { includeDrafts?: boolean } = {},
 ): Promise<{ testId: string; questions: QuizQuestion[] } | null> {
-  const { data } = await createServiceClient()
-    .from("module_tests")
-    .select("id, questions")
-    .eq("module_id", moduleId)
-    .eq("is_published", true)
-    .maybeSingle();
+  let query = createServiceClient().from("module_tests").select("id, questions").eq("module_id", moduleId);
+  if (!includeDrafts) query = query.eq("is_published", true);
+  const { data } = await query.maybeSingle();
   if (!data) return null;
   const questions = parseQuestions(data.questions);
   return questions.length ? { testId: data.id, questions } : null;
@@ -107,14 +107,16 @@ export async function getModuleWork(
   const module = await getVisibleModule(supabase, { slug: moduleSlug });
   if (!module) return null;
 
+  const admin = await isAdmin(userId);
   const [{ data: taskRows }, test] = await Promise.all([
     supabase
       .from("bootcamp_tasks")
-      .select("id, slug, kind, title, brief, position")
+      .select("id, slug, kind, title, brief, position, is_published")
       .eq("module_id", module.id)
-      .eq("is_published", true)
       .order("position", { ascending: true }),
-    loadModuleTest(module.id),
+    /* The admin previews a draft test too; grading (work-actions) still only
+       ever loads a published one. */
+    loadModuleTest(module.id, { includeDrafts: admin }),
   ]);
   const tasks = (taskRows as Task[] | null) ?? [];
 
