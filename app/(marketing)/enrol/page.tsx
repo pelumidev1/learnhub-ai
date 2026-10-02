@@ -61,8 +61,9 @@ export default function EnrolPage() {
             No payment now. When seats open, you hear first.
           </p>
 
-          {/* Two lines on a phone, one from sm up, as the landing hero's. */}
-          <p className="lh-hero-in mt-4 flex flex-col items-center gap-1 text-sm text-white/75 sm:flex-row sm:justify-center sm:gap-0" style={d(320)}>
+          {/* Always two lines: the column is form-width at every size, too
+              narrow to hold price and seats side by side. */}
+          <p className="lh-hero-in mt-4 flex flex-col items-center gap-1 text-sm text-white/75" style={d(320)}>
             <span>
               <span className="font-semibold text-white">{price}</span>
               {earlyBird ? (
@@ -73,7 +74,6 @@ export default function EnrolPage() {
               ) : null}
             </span>
             <span>
-              <span className="mx-2 hidden text-white/40 sm:inline">·</span>
               {seatsLeft} of {COHORT.seats} seats left
             </span>
           </p>
