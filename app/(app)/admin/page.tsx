@@ -38,6 +38,13 @@ export default async function AdminPage() {
           Bootcamp submissions to review
           <Icons.arrowRight className="h-3.5 w-3.5" />
         </Link>
+        <Link
+          href="/admin/certificates"
+          className="ml-5 mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-blue hover:text-blue-600"
+        >
+          Certificates
+          <Icons.arrowRight className="h-3.5 w-3.5" />
+        </Link>
       </header>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">

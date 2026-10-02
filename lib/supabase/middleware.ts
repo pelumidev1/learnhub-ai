@@ -29,6 +29,7 @@ const PROTECTED = [
   "/resources",
   "/advisor",
   "/settings",
+  "/certificate",
 ];
 
 /** Auth pages a signed-in user should be bounced away from. */
