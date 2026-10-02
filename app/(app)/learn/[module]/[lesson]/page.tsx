@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HiddenBadge } from "@/components/bootcamp/hidden-badge";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient, getAuthUser } from "@/lib/supabase/server";
@@ -69,6 +70,7 @@ export default async function LessonPage({ params }: { params: Params }) {
             {mod.week_number === null ? "Foundations" : `Week ${mod.week_number}`} · Lesson{" "}
             {lesson.position} of {mod.lessons.length}
           </p>
+          {(!lesson.is_published || !mod.is_published) && <HiddenBadge className="mt-2" />}
           <h1 className="mt-1.5 font-serif text-[2.25rem] font-normal leading-tight text-ink sm:text-[2.75rem]">
             {lesson.title}
           </h1>

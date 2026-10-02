@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Enter } from "@/components/ui/enter";
 import { Icons } from "@/components/ui/icons";
+import { HiddenBadge } from "@/components/bootcamp/hidden-badge";
 import { lessonExcerpt } from "@/lib/bootcamp/markdown";
 import { weekOpensOn, type Cohort, type ModuleWithLessons } from "@/lib/bootcamp/queries";
 
@@ -33,8 +34,9 @@ export function ContentTab({
           <Enter key={m.id} index={i + 1}>
             <section className="rounded-2xl border border-silver bg-white p-5 shadow-soft sm:p-6">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted-2">
+                <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-muted-2">
                   {m.week_number === null ? "Foundations" : `Week ${m.week_number}`}
+                  {!m.is_published && <HiddenBadge className="normal-case tracking-normal" />}
                 </p>
                 <div className="flex items-center gap-3">
                   {m.lessons.length > 0 && (
@@ -109,6 +111,7 @@ export function ContentTab({
                             {lessonExcerpt(l.body, 70)}
                           </span>
                         </span>
+                        {!l.is_published && <HiddenBadge />}
                         {l.duration_minutes && (
                           <span className="flex-none font-mono text-xs text-muted-2">
                             {l.duration_minutes}m
