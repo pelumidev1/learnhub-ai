@@ -10,13 +10,17 @@
 export const ISSUER = {
   name: "LearnHub",
   /**
-   * The CAC business name registration for the small print, e.g.
-   * "LearnHub, a business name registered in Nigeria, BN 1234567". Pelumi will
-   * send the number; until then the line is left off rather than guessed.
+   * The legal issuer, for the small print. Registered with the CAC as a
+   * limited company (Pelumi, 2026-10-02); "CAC registration no." rather than
+   * RC or BN, because that is how he gave it.
    */
-  registration: null as string | null,
-  /** LearnHub's LinkedIn company page id, for the issuer logo on "Add to LinkedIn". */
-  linkedinOrganizationId: null as string | null,
+  registration: "Issued by LearnHub Global Academy Ltd, registered in Nigeria, CAC registration no. 9116448" as string | null,
+  /**
+   * The numeric id of the LearnHub Global Academy LinkedIn page
+   * (linkedin.com/company/learnhub-global-academy), so "Add to LinkedIn" shows
+   * the page's logo as the issuer. The vanity slug does not work there.
+   */
+  linkedinOrganizationId: "110068095" as string | null,
 };
 
 export const SIGNER = {
