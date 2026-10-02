@@ -1,7 +1,7 @@
 ---
 title: ChatGPT, Codex and Gemini: Projects, Gems and when to use which
 duration_minutes: 14
-published: false
+published: true
 video_url:
 chapters: [{"label":"You do not need to pay for these","at":0},{"label":"ChatGPT: Projects and memory","at":0},{"label":"What happened to custom GPTs","at":0},{"label":"Codex: a second pair of eyes on code","at":0},{"label":"Gemini: build a Gem","at":0},{"label":"When to use which","at":0}]
 resources: [{"label":"Custom GPT retirement and migration FAQ","url":"https://help.openai.com/en/articles/20001519-custom-gpt-retirement-and-migration-faq","kind":"doc","cost":"Free"},{"label":"Codex plans and limits","url":"https://learn.chatgpt.com/docs/pricing","kind":"doc","cost":"Free"},{"label":"Tips for creating Gems","url":"https://support.google.com/gemini/answer/15235603","kind":"doc","cost":"Free"}]
