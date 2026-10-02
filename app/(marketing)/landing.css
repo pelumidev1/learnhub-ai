@@ -360,3 +360,13 @@
 .lh-footer {
   background: linear-gradient(180deg, #1f33cc 0%, #182ab0 55%, #0b0f1a 135%);
 }
+
+/* /enrol: the form card floats over the foot of the wash, so it takes the
+   product window's deeper, layered shadow in place of its own flat one.
+   (0,1,1) specificity, so it wins over the card's shadow utility. */
+.lh-enrol-card > :is(form, div) {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 2px 4px rgba(11, 15, 26, 0.06),
+    0 24px 64px -12px rgba(11, 15, 26, 0.28);
+}
