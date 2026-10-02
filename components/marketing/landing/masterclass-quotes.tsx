@@ -7,7 +7,8 @@ import { Reveal } from "./reveal";
  *
  * Quoted word for word, emoji included, with the time each was sent. Edited
  * would make them testimonials we wrote. Names are first name or handle only,
- * and the role is from each person's own introduction in the group; no
+ * and the role is from each person's own introduction in the group (Ola's
+ * from Pelumi, 2026-10-02); no
  * surnames, photos or numbers. Messages that thank Pelumi by name are left
  * out: the product speaks as Learnhub (CLAUDE.md, Tone).
  *
@@ -29,7 +30,7 @@ const QUOTES = [
   {
     text: "Thank you for taking the time to explain and break it down 🤝✅",
     name: "Ola",
-    role: "Masterclass attendee",
+    role: "GTM specialist",
     time: "15:22",
   },
 ];
