@@ -102,6 +102,7 @@ async function readWeek(week: number): Promise<DraftWeek | null> {
       video_url: meta.video_url ? String(meta.video_url) : null,
       duration_minutes: typeof meta.duration_minutes === "number" ? meta.duration_minutes : null,
       published: meta.published === true,
+      is_published: meta.published === true,
     });
   }
 

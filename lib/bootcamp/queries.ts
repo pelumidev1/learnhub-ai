@@ -42,6 +42,8 @@ export type Lesson = {
   resources_checked_on: string | null;
   video_url: string | null;
   duration_minutes: number | null;
+  /** Only ever false for the admin: RLS hides unpublished rows from everyone else. */
+  is_published: boolean;
 };
 
 export type ModuleWithLessons = ModuleSummary & { lessons: Lesson[] };
@@ -53,6 +55,8 @@ export type ModuleSummary = {
   title: string;
   summary: string | null;
   ship: string | null;
+  /** Only ever false for the admin: RLS hides unpublished rows from everyone else. */
+  is_published: boolean;
 };
 
 /**
@@ -119,8 +123,7 @@ export async function getEnrollment(
 export async function getVisibleModules(supabase: Supabase): Promise<ModuleSummary[]> {
   const { data } = await supabase
     .from("bootcamp_modules")
-    .select("id, week_number, slug, title, summary, ship")
-    .eq("is_published", true)
+    .select("id, week_number, slug, title, summary, ship, is_published")
     .order("week_number", { ascending: true });
   return (data as ModuleSummary[] | null) ?? [];
 }
@@ -147,16 +150,16 @@ export function weekOpensOn(cohortStartsOn: string | null, weekNumber: number): 
  * is built for connections where each of those is felt.
  *
  * RLS decides what comes back. An unenrolled reader gets the public modules
- * and nothing else, so there is no enrolment check here to forget.
+ * and nothing else, so there is no enrolment check here to forget. Publication
+ * is RLS's call too (20261002130000): students get published rows only, the
+ * admin gets drafts as well, flagged by is_published.
  */
 export async function getCurriculum(supabase: Supabase): Promise<ModuleWithLessons[]> {
   const { data } = await supabase
     .from("bootcamp_modules")
     .select(
-      "id, week_number, slug, title, summary, ship, lessons(id, slug, title, position, body, transcript, chapters, resources, resources_checked_on, video_url, duration_minutes)",
+      "id, week_number, slug, title, summary, ship, is_published, lessons(id, slug, title, position, body, transcript, chapters, resources, resources_checked_on, video_url, duration_minutes, is_published)",
     )
-    .eq("is_published", true)
-    .eq("lessons.is_published", true)
     .order("week_number", { ascending: true });
 
   return ((data as ModuleWithLessons[] | null) ?? []).map((m) => ({
@@ -181,11 +184,9 @@ export async function getLesson(
   const { data } = await supabase
     .from("bootcamp_modules")
     .select(
-      "id, week_number, slug, title, summary, ship, lessons(id, slug, title, position, body, transcript, chapters, resources, resources_checked_on, video_url, duration_minutes)",
+      "id, week_number, slug, title, summary, ship, is_published, lessons(id, slug, title, position, body, transcript, chapters, resources, resources_checked_on, video_url, duration_minutes, is_published)",
     )
     .eq("slug", moduleSlug)
-    .eq("is_published", true)
-    .eq("lessons.is_published", true)
     .maybeSingle();
 
   const module = data as ModuleWithLessons | null;
