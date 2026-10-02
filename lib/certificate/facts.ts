@@ -27,10 +27,11 @@ export const SIGNER = {
   name: "Pelumi Fatoye",
   title: "Lead Instructor, LearnHub",
   /**
-   * A transparent PNG of Pelumi's signature under /public. Until he sends one,
-   * the certificate sets his name in the serif italic as a stand-in.
+   * Pelumi's signature, a transparent PNG under /public: drawn in Notes
+   * (2026-10-02), white removed and the ink set to the certificate's ink.
+   * Set to null and the certificate falls back to his name in serif italic.
    */
-  signatureFile: null as string | null,
+  signatureFile: "brand/signature.png" as string | null,
 };
 
 /** The bootcamp as the certificate describes it. Six weeks at about eight hours. */
