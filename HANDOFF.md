@@ -45,6 +45,96 @@ applied by Pelumi the same day.
    at a time, while curl works (the sync now stops with "Could not read
    modules: fetch failed"). If it does, run it with Node 24:
    `/usr/local/bin/node --env-file=.env.local scripts/sync-bootcamp-content.mjs`.
+3a. **Brochure pass (29 September).** Pelumi edited the cohort 1 brochure
+   (`learnhub-launch/brochure/phone.html` and `deck.html`). `CURRICULUM.md` now matches it: week 2 is "Prompt engineering",
+   week 6 is "Identify your career, industry and business", Saturday 11am WAT
+   live sessions, pods, 35 seats, career paths. The `bootcamp_modules`
+   titles, summaries and ship lines for weeks 2, 3, 4 and 6 are caught up by
+   `20260929120000_bootcamp_modules_brochure.sql` (slugs unchanged; checked
+   against a scratch Postgres on 29 September), **written but not yet
+   applied**: Pelumi runs it in the SQL Editor. Still behind the brochure:
+   `learnhub-social-launch.md`, whose About section and days 8 to 14 carry the
+   August syllabus and ₦90,000 / 30 seats. It now has a warning banner at the
+   top. The master context's sections 5 and 6 carry "superseded" notes. A
+   copy of `learnhub-launch` from before these edits is in the 29 September
+   session's scratchpad only; the folder is in git from 30 September, so
+   everything after that date has proper history. **Pelumi is reworking
+   the social plan himself; do not rewrite it unless he asks.**
+3b. **Unsynced lesson edits: do not run `bootcamp:sync` without asking.**
+   Week 1 lessons 1, 2, 6, 7, 8 and 9 have worked examples added on
+   29 September (one running example, Amaka, who sells cakes in Lagos). 1 and
+   6 to 9 are already published, so a sync would put the examples in front
+   of students. Pelumi is holding them back for now.
+3c. **Week 1 lessons 6 and 7 moved to week 2 (29 September).** Week 1 now
+   teaches "Chat vs agents" and "Your CLAUDE.md and context folder" at 6 and
+   7 (drafted, unpublished). "Why prompting stops working" and "Workflows
+   over prompts" are in `content/bootcamp/week-2/` as lessons 2 and 3. The
+   sync never deletes, so **the next real sync leaves the old copies
+   published in week 1**, beside the new 6 and 7. Right after that sync, run
+   in the Supabase SQL Editor:
+   ```sql
+   delete from public.lessons
+   where slug in ('why-prompting-stops-working', 'workflows-over-prompts')
+     and module_id = (select id from public.bootcamp_modules where slug = 'set-up-your-ai-stack');
+   ```
+   Deleting a lesson also deletes its `lesson_progress` rows. Only one
+   enrolment exists (comped), so nothing real is lost. The week 1 test's
+   questions 4 to 7 changed with the move; the old four are the start of
+   `week-2/work/test.json`.
+3d. **Week 2 lessons 1, 4, 5 and 6 drafted (29 September), not synced,
+   `published: false`.** Prompting basics, your voice (with the AI tells),
+   everyday prompts, and marketing prompts that produce the landing copy week
+   3 builds on. Week 2 stays at six lessons (Pelumi, 29 September): the
+   old research lesson is a "Check the facts" section in lesson 6, and week
+   1 lesson 2's Perplexity line now points there (file edited, not synced).
+   Week 2's test (all ten questions) and its assignment and project briefs
+   were written the same day, also unpublished. The week 2 test had been
+   given copies of week 1's new agent questions by mistake in `b68aa00`; it
+   now carries the four prompting questions that moved with lessons 2 and 3.
+3e. **Week 3 drafted (29 September), not synced, all `published: false`.**
+   Six lessons, assignment, project and test in `content/bootcamp/week-3/`.
+   The Supabase and Vercel click paths were written without access to those
+   sites (blocked by that session's network), from search results: walk
+   through them on a real screen before publishing. `CURRICULUM.md` lists
+   the other choices made.
+   **Rewritten to Pelumi's own method (29 September, not synced).** His
+   choices: Claude Code in the **VS Code extension** (not the terminal),
+   **Claude Code commits and pushes** (GitHub Desktop removed; week 1
+   lesson 5 now installs VS Code and signs in with `gh auth login`), and
+   **design decisions live in `BUILD.md`** (the separate design skill is
+   gone; the `frontend-design` plugin stays). Lesson 2 is his
+   "decide first" interview producing `BUILD.md`, reference sites saved as
+   full HTML with take and leave, and a project `CLAUDE.md` with his
+   four-part "when you finish, tell me" report. Also: TypeScript and
+   Tailwind named, all copy in one file, prove a bug before fixing, Sentry
+   in lesson 6 and the project, an optional Namecheap domain, and "the last
+   10 percent". Sources are listed in `CURRICULUM.md` under week 3. The
+   week 1 project now says how to put the site live, and week 1 lesson 5
+   now installs Node.js (week 3 and 4 need it; it was missing).
+3f. **Week 4 drafted (29 September), not synced, all `published: false`.**
+   Six lessons, assignment, project and ten-question test in
+   `content/bootcamp/week-4/`, taught Pelumi's way (brief first, references
+   frame by frame, real photo into AI video, Remotion or HyperFrames via Claude Code).
+   Free-tier facts and the honest line are in `CURRICULUM.md` under week 4.
+   Open: week 1's test has three questions (q1, q4, q9) whose right answer is
+   the longest option, the giveaway `content/bootcamp/README.md` warns about;
+   not changed, as another session wrote them. **Next: week 5.**
+3g. **Weeks 5 and 6 drafted (30 September), not synced, all unpublished.**
+   Every lesson, assignment, project and test in `content/bootcamp/week-5/`
+   and `week-6/`. Week 5 lesson 5 (chatbot) came from Pelumi's 2024 deck
+   (`~/Downloads/Folders/AI COURSE/Copy of AI Chatbots full course.pptx`),
+   updated; lesson 6 from his Agent OS; week 6 lesson 5 from his offer notes.
+   `CURRICULUM.md` records the choices under each week. All six weeks now
+   exist as drafts. **Next:** Pelumi reads and publishes week by week; the
+   module-title migration `20260929120000` still needs applying; week 1's
+   test q1, q4 and q9 still give away the answer by length.
+3h. **Reviewing drafts: `/draft-preview` (30 September).** Run `npm run dev
+   -- -p 3001` and open `http://localhost:3001/draft-preview`: every week's
+   lessons read straight from `content/bootcamp` in the real lesson layout,
+   plus briefs and tests with the right answers marked. It 404s outside
+   `next dev`, so it never exposes drafts on the live site. Pelumi chose this
+   over publishing (the one enrolled student would see drafts) and over an
+   admin preview. Edits show on refresh; no sync needed to review.
 4. Launch blockers from the audit, all dashboard work for Pelumi: custom SMTP
    (Resend), Supabase Pro, Vercel Pro, an Anthropic spend limit, and rolling
    the Paystack live key.
@@ -388,11 +478,19 @@ also the LMS for a **paid six week AI bootcamp** launching **1 September 2026**,
 with masterclass registration due **26 or 27 August**. `PRD.md` still describes
 the free product only and has not been updated.
 
-The launch documents live **outside this repo**, in `../learnhub-launch/`:
+The launch documents live in `learnhub-launch/`, moved into this repo on
+30 September 2026 so that cloud sessions can reach them and so the calendar
+and scripts have history. Before that date they sat beside the repo, untracked,
+which is why older notes say "outside this repo" and write the path with `../`.
+
 `learnhub-master-context.md` (positioning, curriculum, pricing, voice),
 `learnhub-masterclass-copy.md` (page and email copy, paste-ready),
-`learnhub-lms-notes.md` (feature requirements and the build order). They are not
-version controlled. Read them before building anything bootcamp-related.
+`learnhub-lms-notes.md` (feature requirements and the build order),
+`learnhub-social-launch.md` (bios and social copy), `learnhub-calendar.html`
+(the two-week launch calendar) and `learnhub-video-scripts.html` (ten Reels and
+TikTok scripts), plus `brochure/` — the cohort 1 brochure in phone and deck
+form, which is what students are actually sold. Read them before building
+anything bootcamp-related.
 
 ### Four traps, in the order they will bite you
 
