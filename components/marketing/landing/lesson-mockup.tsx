@@ -1,3 +1,5 @@
+import { COHORT } from "./bootcamp-facts";
+
 
 /**
  * The framed product shot under the hero headline: the bootcamp's lesson
@@ -49,7 +51,7 @@ export function LessonMockup() {
           {/* Course outline. Hidden on a phone, where the lesson is the shot. */}
           <aside className="hidden border-r border-silver bg-paper/60 p-4 sm:block lg:p-5">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-2">AI Bootcamp</p>
-            <p className="mt-1 text-sm font-semibold text-ink">12 October 2026, Cohort 1</p>
+            <p className="mt-1 text-sm font-semibold text-ink">{COHORT.label}</p>
             <ol className="mt-5 space-y-1">
               {WEEKS.map((w) => (
                 <li

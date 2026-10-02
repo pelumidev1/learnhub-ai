@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { PRICING, currentTier } from "@/lib/bootcamp/pricing";
+import { COHORT, priceNow } from "./bootcamp-facts";
 import { HeroDepth } from "./hero-depth";
 import { LessonMockup } from "./lesson-mockup";
+import { SeatLink } from "./seat-link";
 
 /** Staggered load-in delay (CSS var read by .lh-hero-in). */
 const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
@@ -18,7 +18,7 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 export function BootcampHero() {
   // The page revalidates hourly, so this flips to the full price within an
   // hour of the early-bird closing (FOUNDING_CLOSES_AT) with no deploy.
-  const earlyBird = currentTier() === "founding";
+  const { earlyBird, price, full } = priceNow();
 
   return (
     <HeroDepth className="lh-wash relative overflow-hidden">
@@ -31,7 +31,7 @@ export function BootcampHero() {
             style={d(0)}
           >
             <span className="h-1.5 w-1.5 rounded-full bg-sky-2" />
-            AI Bootcamp · 12 October 2026, Cohort 1
+            AI Bootcamp · {COHORT.label}
           </span>
 
           <h1
@@ -51,30 +51,22 @@ export function BootcampHero() {
           </p>
 
           <div className="lh-hero-in mt-9 flex flex-col items-center gap-4" style={d(360)}>
-            <Link
-              href="/enrol"
-              className="lh-metal-light inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-[15px] font-bold text-blue transition duration-200 ease-out hover:-translate-y-0.5"
-            >
-              Save my seat
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </Link>
+            <SeatLink tone="light" />
             {/* Two lines on a phone, one from sm up: the separators only
                 show where the pieces share a line. */}
             <p className="flex flex-col items-center gap-1 text-sm text-white/75 sm:flex-row sm:gap-0">
               <span>
                 {earlyBird ? (
                   <>
-                    <span className="font-semibold text-white">{PRICING.founding.label}</span> early-bird until 10 October{" "}
-                    <span className="text-white/50 line-through">{PRICING.standard.label}</span>
+                    <span className="font-semibold text-white">{price}</span> early-bird until {COHORT.earlyBirdEnds}{" "}
+                    <span className="text-white/50 line-through">{full}</span>
                   </>
                 ) : (
-                  <span className="font-semibold text-white">{PRICING.standard.label}</span>
+                  <span className="font-semibold text-white">{price}</span>
                 )}
               </span>
               <span>
-                <span className="mx-2 hidden text-white/40 sm:inline">·</span>35 seats
+                <span className="mx-2 hidden text-white/40 sm:inline">·</span>{COHORT.seats} seats
                 <span className="mx-2 text-white/40">·</span>Laptop needed
               </span>
             </p>

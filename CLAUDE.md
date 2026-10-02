@@ -118,7 +118,7 @@ the grounds; ink is text. Never introduce a second accent hue.
 - **Radius:** 8px (sm), 12px (md), 16px (lg), full for pills.
 - **Shadows:** soft and layered, e.g. `0 1px 2px rgba(11,15,26,.06), 0 8px 24px rgba(11,15,26,.08)`. No harsh drop shadows.
 - **Motion:** 150–250ms, ease-out. Purposeful, never bouncy or decorative.
-- **Typography: Switzer for display, General Sans for body, Geist Mono for technical detail.** Wired up in `app/fonts.ts` and `tailwind.config.ts` — settled 2026-08-04, and this line used to say Geist, which sent more than one session "correcting" the page back. **Never** Inter, Roboto, Arial, or default system fonts — they read as generic AI slop. Strong weight contrast for hierarchy; comfortable line-height for mobile reading.
+- **Typography: Switzer for display, General Sans for body, Geist Mono for technical detail.** The one exception is the landing page's headings, which are **Instrument Serif** (`font-serif`, set on that page only; decided 2026-10-02, modelled on artisan.co). The app stays on Switzer. Wired up in `app/fonts.ts` and `tailwind.config.ts` — settled 2026-08-04, and this line used to say Geist, which sent more than one session "correcting" the page back. **Never** Inter, Roboto, Arial, or default system fonts — they read as generic AI slop. Strong weight contrast for hierarchy; comfortable line-height for mobile reading.
 - Avoid: cluttered layouts, purple-on-white gradients, stock-illustration clutter, more than one accent color.
 
 ## Code rules
