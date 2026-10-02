@@ -21,11 +21,10 @@ const styles: Record<Variant, string> = {
     "shadow-[inset_0_1px_0_rgba(255,255,255,.32),0_20px_50px_-24px_rgba(31,51,204,.42)]",
     "[@media(hover:hover){&:hover}]:brightness-110",
   ].join(" "),
-  /* Outline stays flat: `.lh-metal-light` is in landing.css, which only the
-     landing route loads, so an outline button on /signup would come out with a
-     border and no fill at all. */
+  /* The light metal (`.lh-metal-light`, app/brand.css), which every page loads
+     now that the stylesheet sits on the root layout. */
   outline:
-    "border border-silver-2 bg-white text-ink shadow-soft [@media(hover:hover){&:hover}]:bg-paper",
+    "lh-metal-light text-ink shadow-soft [@media(hover:hover){&:hover}]:brightness-[0.98]",
   ghost: "text-ink [@media(hover:hover){&:hover}]:bg-paper",
 };
 

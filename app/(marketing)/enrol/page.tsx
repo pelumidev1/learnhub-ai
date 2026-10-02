@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Logo } from "@/components/ui/logo";
 import { WaitlistForm } from "@/components/waitlist/waitlist-form";
 import { COHORT, priceNow, seatsLeft } from "@/components/marketing/landing/bootcamp-facts";
-import { serifFont } from "@/app/fonts";
-import "../landing.css";
 
 export const metadata: Metadata = {
   // The root layout appends "· LearnHub"; adding it here too doubles it.
@@ -33,7 +31,7 @@ export default function EnrolPage() {
   const { earlyBird, price, full } = priceNow();
 
   return (
-    <div className={`${serifFont.variable} flex min-h-svh flex-col bg-white text-ink`}>
+    <div className="flex min-h-svh flex-col bg-white text-ink">
       <section className="lh-wash relative overflow-hidden">
         <div className="lh-hero-glow pointer-events-none absolute inset-x-0 bottom-0 h-[70%]" aria-hidden />
         {/* On the landing nav's gutter, so the logo sits where it does there. */}

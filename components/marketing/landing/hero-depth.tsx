@@ -13,7 +13,7 @@ import { usePrefersReducedMotion } from "./motion-budget";
  * One custom property per frame, written only while the hero is on screen, so
  * the page does not re-render and an off-screen hero costs nothing. With
  * reduced motion the property is never set and the CSS falls back to a static,
- * flat composition (see .lh-depth-* in landing.css).
+ * flat composition (see .lh-depth-* in app/brand.css).
  */
 export function HeroDepth({
   children,

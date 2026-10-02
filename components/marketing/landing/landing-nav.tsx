@@ -9,10 +9,10 @@ import { whatsappLink } from "@/lib/site";
 import { WhatsAppMark } from "./whatsapp-link";
 
 const LINKS = [
-  { href: "#roadmap", label: "Roadmap" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/#roadmap", label: "Roadmap" },
+  { href: "/#pricing", label: "Pricing" },
   { href: "/careers", label: "Careers" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 /** Sticky landing navbar: transparent over the dark hero, frosts to white once

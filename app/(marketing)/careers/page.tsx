@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PublicHeader, PublicFooter } from "@/components/marketing/public-shell";
+import { LandingNav } from "@/components/marketing/landing/landing-nav";
+import { SiteFooter } from "@/components/marketing/landing/closing";
+import { PageHero } from "@/components/marketing/page-hero";
+import { SeatLink } from "@/components/marketing/landing/seat-link";
+import { Reveal } from "@/components/marketing/landing/reveal";
 import { getCareers, categoryLabel, type CareerListItem } from "@/lib/careers/queries";
 
 export const metadata: Metadata = {
   title: "Tech Careers Catalog · LearnHub",
   description:
-    "Explore tech careers you can build toward across Africa: what each does, the skills you'll need, and realistic local pay. Then get your personalized match.",
+    "Explore tech careers you can build toward across Africa: what each does, the skills you'll need, and realistic local pay.",
 };
 
 // Public marketing data; revalidate hourly so edits to the catalog show up
@@ -32,9 +36,9 @@ function CareerCard({ career }: { career: CareerListItem }) {
   return (
     <Link
       href={`/careers/${career.slug}`}
-      className="group flex flex-col rounded-2xl border border-silver bg-white p-5 shadow-soft transition hover:border-blue/40 hover:shadow-glow"
+      className="group flex flex-col rounded-[20px] border border-silver bg-white p-6 transition duration-200 ease-out hover:-translate-y-0.5 hover:border-blue/40 hover:shadow-[0_1px_2px_rgba(11,15,26,.06),0_16px_40px_-16px_rgba(11,15,26,.22)]"
     >
-      <h3 className="font-display text-lg font-semibold text-ink group-hover:text-blue">
+      <h3 className="font-serif text-[1.6rem] leading-tight text-ink group-hover:text-blue">
         {career.title}
       </h3>
       {career.description && (
@@ -60,48 +64,44 @@ export default async function CareersPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-paper text-ink">
-      <PublicHeader />
+    <div className="flex min-h-screen flex-col bg-white text-ink">
+      <LandingNav />
 
-      <main className="mx-auto w-full max-w-5xl flex-1 px-5 py-10 sm:py-14">
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-blue">Careers catalog</p>
-        <h1 className="mt-2 max-w-2xl font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-          Tech careers you can build toward
-        </h1>
-        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
-          Explore what each role does, the skills you&rsquo;ll need, and realistic pay across
-          Africa. When you&rsquo;re ready, take the 2-minute assessment for a match tailored to you.
-        </p>
-        <div className="mt-6">
-          <Link
-            href="/signup"
-            className="inline-flex items-center gap-2 rounded-full bg-blue px-5 py-3 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
-          >
-            Get your personalized match →
-          </Link>
-        </div>
+      {/* The assessment that used to follow this lead needs an account, and
+          sign-up is closed while the app is owner-only, so the page points at
+          the bootcamp like the rest of the site. */}
+      <PageHero
+        eyebrow="Careers catalog"
+        title="Tech careers you can build toward"
+        lead="What each role does, the skills you'll need, and realistic pay across Africa."
+      >
+        <SeatLink tone="light" />
+      </PageHero>
 
+      <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-16 sm:py-24">
         {groups.length === 0 ? (
-          <p className="mt-12 text-muted">The catalog is being updated. Please check back soon.</p>
+          <p className="text-muted">The catalog is being updated. Please check back soon.</p>
         ) : (
-          <div className="mt-12 space-y-12">
+          <div className="space-y-16 sm:space-y-20">
             {groups.map((g) => (
-              <section key={g.category}>
-                <h2 className="font-display text-xl font-semibold text-ink">
-                  {categoryLabel(g.category)}
-                </h2>
-                <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {g.items.map((c) => (
-                    <CareerCard key={c.slug} career={c} />
-                  ))}
-                </div>
-              </section>
+              <Reveal as="div" key={g.category}>
+                <section>
+                  <h2 className="font-serif text-[2.25rem] leading-[1.1] text-ink sm:text-[2.75rem]">
+                    {categoryLabel(g.category)}
+                  </h2>
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {g.items.map((c) => (
+                      <CareerCard key={c.slug} career={c} />
+                    ))}
+                  </div>
+                </section>
+              </Reveal>
             ))}
           </div>
         )}
       </main>
 
-      <PublicFooter />
+      <SiteFooter />
     </div>
   );
 }

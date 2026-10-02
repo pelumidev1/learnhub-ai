@@ -18,7 +18,7 @@ export default async function ProgressPage() {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="font-display text-2xl font-bold text-ink">Your progress</h1>
+        <h1 className="font-serif leading-[1.08] text-[2.25rem] font-normal text-ink">Your progress</h1>
         <p className="mt-1 text-muted">
           Every step you complete builds your streak. Keep it going.
         </p>

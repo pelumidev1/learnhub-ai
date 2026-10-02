@@ -8,7 +8,7 @@ import { ToolMark } from "./tools-strip";
  * tied to the curriculum rather than to a screen that will change.
  *
  * Children of `.lh-stagger` rise in one after another when their row is
- * revealed (see Reveal and .lh-stagger in landing.css). Every one of these is
+ * revealed (see Reveal and .lh-stagger in app/brand.css). Every one of these is
  * a picture, so each is aria-hidden; the card beside it carries the words.
  */
 

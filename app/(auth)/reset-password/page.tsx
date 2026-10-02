@@ -5,8 +5,8 @@ export const metadata: Metadata = { title: "Set a new password" };
 
 export default function ResetPasswordPage() {
   return (
-    <div className="rounded-2xl border border-silver bg-white p-8 shadow-soft">
-      <h1 className="font-display text-2xl font-bold text-ink">
+    <div className="rounded-[20px] border border-silver bg-white p-8 shadow-[0_1px_2px_rgba(11,15,26,.06),0_24px_64px_-24px_rgba(11,15,26,.22)]">
+      <h1 className="font-serif text-[2.5rem] leading-[1.05] text-ink">
         Set a new password
       </h1>
       <p className="mt-1 text-sm text-muted">

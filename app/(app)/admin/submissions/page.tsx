@@ -56,7 +56,7 @@ export default async function SubmissionsPage() {
           <Icons.arrowRight className="h-3.5 w-3.5 rotate-180" />
           Admin
         </Link>
-        <h1 className="mt-3 font-display text-2xl font-bold text-ink">Submissions</h1>
+        <h1 className="mt-3 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink">Submissions</h1>
         <p className="mt-1 text-muted">
           {rows.length === 0
             ? "Nothing waiting. Everything handed in has been reviewed."

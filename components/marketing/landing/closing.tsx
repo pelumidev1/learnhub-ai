@@ -22,23 +22,30 @@ const FLOATERS = [
   { title: "Demo day", sub: "Your final project, presented live", pos: "right-[8%] bottom-[14%]", float: "lh-float" },
 ];
 
+/** A small "done" card from the course, floating gently. Also the auth panel's. */
+export function FloatCard({ title, sub, float = "lh-float" }: { title: string; sub: string; float?: string }) {
+  return (
+    <div className={`${float} flex items-center gap-2.5 rounded-2xl border border-white/80 bg-white py-2.5 pl-2.5 pr-4 shadow-[0_1px_2px_rgba(11,15,26,.06),0_12px_32px_-10px_rgba(11,15,26,.2)]`}>
+      <span className="grid h-7 w-7 place-items-center rounded-full bg-blue text-white">
+        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m5 12 5 5L20 7" />
+        </svg>
+      </span>
+      <span>
+        <span className="block text-[13px] font-semibold text-ink">{title}</span>
+        <span className="block text-[11.5px] text-muted">{sub}</span>
+      </span>
+    </div>
+  );
+}
+
 export function ClosingSection() {
   return (
     <section className="lh-close relative overflow-hidden py-28 sm:py-40">
       <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
         {FLOATERS.map((f) => (
           <div key={f.title} className={`absolute ${f.pos}`}>
-            <div className={`${f.float} flex items-center gap-2.5 rounded-2xl border border-white/80 bg-white py-2.5 pl-2.5 pr-4 shadow-[0_1px_2px_rgba(11,15,26,.06),0_12px_32px_-10px_rgba(11,15,26,.2)]`}>
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-blue text-white">
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m5 12 5 5L20 7" />
-                </svg>
-              </span>
-              <span>
-                <span className="block text-[13px] font-semibold text-ink">{f.title}</span>
-                <span className="block text-[11.5px] text-muted">{f.sub}</span>
-              </span>
-            </div>
+            <FloatCard title={f.title} sub={f.sub} float={f.float} />
           </div>
         ))}
       </div>

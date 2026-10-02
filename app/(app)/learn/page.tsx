@@ -63,7 +63,7 @@ export default async function LearnPage() {
             <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-blue/10 text-blue">
               <Icons.book className="h-6 w-6" />
             </div>
-            <h1 className="mt-4 font-display text-2xl font-bold text-ink">
+            <h1 className="mt-4 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink">
               Week one is not open yet
             </h1>
             <p className="mt-2 text-muted">
@@ -84,7 +84,7 @@ export default async function LearnPage() {
           <p className="font-mono text-xs uppercase tracking-[0.14em] text-blue">
             {cohort?.name ?? "Bootcamp"}
           </p>
-          <h1 className="mt-1 font-display text-2xl font-bold text-ink sm:text-3xl">
+          <h1 className="mt-1 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink sm:text-[2.75rem]">
             Your bootcamp
           </h1>
           <p className="mt-2 text-muted">

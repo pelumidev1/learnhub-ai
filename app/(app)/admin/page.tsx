@@ -27,7 +27,7 @@ export default async function AdminPage() {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="font-display text-2xl font-bold text-ink">Admin</h1>
+        <h1 className="font-serif leading-[1.08] text-[2.25rem] font-normal text-ink">Admin</h1>
         <p className="mt-1 text-muted">
           How LearnHub is doing. Totals are all-time; charts cover the last {windowDays} days.
         </p>

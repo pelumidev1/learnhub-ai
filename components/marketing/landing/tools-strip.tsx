@@ -13,7 +13,7 @@ export function ToolMark({ tool, className = "h-5 w-5" }: { tool: Tool; classNam
  * its customer logos. We have no customers to show yet, and the tools are the
  * honest version of the same signal: this is the industry's own kit.
  *
- * Runs on the page's existing marquee (.lh-marquee in landing.css): the list
+ * Runs on the page's existing marquee (.lh-marquee in app/brand.css): the list
  * twice, the track sliding by one copy, the second copy aria-hidden so a
  * screen reader hears it once. The section's overflow-hidden is load-bearing:
  * the track is max-content wide, and without it the page grows to its width.

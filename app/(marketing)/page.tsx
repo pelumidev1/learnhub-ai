@@ -8,8 +8,6 @@ import { PricingSection } from "@/components/marketing/landing/pricing-section";
 import { FaqSection } from "@/components/marketing/landing/faq-section";
 import { CareersBand } from "@/components/marketing/landing/careers-band";
 import { ClosingSection, SiteFooter } from "@/components/marketing/landing/closing";
-import { serifFont } from "@/app/fonts";
-import "./landing.css";
 
 /* Hourly, so the early-bird price (hero, pricing, FAQ) turns over within an
    hour of its deadline without a deploy. Still a cached page. */
@@ -27,7 +25,7 @@ export const metadata: Metadata = {
  */
 export default function LandingPage() {
   return (
-    <div className={`${serifFont.variable} lh-landing bg-white text-ink`}>
+    <div className="lh-landing bg-white text-ink">
       <LandingNav />
 
       <BootcampHero />

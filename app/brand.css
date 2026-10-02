@@ -1,4 +1,7 @@
-/* Landing-only styling: animations and effects Tailwind can't express inline.
+/* The brand's surfaces and motion, site-wide since 2026-10-02: the blue wash,
+   the metal, the reveals and the hero load-in that Tailwind can't express
+   inline. Started as the landing page's own stylesheet (landing.css); every
+   page now wears the same design, so it loads from the root layout.
    Everything else is Tailwind utilities on the brand palette. */
 
 /* Gentle vertical bob for floating cards. */

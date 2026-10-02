@@ -37,7 +37,7 @@ export default async function RoadmapIndexPage() {
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
         <p className="font-mono text-xs uppercase tracking-[0.14em] text-blue">Your learning</p>
-        <h1 className="mt-1 font-display text-2xl font-bold text-ink sm:text-3xl">
+        <h1 className="mt-1 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink sm:text-[2.75rem]">
           Learning roadmaps
         </h1>
       </div>

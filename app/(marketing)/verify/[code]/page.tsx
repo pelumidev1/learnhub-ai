@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PublicHeader, PublicFooter } from "@/components/marketing/public-shell";
+import { LandingNav } from "@/components/marketing/landing/landing-nav";
+import { SiteFooter } from "@/components/marketing/landing/closing";
+import { PageHero } from "@/components/marketing/page-hero";
 import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
@@ -37,10 +39,13 @@ export default async function VerifyPage({
   const cert = (data as VerifiedCertificate[] | null)?.[0] ?? null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-paper text-ink">
-      <PublicHeader />
+    <div className="flex min-h-screen flex-col bg-white text-ink">
+      <LandingNav />
 
-      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center px-5 py-16 text-center">
+      <PageHero title="Certificate check" overlap />
+
+      {/* The result card pulled up over the foot of the wash, as on /enrol. */}
+      <main className="lh-enrol-card relative mx-auto -mt-28 flex w-full max-w-xl flex-1 flex-col items-center px-5 pb-20 text-center sm:-mt-32">
         {cert ? (
           <div className="w-full rounded-2xl border border-silver bg-white p-8 shadow-soft">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue/10 text-blue">
@@ -60,9 +65,9 @@ export default async function VerifyPage({
             <p className="mt-4 font-mono text-xs uppercase tracking-[0.14em] text-blue">
               Verified certificate
             </p>
-            <h1 className="mt-2 font-display text-2xl font-semibold">
+            <h2 className="mt-2 font-serif text-[2.25rem] leading-tight">
               {cert.holder_name ?? "A LearnHub learner"}
-            </h1>
+            </h2>
             <p className="mt-3 text-[15px] text-muted">
               completed{" "}
               <span className="font-semibold text-ink">
@@ -88,7 +93,7 @@ export default async function VerifyPage({
                 <path d="M18 6 6 18M6 6l12 12" />
               </svg>
             </div>
-            <h1 className="mt-4 font-display text-2xl font-semibold">Certificate not found</h1>
+            <h2 className="mt-4 font-serif text-[2.25rem] leading-tight">Certificate not found</h2>
             <p className="mt-3 text-[15px] text-muted">
               {error
                 ? "We couldn't check this certificate right now. Please try again shortly."
@@ -105,7 +110,7 @@ export default async function VerifyPage({
         </Link>
       </main>
 
-      <PublicFooter />
+      <SiteFooter />
     </div>
   );
 }

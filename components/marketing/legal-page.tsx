@@ -1,8 +1,10 @@
-import { PublicHeader, PublicFooter } from "./public-shell";
+import { LandingNav } from "./landing/landing-nav";
+import { SiteFooter } from "./landing/closing";
+import { PageHero } from "./page-hero";
 
 /**
- * Shared shell for legal/policy pages (Privacy, Terms). Plain, readable prose
- * on a light ground. Server component; no interactivity needed.
+ * Shared shell for legal/policy pages (Privacy, Terms): the site's page hero,
+ * then plain, readable prose on white. Server component; no interactivity needed.
  */
 export function LegalPage({
   title,
@@ -14,21 +16,19 @@ export function LegalPage({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col bg-paper text-ink">
-      <PublicHeader />
+    <div className="flex min-h-screen flex-col bg-white text-ink">
+      <LandingNav />
 
-      <main className="mx-auto w-full max-w-3xl flex-1 px-5 py-10 sm:py-14">
-        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-          {title}
-        </h1>
-        <p className="mt-2 text-sm text-muted">Last updated {lastUpdated}</p>
+      <PageHero title={title} lead={`Last updated ${lastUpdated}`} />
+
+      <main className="mx-auto w-full max-w-3xl flex-1 px-5 py-14 sm:py-20">
         {/* Consistent rhythm for headings/paragraphs/lists inside each policy. */}
-        <div className="legal-prose mt-8 space-y-6 text-[15px] leading-relaxed text-ink/90">
+        <div className="legal-prose space-y-8 text-[15px] leading-relaxed text-ink/90">
           {children}
         </div>
       </main>
 
-      <PublicFooter />
+      <SiteFooter />
     </div>
   );
 }
@@ -43,7 +43,7 @@ export function LegalSection({
 }) {
   return (
     <section className="space-y-3">
-      <h2 className="font-display text-xl font-semibold text-ink">{heading}</h2>
+      <h2 className="font-serif text-[1.85rem] leading-tight text-ink">{heading}</h2>
       {children}
     </section>
   );

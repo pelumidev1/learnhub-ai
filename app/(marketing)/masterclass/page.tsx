@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { PublicHeader, PublicFooter } from "@/components/marketing/public-shell";
+import { LandingNav } from "@/components/marketing/landing/landing-nav";
+import { SiteFooter } from "@/components/marketing/landing/closing";
+import { PageHero } from "@/components/marketing/page-hero";
 import { RegistrationForm } from "@/components/masterclass/registration-form";
 import { MASTERCLASS } from "@/lib/masterclass";
 
@@ -51,25 +53,23 @@ const FAQ = [
 
 export default function MasterclassPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-paper text-ink">
-      <PublicHeader />
+    <div className="flex min-h-screen flex-col bg-white text-ink">
+      <LandingNav />
 
-      <main className="mx-auto w-full max-w-3xl flex-1 px-5 py-10 sm:py-16">
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-blue">
-          Free live masterclass
-        </p>
-        <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-5xl">
-          The AI tools we actually build with
-        </h1>
-        <p className="mt-4 text-lg text-muted">
-          Free, live, and recorded. Building, video, design, and the AI tools behind all three.
-          Five people leave the session with a free seat in the Learnhub bootcamp.
-        </p>
-        <p className="mt-4 font-display font-semibold text-ink">
+      <PageHero
+        eyebrow="Free live masterclass"
+        title="The AI tools we actually build with"
+        lead="Free, live, and recorded. Building, video, design, and the AI tools behind all three. Five people leave the session with a free seat in the Learnhub bootcamp."
+        overlap
+      >
+        <p className="text-sm font-semibold text-white">
           {MASTERCLASS.date} at {MASTERCLASS.time}. Free. Bring a laptop or a phone, either works.
         </p>
+      </PageHero>
 
-        <div id="register" className="mt-8 scroll-mt-24">
+      {/* The form pulled up over the foot of the wash, as on /enrol. */}
+      <main className="relative mx-auto -mt-28 w-full max-w-3xl flex-1 px-5 pb-20 sm:-mt-32 sm:pb-28">
+        <div id="register" className="lh-enrol-card scroll-mt-24">
           <RegistrationForm source="masterclass-page" />
         </div>
 
@@ -82,7 +82,7 @@ export default function MasterclassPage() {
 
         <Section title="Who this is for">
           <List items={FOR_YOU} />
-          <h3 className="mt-6 font-display font-semibold text-ink">Who this is not for</h3>
+          <h3 className="mt-8 font-serif text-[1.6rem] leading-tight text-ink">Who this is not for</h3>
           <p className="mt-2 text-muted">
             AI engineers and machine learning people. This session is not that. If you build
             models for a living you will be bored.
@@ -90,8 +90,8 @@ export default function MasterclassPage() {
         </Section>
 
         <Section title="The giveaway">
-          <div className="rounded-2xl border border-blue/30 bg-blue/5 p-6">
-            <p className="font-display text-lg font-bold text-ink">
+          <div className="rounded-[20px] border border-blue/20 bg-paper-2 p-7">
+            <p className="font-serif text-[1.6rem] leading-tight text-ink">
               Five free seats in the first Learnhub cohort.
             </p>
             <p className="mt-3 text-muted">
@@ -109,36 +109,36 @@ export default function MasterclassPage() {
           <dl className="space-y-5">
             {FAQ.map(([q, a]) => (
               <div key={q}>
-                <dt className="font-display font-semibold text-ink">{q}</dt>
+                <dt className="font-semibold text-ink">{q}</dt>
                 <dd className="mt-1 text-muted">{a}</dd>
               </div>
             ))}
           </dl>
         </Section>
 
-        <div className="mt-12 rounded-2xl border border-silver bg-white p-6 text-center shadow-soft">
-          <p className="font-display text-lg font-bold text-ink">
+        <div className="lh-price-panel mt-16 rounded-[24px] p-8 text-center text-white sm:p-10">
+          <p className="font-serif text-[2rem] leading-tight">
             {MASTERCLASS.date}, {MASTERCLASS.time}
           </p>
-          <p className="mt-1 text-sm text-muted">Free, and recorded if you cannot make it.</p>
+          <p className="mt-2 text-sm text-white/80">Free, and recorded if you cannot make it.</p>
           <a
             href="#register"
-            className="mt-4 inline-flex items-center justify-center rounded-full bg-blue px-6 py-3 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
+            className="lh-metal-light mt-6 inline-flex items-center justify-center rounded-full px-8 py-3.5 text-[15px] font-bold text-blue transition duration-200 ease-out hover:-translate-y-0.5"
           >
             Save my seat
           </a>
         </div>
       </main>
 
-      <PublicFooter />
+      <SiteFooter />
     </div>
   );
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-12">
-      <h2 className="font-display text-xl font-bold text-ink sm:text-2xl">{title}</h2>
+    <section className="mt-16">
+      <h2 className="font-serif text-[2.25rem] leading-[1.1] text-ink sm:text-[2.75rem]">{title}</h2>
       <div className="mt-4">{children}</div>
     </section>
   );
