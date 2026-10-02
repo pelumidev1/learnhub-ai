@@ -38,10 +38,11 @@ export function CertificateList({ certificates }: { certificates: CertificateIte
                   {c.careerTitle ? `${c.careerTitle} · ` : ""}Issued {formatDate(c.issuedAt)}
                 </p>
                 <Link
-                  href={`/verify/${c.code}`}
-                  className="mt-1 inline-block font-mono text-[0.7rem] tracking-wide text-blue hover:text-blue-600"
+                  href={`/certificate/${c.code}`}
+                  className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-blue hover:text-blue-600"
                 >
-                  Verify / share: {c.code}
+                  View, download and share
+                  <Icons.arrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </li>

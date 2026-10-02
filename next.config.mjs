@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // The certificate routes read their fonts (and the signature, once there is
+  // one) from disk at request time. Listed here so the deployment bundles
+  // them; a path built with join() is not something the tracer can follow.
+  outputFileTracingIncludes: {
+    "/verify/**": ["./lib/certificate/fonts/**", "./public/brand/signature*"],
+  },
   images: {
     remotePatterns: [
       // Google account avatars (from OAuth).

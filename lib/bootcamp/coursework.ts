@@ -232,11 +232,37 @@ export async function issueCertificateIfEarned(userId: string): Promise<void> {
     const status = await getCertificationStatus(userId);
     if (!status.eligible) return;
 
+    /* The name is the student's to confirm, and it is printed exactly as
+       confirmed. Until they have, the certificate waits: the Progress page
+       asks for it, and confirming calls this again. Read through `as never`
+       because certificate_name postdates the generated types. */
+    const { data: profile } = await service
+      .from("profiles")
+      .select("certificate_name" as never)
+      .eq("id", userId)
+      .maybeSingle();
+    const holderName = (profile as { certificate_name?: string | null } | null)?.certificate_name?.trim();
+    if (!holderName) return;
+
+    // What they built: the approved final project, copied onto the
+    // certificate so the verify page can show it for good.
+    const { data: finals } = await service
+      .from("task_submissions")
+      .select("url, bootcamp_tasks!inner(title, kind)")
+      .eq("user_id", userId)
+      .eq("status", "approved")
+      .eq("bootcamp_tasks.kind", "final")
+      .limit(1);
+    const final = (finals as unknown as { url: string; bootcamp_tasks: { title: string } }[] | null)?.[0];
+
     const { error } = await service.from("certificates").insert({
       user_id: userId,
       cohort_id: cohort.id,
       title: `AI Bootcamp, ${cohort.name}`,
-    });
+      holder_name: holderName,
+      final_project_title: final?.bootcamp_tasks.title ?? null,
+      final_project_url: final?.url ?? null,
+    } as never);
     // 23505: already issued.
     if (error && error.code !== "23505") console.error("bootcamp certificate failed", error);
   } catch (e) {

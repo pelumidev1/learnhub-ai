@@ -6,6 +6,10 @@ import "./globals.css";
 import "./brand.css";
 
 export const metadata: Metadata = {
+  /* Absolute URLs for og:image and friends. Without it a shared certificate
+     link previews with no image, because a relative image URL means nothing
+     to LinkedIn or WhatsApp. */
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://learnhub.dev"),
   title: {
     default: "LearnHub: Find the tech career built for you",
     template: "%s · LearnHub",

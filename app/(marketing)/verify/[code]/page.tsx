@@ -3,109 +3,134 @@ import Link from "next/link";
 import { LandingNav } from "@/components/marketing/landing/landing-nav";
 import { SiteFooter } from "@/components/marketing/landing/closing";
 import { PageHero } from "@/components/marketing/page-hero";
-import { createPublicClient } from "@/lib/supabase/public";
+import { getVerifiedCertificate } from "@/lib/certificate/data";
+import { BOOTCAMP, ISSUER, SIGNER, dateRange, longDate } from "@/lib/certificate/facts";
 
-export const metadata: Metadata = {
-  title: "Verify a certificate · LearnHub",
-  description: "Confirm a LearnHub certificate of completion.",
-};
-
-type VerifiedCertificate = {
-  holder_name: string | null;
-  title: string;
-  career_title: string | null;
-  issued_at: string;
-};
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+/**
+ * The public proof behind every LearnHub certificate, and the page the QR code
+ * opens. A printed certificate can be edited; this page cannot, so it states
+ * everything the certificate claims, from the database, with a plain Valid or
+ * Revoked at the top.
+ *
+ * Shared, the link previews as the certificate image (og:image), which is how
+ * most people will first meet it: in a LinkedIn post or a WhatsApp chat.
+ */
+export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
+  const { code } = await params;
+  const found = await getVerifiedCertificate(code);
+  const cert = found.ok ? found.cert : null;
+  if (!cert) return { title: "Verify a certificate", description: "Confirm a LearnHub certificate of completion." };
+  const what = cert.cohortName ? `${BOOTCAMP.name}, ${cert.cohortName}` : cert.title;
+  return {
+    title: `${cert.holderName}: ${what}`,
+    description: `${cert.holderName} completed ${what} with LearnHub. Verified certificate.`,
+    openGraph: { images: [{ url: `/verify/${code}/image`, width: 1754, height: 1240 }] },
+    twitter: { card: "summary_large_image", images: [`/verify/${code}/image`] },
+  };
 }
 
-export default async function VerifyPage({
-  params,
-}: {
-  params: Promise<{ code: string }>;
-}) {
-  const { code } = await params;
-  const supabase = createPublicClient();
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="grid gap-1 border-t border-silver py-3.5 sm:grid-cols-[180px_1fr] sm:gap-4">
+      <dt className="text-sm text-muted">{label}</dt>
+      <dd className="text-[15px] text-ink">{children}</dd>
+    </div>
+  );
+}
 
-  // RLS blocks direct reads of certificates, so we go through the SECURITY
-  // DEFINER verify_certificate() function, which returns only public fields.
-  const { data, error } = await supabase.rpc("verify_certificate", { p_code: code });
-  const cert = (data as VerifiedCertificate[] | null)?.[0] ?? null;
+export default async function VerifyPage({ params }: { params: Promise<{ code: string }> }) {
+  const { code } = await params;
+  const found = await getVerifiedCertificate(code);
+  const cert = found.ok ? found.cert : null;
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-ink">
       <LandingNav />
 
-      <PageHero title="Certificate check" overlap />
+      <PageHero
+        eyebrow="Certificate check"
+        title={cert ? cert.holderName : found.ok ? "Certificate not found" : "Could not check right now"}
+        lead={
+          cert
+            ? undefined
+            : found.ok
+              ? "This code does not match any LearnHub certificate. Check the link and try again."
+              : "We couldn't reach the certificate records. Please try again shortly."
+        }
+      >
+        {cert && (
+          <span
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold ${
+              cert.revokedAt ? "bg-white text-ink" : "lh-metal-light text-blue"
+            }`}
+          >
+            {cert.revokedAt ? (
+              <>Revoked on {longDate(cert.revokedAt)}. This certificate no longer stands.</>
+            ) : (
+              <>
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="m5 12 5 5L20 7" />
+                </svg>
+                Valid certificate, issued by {ISSUER.name}
+              </>
+            )}
+          </span>
+        )}
+      </PageHero>
 
-      {/* The result card pulled up over the foot of the wash, as on /enrol. */}
-      <main className="lh-enrol-card relative mx-auto -mt-28 flex w-full max-w-xl flex-1 flex-col items-center px-5 pb-20 text-center sm:-mt-32">
-        {cert ? (
-          <div className="w-full rounded-2xl border border-silver bg-white p-8 shadow-soft">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue/10 text-blue">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M20 6 9 17l-5-5" />
-              </svg>
-            </div>
-            <p className="mt-4 font-mono text-xs uppercase tracking-[0.14em] text-blue">
-              Verified certificate
+      <main className="mx-auto w-full max-w-4xl flex-1 px-5 pb-20 pt-10 sm:pt-14">
+        {cert && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`/verify/${code}/image`}
+              alt={`Certificate of Completion for ${cert.holderName}`}
+              width={1754}
+              height={1240}
+              className="w-full rounded-[16px] border border-silver bg-white shadow-[0_1px_2px_rgba(11,15,26,.06),0_24px_56px_-24px_rgba(11,15,26,.25)]"
+            />
+
+            <dl className="mt-10 border-b border-silver">
+              <Row label="Awarded to">{cert.holderName}</Row>
+              <Row label="Programme">{cert.cohortName ? BOOTCAMP.name : cert.careerTitle ?? cert.title}</Row>
+              {cert.cohortName && (
+                <>
+                  <Row label="Cohort">
+                    {cert.cohortName}
+                    {cert.cohortStartsOn ? `, ${dateRange(cert.cohortStartsOn)}` : ""}
+                  </Row>
+                  <Row label="Length">
+                    {BOOTCAMP.weeks} weeks, about {BOOTCAMP.hours} hours, with a live call every week
+                  </Row>
+                  <Row label="Requirements met">
+                    All six weekly projects approved, all assignments submitted, all six weekly tests
+                    passed, and a final project presented at demo day
+                  </Row>
+                  {cert.finalProjectUrl && (
+                    <Row label="Final project">
+                      <a href={cert.finalProjectUrl} target="_blank" rel="noopener noreferrer nofollow" className="font-medium text-blue hover:underline">
+                        {cert.finalProjectTitle ?? "View the project"}
+                      </a>
+                    </Row>
+                  )}
+                </>
+              )}
+              <Row label="Issued">{longDate(cert.issuedAt)}</Row>
+              <Row label="Signed by">{SIGNER.name}, {SIGNER.title}</Row>
+              <Row label="Credential ID">
+                <span className="font-mono text-sm">{code}</span>
+              </Row>
+            </dl>
+
+            <p className="mt-6 text-sm text-muted">
+              This page is the record. A copy of the certificate is genuine only if its credential ID
+              opens this page and the details match.
+              {ISSUER.registration ? ` ${ISSUER.registration}.` : ""}
             </p>
-            <h2 className="mt-2 font-serif text-[2.25rem] leading-tight">
-              {cert.holder_name ?? "A LearnHub learner"}
-            </h2>
-            <p className="mt-3 text-[15px] text-muted">
-              completed{" "}
-              <span className="font-semibold text-ink">
-                {cert.career_title ?? cert.title}
-              </span>{" "}
-              on LearnHub.
-            </p>
-            <p className="mt-4 text-sm text-muted-2">Issued {formatDate(cert.issued_at)}</p>
-          </div>
-        ) : (
-          <div className="w-full rounded-2xl border border-silver bg-white p-8 shadow-soft">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-silver text-muted">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 6 6 18M6 6l12 12" />
-              </svg>
-            </div>
-            <h2 className="mt-4 font-serif text-[2.25rem] leading-tight">Certificate not found</h2>
-            <p className="mt-3 text-[15px] text-muted">
-              {error
-                ? "We couldn't check this certificate right now. Please try again shortly."
-                : "This verification code doesn't match any certificate. Double-check the link and try again."}
-            </p>
-          </div>
+          </>
         )}
 
-        <Link
-          href="/"
-          className="mt-8 text-sm font-semibold text-blue transition hover:text-blue-600"
-        >
+        <Link href="/" className="mt-10 inline-block text-sm font-semibold text-blue hover:text-blue-600">
           What is LearnHub? →
         </Link>
       </main>
