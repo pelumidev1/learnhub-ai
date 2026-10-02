@@ -1,7 +1,7 @@
 ---
 title: Claude, ChatGPT and Gemini: what each is best at
 duration_minutes: 14
-published: false
+published: true
 video_url:
 chapters: [{"label":"Why you need more than one","at":0},{"label":"Claude: writing, thinking, building","at":0},{"label":"ChatGPT: the all-rounder","at":0},{"label":"Gemini: your Google life","at":0},{"label":"Pick a home base","at":0},{"label":"Try it: one task, three tools","at":0},{"label":"The others you will hear about","at":0}]
 resources: [{"label":"Claude plans","url":"https://claude.com/pricing","kind":"doc","cost":"Free to read"},{"label":"Gemini plans","url":"https://gemini.google/subscriptions/","kind":"doc","cost":"Free to read"},{"label":"ChatGPT plans","url":"https://chatgpt.com/pricing","kind":"doc","cost":"Free to read"}]
