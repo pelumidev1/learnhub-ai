@@ -1,5 +1,7 @@
 import { Reveal } from "./reveal";
-import { COHORT, priceNow } from "./bootcamp-facts";
+import { COHORT, priceNow, seatsLeft } from "./bootcamp-facts";
+import { EarlyBirdCountdown } from "./early-bird-countdown";
+import { WhatsAppLink } from "./whatsapp-link";
 import { SeatLink } from "./seat-link";
 
 /**
@@ -10,10 +12,12 @@ import { SeatLink } from "./seat-link";
  * course does not already make.
  *
  * No payment plan: Pelumi set the offer as ₦350,000, or ₦150,000 early-bird
- * until 10 October (2026-10-02).
+ * until 10 October (2026-10-02). The refund line is his policy, same day:
+ * refunded only if Learnhub fails to deliver what is listed here.
  */
 const INCLUDED = [
-  "Six weeks, with a live call every week",
+  `Six weeks, with a live call ${COHORT.liveCall}`,
+  `Everything else self-paced, about ${COHORT.hoursPerWeek} hours a week`,
   "Video and written lessons for every topic",
   "An assignment, a test and a project each week",
   "Every project reviewed and approved",
@@ -48,9 +52,20 @@ export function PricingSection() {
                     Early-bird until {COHORT.earlyBirdEnds}. Then <span className="whitespace-nowrap">{full}</span>.
                   </p>
                 ) : null}
-                <p className="mt-1 text-[15px] text-white/80">{COHORT.seats} seats.</p>
+                <p className="mt-1 text-[15px] text-white/80">
+                  {seatsLeft} of {COHORT.seats} seats left.
+                </p>
+                {earlyBird ? (
+                  <EarlyBirdCountdown
+                    fallback={`Early-bird ends ${COHORT.earlyBirdEnds}`}
+                    className="mt-4 inline-block rounded-full bg-white/15 px-3 py-1 text-[13px] text-white"
+                  />
+                ) : null}
               </div>
-              <SeatLink tone="light" className="self-start" />
+              <div className="flex flex-wrap gap-3">
+                <SeatLink tone="light" />
+                <WhatsAppLink tone="ghost" />
+              </div>
             </div>
 
             {/* What is included */}
@@ -69,7 +84,7 @@ export function PricingSection() {
                 ))}
               </ul>
               <p className="mt-8 border-t border-silver pt-5 text-sm text-muted">
-                You&apos;ll need a laptop and Claude Pro.
+                You&apos;ll need a laptop and Claude Pro. Refunded in full if we don&apos;t deliver what&apos;s listed here.
               </p>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Logo } from "@/components/ui/logo";
 import { WaitlistForm } from "@/components/waitlist/waitlist-form";
-import { COHORT, priceNow } from "@/components/marketing/landing/bootcamp-facts";
+import { COHORT, priceNow, seatsLeft } from "@/components/marketing/landing/bootcamp-facts";
 import { serifFont } from "@/app/fonts";
 import "../landing.css";
 
@@ -74,7 +74,7 @@ export default function EnrolPage() {
             </span>
             <span>
               <span className="mx-2 hidden text-white/40 sm:inline">·</span>
-              {COHORT.seats} seats
+              {seatsLeft} of {COHORT.seats} seats left
             </span>
           </p>
         </div>

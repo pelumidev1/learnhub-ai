@@ -1,13 +1,13 @@
-import { CONTACT_EMAIL } from "@/lib/site";
+import { whatsappLink } from "@/lib/site";
 import { Faq, type FaqItem } from "./faq";
 import { Reveal } from "./reveal";
-import { COHORT, priceNow } from "./bootcamp-facts";
+import { COHORT, priceNow, seatsLeft } from "./bootcamp-facts";
 
 /**
  * The FAQ, rewritten for the AI Bootcamp (2026-10-02). Every answer is a fact
- * from CURRICULUM.md, lib/bootcamp/pricing.ts or the /enrol page. The live
- * call's day and time are not set yet, so the answer says they come before
- * the cohort starts rather than naming one.
+ * from CURRICULUM.md, lib/bootcamp/pricing.ts, the /enrol page, or what
+ * Pelumi set on 2026-10-02: the Saturday call, two seats taken, and refunds
+ * only when Learnhub fails to deliver.
  *
  * Questions are in the reader's voice, the one place CLAUDE.md allows it.
  */
@@ -33,8 +33,12 @@ function faqs(): FaqItem[] {
       a: "One: Claude Pro. Everything else is taught on a free tier first. Where a free tier runs out, such as video generation credits, the lesson says so and names the cheapest way through.",
     },
     {
-      q: "How do the live calls work?",
-      a: "There is one live call every week, alongside the recorded lessons. You'll get the day and time before the cohort starts.",
+      q: "When are the live calls?",
+      a: `${COHORT.liveCall[0].toUpperCase()}${COHORT.liveCall.slice(1)}. Everything else is self-paced: the lessons, assignments, tests and projects fit around your week.`,
+    },
+    {
+      q: "How much time does it take?",
+      a: `About ${COHORT.hoursPerWeek} hours a week: the 1-hour Saturday call, around 3 hours of lessons, and about 4 hours for your assignment, test and project.`,
     },
     {
       q: "How do I get the certificate?",
@@ -42,7 +46,11 @@ function faqs(): FaqItem[] {
     },
     {
       q: "How many seats are there?",
-      a: `${COHORT.seats}, so the live calls stay small enough for everyone's questions.`,
+      a: `${COHORT.seats} in total, so the live calls stay small enough for everyone's questions. ${seatsLeft} are left.`,
+    },
+    {
+      q: "Can I get a refund?",
+      a: "Yes, in full, if we don't deliver what this page lists: the Saturday calls, the lessons, and reviews of your work. Fees aren't refunded for other reasons.",
     },
     {
       q: "What happens when I save my seat?",
@@ -64,9 +72,9 @@ export function FaqSection() {
           <Faq items={faqs()} />
         </div>
         <p className="mt-6 text-center text-sm text-muted">
-          Another question? Email{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-blue underline-offset-4 hover:underline">
-            {CONTACT_EMAIL}
+          Another question?{" "}
+          <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="font-medium text-blue underline-offset-4 hover:underline">
+            Ask on WhatsApp
           </a>
         </p>
       </div>

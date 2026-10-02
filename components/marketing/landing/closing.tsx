@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Logo, LogoMark } from "@/components/ui/logo";
-import { CONTACT_EMAIL } from "@/lib/site";
+import { whatsappLink } from "@/lib/site";
 import { Reveal } from "./reveal";
 import { COHORT } from "./bootcamp-facts";
 import { SeatLink } from "./seat-link";
+import { WhatsAppLink } from "./whatsapp-link";
 
 /**
  * The close and the footer, on Artisan's pattern: a last centred call to act
@@ -49,12 +50,7 @@ export function ClosingSection() {
         </h2>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <SeatLink />
-          <a
-            href="#roadmap"
-            className="inline-flex items-center rounded-full border border-silver-2 bg-white px-7 py-3.5 text-[15px] font-semibold text-ink transition duration-200 ease-out hover:-translate-y-0.5 hover:border-blue hover:text-blue"
-          >
-            See the roadmap
-          </a>
+          <WhatsAppLink />
         </div>
       </Reveal>
     </section>
@@ -81,7 +77,7 @@ const FOOTER_COLS: { title: string; links: [string, string][] }[] = [
   {
     title: "Company",
     links: [
-      ["Contact", `mailto:${CONTACT_EMAIL}`],
+      ["WhatsApp", whatsappLink()],
       ["Privacy", "/privacy"],
       ["Terms", "/terms"],
     ],

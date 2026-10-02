@@ -1,4 +1,4 @@
-import { COHORT, priceNow } from "./bootcamp-facts";
+import { COHORT, priceNow, seatsLeft } from "./bootcamp-facts";
 import { HeroDepth } from "./hero-depth";
 import { LessonMockup } from "./lesson-mockup";
 import { SeatLink } from "./seat-link";
@@ -66,7 +66,7 @@ export function BootcampHero() {
                 )}
               </span>
               <span>
-                <span className="mx-2 hidden text-white/40 sm:inline">·</span>{COHORT.seats} seats
+                <span className="mx-2 hidden text-white/40 sm:inline">·</span>{seatsLeft} of {COHORT.seats} seats left
                 <span className="mx-2 text-white/40">·</span>Laptop needed
               </span>
             </p>
