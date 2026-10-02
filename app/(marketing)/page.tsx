@@ -4,6 +4,7 @@ import { BootcampHero } from "@/components/marketing/landing/bootcamp-hero";
 import { ToolsStrip } from "@/components/marketing/landing/tools-strip";
 import { RoadmapSection } from "@/components/marketing/landing/roadmap-section";
 import { ShipSection } from "@/components/marketing/landing/ship-section";
+import { MasterclassQuotes } from "@/components/marketing/landing/masterclass-quotes";
 import { PricingSection } from "@/components/marketing/landing/pricing-section";
 import { FaqSection } from "@/components/marketing/landing/faq-section";
 import { CareersBand } from "@/components/marketing/landing/careers-band";
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 /**
  * The landing page, rebuilt 2026-10-02 around the AI Bootcamp on the pattern
  * of artisan.co/ai-sales-agent. Section order: hero, tools, roadmap, what
- * you'll ship, pricing, FAQ, career paths, close, footer.
+ * you'll ship, from the masterclass, pricing, FAQ, career paths, close, footer.
  */
 export default function LandingPage() {
   return (
@@ -35,6 +36,8 @@ export default function LandingPage() {
       <RoadmapSection />
 
       <ShipSection />
+
+      <MasterclassQuotes />
 
       <PricingSection />
 

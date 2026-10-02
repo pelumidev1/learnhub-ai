@@ -101,7 +101,7 @@ export default function MasterclassPage() {
               There is one condition: you have to be in the room. The entry form opens during the
               masterclass and closes when it ends. No form before, no form after.
             </p>
-            <p className="mt-3 font-semibold text-ink">Winners announced Friday 28 August.</p>
+            <p className="mt-3 font-semibold text-ink">Winners announced live on the call.</p>
           </div>
         </Section>
 

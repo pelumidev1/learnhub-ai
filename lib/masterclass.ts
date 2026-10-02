@@ -9,12 +9,12 @@
  * Open decisions live in learnhub-master-context.md section 10.
  */
 export const MASTERCLASS = {
-  /** Wednesday 26 or Thursday 27 August — pending Pelumi's call. */
-  date: "Wednesday 27 August",
+  /** Moved from 27 August; Pelumi set 7 October on 2026-10-02. */
+  date: "Wednesday 7 October",
   /** Spell the timezone out; the audience spans several. */
   time: "7:00pm WAT",
   /** ISO form, used for the "is the giveaway open" check and any countdown. */
-  startsAt: "2026-08-27T18:00:00Z",
+  startsAt: "2026-10-07T18:00:00Z",
   /** Zoom or Google Meet link. Sent by email, never shown on the public page. */
   joinUrl: "",
   /** Roughly how long, for the FAQ. */
