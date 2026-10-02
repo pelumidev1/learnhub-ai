@@ -92,8 +92,10 @@ export function AppShell({
                 href={href}
                 className={cn(
                   "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+                  /* The primary button's metal, so the current page reads as
+                     the same lit blue as every primary action on the site. */
                   active
-                    ? "bg-blue text-white shadow-glow"
+                    ? "bg-gradient-to-b from-blue-500 via-blue to-blue-600 text-white shadow-[inset_0_1px_0_rgba(255,255,255,.32),0_12px_28px_-14px_rgba(31,51,204,.55)]"
                     : "text-muted hover:bg-paper hover:text-ink",
                 )}
               >

@@ -5,13 +5,14 @@ import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { buttonClasses } from "@/components/ui/button";
 import { RollText } from "./roll-text";
-import { CONTACT_EMAIL } from "@/lib/site";
+import { whatsappLink } from "@/lib/site";
+import { WhatsAppMark } from "./whatsapp-link";
 
 const LINKS = [
-  { href: "#how", label: "How it works" },
-  { href: "#what", label: "What you get" },
+  { href: "/#roadmap", label: "Roadmap" },
+  { href: "/#pricing", label: "Pricing" },
   { href: "/careers", label: "Careers" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 /** Sticky landing navbar: transparent over the dark hero, frosts to white once
@@ -74,7 +75,9 @@ export function LandingNav() {
             measurements. The primary action lives in the hero itself now. */}
         <div className="hidden items-center md:flex">
           <a
-            href={`mailto:${CONTACT_EMAIL}`}
+            href={whatsappLink()}
+            target="_blank"
+            rel="noopener noreferrer"
             /* Both states are the page's metal, so the pill changes ground
                without changing material: dark metal once the bar frosts, silver
                while it is over the hero photograph. */
@@ -82,7 +85,9 @@ export function LandingNav() {
               scrolled || open ? "lh-metal-ink text-white" : "lh-metal-light text-ink"
             }`}
           >
-            Contact
+            <span className="inline-flex items-center gap-2">
+              <WhatsAppMark /> Contact
+            </span>
           </a>
         </div>
 
@@ -137,14 +142,16 @@ export function LandingNav() {
               the only unlit version of the page's main action. */}
           <div className="mt-5 flex flex-col gap-3">
             <a
-              href={`mailto:${CONTACT_EMAIL}`}
+              href={whatsappLink()}
+            target="_blank"
+            rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="lh-metal-light rounded-full py-3 text-center text-sm font-bold text-ink"
             >
               Contact
             </a>
             <Link
-              href="/signup"
+              href="/enrol"
               onClick={() => setOpen(false)}
               className={buttonClasses("primary", "w-full py-3 text-sm")}
             >

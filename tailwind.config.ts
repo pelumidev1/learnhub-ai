@@ -20,6 +20,9 @@ export default {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
+        // Landing-page headings only; the variable is set on that page's
+        // wrapper, not the root layout (see app/fonts.ts).
+        serif: ["var(--font-serif)", "Georgia", "serif"],
       },
       // 16 / 22 / 28. Tailwind's own 3xl is 24, which is the value every
       // generic card in the world uses; the page's large surfaces were split

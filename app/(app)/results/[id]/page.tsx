@@ -59,7 +59,7 @@ export default async function ResultsPage({
           <p className="font-mono text-xs uppercase tracking-[0.14em] text-blue">
             Your results
           </p>
-          <h1 className="mt-1 font-display text-2xl font-bold text-ink sm:text-3xl">
+          <h1 className="mt-1 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink sm:text-[2.75rem]">
             Careers built for you
           </h1>
         </div>

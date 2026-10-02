@@ -11,8 +11,9 @@ import { IDLE_TIMEOUT_MS, LAST_SEEN_COOKIE } from "@/lib/auth/idle";
  *
  * Supabase is stubbed: the point is the decision, not the auth round-trip.
  */
+const OWNER = { id: "user-1", email: "pelumifatoye@gmail.com" };
 const signOut = vi.fn(async () => ({ error: null }));
-let currentUser: { id: string } | null = { id: "user-1" };
+let currentUser: { id: string; email?: string } | null = OWNER;
 let authError: unknown = null;
 
 vi.mock("@supabase/ssr", () => ({
@@ -41,7 +42,7 @@ const FRESH = IDLE_TIMEOUT_MS - 60_000;
 
 beforeEach(() => {
   signOut.mockClear();
-  currentUser = { id: "user-1" };
+  currentUser = OWNER;
   authError = null;
 });
 
@@ -143,5 +144,31 @@ describe("when Supabase cannot be reached", () => {
 
     expect(res.status).toBe(200);
     expect(signOut).not.toHaveBeenCalled();
+  });
+});
+
+describe("owner-only gate", () => {
+  it("signs out anyone else and sends them to the waitlist", async () => {
+    currentUser = { id: "user-2", email: "someone@example.com" };
+    const res = await updateSession(request("/dashboard", FRESH));
+
+    expect(res.status).toBe(307);
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/enrol");
+    expect(signOut).toHaveBeenCalledWith({ scope: "local" });
+  });
+
+  it("lets the owner through", async () => {
+    const res = await updateSession(request("/dashboard", FRESH));
+
+    expect(res.status).toBe(200);
+    expect(signOut).not.toHaveBeenCalled();
+  });
+
+  it("sends sign-up to the waitlist", async () => {
+    currentUser = null;
+    const res = await updateSession(request("/signup"));
+
+    expect(res.status).toBe(307);
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/enrol");
   });
 });

@@ -15,8 +15,8 @@ export default async function LoginPage({
   const { error, redirect, reason } = await searchParams;
 
   return (
-    <div className="rounded-2xl border border-silver bg-white p-8 shadow-soft">
-      <h1 className="font-display text-2xl font-bold text-ink">Welcome back</h1>
+    <div className="rounded-[20px] border border-silver bg-white p-8 shadow-[0_1px_2px_rgba(11,15,26,.06),0_24px_64px_-24px_rgba(11,15,26,.22)]">
+      <h1 className="font-serif text-[2.5rem] leading-[1.05] text-ink">Welcome back</h1>
       <p className="mt-1 text-sm text-muted">Log in to continue your path.</p>
 
       <div className="mt-6 space-y-4">
@@ -37,9 +37,11 @@ export default async function LoginPage({
       <LoginForm redirectTo={redirect} />
 
       <p className="mt-6 text-center text-sm text-muted">
+        {/* Sign-up is closed while the app is owner-only; the way in for
+            everyone else is the bootcamp waitlist. */}
         New here?{" "}
-        <Link href="/signup" className="font-semibold text-blue hover:underline">
-          Create an account
+        <Link href="/enrol" className="font-semibold text-blue hover:underline">
+          Join the AI Bootcamp waitlist
         </Link>
       </p>
     </div>

@@ -69,7 +69,7 @@ export default async function LessonPage({ params }: { params: Params }) {
             {mod.week_number === null ? "Foundations" : `Week ${mod.week_number}`} · Lesson{" "}
             {lesson.position} of {mod.lessons.length}
           </p>
-          <h1 className="mt-1.5 font-display text-2xl font-bold leading-tight text-ink sm:text-3xl">
+          <h1 className="mt-1.5 font-serif text-[2.25rem] font-normal leading-tight text-ink sm:text-[2.75rem]">
             {lesson.title}
           </h1>
           {lesson.duration_minutes && (

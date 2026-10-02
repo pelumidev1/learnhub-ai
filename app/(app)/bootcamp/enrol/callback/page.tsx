@@ -99,7 +99,7 @@ function Shell({
         <div className={`mx-auto grid h-12 w-12 place-items-center rounded-full ${ring}`}>
           <Icon className="h-6 w-6" />
         </div>
-        <h1 className="mt-4 font-display text-2xl font-bold text-ink">{title}</h1>
+        <h1 className="mt-4 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink">{title}</h1>
         <p className="mt-2 text-muted">{body}</p>
         <Link
           href={cta.href}

@@ -130,7 +130,7 @@ export default async function RoadmapDetailPage({
         <Link href="/roadmap" className="text-sm font-semibold text-muted transition hover:text-ink">
           ← All roadmaps
         </Link>
-        <h1 className="mt-2 font-display text-2xl font-bold text-ink sm:text-3xl">
+        <h1 className="mt-2 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink sm:text-[2.75rem]">
           {roadmap.title}
         </h1>
         <div className="mt-4 rounded-2xl border border-silver bg-white p-4 shadow-soft">

@@ -1,0 +1,375 @@
+/* The brand's surfaces and motion, site-wide since 2026-10-02: the blue wash,
+   the metal, the reveals and the hero load-in that Tailwind can't express
+   inline. Started as the landing page's own stylesheet (landing.css); every
+   page now wears the same design, so it loads from the root layout.
+   Everything else is Tailwind utilities on the brand palette. */
+
+/* Gentle vertical bob for floating cards. */
+@keyframes lh-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.lh-float {
+  animation: lh-float 6s ease-in-out infinite;
+}
+.lh-float-slow {
+  animation: lh-float 8s ease-in-out infinite;
+}
+
+/* Testimonials marquee — two copies of the track scroll seamlessly. The mask
+   fades the strip out at both edges so cards emerge from the dark. */
+@keyframes lh-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.lh-marquee {
+  display: flex;
+  width: max-content;
+  animation: lh-marquee 40s linear infinite;
+}
+.lh-marquee-group {
+  display: flex;
+  gap: 1rem;
+  padding-right: 1rem;
+}
+.lh-marquee:hover {
+  animation-play-state: paused;
+}
+.lh-marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* Hero card 3D tilt: perspective on the stage, the card tilts via a transform
+   set from JS (rotateX/rotateY + translate), eased with a short transition. */
+.lh-tilt-stage {
+  perspective: 1000px;
+}
+.lh-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.12s ease-out;
+  will-change: transform;
+}
+
+/* A primary blue surface, lit. The design system asks for "subtle blue
+   gradients on primary surfaces with a faint top highlight"; the gradient was
+   there and the highlight was not, so the card read as flat blue with a drop
+   shadow — the generic version of itself.
+
+   Three insets, no pseudo-element and no second colour: a hairline of white
+   along the top edge where light would catch, a wide ink vignette falling into
+   the bottom so the face is not evenly lit, and the brand glow underneath. It
+   owns the whole box-shadow rather than layering over `shadow-glow`, which two
+   stylesheets would otherwise race to set. */
+.lh-metal {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -70px 90px -70px rgba(11, 15, 26, 0.4),
+    0 24px 60px -28px rgba(31, 51, 204, 0.55);
+}
+
+/* Keyboard focus: a visible ring on every interactive element, on light and
+   dark surfaces alike (blue-500 reads on both).
+
+   No `border-radius` here. It used to set 6px, which does not round the ring —
+   an outline already follows the element's own radius — it rounds the *element*,
+   so every pill button and every large-radius card snapped to 6px corners for
+   as long as it held focus. */
+.lh-landing :is(a, button):focus-visible {
+  outline: 2px solid #2a46f0;
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------- Scroll reveals
+   Driven by <Reveal>: the hidden state is only ever applied from JS (and only
+   when motion is allowed), so content is always visible without JS and under
+   prefers-reduced-motion. */
+.lh-reveal {
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lh-reveal-hidden {
+  opacity: 0;
+  transform: translateY(32px);
+}
+.lh-reveal-hidden.lh-reveal-img {
+  transform: translateY(14px) scale(1.05);
+}
+.lh-reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Opacity only, 200ms. After .lh-reveal so it wins on source order, and
+   doubled up on .lh-reveal-hidden to beat that rule's transform. */
+.lh-reveal-fade {
+  transition: opacity 0.2s ease-out;
+}
+.lh-reveal-fade.lh-reveal-hidden {
+  transform: none;
+}
+
+/* Hero load-in: a staggered rise on the badge / headline / copy / buttons.
+   Pure CSS, gated behind no-preference so reduced-motion users see it static. */
+@media (prefers-reduced-motion: no-preference) {
+  .lh-hero-in {
+    opacity: 0;
+    animation: lh-hero-in 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes lh-hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ── The rest of the page's metal ────────────────────────────────────────────
+   What makes a face read as metal is not a gradient, it is where the light is:
+   a bright hairline along the top edge, where a curved surface catches the
+   light above it, over a fill that falls away from it. An even wash reads as
+   plastic. Every class below is that one idea on a different ground.
+
+   None of them own a drop shadow. A shadow says how far the object is off the
+   page, which is the call site's business — and two stylesheets both setting
+   box-shadow race on load order, which is a bug that only shows up in
+   production. `.lh-metal` is the exception: its shadow is a blue glow, which is
+   part of what that material is.
+
+     .lh-metal        blue, a primary surface — the CTA card.
+     .lh-metal-card   dark glass, for a dark ground. Translucent and blurred.
+     .lh-metal-ink    dark metal, opaque, so it holds on any ground.
+     .lh-metal-light  silver, for white and paper grounds.
+     .lh-metal-rim    the edge alone, for a face already carrying a photograph.
+
+   Call sites drop the `bg-*`, `border-*` and `shadow-*` utilities these
+   replace rather than layering over them — see the note above about races. */
+
+.lh-metal-ink {
+  background-color: #0b0f1a;
+  background-image: linear-gradient(180deg, #1a2234 0%, #101728 44%, #0b0f1a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Silver. The fall is white at the top to `paper` at the bottom — the page's
+   own two light values, so the card is made of the section rather than of a
+   grey that appears nowhere else.
+
+   The bounce line is what does the work: a near-white hairline *inside* the
+   lower edge, under a border a shade darker than the rest. That pair is how a
+   brushed surface behaves — light from above, and the ground throwing a little
+   of it back up. Without it this is a box with a gradient in it. */
+.lh-metal-light {
+  background-color: #ffffff;
+  background-image: linear-gradient(180deg, #ffffff 0%, #fafbfd 44%, #eef1f7 100%);
+  border: 1px solid #e7eaf1;
+  border-bottom-color: #d8deea;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.85);
+}
+
+/* Nav-link roll. See components/marketing/landing/roll-text.tsx.
+
+   The mask is the label's own line box; each glyph is a relative box with an
+   absolute twin sitting exactly one line below it. Hover moves every glyph up
+   by its own height, so the twin takes its place, and the per-glyph delay is
+   what turns a swap into a roll. The transition runs both ways, so leaving
+   rolls it back (the reference reverses its timeline on mouseleave).
+
+   `pre` keeps the space between words as a glyph with width; without it the
+   inline-block collapses it to nothing. Line-height 1.25 rather than 1 so the
+   mask does not crop descenders on "y" and "g". */
+.lh-roll {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 1.25;
+}
+.lh-roll-char {
+  position: relative;
+  display: inline-block;
+  white-space: pre;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * 25ms);
+}
+.lh-roll-char > span:last-child {
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
+.lh-roll-link:hover .lh-roll-char,
+.lh-roll-link:focus-visible .lh-roll-char {
+  transform: translateY(-100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lh-roll-char {
+    transition: none;
+  }
+}
+
+/* Even out ragged last lines so section sub-copy never drops a lone orphan
+   word onto its own line. */
+.lh-balance {
+  text-wrap: balance;
+}
+
+/* Numbered feature row: a hairline above each item, the active one inked in. */
+
+@media (prefers-reduced-motion: reduce) {
+  .lh-float,
+  .lh-float-slow,
+  .lh-marquee {
+    animation: none !important;
+  }
+}
+
+/* ======================================================= BOOTCAMP HERO
+   Added 2026-10-02 (artisan.co pattern, see bootcamp-hero.tsx).
+
+   The wash: deep royal blue at the top, where the white headline needs the
+   contrast, paling through sky as it falls so the white product window lands
+   on a light ground and the hero hands off to the white page without a seam.
+   All stops are palette values. */
+.lh-wash {
+  background: linear-gradient(
+    180deg,
+    #182ab0 0%,
+    #1f33cc 34%,
+    #3b6ff0 62%,
+    #4c93f0 78%,
+    #eff2f8 94%,
+    #ffffff 100%
+  );
+}
+
+/* The far plane: a soft pool of light behind the window, so it reads as lit
+   from within the page rather than pasted on a gradient. */
+.lh-hero-glow {
+  background: radial-gradient(60% 55% at 50% 45%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%);
+}
+
+/* The lesson video's poster: the brand's metal, not a photograph. */
+.lh-mock-video {
+  background:
+    radial-gradient(80% 90% at 20% 0%, rgba(76, 147, 240, 0.9), rgba(76, 147, 240, 0) 60%),
+    linear-gradient(160deg, #2a46f0 0%, #1f33cc 45%, #0b0f1a 130%);
+}
+
+/* Depth. HeroDepth writes --p (0 to 1) as the hero scrolls away; each plane
+   reads it at its own rate. Far moves with the scroll (lags behind the page),
+   the window flattens out of a slight tilt, and the near cards rise faster
+   than the window. Transforms only, so this is compositor work on a phone.
+
+   Gated on no-preference: with reduced motion --p is never set, and outside
+   this block nothing transforms, so the hero is static and flat. */
+@media (prefers-reduced-motion: no-preference) {
+  .lh-depth-stage {
+    perspective: 1600px;
+  }
+  .lh-depth-back {
+    transform: translate3d(0, calc(var(--p, 0) * 160px), 0);
+  }
+  .lh-depth-panel {
+    transform-origin: 50% 100%;
+    transform: rotateX(calc(9deg * (1 - min(var(--p, 0) * 3.5, 1))));
+  }
+  .lh-depth-near {
+    transform: translate3d(0, calc(var(--p, 0) * -140px), 0);
+  }
+  .lh-depth-near-2 {
+    transform: translate3d(0, calc(var(--p, 0) * -90px), 0);
+  }
+}
+
+/* On a phone the coach card hangs below the window rather than over it, and
+   travels less, or its rise would carry it over the lesson title. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 639px) {
+  .lh-depth-near-2 {
+    transform: translate3d(0, calc(var(--p, 0) * -40px), 0);
+  }
+}
+
+/* ===================================================== TOOLS + ROADMAP
+   Added 2026-10-02 with the hero (artisan.co pattern). */
+
+/* The roadmap's picture cards: paper, lifting into a faint sky tint at the
+   foot, the light version of the hero's wash. */
+.lh-roadmap-stage {
+  background:
+    radial-gradient(90% 60% at 50% 100%, rgba(76, 147, 240, 0.16), rgba(76, 147, 240, 0) 70%),
+    #f6f7fb;
+}
+
+/* Items inside a mockup rise in one after another once their row is revealed.
+   Keyed off Reveal's own classes, so there is no extra JS, and content that
+   Reveal never hides (reduced motion, no JS, already on screen) never hides. */
+.lh-reveal-hidden .lh-stagger > * {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.lh-reveal-in .lh-stagger > * {
+  transition:
+    opacity 0.45s ease-out,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lh-reveal-in .lh-stagger > :nth-child(1) { transition-delay: 250ms; }
+.lh-reveal-in .lh-stagger > :nth-child(2) { transition-delay: 330ms; }
+.lh-reveal-in .lh-stagger > :nth-child(3) { transition-delay: 410ms; }
+.lh-reveal-in .lh-stagger > :nth-child(4) { transition-delay: 490ms; }
+.lh-reveal-in .lh-stagger > :nth-child(5) { transition-delay: 570ms; }
+
+/* "What you'll ship": the second chip row runs the other way. Same keyframes
+   as every .lh-marquee, played backwards, so it still loops on one copy. */
+.lh-marquee-reverse {
+  animation-direction: reverse;
+}
+
+/* A faint sky band behind the chips, the roadmap cards' tint at section scale,
+   so the white chips have something to sit on. */
+.lh-ship {
+  background: linear-gradient(180deg, #ffffff 0%, #f6f7fb 30%, #eef3fd 70%, #ffffff 100%);
+}
+
+/* Pricing: the price sits on the hero's blue, lit from the top corner, so the
+   one number on the page that matters carries the brand surface. */
+.lh-price-panel {
+  background:
+    radial-gradient(80% 70% at 15% 0%, rgba(76, 147, 240, 0.55), rgba(76, 147, 240, 0) 70%),
+    linear-gradient(160deg, #2a46f0 0%, #1f33cc 45%, #182ab0 100%);
+}
+
+/* The close: white falling into a pale sky wash, so the deep blue footer
+   below arrives out of a tint of itself rather than off flat white. */
+.lh-close {
+  background: linear-gradient(180deg, #ffffff 0%, #f6f7fb 45%, #e9f0fd 100%);
+}
+
+/* The footer panel: the hero's wash run the other way, deep at the foot. */
+.lh-footer {
+  background: linear-gradient(180deg, #1f33cc 0%, #182ab0 55%, #0b0f1a 135%);
+}
+
+/* /enrol: the form card floats over the foot of the wash, so it takes the
+   product window's deeper, layered shadow in place of its own flat one.
+   (0,1,1) specificity, so it wins over the card's shadow utility. */
+.lh-enrol-card > :is(form, div) {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 2px 4px rgba(11, 15, 26, 0.06),
+    0 24px 64px -12px rgba(11, 15, 26, 0.28);
+}

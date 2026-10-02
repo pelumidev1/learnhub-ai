@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { GeistMono } from "geist/font/mono";
-import { displayFont, sansFont } from "./fonts";
+import { displayFont, sansFont, serifFont } from "./fonts";
 import "./globals.css";
+import "./brand.css";
 
 export const metadata: Metadata = {
   title: {
@@ -16,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${displayFont.variable} ${sansFont.variable} ${GeistMono.variable}`}
+      className={`${displayFont.variable} ${sansFont.variable} ${serifFont.variable} ${GeistMono.variable}`}
     >
       <body className="bg-white font-sans text-ink antialiased">
         {children}

@@ -87,7 +87,7 @@ export function ResourceLibrary({
     <div className="space-y-6">
       <div>
         <p className="font-mono text-xs uppercase tracking-[0.14em] text-blue">Learn</p>
-        <h1 className="mt-1 font-display text-2xl font-bold text-ink sm:text-3xl">
+        <h1 className="mt-1 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink sm:text-[2.75rem]">
           Resource library
         </h1>
         <p className="mt-1 text-muted">

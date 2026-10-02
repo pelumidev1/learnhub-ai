@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { safeInternalPath } from "@/lib/utils/redirect";
+import { CLOSED_PATH, canSignIn } from "@/lib/auth/access";
 
 /**
  * PKCE code-exchange handler.
@@ -14,7 +15,12 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    // Google signs in any account, so the gate has to be checked after it.
+    if (!error && !canSignIn(data.user?.email)) {
+      await supabase.auth.signOut({ scope: "local" });
+      return NextResponse.redirect(`${origin}${CLOSED_PATH}`);
+    }
     if (!error) {
       const forwardedHost = request.headers.get("x-forwarded-host");
       const isLocalEnv = process.env.NODE_ENV === "development";

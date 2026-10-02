@@ -129,7 +129,7 @@ export function AdvisorChat({
           <Icons.sparkle className="h-5 w-5" />
         </span>
         <div>
-          <h1 className="font-display text-lg font-bold text-ink">AI Coach</h1>
+          <h1 className="font-serif leading-[1.08] text-[1.75rem] font-normal text-ink">AI Coach</h1>
           <p className="text-xs text-muted">
             An AI career coach, not a human. It knows your match and your roadmap.
           </p>

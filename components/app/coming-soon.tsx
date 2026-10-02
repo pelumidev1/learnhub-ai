@@ -13,7 +13,7 @@ export function ComingSoon({
       <span className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-paper text-blue shadow-soft">
         <Icons.sparkle className="h-6 w-6" />
       </span>
-      <h1 className="font-display text-2xl font-bold text-ink">{title}</h1>
+      <h1 className="font-serif leading-[1.08] text-[2.25rem] font-normal text-ink">{title}</h1>
       <p className="mt-2 text-muted">{description}</p>
       <Link
         href="/dashboard"

@@ -8,6 +8,7 @@ import {
   lastSeenCookieOptions,
 } from "@/lib/auth/idle";
 import { timeoutFetch } from "@/lib/supabase/timeout-fetch";
+import { CLOSED_PATH, canSignIn } from "@/lib/auth/access";
 
 /**
  * Route prefixes that require an authenticated user.
@@ -111,6 +112,30 @@ export async function updateSession(request: NextRequest) {
   if (error && isAuthRetryableFetchError(error)) return response;
 
   const path = request.nextUrl.pathname;
+
+  // Sign-up is closed while the app is owner-only (see lib/auth/access.ts).
+  if (matches(path, ["/signup"])) {
+    const url = request.nextUrl.clone();
+    url.pathname = CLOSED_PATH;
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
+  /* A session that is not the owner's predates the gate, or came in through a
+     door the sign-in checks do not see (an email confirm link). End it here,
+     the same way the idle timeout does below, and send them to the waitlist. */
+  if (user && !canSignIn(user.email)) {
+    await supabase.auth.signOut({ scope: "local" });
+    const url = request.nextUrl.clone();
+    url.pathname = CLOSED_PATH;
+    url.search = "";
+    const closed = NextResponse.redirect(url);
+    for (const { name } of request.cookies.getAll()) {
+      if (name.startsWith("sb-")) closed.cookies.delete(name);
+    }
+    closed.cookies.delete(LAST_SEEN_COOKIE);
+    return closed;
+  }
 
   // Unauthenticated users cannot reach protected areas.
   if (!user && matches(path, PROTECTED)) {

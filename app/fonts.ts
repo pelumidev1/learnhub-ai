@@ -29,3 +29,21 @@ export const sansFont = localFont({
   weight: "200 700",
   fallback: ["system-ui", "sans-serif"],
 });
+
+/**
+ * Instrument Serif, for headings (decided 2026-10-02, modelled on artisan.co).
+ * A serif at large sizes is most of what makes the design read as premium.
+ * Started on the landing page alone; Pelumi then asked for the same design on
+ * every page, the dashboard included, so the variable is set on the root
+ * layout. One weight: it is a display face, for headings only.
+ * Latin subset only; the ₦ sign is not in it, so prices stay in General Sans.
+ */
+export const serifFont = localFont({
+  src: [
+    { path: "./fonts/InstrumentSerif-Regular.woff2", style: "normal", weight: "400" },
+    { path: "./fonts/InstrumentSerif-Italic.woff2", style: "italic", weight: "400" },
+  ],
+  variable: "--font-serif",
+  display: "swap",
+  fallback: ["Georgia", "serif"],
+});

@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { AI_LIMITS, checkAiRateLimit } from "@/lib/ai/rate-limit";
 import { streamAdvisorReply, type AdvisorContext, type ChatMessage } from "@/lib/ai/advisor";
+import { canSignIn } from "@/lib/auth/access";
 import { estimateCostUsd, MODELS } from "@/lib/ai/config";
 
 // Anthropic runs on Node, and we stream a long response, so pin the Node runtime.
@@ -99,7 +100,9 @@ export async function POST(req: Request) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "You're not signed in." }, { status: 401 });
+  // Middleware does not run under /api, so the owner-only gate is checked here too.
+  if (!user || !canSignIn(user.email))
+    return NextResponse.json({ error: "You're not signed in." }, { status: 401 });
 
   const parsed = BodySchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {

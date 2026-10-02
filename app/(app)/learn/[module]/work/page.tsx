@@ -49,7 +49,7 @@ export default async function WorkPage({ params }: { params: Params }) {
           <p className="mt-4 font-mono text-xs uppercase tracking-[0.14em] text-blue">
             {mod.week_number === null ? "Foundations" : `Week ${mod.week_number}`} · This week&apos;s work
           </p>
-          <h1 className="mt-1.5 font-display text-2xl font-bold leading-tight text-ink sm:text-3xl">
+          <h1 className="mt-1.5 font-serif text-[2.25rem] font-normal leading-tight text-ink sm:text-[2.75rem]">
             {mod.title}
           </h1>
           <p className="mt-2 text-muted">

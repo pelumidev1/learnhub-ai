@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { safeInternalPath } from "@/lib/utils/redirect";
 import { authErrorMessage } from "@/lib/auth/messages";
+import { CLOSED_PATH, canSignIn } from "@/lib/auth/access";
 
 export type AuthState = { error?: string; message?: string } | undefined;
 
@@ -28,6 +29,7 @@ export async function signIn(
   const redirectTo = String(formData.get("redirect") ?? "/dashboard");
 
   if (!email || !password) return { error: "Enter your email and password." };
+  if (!canSignIn(email)) redirect(CLOSED_PATH);
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -42,6 +44,9 @@ export async function signUp(
   _prev: AuthState,
   formData: FormData,
 ): Promise<AuthState> {
+  // Sign-up is closed; /signup itself redirects, this covers a direct POST.
+  if (!canSignIn(String(formData.get("email") ?? ""))) redirect(CLOSED_PATH);
+
   const fullName = String(formData.get("fullName") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
