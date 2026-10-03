@@ -1,0 +1,4 @@
+# Launch material (brochures, flyers, videos) is not part of the app. The
+# videos are over Vercel's 100 MB file limit, so a CLI deploy from a laptop
+# that has them fails unless they are skipped here.
+learnhub-launch/
