@@ -1,0 +1,739 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LearnHub video scripts</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@500,700&f[]=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#f5f7fb; --paper:#ffffff; --haze:#eef1f8; --line:#e0e5ef; --line-strong:#c6d0e2;
+  --ink:#0B0F1A; --ink-2:#4e5a70; --ink-3:#8492a8;
+  --navy:#0B0F1A; --navy-ink:#ffffff; --blue:#1F33CC; --blue-soft:#e7eafc; --sky:#4C93F0; --sky-soft:#e8f1fd; --sky-ink:#14446f;
+  --ig:#b5386b; --li:#1e5a8a; --x:#0B0F1A;
+  --font-head:"Switzer",ui-sans-serif,system-ui,sans-serif;
+  --font-body:"General Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#080b12; --paper:#0f1520; --haze:#141b28; --line:#222c3d; --line-strong:#33405a;
+  --ink:#e6ebf4; --ink-2:#b0bccf; --ink-3:#7d8ba2;
+  --navy:#0f1520; --navy-ink:#e6ebf4; --blue:#7b8cf5; --blue-soft:#1a2142; --sky:#78b0f5; --sky-soft:#12243a; --sky-ink:#a9cdf7;
+  --ig:#e07aa5; --li:#7fb4e0; --x:#e6ebf4;
+}}
+:root[data-theme="dark"]{
+  --ground:#080b12; --paper:#0f1520; --haze:#141b28; --line:#222c3d; --line-strong:#33405a;
+  --ink:#e6ebf4; --ink-2:#b0bccf; --ink-3:#7d8ba2;
+  --navy:#0f1520; --navy-ink:#e6ebf4; --blue:#7b8cf5; --blue-soft:#1a2142; --sky:#78b0f5; --sky-soft:#12243a; --sky-ink:#a9cdf7;
+  --ig:#e07aa5; --li:#7fb4e0; --x:#e6ebf4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-block:40px 80px;padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3{font-family:var(--font-head);text-wrap:balance;margin:0;letter-spacing:-.015em}
+h1{font-size:clamp(34px,5vw,52px);line-height:1.02;font-weight:700}
+h2{font-size:clamp(22px,2.6vw,28px);font-weight:700;margin-bottom:6px}
+h3{font-size:19px;font-weight:700;line-height:1.25}
+p{margin:0}
+a{color:var(--blue)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.lede{max-width:62ch;color:var(--ink-2);font-size:16px}
+
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:end;padding-bottom:28px;border-bottom:1px solid var(--line-strong)}
+.cover .stack{display:grid;gap:14px}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fact{background:var(--paper);padding:14px 16px;display:grid;gap:2px}
+.fact b{font-family:var(--font-mono);font-weight:500;font-size:22px;color:var(--blue);letter-spacing:-.02em}
+.fact span{font-size:12.5px;color:var(--ink-3)}
+
+section{padding-block:36px 0}
+.sec-head{display:grid;gap:6px;margin-bottom:20px;max-width:70ch}
+.sec-head p{color:var(--ink-2)}
+
+.pillars{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.pillar{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 14px 16px;display:grid;gap:8px;align-content:start}
+.pillar .dot{width:10px;height:10px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:6px}
+.pillar h3{font-size:16px}
+.pillar p{font-size:13.5px;color:var(--ink-2)}
+.pillar small{font-family:var(--font-mono);font-size:11px;color:var(--ink-3)}
+.p1{--pc:#0B0F1A}.p2{--pc:#1F33CC}.p3{--pc:#4C93F0}.p4{--pc:#7a8aa8}.p5{--pc:#0f8a6a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .p1{--pc:#9fb0cc}}
+:root[data-theme="dark"] .p1{--pc:#9fb0cc}
+
+.weeklabel{display:flex;align-items:baseline;gap:12px;margin:22px 0 10px;flex-wrap:wrap}
+.weeklabel .eyebrow{color:var(--blue)}
+.weeklabel h3{font-size:17px;color:var(--ink-2);font-weight:500;font-family:var(--font-body)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.cell{background:var(--paper);padding:12px 12px 14px;display:grid;gap:8px;align-content:start;min-height:158px}
+.cell.rest{background:var(--haze)}
+.cell .d{display:flex;justify-content:space-between;align-items:baseline}
+.cell .d b{font-family:var(--font-mono);font-weight:500;font-size:13px}
+.cell .d span{font-family:var(--font-mono);font-size:11px;color:var(--ink-3)}
+.cell .title{font-size:13.5px;line-height:1.3;font-weight:600}
+.cell .title a{color:inherit;text-decoration:none}
+.cell .title a:hover{text-decoration:underline}
+.tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pc)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
+.chip{font-family:var(--font-mono);font-size:10.5px;padding:2px 7px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink-2);background:transparent}
+.chip.ig{border-color:var(--ig);color:var(--ig)}
+.chip.li{border-color:var(--li);color:var(--li)}
+.chip.x{border-color:var(--x);color:var(--x)}
+.gate{font-family:var(--font-mono);font-size:10.5px;color:var(--sky-ink);background:var(--sky-soft);padding:2px 7px;border-radius:4px}
+
+.days{display:grid;gap:14px}
+.day{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;scroll-margin-top:20px}
+.day header{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.day header .date{font-family:var(--font-mono);font-size:12px;color:var(--ink-3);line-height:1.3}
+.day header .date b{display:block;font-size:20px;color:var(--ink);font-weight:500}
+.day header .why{font-size:13.5px;color:var(--ink-2);margin-top:6px;max-width:70ch}
+.day header .meta{display:grid;gap:6px;justify-items:end;text-align:right}
+.cuts{display:grid;grid-template-columns:repeat(3,1fr)}
+.cut{padding:14px 20px 18px;border-right:1px solid var(--line);display:grid;gap:8px;align-content:start}
+.cut:last-child{border-right:0}
+.cut .plat{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cut .plat b{font-family:var(--font-mono);font-weight:500;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.cut .plat span{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);text-align:right}
+.cut.ig .plat b{color:var(--ig)}.cut.li .plat b{color:var(--li)}.cut.x .plat b{color:var(--x)}
+.cut p.body{font-size:13.5px;color:var(--ink-2);white-space:pre-line}
+.cut ol,.cut ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);display:grid;gap:4px}
+.cut .prod{font-size:12px;color:var(--ink-3);border-top:1px dashed var(--line-strong);padding-top:8px;margin-top:4px}
+.cut .prod b{color:var(--ink-2);font-weight:600}
+li.note{color:var(--ink-3);font-style:italic}
+.day.flag{border-color:var(--blue)}
+
+.acctwrap{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.acct{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:8px;align-content:start}
+.acct .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.acct .h b{font-family:var(--font-head);font-size:16px}
+.acct .h span{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
+.acct p{font-size:13px;color:var(--ink-2)}
+.acct .q{font-family:var(--font-mono);font-size:12px;color:var(--ink);background:var(--haze);padding:6px 8px;border-radius:5px}
+.sofor{background:var(--navy);color:var(--navy-ink);border-radius:10px;padding:18px 20px;display:grid;gap:8px;border:1px solid var(--line)}
+.sofor h3{color:var(--navy-ink);font-size:16px}
+.sofor p{font-size:14px;opacity:.92;max-width:80ch}
+
+.tablewrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);background:var(--haze)}
+tr:last-child td{border-bottom:0}
+td b{color:var(--ink)}
+td.mono{font-family:var(--font-mono);font-size:12px;color:var(--ink-2);white-space:nowrap}
+
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:8px;align-content:start}
+.rule.never{border-color:var(--line-strong)}
+.rule ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:13.5px;color:var(--ink-2)}
+.taboo{display:flex;flex-wrap:wrap;gap:5px}
+.taboo span{font-family:var(--font-mono);font-size:11.5px;padding:3px 8px;border-radius:4px;background:var(--haze);color:var(--ink-3);text-decoration:line-through}
+
+.prep{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.list{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:8px;align-content:start}
+.list ol{margin:0;padding-left:20px;display:grid;gap:7px;font-size:13.5px;color:var(--ink-2)}
+.sources{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);display:grid;gap:5px;font-size:12.5px;color:var(--ink-3)}
+.sources a{color:var(--ink-2);text-decoration:none}
+.sources a:hover{text-decoration:underline}
+
+@media (max-width:920px){
+  .cover{grid-template-columns:1fr}
+  .pillars{grid-template-columns:1fr 1fr}
+  .acctwrap{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr 1fr}
+  .cuts{grid-template-columns:1fr}
+  .cut{border-right:0;border-bottom:1px solid var(--line)}
+  .cut:last-child{border-bottom:0}
+  .rules,.prep{grid-template-columns:1fr}
+  .day header{grid-template-columns:1fr}
+  .day header .meta{justify-items:start;text-align:left}
+}
+@media print{
+  body{background:#fff}
+  .day,.cell,.pillar,.acct,.rule,.list{break-inside:avoid}
+}
+</style>
+
+<style>
+.vid{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;scroll-margin-top:20px;margin-bottom:14px}
+.vid > header{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.vid header .num{font-family:var(--font-mono);font-size:12px;color:var(--ink-3);line-height:1.3}
+.vid header .num b{display:block;font-size:20px;color:var(--ink);font-weight:500}
+.vid header .why{font-size:13.5px;color:var(--ink-2);margin-top:6px;max-width:70ch}
+.vid header .meta{display:grid;gap:6px;justify-items:end;text-align:right}
+.vid.flag{border-color:var(--blue)}
+.vbody{display:grid;grid-template-columns:1.15fr 1fr;gap:0}
+.vcol{padding:16px 20px 18px;border-right:1px solid var(--line)}
+.vcol:last-child{border-right:0}
+.vcol h4{font-family:var(--font-mono);font-weight:500;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin:0 0 9px}
+.vcol h4+h4{margin-top:18px}
+.beat{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.beat:last-of-type{border-bottom:0}
+.beat .t{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);padding-top:2px}
+.beat .say{font-size:14px;color:var(--ink);line-height:1.45}
+.beat .dir{font-size:12px;color:var(--ink-3);margin-top:3px}
+.hooks{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.hooks li{font-size:13.5px;color:var(--ink-2);padding:8px 10px;border-radius:6px;background:var(--haze);border-left:2px solid var(--line-strong)}
+.hooks li.pick{border-left-color:var(--blue);color:var(--ink);background:var(--blue-soft)}
+.ost{display:grid;gap:4px;margin:0;padding-left:18px;font-size:13px;color:var(--ink-2)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:12.5px;color:var(--ink-2);margin-top:4px}
+.kv b{font-family:var(--font-mono);font-weight:500;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;padding-top:2px}
+.note-box{border-top:1px dashed var(--line-strong);padding-top:9px;margin-top:12px;font-size:12px;color:var(--ink-3)}
+.note-box b{color:var(--ink-2)}
+.batch{background:var(--navy);color:var(--navy-ink);border-radius:10px;padding:16px 20px;display:grid;gap:6px;border:1px solid var(--line);margin-bottom:10px}
+.batch h3{color:var(--navy-ink);font-size:16px}
+.batch p{font-size:13.5px;opacity:.9;max-width:82ch}
+.batch .roster{font-family:var(--font-mono);font-size:11.5px;opacity:.75;letter-spacing:.03em}
+@media (max-width:920px){ .vbody{grid-template-columns:1fr} .vcol{border-right:0;border-bottom:1px solid var(--line)} .vcol:last-child{border-bottom:0} .vid > header{grid-template-columns:1fr} .vid header .meta{justify-items:start;text-align:left} }
+@media print{ .vid,.batch{break-inside:avoid} }
+</style>
+<div class="wrap">
+
+<header class="cover">
+  <div class="stack">
+    <p class="eyebrow">LearnHub Global Academy · Reels and TikTok · 28 September to 10 October 2026</p>
+    <h1>Video scripts for Reels and TikTok</h1>
+    <p class="lede">Ten scripts built off the same days as the written calendar, rewritten on 29 September against the brochure and the live code. Four are you talking to camera and can be filmed in one sitting. Five are screen recordings with no face in them, which doubles as the proof for week four. The tenth is the week three build, which is the most persuasive video on the list. Every script is written to be read aloud, so the words below are the words you say.</p>
+  </div>
+  <div class="facts">
+    <div class="fact"><b>10</b><span>videos, 28 Sep to 10 Oct</span></div>
+    <div class="fact"><b>2</b><span>production days, batched</span></div>
+    <div class="fact"><b>5:20</b><span>total runtime, longest 60s</span></div>
+    <div class="fact"><b>0</b><span>that need a studio</span></div>
+  </div>
+</header>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Source of truth · 29 Sep 2026</p>
+    <h2>The numbers every script uses</h2>
+    <p>Same table as the written calendar. If any of these change, they change in <span class="mono">lib/bootcamp/pricing.ts</span> and the brochure first, and the scripts follow.</p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Fact</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td><b>Early-bird price</b></td><td>₦150,000, until end of Saturday 10 October WAT</td></tr>
+      <tr><td><b>Full price</b></td><td>₦350,000, from Sunday 11 October. Payment plan ₦200,000 then ₦150,000 before week three</td></tr>
+      <tr><td><b>Starts</b></td><td>Monday 12 October 2026</td></tr>
+      <tr><td><b>Live session</b></td><td>Saturdays, 11am WAT, recorded</td></tr>
+      <tr><td><b>Seats</b></td><td>35 (the brochure number; the database still seeds 25, see the calendar's open questions)</td></tr>
+      <tr><td><b>What you need</b></td><td>A laptop, a Claude Pro plan at $20 a month, time to build weekly. No coding</td></tr>
+      <tr><td><b>You leave with</b></td><td>Seven projects, and a certificate with a public verification link, earned only by finishing everything</td></tr>
+      <tr><td><b>The weeks</b></td><td>W1 AI stack setup · W2 prompting, writing and marketing · W3 websites and web apps · W4 video, UGC and motion graphics · W5 agents and automation · W6 career, industry and business</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">The decision</p>
+    <h2>Who appears on camera</h2>
+    <p>This had to be settled before a word was written, because the written rule does not survive contact with video.</p>
+  </div>
+  <div class="batch">
+    <h3>You appear as the person who teaches. The company still has no biography.</h3>
+    <p>The rule in CLAUDE.md says LearnHub never speaks in the first person, and it scopes that to the app, the marketing pages, lesson content and platform emails. Social video is not in that list, and it could not be: nobody watches a company talk. So on these five you are on camera as the person who runs the bootcamp, saying "I" freely, the way any school shows its instructor. What still does not happen is the company narrating a personal history. The 2025 closure, the scholarships, the student who paid ₦150,000, none of that appears here. That story is yours and it belongs on your own accounts, where it is stronger anyway.</p>
+  </div>
+  <div class="batch" style="background:var(--paper);color:var(--ink)">
+    <h3 style="color:var(--ink)">Five have no face in them</h3>
+    <p style="color:var(--ink-2)">Week four of the bootcamp teaches faceless video. Publishing faceless videos is therefore not a shortcut, it is the evidence. V4 says so out loud while being the thing it describes. The rest are screen recordings, which is the honest format for teaching a tool: if you are going to claim a prompt works, show it working.</p>
+    <p style="color:var(--ink-2)">The practical gain is that five of the ten need no camera, no lighting and no shirt decision, so they can be made on any evening a talking-head day cannot be scheduled.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Platforms</p>
+    <h2>Reels and TikTok differences</h2>
+    <p>One script, two exports. The differences are small and always the same, so they are written here once instead of in every script.</p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>Instagram Reels</th><th>TikTok</th></tr></thead>
+    <tbody>
+      <tr><td><b>Length</b></td><td>Cut to the shorter end. Under 30 seconds holds retention, and retention is what gets it shown.</td><td>Tolerates the full length. Post the longer cut here.</td></tr>
+      <tr><td><b>The first second</b></td><td>The hook is spoken and on screen at the same time. Sound-off viewing is normal.</td><td>Spoken hook is enough, but keep the text anyway.</td></tr>
+      <tr><td><b>Captions</b></td><td>Burn them in. Do not rely on the auto ones, they mangle tool names.</td><td>Burn them in. Same file.</td></tr>
+      <tr><td><b>Text placement</b></td><td>Keep every word inside the middle 60 percent. The interface eats the top and bottom.</td><td>Worse than Instagram for this. Same safe area, be stricter.</td></tr>
+      <tr><td><b>Sound</b></td><td>Trending audio under a talking video hurts more than it helps. Voice alone, or a bed at 10 percent.</td><td>Same. A trend sound on a teaching video reads as a school trying to be young.</td></tr>
+      <tr><td><b>Caption text</b></td><td>Two lines and the link in bio.</td><td>One line. Link in bio.</td></tr>
+      <tr><td><b>Cross-posting</b></td><td colspan="2">Export clean from CapCut and upload natively to both. Never post a file with a TikTok watermark to Reels, it is demoted.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Production</p>
+    <h2>Two production days</h2>
+  </div>
+  <div class="batch">
+    <h3>Day one, camera. V1, V6, V7, V8, and the front of V9.</h3>
+    <p>One sitting, one shirt, one background. Film them back to back in this order: V8 first because it is twenty seconds and warms you up, then V1, V6, V7. Shoot each one twice, once straight and once faster. Vertical, phone on anything steady, window light in front of you rather than behind.</p>
+    <p class="roster">Needs first: nothing. This day can happen tonight.</p>
+  </div>
+  <div class="batch">
+    <h3>Day two, screen. V2, V3, V4, V5, V10.</h3>
+    <p>Screen recordings at phone aspect, or desktop recordings cropped in CapCut. Record the real thing happening. No mock-ups, no sped-up footage pretending to be real time, and if something is trimmed the cut is visible rather than hidden.</p>
+    <p class="roster">Needs first: V5 needs a real site built end to end while recording. V10 needs one agent or automation that actually runs. Neither script can be filmed before the thing exists.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">The scripts</p>
+    <h2>Word for word</h2>
+    <p>The left column is what you say and when. The right column is the hook options, what sits on screen, and the notes. Three hooks are given for each video and the one in blue is the recommendation. Film the recommended one; the other two exist for the second attempt if the first does not travel.</p>
+  </div>
+
+  <article class="vid flag" id="v1">
+    <header>
+      <div class="num">Talking head<b>V1</b></div>
+      <div><h3>You were in the wrong classroom</h3><p class="why">The positioning video, and the one to pin. It takes the blame off the viewer, which is the whole reason it works. Goes out with day 1 of the written calendar.</p></div>
+      <div class="meta"><span class="tag p1">What the school is</span><span class="mono" style="font-size:11px;color:var(--ink-3)">35 sec · Mon 28 Sep</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">If you have opened an AI course and closed it again, nothing was wrong with you. You were in the wrong classroom.</p><p class="dir">Straight to camera. Flat delivery, no smile on the first line. Beat after "you".</p></div></div>
+        <div class="beat"><div class="t">0:07</div><div><p class="say">Three kinds of people use AI. The first group builds it. Engineers, researchers, people training models. Universities are full of them.</p></div></div>
+        <div class="beat"><div class="t">0:14</div><div><p class="say">The second group uses it casually. An email, a homework question, something to settle an argument.</p></div></div>
+        <div class="beat"><div class="t">0:19</div><div><p class="say">And then there is you. You want to build with it and get paid for that. A job, clients, your own thing, whichever one you are going for.</p><p class="dir">Slow down on "and then there is you".</p></div></div>
+        <div class="beat"><div class="t">0:27</div><div><p class="say">Almost every AI course is built for the first group. That is why it lost you. Not the other way round.</p></div></div>
+        <div class="beat"><div class="t">0:33</div><div><p class="say">We built one for the third. Six weeks, seven projects, starts the twelfth.</p><p class="dir">Stop there. No price, no link read aloud. End card does it.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">If you have opened an AI course and closed it again, nothing was wrong with you.</li>
+          <li>Three kinds of people use AI. Two of them are well served. You are not one of the two.</li>
+          <li>You did not fail that AI course. It was not written for you.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>0:00 hook text, two lines, middle of frame</li>
+          <li>0:07 to 0:26 a counter in the mono face, top left: 1, then 2, then 3. Group three stays up while you talk</li>
+          <li>0:33 end card: LearnHub mark, "AI Bootcamp · Cohort 1 · 12 October" and learnhub.dev/enrol</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>Most AI courses are built for engineers. Most people taking them are not engineers. Six weeks, seven projects, starts 12 October. Link in bio.</span></div>
+        <div class="note-box"><b>Watch:</b> do not promise a job. "Get paid for that" is the ceiling, and it covers employment, clients and your own business without committing to any of them.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid" id="v6">
+    <header>
+      <div class="num">Talking head<b>V6</b></div>
+      <div><h3>Three things you need. Three you do not.</h3><p class="why">The honest requirements, including the two that cost money. It runs against every other school's "no experience needed", and that friction is what makes it worth watching.</p></div>
+      <div class="meta"><span class="tag p4">The honest answers</span><span class="mono" style="font-size:11px;color:var(--ink-3)">28 sec · Wed 30 Sep</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">Three things you need before day one. And three you do not. I would rather you know now than find out on the twelfth.</p></div></div>
+        <div class="beat"><div class="t">0:07</div><div><p class="say">You need a laptop. The lessons read fine on your phone, so you can study anywhere, but Claude Code, Supabase and n8n all need a laptop and the building happens there.</p><p class="dir">Say this plainly. No apology, no softening.</p></div></div>
+        <div class="beat"><div class="t">0:16</div><div><p class="say">You need Claude Pro. Twenty dollars a month. That is the only paid tool in the whole six weeks, and everything else starts on a free tier.</p></div></div>
+        <div class="beat"><div class="t">0:23</div><div><p class="say">And you need time to build every week, because there is a project due every Sunday.</p></div></div>
+        <div class="beat"><div class="t">0:27</div><div><p class="say">What you do not need. Any coding. Anything you have built before. Or any AI experience past the basics.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">Three things you need before day one. And three you do not.</li>
+          <li>I would rather tell you this now than have you find out on the twelfth.</li>
+          <li>Yes, you need a laptop, and yes, one of the tools costs money. Here is the honest list.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>Two columns building as you speak: NEED on the left, DO NOT NEED on the right</li>
+          <li>$20/mo set in the mono face beside Claude Pro</li>
+          <li>Ticks and crosses in the mono face, not emoji</li>
+          <li>End card</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>A laptop, Claude Pro at $20 a month, and time. That is the honest list, before you enrol rather than after.</span></div>
+        <div class="note-box"><b>This is the video that must never drift.</b> "Phone first" and "no laptop needed" are out of the copy for good, and the Claude Pro cost is named rather than buried. Anyone who turns up without either because of something we posted is a person we lost on purpose.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid" id="v2">
+    <header>
+      <div class="num">Screen<b>V2</b></div>
+      <div><h3>That is not a prompt, it is a wish</h3><p class="why">Week two of the curriculum, given away and demonstrated. Teaching videos with a visible before and after get saved, and saves are what carry a small account.</p></div>
+      <div class="meta"><span class="tag p3">Teach it free</span><span class="mono" style="font-size:11px;color:var(--ink-3)">45 sec · Thu 1 Oct</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">"Act as a world class marketer" is not a prompt. It is a wish. Watch what it gives you.</p><p class="dir">Voice over a live screen. Type the bad prompt, send it.</p></div></div>
+        <div class="beat"><div class="t">0:06</div><div><p class="say">Generic. Could be about anything, for anyone. Because that is exactly what you told it.</p><p class="dir">Scroll the weak output. Do not linger, four seconds.</p></div></div>
+        <div class="beat"><div class="t">0:12</div><div><p class="say">Now the same request with five things added. Context: what the business is and who it is for.</p><p class="dir">Type it live. Each part appears as you say it.</p></div></div>
+        <div class="beat"><div class="t">0:18</div><div><p class="say">Role. Not "expert", that means nothing. Something specific. An editor who cuts every adverb.</p></div></div>
+        <div class="beat"><div class="t">0:24</div><div><p class="say">Constraints. How long, what format, what to leave out. This is the part everyone skips and it is where the quality comes from.</p></div></div>
+        <div class="beat"><div class="t">0:31</div><div><p class="say">An example of what good looks like. One is enough.</p></div></div>
+        <div class="beat"><div class="t">0:35</div><div><p class="say">And then you push back on the answer, the way you would with a junior. Send.</p><p class="dir">Send. Let the good output run for three seconds in silence.</p></div></div>
+        <div class="beat"><div class="t">0:41</div><div><p class="say">Same model. Same minute. There are no magic words, only a better brief.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">"Act as a world class marketer" is not a prompt. It is a wish.</li>
+          <li>Your prompts are bad and it is not because you are missing a secret phrase.</li>
+          <li>Same model, same minute, two completely different answers. The difference is five words long.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>Real screen recording. Claude, since Claude Pro is the one paid tool on the course</li>
+          <li>0:12 to 0:38 the five parts stack up as mono labels down the left: CONTEXT, ROLE, CONSTRAINTS, EXAMPLE, ITERATION</li>
+          <li>0:41 end card</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>Five parts. No magic words. Week two of the LearnHub AI Bootcamp goes past this into workflows and skills.</span></div>
+        <div class="note-box"><b>Use a real business</b> in the prompt, not a made-up one. A viewer can tell, and a real example is the difference between a lesson and a demo.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid" id="v9">
+    <header>
+      <div class="num">Hybrid<b>V9</b></div>
+      <div><h3>Seven projects, not seven certificates</h3><p class="why">The curriculum as things that exist rather than topics covered. The one to send to anyone who asks what the bootcamp covers, so it belongs in the highlights.</p></div>
+      <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">35 sec · Fri 2 Oct</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">Most courses end with a folder of notes you never open again. Here is what exists at the end of this one.</p><p class="dir">On camera for this line only, then cut to screen.</p></div></div>
+        <div class="beat"><div class="t">0:07</div><div><p class="say">Week one, an AI workspace that knows you, your first skill, and a one-page site live on the internet.</p><p class="dir">From here it is screen recordings of each real artifact.</p></div></div>
+        <div class="beat"><div class="t">0:13</div><div><p class="say">Week two, your own prompt library and a voice skill, and writing published in your voice.</p></div></div>
+        <div class="beat"><div class="t">0:18</div><div><p class="say">Week three, a live web app with a database and sign-in.</p></div></div>
+        <div class="beat"><div class="t">0:22</div><div><p class="say">Week four, a UGC ad and a motion graphic that launch it.</p></div></div>
+        <div class="beat"><div class="t">0:26</div><div><p class="say">Week five, a chatbot on your site and an automation doing real work for it.</p></div></div>
+        <div class="beat"><div class="t">0:30</div><div><p class="say">Week six, a live offer with outreach sent, or three tailored job applications. Then the final project.</p></div></div>
+        <div class="beat"><div class="t">0:35</div><div><p class="say">Seven links you can send to anyone.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">Most courses end with a folder of notes you never open again.</li>
+          <li>Seven projects in six weeks. Every one of them is a link you can send to someone.</li>
+          <li>At the end of most courses you have a certificate. At the end of this one you have seven things.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>Week number in mono, large, top left, changing on each beat</li>
+          <li>Real artifacts wherever possible. The site from V5, the automation from V10, a real published video</li>
+          <li>End card</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>Seven projects in six weeks, each one a link you can send to someone. Not seven certificates.</span></div>
+        <div class="note-box"><b>Build this one last</b>, so it can reuse footage from V4, V5 and V10 rather than needing its own.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid" id="v8">
+    <header>
+      <div class="num">Talking head<b>V8</b></div>
+      <div><h3>This is not for you, and I will save you the click</h3><p class="why">Twenty seconds, and the best warm-up to film first. Telling people not to join is the fastest way to be believed by the ones who should.</p></div>
+      <div class="meta"><span class="tag p1">What the school is</span><span class="mono" style="font-size:11px;color:var(--ink-3)">20 sec · Sat 3 Oct</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">If you want to build AI, this is not for you. I will save you the click.</p></div></div>
+        <div class="beat"><div class="t">0:05</div><div><p class="say">We do not train models. There is no maths. Nobody reads fifty pages before their first build.</p></div></div>
+        <div class="beat"><div class="t">0:11</div><div><p class="say">What is left is six weeks of using AI to build things that work. A live web app. Video that sells it. An agent running it. Then a career or a business on top.</p></div></div>
+        <div class="beat"><div class="t">0:19</div><div><p class="say">If that is not what you were looking for, no hard feelings.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">If you want to build AI, this is not for you. I will save you the click.</li>
+          <li>Three things this bootcamp is not, so you can stop watching if it is the wrong one.</li>
+          <li>We do not train models here. If that is what you wanted, go somewhere else.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>Crossed-out list building as you speak: machine learning, maths, theory first</li>
+          <li>0:11 the list flips to what it is</li>
+          <li>End card</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>Not a machine learning course. Six weeks of building things that work, then a career or a business on top of them.</span></div>
+        <div class="note-box"><b>Film this one first.</b> It is short, it needs no warmth, and it gets your voice working before V1.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid flag" id="v3">
+    <header>
+      <div class="num">Screen<b>V3</b></div>
+      <div><h3>Seven signs a machine wrote it</h3><p class="why">The one most likely to be sent to somebody else, because everybody has received a post like this. It also quietly proves the editing standard rather than claiming it.</p></div>
+      <div class="meta"><span class="tag p3">Teach it free</span><span class="mono" style="font-size:11px;color:var(--ink-3)">50 sec · Mon 5 Oct</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">I can tell in one sentence when a machine wrote your post. Seven tells. Check your last one.</p><p class="dir">Open on a post on screen, scrolling slowly.</p></div></div>
+        <div class="beat"><div class="t">0:06</div><div><p class="say">One. Em dashes everywhere. A person uses one a page. A model uses one a sentence.</p><p class="dir">Highlight each tell in the post as you name it. Marker effect.</p></div></div>
+        <div class="beat"><div class="t">0:12</div><div><p class="say">Two. "It is not just this, it is that." Fine once. Four times and you are caught.</p></div></div>
+        <div class="beat"><div class="t">0:18</div><div><p class="say">Three. Everything arrives in threes. Fast, simple and reliable. Bold, honest and clear. Real people are messier than that.</p></div></div>
+        <div class="beat"><div class="t">0:26</div><div><p class="say">Four. The vocabulary. Delve. Landscape. Leverage. Tapestry. Nobody has ever said tapestry out loud.</p></div></div>
+        <div class="beat"><div class="t">0:33</div><div><p class="say">Five. Every paragraph ends with a moral. "This highlights the importance of." A person just moves on.</p></div></div>
+        <div class="beat"><div class="t">0:39</div><div><p class="say">Six. No opinions anywhere. Both sides, balanced, safe.</p></div></div>
+        <div class="beat"><div class="t">0:43</div><div><p class="say">Seven. Every sentence the same length. Read it aloud. If it drones, a machine wrote it.</p></div></div>
+        <div class="beat"><div class="t">0:48</div><div><p class="say">Week two teaches the model your voice as a skill, so the draft starts closer to how you actually write.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">I can tell in one sentence when a machine wrote your post.</li>
+          <li>Seven things in your last post that told everyone you used AI.</li>
+          <li>Nobody has ever said the word tapestry out loud. Your AI says it constantly.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>A post carrying several of these tells. Write it yourself for the video. Never use a stranger's real post</li>
+          <li>Numbers 1 to 7 in mono, top right, ticking over</li>
+          <li>Each tell highlighted in the text as it is named</li>
+          <li>0:48 end card</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>Seven tells. Check your last post against them. Week two of the LearnHub AI Bootcamp teaches the model your voice, then spends the week on the edit.</span></div>
+        <div class="note-box"><b>Do not</b> screenshot a real person's post to mock it. Write the example yourself. <b>And</b> read your own caption against the seven before posting, because being caught by your own list is the one failure this video cannot survive.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid flag" id="v5">
+    <header>
+      <div class="num">Screen<b>V5</b></div>
+      <div><h3>This website did not exist when the video started</h3><p class="why">The single most persuasive thing on this list, and the reason people will enrol. One unbroken recording of a real build. It now goes out on the week three post day, which is where this lands in the curriculum. If only one video gets made properly, make it this one.</p></div>
+      <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">60 sec · Wed 7 Oct</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">This website does not exist yet. Give me sixty seconds.</p><p class="dir">Open on an empty prompt box in Claude Code or v0. Nothing else on screen.</p></div></div>
+        <div class="beat"><div class="t">0:05</div><div><p class="say">A real business. A tailor in Surulere who takes orders on WhatsApp and loses half of them.</p><p class="dir">Type the brief as you speak it.</p></div></div>
+        <div class="beat"><div class="t">0:13</div><div><p class="say">Prices, a gallery, and a form that sends the order somewhere she will actually see it.</p></div></div>
+        <div class="beat"><div class="t">0:19</div><div><p class="say">And notice what I did first. I made it plan before it wrote anything. That one habit is the difference between this working and you giving up.</p><p class="dir">Show the plan. This beat is the actual lesson.</p></div></div>
+        <div class="beat"><div class="t">0:27</div><div><p class="say">There it is. Not a design file. A working page.</p><p class="dir">The first render appears. Let it breathe.</p></div></div>
+        <div class="beat"><div class="t">0:33</div><div><p class="say">The gallery is wrong, so I say so, in English.</p><p class="dir">Type the correction. Show the fix land.</p></div></div>
+        <div class="beat"><div class="t">0:41</div><div><p class="say">Publish.</p><p class="dir">One click. The live URL appears.</p></div></div>
+        <div class="beat"><div class="t">0:45</div><div><p class="say">That address is real. You can open it on your phone right now, and so can her customers.</p><p class="dir">Cut to the phone, open the URL, scroll it. This shot is the proof.</p></div></div>
+        <div class="beat"><div class="t">0:53</div><div><p class="say">Week three of the bootcamp is this, plus a database and sign-in, except you are the one typing.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">This website does not exist yet. Give me sixty seconds.</li>
+          <li>I am going to build a real business a real website before this video ends.</li>
+          <li>No code, no designer, no developer. Watch.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>Unbroken screen recording. A running timer in mono, top right, so the sixty seconds is checkable</li>
+          <li>0:19 the plan on screen, which is the part most viewers have never seen anyone do</li>
+          <li>0:45 hard cut to a phone in hand opening the live URL</li>
+          <li>End card with the live URL readable</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>Sixty seconds, no code, a real address a customer can open. Week three of the LearnHub AI Bootcamp.</span></div>
+        <div class="kv"><b>Gate</b><span>Cannot be filmed until you have done the build once end to end.</span></div>
+        <div class="note-box"><b>Do the build once before recording</b> so you know it lands, then record the second attempt in one take. <b>Never speed up the footage</b> while a timer is on screen. If the build takes four minutes, say sixty seconds of it is shown and cut visibly. The timer is the honesty of this video and faking it would cost more than the video earns.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid" id="v4">
+    <header>
+      <div class="num">Faceless<b>V4</b></div>
+      <div><h3>You are watching a video I was never in</h3><p class="why">Week four, proved instead of described, and posted on the week four day. The video is the argument. It also answers the objection that stops most people making video at all.</p></div>
+      <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">40 sec · Thu 8 Oct</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">I am not in this video. I never was. No camera came out, and that is the point.</p><p class="dir">Generated footage or an avatar. Your cloned voice.</p></div></div>
+        <div class="beat"><div class="t">0:07</div><div><p class="say">Most people never make video because they do not want to be seen. So here is the whole stack that means you do not have to be.</p></div></div>
+        <div class="beat"><div class="t">0:14</div><div><p class="say">The footage is generated. Veo for realism with sound, Kling when it has to read as filmed.</p><p class="dir">Show each tool's output as it is named. Two seconds each.</p></div></div>
+        <div class="beat"><div class="t">0:20</div><div><p class="say">Higgsfield gets you across several video models on one account, paying as you go.</p></div></div>
+        <div class="beat"><div class="t">0:25</div><div><p class="say">The voice is ElevenLabs. It is mine, cloned, which took about a minute.</p></div></div>
+        <div class="beat"><div class="t">0:30</div><div><p class="say">Then Remotion and CapCut for the motion graphics and the edit.</p></div></div>
+        <div class="beat"><div class="t">0:34</div><div><p class="say">Week four of the bootcamp is this, and the ad you make launches the product you built in week three.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">I am not in this video. I never was.</li>
+          <li>You do not have to be on camera. Everything you are about to watch proves it.</li>
+          <li>No camera came out to make this. Here is what did.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>Tool names in mono as each is mentioned, bottom third</li>
+          <li>0:34 a single frame listing all five</li>
+          <li>End card</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>Made without a camera. Veo, Kling, Higgsfield, ElevenLabs, Remotion, CapCut. Week four of the LearnHub AI Bootcamp.</span></div>
+        <div class="note-box"><b>This video must actually be made the way it says.</b> If any of it is filmed, the claim in the first line is false and the video is worse than not posting. <b>Also:</b> clone your own voice for it. A stock voice saying "it is mine, cloned" is the same problem.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid" id="v10">
+    <header>
+      <div class="num">Screen<b>V10</b></div>
+      <div><h3>It answered a customer at 2am. I was asleep.</h3><p class="why">Week five is the half of the bootcamp people do not know they want. A website is something you have; an agent answering at 2am is time you get back, and that framing lands in ten seconds.</p></div>
+      <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">45 sec · Fri 9 Oct</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">Somebody asked this business a question at two in the morning. They got an answer in about nine seconds. I was asleep.</p><p class="dir">Open on the real chat thread, timestamp visible.</p></div></div>
+        <div class="beat"><div class="t">0:09</div><div><p class="say">That is an agent, not a chatbot with five buttons. It read the site, understood the question, and answered it.</p></div></div>
+        <div class="beat"><div class="t">0:15</div><div><p class="say">And every business has work like this, done by hand only because nobody set it up otherwise. Replying to an enquiry. Copying an order into a sheet. Chasing an invoice.</p><p class="dir">Three quick cuts, one per example.</p></div></div>
+        <div class="beat"><div class="t">0:24</div><div><p class="say">This one took about eleven minutes to set up. In a browser. No code.</p><p class="dir">Show the actual build. Speed up here and label it clearly.</p></div></div>
+        <div class="beat"><div class="t">0:30</div><div><p class="say">It has run forty times since. I have not touched it once.</p><p class="dir">Show the real run history. Use your true number, whatever it is.</p></div></div>
+        <div class="beat"><div class="t">0:36</div><div><p class="say">Week five of the bootcamp is agents and automation. You leave the week with one of these live on your own site.</p></div></div>
+        <div class="beat"><div class="t">0:42</div><div><p class="say">And week six is where you turn it into a job or a business. Early-bird price ends tomorrow night.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">Somebody asked this business a question at two in the morning. I was asleep.</li>
+          <li>This has answered the same kind of question forty times. I set it up once, in eleven minutes.</li>
+          <li>You are doing a job by hand that nobody ever decided you should do by hand.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>0:00 the real thread with the 2am timestamp visible. This shot carries the video</li>
+          <li>0:24 the build canvas, sped up with a SPED UP label on screen</li>
+          <li>0:30 the real run history</li>
+          <li>End card with the deadline</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>Eleven minutes to set up, forty runs since, no code. Week five of the LearnHub AI Bootcamp. Early-bird ends tomorrow night.</span></div>
+        <div class="kv"><b>Gate</b><span>Needs a real agent or automation that has genuinely run. Build it first.</span></div>
+        <div class="note-box"><b>Every number in this script is a placeholder for your real one.</b> Nine seconds, eleven minutes, forty runs. Use what the screen actually shows. A fabricated run count on a video about proof is the worst possible trade, and the screen recording makes it checkable anyway.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="vid flag" id="v7">
+    <header>
+      <div class="num">Talking head<b>V7</b></div>
+      <div><h3>Here is the price. Say it out loud.</h3><p class="why">Deadline day. The sharpest video in the set, because not one competitor in the research publishes a price at all and the closest one hides it behind a login. The urgency is real: the number doubles at midnight and the code enforces it.</p></div>
+      <div class="meta"><span class="tag p5">Enrol</span><span class="gate">Gate: checkout live</span><span class="mono" style="font-size:11px;color:var(--ink-3)">32 sec · Sat 10 Oct</span></div>
+    </header>
+    <div class="vbody">
+      <div class="vcol">
+        <h4>Script</h4>
+        <div class="beat"><div class="t">0:00</div><div><p class="say">Go and look at any AI school in this country and try to find the price. You will find a form.</p><p class="dir">Dry, not angry. You are pointing at something, not complaining.</p></div></div>
+        <div class="beat"><div class="t">0:07</div><div><p class="say">Ours is a hundred and fifty thousand naira until tonight. Three hundred and fifty from tomorrow.</p><p class="dir">Beat before the number. Let it land.</p></div></div>
+        <div class="beat"><div class="t">0:14</div><div><p class="say">Six weeks. A live session every Saturday. Feedback on every project. Demo day, and a certificate with a verification link anyone can check.</p></div></div>
+        <div class="beat"><div class="t">0:22</div><div><p class="say">Not included: your laptop, and Claude Pro at twenty dollars. I would rather say that now than have you find it out later.</p></div></div>
+        <div class="beat"><div class="t">0:28</div><div><p class="say">If a school will not tell you what it costs before you speak to someone, that is information too.</p><p class="dir">End there. Do not add a call to action after this line.</p></div></div>
+      </div>
+      <div class="vcol">
+        <h4>Hook options</h4>
+        <ul class="hooks">
+          <li class="pick">Go and look at any AI school in this country and try to find the price.</li>
+          <li>A hundred and fifty thousand naira, until tonight. Here is what it buys.</li>
+          <li>Nobody in this market will tell you what their course costs. I will.</li>
+        </ul>
+        <h4>On screen</h4>
+        <ul class="ost">
+          <li>0:07 ₦150,000 fills the frame in royal blue on navy, mono, with ₦350,000 struck through beside it. Same treatment as flyer 13</li>
+          <li>0:14 to 0:26 what is included, then what is not, one line at a time</li>
+          <li>End card: 35 seats, starts Monday, learnhub.dev/enrol</li>
+        </ul>
+        <div class="kv"><b>Caption</b><span>₦150,000 until tonight, ₦350,000 from tomorrow. On the page, not behind a form. Starts Monday.</span></div>
+        <div class="note-box"><b>Name nobody.</b> "Any AI school in this country" is the line. Naming a competitor turns an argument you win into a fight you do not need. <b>Gate:</b> this is the video that needs Paystack checkout actually live, same as day 13 of the written calendar.</div>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Schedule</p>
+    <h2>Posting schedule</h2>
+    <p>Reels and TikTok go out on the same day, at 18:00 and 19:00, an hour after the feed post so the two do not compete. Four of the fourteen days carry no video, which is deliberate: two a week per platform is sustainable for one person, and ten videos in ten days is how a page burns out in week three.</p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Day</th><th>Video</th><th>Format</th><th>Runtime</th><th>Batch</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">Mon 28 Sep</td><td><b><a href="#v1">V1</a></b> You were in the wrong classroom</td><td>Talking head</td><td class="mono">35s</td><td class="mono">Day one</td></tr>
+      <tr><td class="mono">Wed 30 Sep</td><td><b><a href="#v6">V6</a></b> Three things you need</td><td>Talking head</td><td class="mono">28s</td><td class="mono">Day one</td></tr>
+      <tr><td class="mono">Thu 1 Oct</td><td><b><a href="#v2">V2</a></b> That is not a prompt</td><td>Screen</td><td class="mono">45s</td><td class="mono">Day two</td></tr>
+      <tr><td class="mono">Fri 2 Oct</td><td><b><a href="#v9">V9</a></b> Seven projects</td><td>Hybrid</td><td class="mono">35s</td><td class="mono">Both</td></tr>
+      <tr><td class="mono">Sat 3 Oct</td><td><b><a href="#v8">V8</a></b> This is not for you</td><td>Talking head</td><td class="mono">20s</td><td class="mono">Day one</td></tr>
+      <tr><td class="mono">Mon 5 Oct</td><td><b><a href="#v3">V3</a></b> Seven signs a machine wrote it</td><td>Screen</td><td class="mono">50s</td><td class="mono">Day two</td></tr>
+      <tr><td class="mono">Wed 7 Oct</td><td><b><a href="#v5">V5</a></b> This website did not exist</td><td>Screen</td><td class="mono">60s</td><td class="mono">Day two</td></tr>
+      <tr><td class="mono">Thu 8 Oct</td><td><b><a href="#v4">V4</a></b> A video I was never in</td><td>Faceless</td><td class="mono">40s</td><td class="mono">Day two</td></tr>
+      <tr><td class="mono">Fri 9 Oct</td><td><b><a href="#v10">V10</a></b> It answered at 2am</td><td>Screen</td><td class="mono">45s</td><td class="mono">Day two</td></tr>
+      <tr><td class="mono">Sat 10 Oct</td><td><b><a href="#v7">V7</a></b> Here is the price</td><td>Talking head</td><td class="mono">32s</td><td class="mono">Day one</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:10px;font-size:13px;color:var(--ink-3)">Each video lands on the day its subject is posted in the written calendar. V5 goes out on the week three day, V4 on the week four day, V10 on the arc three day, and V7 on deadline day. Sunday 11 October carries no video: the post that day is the close and it does not need one.</p>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Video voice</p>
+    <h2>What we do not do on camera</h2>
+    <p>The written rules still apply. These are the ones that only come up in video, and most of them are things that would make a school look like it is auditioning.</p>
+  </div>
+  <div class="rules">
+    <div class="rule"><h3>Always</h3><ul>
+      <li>The hook is a full sentence with a claim in it, spoken in the first two seconds and on screen at the same time.</li>
+      <li>Show the thing working. If a script claims a tool does something, the screen shows it doing it.</li>
+      <li>Real numbers from the real screen. Nine seconds, eleven minutes, forty runs, whatever it actually was.</li>
+      <li>Label a sped-up section on screen while it is sped up.</li>
+      <li>Burn in captions. Check the tool names survived.</li>
+      <li>End on the thought, not on a plea. The end card carries the link.</li>
+      <li>One idea per video. If it needs two, it is two videos.</li>
+    </ul></div>
+    <div class="rule never"><h3>Never</h3><ul>
+      <li>"POV:", "Watch till the end", "Part 1 of 4", or a question in the first line that you answer in the second.</li>
+      <li>Trending audio underneath a teaching video. It reads as a school trying to sound young.</li>
+      <li>Promise a job, imply a placement, or name a salary. No bootcamp can promise you a job, and saying so is stronger than the promise.</li>
+      <li>A countdown or a deadline that is not real. The 10 October one is real and the code enforces it, so it is the only one used.</li>
+      <li>Naming a competitor. "Any AI school in this country" does the work without the fight.</li>
+      <li>A student, a testimonial or a result that does not exist. Nobody has finished a cohort yet.</li>
+      <li>"Phone first" or "no laptop needed". A laptop and Claude Pro are both required and both are said out loud.</li>
+      <li>The 2025 closure or the scholarships. That story is yours and belongs on your own account.</li>
+      <li>Speeding up footage while a timer is on screen.</li>
+      <li>Stock footage of somebody else's office, or an AI-generated person presented as a student.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Before filming</p>
+    <h2>Before filming</h2>
+  </div>
+  <div class="prep">
+    <div class="list"><h3>Before each batch</h3><ol>
+      <li><b>Nothing blocks day one.</b> V1, V6, V7, V8 and the front of V9 can be filmed tonight with a phone and a window.</li>
+      <li><b>Build the V5 site once</b> before recording it. Know it lands, then record the second run in one take.</li>
+      <li><b>Build the V10 agent</b> and let it run a real number of times. The run history is the shot.</li>
+      <li><b>Clone your voice</b> in ElevenLabs for V4. The script says the voice is yours, so it has to be.</li>
+      <li><b>One end card</b> in the site's navy and royal blue, three seconds, used on all ten. Mark, one line, the URL.</li>
+      <li><b>One caption style</b> in CapCut, General Sans, saved as a template so all ten match.</li>
+    </ol></div>
+    <div class="list"><h3>Questions for Pelumi</h3><ol>
+      <li><b>Checkout before Saturday 10 October.</b> V7 is a deadline video and learnhub.dev/enrol is still the waitlist form. Same gate as day 13 of the written calendar, and the same single point of failure.</li>
+      <li><b>TikTok.</b> Does a LearnHub account exist yet? Nothing here assumes one, and if it does not, day one of filming still goes ahead for Reels.</li>
+      <li><b>The tailor in V5.</b> Use a real small business you know, with permission, or invent one openly. A real one is better and the video should say which it is.</li>
+      <li><b>Your own face on the company page.</b> These five put you on LearnHub's Reels rather than your own. Confirm that is what you want, because the alternative is posting them from your account and resharing.</li>
+      <li><b>Thirty-five seats or twenty-five?</b> V7's end card says 35, from the brochure. The database seeds 25. One of them has to move.</li>
+    </ol></div>
+  </div>
+
+  <div class="sources">
+    <span class="eyebrow">Built from</span>
+    <span>The fourteen days in <span class="mono">learnhub-calendar.html</span>, rewritten 29 September 2026, and the voice and vocabulary rules in it.</span>
+    <span>Price, deadline and seat cap from <span class="mono">Learnhub-ai/lib/bootcamp/pricing.ts</span>, read 29 September 2026.</span>
+    <span>Curriculum, weekly projects, tools and certification from <span class="mono">Learnhub-ai/content/bootcamp/CURRICULUM.md</span> and <span class="mono">learnhub-launch/brochure/brochure.html</span>.</span>
+  </div>
+</section>
+
+</div>

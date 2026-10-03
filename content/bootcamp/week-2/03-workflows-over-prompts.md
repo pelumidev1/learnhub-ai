@@ -32,9 +32,22 @@ Each role has one job and only what it needs. The Writer is not also trying to r
 
 You are not getting a better answer by asking harder. You are getting a better answer because each step is a smaller question.
 
+## One chain, start to finish
+
+Amaka wants a post that fills her Christmas pre-order list. Here is the whole chain, one step at a time, each output pasted into the next.
+
+1. **Researcher.** *"What do people in Lagos worry about when ordering a cake for Christmas? Late delivery, price, taste? List the worries, no advice."* She gets a list: delivery during Christmas traffic, cakes arriving damaged, bakers who stop replying in December.
+2. **Strategist.** *"Here are the worries. My edge is same-day Lekki delivery and I reply to every WhatsApp within an hour. Which one worry should this post answer, and who is it for?"* The answer: people who were let down by a baker last Christmas. Answer the "stops replying" worry.
+3. **Storyteller.** *"Give me the order for a short post: what the reader believes at the start, what changes their mind, what they do at the end."* Start with last year's disappointment, then her one-hour reply promise, then the pre-order deadline.
+4. **Writer.** *"Write it in that order. Under 80 words. Include: pre-orders close 15 December, ₦25,000 for an 8 inch."* Now a draft exists, and it is about something.
+5. **Skeptic.** New chat: *"Pretend you are a customer who has been burned by a baker before. What in this post would you not believe?"* It flags "we never let you down" as a claim anyone could make. She swaps it for a real number: 212 orders delivered this year.
+6. **Editor.** *"Cut this by a third. Keep the deadline and the price."*
+
+Six short conversations, maybe half an hour. Compare that with an hour of arguing with one chat that still produces "Order your Christmas cakes now!"
+
 ## Your turn
 
-Take something you actually need to make this week. Run all six. Keep every intermediate output, because next week you will notice that four of these six steps are the same every time you do this, and that observation is the whole of lesson nine.
+Take something you actually need to make this week. Run all six. Keep every intermediate output. You will notice that four of these six steps are the same every time you do this. Those four belong in a skill, the way you built one in week one.
 
 ## What you should be able to do after this
 

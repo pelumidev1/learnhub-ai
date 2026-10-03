@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { Logo } from "@/components/ui/logo";
-import { WaitlistForm } from "@/components/waitlist/waitlist-form";
-import { COHORT, priceNow, seatsLeft } from "@/components/marketing/landing/bootcamp-facts";
+import { EnrolForm } from "@/components/enrol/enrol-form";
+import { COHORT, priceNow } from "@/components/marketing/landing/bootcamp-facts";
+import { countPaidSeatsTaken, getCurrentCohort } from "@/lib/bootcamp/queries";
 
 export const metadata: Metadata = {
   // The root layout appends "· LearnHub"; adding it here too doubles it.
-  title: "Join the waitlist",
-  description:
-    "The six week AI Bootcamp. No payment now. When seats open, you hear first.",
+  title: "Enrol",
+  description: "Save your seat on the six week AI Bootcamp, starting 12 October 2026.",
 };
 
 /* Hourly rather than fully static: the price line turns over to the full price
-   within an hour of the early-bird closing, as the landing page's does.
-   Nothing else here is per-visitor, and the form posts to a Server Action. */
+   within an hour of the early-bird closing, as the landing page's does, and
+   the seat count catches up with checkout. Nothing here is per-visitor. */
 export const revalidate = 3600;
 
 /** Staggered load-in delay (CSS var read by .lh-hero-in). */
@@ -27,8 +27,12 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  * and price line, with the form card floating where the wash meets the page,
  * so arriving here from "Save my seat" feels like the same place.
  */
-export default function EnrolPage() {
+export default async function EnrolPage() {
   const { earlyBird, price, full } = priceNow();
+  const cohort = await getCurrentCohort();
+  // Seats sold before checkout existed, plus every paid enrolment since.
+  const paid = cohort ? await countPaidSeatsTaken(cohort.id) : 0;
+  const seatsLeft = Math.max(0, COHORT.seats - COHORT.seatsTaken - paid);
 
   return (
     <div className="flex min-h-svh flex-col bg-white text-ink">
@@ -52,16 +56,12 @@ export default function EnrolPage() {
             className="lh-hero-in mt-5 font-serif text-[3rem] font-normal leading-[1.02] tracking-[-0.015em] text-white sm:text-[3.75rem]"
             style={d(120)}
           >
-            Join the <em className="italic">waitlist</em>
+            Save your <em className="italic">seat</em>
           </h1>
-
-          <p className="lh-hero-in lh-balance mx-auto mt-4 max-w-[22rem] text-base leading-relaxed text-white/80 sm:text-lg" style={d(240)}>
-            No payment now. When seats open, you hear first.
-          </p>
 
           {/* Always two lines: the column is form-width at every size, too
               narrow to hold price and seats side by side. */}
-          <p className="lh-hero-in mt-4 flex flex-col items-center gap-1 text-sm text-white/75" style={d(320)}>
+          <p className="lh-hero-in mt-4 flex flex-col items-center gap-1 text-sm text-white/75" style={d(240)}>
             <span>
               <span className="font-semibold text-white">{price}</span>
               {earlyBird ? (
@@ -81,8 +81,14 @@ export default function EnrolPage() {
       {/* Pulled up over the foot of the wash, so the card reads as the object
           the page is lit for, as the product window does on the landing. */}
       <main className="relative mx-auto -mt-28 w-full max-w-md flex-1 px-5 pb-16 sm:-mt-32">
-        <div className="lh-hero-in lh-enrol-card" style={d(440)}>
-          <WaitlistForm />
+        <div className="lh-hero-in lh-enrol-card" style={d(360)}>
+          {seatsLeft > 0 ? (
+            <EnrolForm price={price} />
+          ) : (
+            <div className="rounded-2xl border border-silver bg-white p-6 text-center shadow-soft sm:p-8">
+              <h2 className="font-display text-2xl font-bold text-ink">This cohort is full.</h2>
+            </div>
+          )}
         </div>
       </main>
     </div>

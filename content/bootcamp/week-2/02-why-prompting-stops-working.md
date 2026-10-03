@@ -32,6 +32,20 @@ A blank page is the worst possible input, because the model has nothing to work 
 
 Give it something rough and ask it to change that thing, and the output has your fingerprints on it because your material was the input.
 
+Here is what that looks like. Amaka needs an "about" paragraph for her Instagram page.
+
+**Create:** *"Write a bio for my cake business."* She gets *"Passionate baker creating delicious memories one cake at a time."* It could belong to any bakery on earth.
+
+**Transform:** she records a one-minute voice note on her phone, the way she would explain it to a friend, and pastes the transcript in:
+
+> *"i started baking in my mum's kitchen in 2019 during lockdown, my first order was my cousin's wedding and i was so scared lol. now i do mostly birthdays, same day delivery in lekki, people always say my red velvet is not too sweet"*
+
+Then: *"Turn this into a three sentence bio. Keep my words where you can. Do not add anything I did not say."*
+
+The result has her cousin's wedding in it, her mum's kitchen, and the cake people actually praise. The model did the tidying. The substance was hers.
+
+A voice note is the fastest rough draft there is. Use it.
+
 ## Never let one AI grade its own homework
 
 When you ask the same conversation to check its own work, it defends what it wrote. It has the whole thread behind it and it is predicting what comes next in a conversation where it already committed to a position.
@@ -40,9 +54,15 @@ Open a new chat. Paste the output with no history and no context about who made 
 
 You will get a different answer, and it will be the useful one.
 
+The exact words Amaka uses, in a fresh chat, ideally in a different tool:
+
+> *"Someone sent me this bio for a cake business's Instagram page. I am a customer deciding whether to order. What is weak, unclear or unconvincing? Most important first. Do not rewrite it."*
+
+"Do not rewrite it" matters. You want the diagnosis, not a new draft that starts the argument all over again.
+
 ## What you should be able to do after this
 
-Notice when you are arguing with a model instead of directing it, and stop. That is the skill. The next two lessons are what you do instead.
+Notice when you are arguing with a model instead of directing it, and stop. That is the skill. The next lesson is what you do instead.
 
 ## Transcript
 

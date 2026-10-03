@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Motion graphics with Claude Code: the setup guide · LearnHub</title>
+<style>
+  /* Brand faces, from the app's own font files. Printed to PDF with headless
+     Chrome (see README.md), one A4 portrait sheet per .page. */
+  @font-face { font-family: "Serif"; src: url("../../../app/fonts/InstrumentSerif-Regular.woff2") format("woff2"); }
+  @font-face { font-family: "Serif"; font-style: italic; src: url("../../../app/fonts/InstrumentSerif-Italic.woff2") format("woff2"); }
+  @font-face { font-family: "Sans"; src: url("../../../app/fonts/GeneralSans-Variable.woff2") format("woff2"); font-weight: 200 700; }
+  @font-face { font-family: "Mono"; src: url("../../../lib/certificate/fonts/GeistMono-Regular.ttf") format("truetype"); }
+
+  :root {
+    --ink: #0B0F1A; --muted: #5B6472; --muted2: #8A93A6; --silver: #E7EAF1; --silver2: #D8DEEA;
+    --paper: #F6F7FB; --paper2: #EFF2F8; --blue: #1F33CC; --blue600: #182AB0; --blue500: #2A46F0;
+    --sky: #3B6FF0; --sky2: #4C93F0;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "Sans", sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.55; background: #fff; }
+
+  .page { width: 210mm; height: 297mm; padding: 20mm 18mm 18mm; position: relative; overflow: hidden; page-break-after: always; break-after: page; display: flex; flex-direction: column; }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+
+  .foot { position: absolute; left: 18mm; right: 18mm; bottom: 10mm; display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted2); }
+  .mark { width: 1em; height: 1em; vertical-align: -0.12em; }
+
+  /* Cover: the site's blue wash, paling to white. */
+  .cover { padding: 0; background: linear-gradient(180deg, #182AB0 0%, #1F33CC 34%, #3B6FF0 62%, #4C93F0 78%, #EFF2F8 94%, #fff 100%); color: #fff; }
+  .cover .inner { padding: 22mm 18mm 0; flex: 1; display: flex; flex-direction: column; }
+  .brand { display: flex; align-items: center; gap: 3mm; font-weight: 600; font-size: 15pt; letter-spacing: -0.01em; }
+  .pill { display: inline-flex; align-items: center; gap: 2mm; border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.12); border-radius: 999px; padding: 1.6mm 4mm; font-size: 8.5pt; font-weight: 600; margin-top: 30mm; align-self: flex-start; }
+  .pill i { width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--sky2); display: inline-block; }
+  h1 { font-family: "Serif"; font-weight: 400; font-size: 54pt; line-height: 1.0; letter-spacing: -0.01em; margin: 7mm 0 0; }
+  .cover p.lead { font-size: 13pt; color: rgba(255,255,255,.85); max-width: 135mm; margin-top: 7mm; }
+  .cover .stackrow { margin-top: auto; margin-bottom: 26mm; display: flex; gap: 3mm; flex-wrap: wrap; }
+  .chip { background: #fff; color: var(--ink); border-radius: 3mm; padding: 2.4mm 4mm; font-size: 9pt; font-weight: 600; box-shadow: 0 6px 18px -8px rgba(11,15,26,.35); }
+  .chip span { color: var(--blue); }
+  .cover .foot { color: var(--muted); }
+
+  .eyebrow { font-size: 8.5pt; font-weight: 600; color: var(--blue); letter-spacing: .02em; }
+  h2 { font-family: "Serif"; font-weight: 400; font-size: 30pt; line-height: 1.08; margin: 2mm 0 5mm; letter-spacing: -0.005em; }
+  h3 { font-size: 12pt; font-weight: 600; margin: 7mm 0 2mm; }
+  p { margin: 0 0 3mm; }
+  .muted { color: var(--muted); }
+  ol, ul { margin: 0 0 3mm; padding-left: 5.5mm; }
+  li { margin: 0 0 1.6mm; }
+  code, .code { font-family: "Mono", monospace; font-size: 9pt; }
+  code { background: var(--paper2); border-radius: 1.2mm; padding: .3mm 1.3mm; }
+  .code { background: var(--ink); color: #E9EEFF; border-radius: 3mm; padding: 3.2mm 4mm; margin: 2mm 0 4mm; white-space: pre-wrap; word-break: break-word; }
+  .code b { color: var(--sky2); font-weight: 400; }
+
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 5mm; font-size: 9.5pt; }
+  th { text-align: left; font-size: 8pt; color: var(--muted); font-weight: 600; padding: 0 3mm 2mm 0; border-bottom: 1.2px solid var(--ink); }
+  td { padding: 2.6mm 3mm 2.6mm 0; border-bottom: 1px solid var(--silver); vertical-align: top; }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .os { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 2mm 0 3mm; }
+  .os > div { border: 1px solid var(--silver); border-radius: 3mm; padding: 3.5mm 4mm; }
+  .os h4 { margin: 0 0 1.5mm; font-size: 9.5pt; font-weight: 600; }
+  .os .code { margin: 1.5mm 0 0; font-size: 8.3pt; padding: 2.6mm 3mm; }
+
+  .prompt { background: linear-gradient(160deg, #2A46F0 0%, #1F33CC 45%, #182AB0 100%); color: #fff; border-radius: 4mm; padding: 4.5mm 5mm; margin: 3mm 0 4mm; }
+  .prompt .tag { display: inline-block; background: rgba(255,255,255,.18); border-radius: 999px; padding: .8mm 3mm; font-size: 7.8pt; font-weight: 600; margin-bottom: 2.5mm; }
+  .prompt p { margin: 0; font-size: 10pt; }
+  .prompt em { font-style: normal; color: #BFD4FF; }
+
+  .note { background: var(--paper); border-left: 1.4mm solid var(--blue); border-radius: 0 3mm 3mm 0; padding: 3.2mm 4.5mm; margin: 3mm 0 4mm; font-size: 9.5pt; }
+  .note b { color: var(--blue600); }
+
+  .steps-num { font-family: "Serif"; font-size: 64pt; line-height: .9; color: var(--blue); }
+  .check li { list-style: none; position: relative; padding-left: 7mm; }
+  .check li::before { content: ""; position: absolute; left: 0; top: .9mm; width: 3.6mm; height: 3.6mm; border: 1.3px solid var(--blue); border-radius: 1mm; }
+  .check { padding-left: 0; }
+
+  .tight h3 { margin-top: 4.5mm; } .tight .steps-num { font-size: 52pt; } .tight h2 { margin-bottom: 3mm; } .tight .code { margin: 1.5mm 0 2.5mm; }
+  .back { background: linear-gradient(180deg, #1F33CC 0%, #182AB0 55%, #0B0F1A 135%); color: #fff; justify-content: center; }
+  .back h2 { font-size: 40pt; }
+  .back p { color: rgba(255,255,255,.82); font-size: 12pt; max-width: 140mm; }
+  .back .foot { color: rgba(255,255,255,.55); }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ COVER -->
+<section class="page cover">
+  <div class="inner">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 420 420" fill="#fff" style="width:9mm;height:9mm"><path fill-rule="evenodd" d="M233.52 333.58A145 145 0 1 1 332.63 267.87A67.3 67.3 0 0 0 233.52 333.58ZM133 190.5a77 77 0 1 0 154 0a77 77 0 1 0 -154 0Z"/><path d="M253 327a47.5 47.5 0 1 0 95 0a47.5 47.5 0 1 0 -95 0Z"/></svg>
+      LearnHub
+    </div>
+    <span class="pill"><i></i>The setup guide</span>
+    <h1>Motion graphics<br>with <em style="font-style:italic">Claude Code</em></h1>
+    <p class="lead">Everything to install before you make your first animated video with an AI agent, on a Mac or a Windows laptop. One afternoon, mostly free.</p>
+    <div class="stackrow">
+      <div class="chip">VS Code</div>
+      <div class="chip"><span>Claude Code</span></div>
+      <div class="chip">Node.js</div>
+      <div class="chip">Git</div>
+      <div class="chip">FFmpeg</div>
+      <div class="chip"><span>Remotion</span></div>
+      <div class="chip">ElevenLabs</div>
+    </div>
+  </div>
+  <div class="foot"><span>learnhub.dev</span><span>Setup guide · October 2026</span></div>
+</section>
+
+<!-- ============================================================ THE STACK -->
+<section class="page">
+  <div class="eyebrow">Before you start</div>
+  <h2>The stack</h2>
+  <p class="muted">Seven tools. You talk to one of them, Claude Code, and it uses the rest. You will not write code by hand.</p>
+  <table>
+    <tr><th>Tool</th><th>What it does</th><th>Cost</th></tr>
+    <tr><td>VS Code</td><td>The app your project lives in. You watch every file Claude Code creates or changes.</td><td>Free</td></tr>
+    <tr><td>Claude Code</td><td>The AI agent that writes, runs and checks the video code. You direct it in plain English.</td><td>Needs a Claude Pro plan or higher. The free plan does not include it.</td></tr>
+    <tr><td>Node.js</td><td>Runs Remotion on your laptop.</td><td>Free</td></tr>
+    <tr><td>Git</td><td>Saves versions of your project, so a bad change can be undone.</td><td>Free</td></tr>
+    <tr><td>FFmpeg</td><td>Video toolbox: turns renders into MP4s, cuts reference videos into stills, measures loudness.</td><td>Free</td></tr>
+    <tr><td>Remotion</td><td>Makes videos out of code. Every frame is a web page, so animated product screens come naturally.</td><td>Free for individuals and companies of up to three people. Bigger companies need a licence.</td></tr>
+    <tr><td>ElevenLabs</td><td>Music, voice-over and sound effects, connected to Claude Code. Optional.</td><td>Free plan to start. Paid plans from $6 a month.</td></tr>
+  </table>
+
+  <h3>What you need first</h3>
+  <ul>
+    <li><b>A laptop</b>, Mac or Windows, with at least 8 GB of memory and about 10 GB free. Video renders are heavy; a phone or tablet will not do it.</li>
+    <li><b>A Claude Pro account</b> at claude.ai. Sign up before you start.</li>
+    <li><b>A decent connection</b> and about an hour. Installs download a few hundred MB.</li>
+  </ul>
+
+  <div class="note"><b>The one rule.</b> When something fails, copy the exact message you see and paste it to Claude Code with "this happened, fix it". Most setup problems are one message away from solved.</div>
+  <div class="foot"><span>Motion graphics with Claude Code · Setup guide</span><span>2</span></div>
+</section>
+
+<!-- ============================================================ STEP 1 -->
+<section class="page">
+  <div class="steps-num">01</div>
+  <div class="eyebrow">Step one</div>
+  <h2>VS Code and Claude Code</h2>
+
+  <h3>Install VS Code</h3>
+  <ol>
+    <li>Download VS Code from <code>code.visualstudio.com</code> and install it.</li>
+    <li>Make a folder called <code>videos</code> in your Documents folder.</li>
+    <li>In VS Code, choose <b>File</b>, then <b>Open Folder</b>, and pick <code>videos</code>. If it asks whether you trust the folder, say yes.</li>
+  </ol>
+
+  <h3>Add Claude Code</h3>
+  <ol>
+    <li>Open Extensions: <b>Cmd+Shift+X</b> on a Mac, <b>Ctrl+Shift+X</b> on Windows.</li>
+    <li>Search for <b>Claude Code</b>, check the publisher is <b>Anthropic</b>, and click <b>Install</b>.</li>
+    <li>Click the Claude Code icon (a small spark) in the bar on the left, then <b>Sign in</b> with your Claude Pro account.</li>
+  </ol>
+
+  <div class="prompt"><span class="tag">Test it</span><p>Create a file called hello.md that says hello, then tell me what you did.</p></div>
+  <p class="muted">Claude Code shows you the file before saving it and asks permission. Click accept. That is the pattern for everything that follows: you ask, it proposes, you approve.</p>
+
+  <h3>The terminal, for the few commands in this guide</h3>
+  <p>In VS Code choose <b>Terminal</b>, then <b>New Terminal</b>. It opens at the bottom, already inside your <code>videos</code> folder. Type a command and press Enter.</p>
+  <div class="foot"><span>Motion graphics with Claude Code · Setup guide</span><span>3</span></div>
+</section>
+
+<!-- ============================================================ STEP 2 -->
+<section class="page tight">
+  <div class="steps-num">02</div>
+  <div class="eyebrow">Step two</div>
+  <h2>Node.js, Git and FFmpeg</h2>
+
+  <h3>Node.js</h3>
+  <p>Download the version marked <b>LTS</b> from <code>nodejs.org</code> and install it with the default options. Close VS Code, open it again, and check it in the terminal:</p>
+  <div class="code">node --version</div>
+  <p class="muted">A number starting with <code>v</code> means it worked.</p>
+
+  <h3>Git</h3>
+  <div class="os">
+    <div><h4>Mac</h4><p class="muted" style="margin:0">Type this. If a box asks to install developer tools, click <b>Install</b>.</p><div class="code">git --version</div></div>
+    <div><h4>Windows</h4><p class="muted" style="margin:0">Install <b>Git for Windows</b> from <code>git-scm.com</code> with the default options, then restart VS Code.</p></div>
+  </div>
+
+  <h3>FFmpeg</h3>
+  <div class="os">
+    <div><h4>Mac</h4><p class="muted" style="margin:0">With Homebrew (from <code>brew.sh</code>) installed:</p><div class="code">brew install ffmpeg</div></div>
+    <div><h4>Windows</h4><p class="muted" style="margin:0">In the terminal:</p><div class="code">winget install --id Gyan.FFmpeg</div></div>
+  </div>
+  <p>Restart VS Code, then check:</p>
+  <div class="code">ffmpeg -version</div>
+
+  <div class="prompt"><span class="tag">Or let Claude Code do it</span><p>Check this laptop has Node.js, Git and FFmpeg. Tell me what is missing and install it, asking me before anything that needs my password.</p></div>
+  <div class="foot"><span>Motion graphics with Claude Code · Setup guide</span><span>4</span></div>
+</section>
+
+<!-- ============================================================ STEP 3 -->
+<section class="page">
+  <div class="steps-num">03</div>
+  <div class="eyebrow">Step three</div>
+  <h2>Your first video project</h2>
+
+  <h3>Create the Remotion project</h3>
+  <p>In the terminal, inside your <code>videos</code> folder:</p>
+  <div class="code">npx create-video@latest my-first-video</div>
+  <p class="muted">Pick the <b>Blank</b> template and say yes to TypeScript if asked. Then open the new <code>my-first-video</code> folder in VS Code with <b>File</b>, then <b>Open Folder</b>.</p>
+
+  <h3>Give Claude Code the Remotion plugin</h3>
+  <p>The plugin teaches Claude Code how Remotion works, so it writes the video properly instead of guessing.</p>
+  <ol>
+    <li>In the Claude Code panel, type <code>/plugins</code> to open <b>Manage plugins</b>.</li>
+    <li>On the <b>Marketplaces</b> tab, add <code>remotion-dev/claude-code-plugin</code>.</li>
+    <li>On the <b>Plugins</b> tab, search for <code>remotion</code>, click <b>Install</b>, and choose <b>Install for you</b>.</li>
+    <li>Close VS Code and open it again so the plugin loads.</li>
+  </ol>
+
+  <div class="note"><b>Prefer no licence to think about?</b> HyperFrames does the same job from plain HTML and CSS, free for any company size. Add the marketplace <code>heygen-com/hyperframes</code> instead and install <code>hyperframes</code>. Everything else in this guide stays the same.</div>
+
+  <h3>Let Claude Code see its own work</h3>
+  <div class="prompt"><span class="tag">Set up the project</span><p>Set this Remotion project up for a <em>[30]</em>-second video at 1920 by 1080, 30 frames a second. Start Remotion Studio so I can watch it in my browser. Then write a small helper that renders any frames I name as still images and tiles them into one contact sheet, so you can check your own work after every change.</p></div>
+  <p class="muted">The contact sheet is how the agent "sees". Without it, it is guessing what the video looks like.</p>
+  <div class="foot"><span>Motion graphics with Claude Code · Setup guide</span><span>5</span></div>
+</section>
+
+<!-- ============================================================ STEP 4 -->
+<section class="page">
+  <div class="steps-num">04</div>
+  <div class="eyebrow">Step four · optional</div>
+  <h2>Music and voice with ElevenLabs</h2>
+  <p>Skip this until your first video works without sound. When you want music, a voice-over or sound effects, connect ElevenLabs to Claude Code.</p>
+
+  <h3>1. Get an API key</h3>
+  <p>Sign up at <code>elevenlabs.io</code>, open your profile's <b>API Keys</b> page, and create a key. Treat it like a password: never in a screenshot, a chat or a file you share.</p>
+
+  <h3>2. Install uv, the helper the connector runs on</h3>
+  <div class="os">
+    <div><h4>Mac</h4><div class="code">brew install uv</div></div>
+    <div><h4>Windows</h4><div class="code">winget install --id astral-sh.uv</div></div>
+  </div>
+
+  <h3>3. Add the ElevenLabs connector</h3>
+  <p>In the terminal, inside your project folder, paste your key where it says <b>your_key</b>:</p>
+  <div class="code">claude mcp add elevenlabs -e ELEVENLABS_API_KEY=<b>your_key</b> -- uvx elevenlabs-mcp</div>
+  <p class="muted">Restart VS Code. In Claude Code, type <code>/mcp</code> and check <b>elevenlabs</b> is listed as connected.</p>
+
+  <div class="prompt"><span class="tag">Test it</span><p>Use ElevenLabs to make a 10-second upbeat instrumental and save it in a folder called audio. Tell me how many credits it used.</p></div>
+
+  <div class="note"><b>Credits.</b> Music and voice use your ElevenLabs credits. Ask Claude Code to tell you the cost before anything long, and keep tests short.</div>
+  <div class="foot"><span>Motion graphics with Claude Code · Setup guide</span><span>6</span></div>
+</section>
+
+<!-- ============================================================ CHECK -->
+<section class="page">
+  <div class="eyebrow">Before your first video</div>
+  <h2>Check it all works</h2>
+
+  <div class="prompt"><span class="tag">The first render</span><p>Make a 5-second test video: our name <em>[your name]</em> builds in word by word on a blue background, then a white check mark draws itself. Show me a contact sheet of every 10th frame, then render it to an MP4 in a folder called out.</p></div>
+
+  <ul class="check">
+    <li>VS Code opens your project and Claude Code answers you</li>
+    <li><code>node --version</code>, <code>git --version</code> and <code>ffmpeg -version</code> all print a version</li>
+    <li>Remotion Studio opens in your browser and plays the test video</li>
+    <li>Claude Code can render a contact sheet and you can open it</li>
+    <li>An MP4 appears in the <code>out</code> folder and plays on your phone</li>
+    <li>(Optional) <code>/mcp</code> shows ElevenLabs connected</li>
+  </ul>
+
+  <h3>When something goes wrong</h3>
+  <table>
+    <tr><th>You see</th><th>Do this</th></tr>
+    <tr><td>"command not found"</td><td>Close and reopen VS Code so it picks up the new install, then try again.</td></tr>
+    <tr><td>Claude Code will not sign in</td><td>Check your Claude plan is Pro or higher. The free plan does not include Claude Code.</td></tr>
+    <tr><td>Render fails with a disk error</td><td>Ask Claude Code to delete old render folders, and render previews as JPEG stills.</td></tr>
+    <tr><td>Anything else</td><td>Paste the exact error to Claude Code and ask it to fix it.</td></tr>
+  </table>
+  <div class="foot"><span>Motion graphics with Claude Code · Setup guide</span><span>7</span></div>
+</section>
+
+<!-- ============================================================ BACK -->
+<section class="page back">
+  <svg viewBox="0 0 420 420" fill="#fff" style="width:16mm;height:16mm;margin-bottom:8mm"><path fill-rule="evenodd" d="M233.52 333.58A145 145 0 1 1 332.63 267.87A67.3 67.3 0 0 0 233.52 333.58ZM133 190.5a77 77 0 1 0 154 0a77 77 0 1 0 -154 0Z"/><path d="M253 327a47.5 47.5 0 1 0 95 0a47.5 47.5 0 1 0 -95 0Z"/></svg>
+  <h2>You are set up</h2>
+  <p>Next: pick a video you love as your reference, write the story beat by beat, and direct Claude Code one scene at a time.</p>
+  <p style="margin-top:6mm">The full method is taught in week 4 of the LearnHub AI Bootcamp.<br>learnhub.dev</p>
+  <div class="foot"><span>LearnHub Global Academy Ltd</span><span>learnhub.dev</span></div>
+</section>
+
+</body>
+</html>

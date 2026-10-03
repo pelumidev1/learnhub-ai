@@ -3,7 +3,7 @@ title: What AI actually is, and how we got here
 duration_minutes: 14
 published: true
 video_url:
-chapters: [{"label":"The Turing test, 1950","at":0},{"label":"Why it went quiet twice","at":0},{"label":"What changed in 2017","at":0},{"label":"What a model is actually doing","at":0},{"label":"What this means for you","at":0}]
+chapters: [{"label":"The Turing test, 1950","at":0},{"label":"Why it went quiet twice","at":0},{"label":"What changed in 2017","at":0},{"label":"What a model is actually doing","at":0},{"label":"See it for yourself","at":0},{"label":"What this means for you","at":0}]
 resources: [{"label":"Anthropic Academy","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free, issues certificates"},{"label":"Elements of AI, University of Helsinki","url":"https://www.elementsofai.com/","kind":"course","cost":"Free"},{"label":"Microsoft Generative AI for Beginners","url":"https://github.com/microsoft/generative-ai-for-beginners","kind":"course","cost":"Free, MIT licensed"}]
 resources_checked_on: 2026-08-22
 ---
@@ -37,6 +37,24 @@ That single fact explains almost every strange thing these tools do.
 It explains why it invents a citation: a plausible-looking source is exactly what follows a sentence like that. It explains why vague instructions get generic output: the most statistically ordinary answer is the safest prediction. It explains why the same question can get two different answers.
 
 And it explains the thing this whole bootcamp is built on. **The model has no idea what you are trying to do.** It only has what you gave it. Everything in the next six weeks is about giving it more of the right thing.
+
+## See it for yourself
+
+Meet Amaka. She bakes cakes in Lagos and sells them on Instagram and WhatsApp. We will follow her through this week.
+
+She types: *"Write an Instagram caption for my cake business."*
+
+She gets something like: *"Indulge in our delicious, freshly baked cakes! Perfect for every occasion. Order now!"*
+
+Nothing is wrong with it, and nobody will remember it. It is the most average caption possible, because the model knew nothing about her except the word "cake", so it predicted the most ordinary thing that follows.
+
+Now she types: *"Write an Instagram caption for Amaka's Bakes. I deliver the same day anywhere in Lekki if you order before 2pm. This week's cake is red velvet, ₦25,000 for an 8 inch. My customers are mostly people planning last-minute birthdays. Keep it short and warm, no hashtags."*
+
+The caption she gets back is about her, not about cakes. The model did not get smarter between the two attempts. It got more to work with.
+
+Try it now with your own work: ask for something once with one line, then again with five lines of real detail, and compare.
+
+The invented citation is just as easy to see. Ask for "three statistics about the Nigerian bakery market, with sources", then open every link. Some will not exist. That is not lying. A report title that sounds real is what usually comes next in a sentence like that.
 
 ## What you should be able to do after this
 

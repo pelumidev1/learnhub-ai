@@ -56,7 +56,7 @@ const IDLE_EXEMPT = [
   ...AUTH_ROUTES,
   "/reset-password",
   "/auth",
-  "/bootcamp/enrol/callback",
+  "/enrol/callback",
 ];
 
 const matches = (path: string, list: string[]) =>

@@ -1,0 +1,988 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LearnHub content calendar</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@500,700&f[]=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#f5f7fb; --paper:#ffffff; --haze:#eef1f8; --line:#e0e5ef; --line-strong:#c6d0e2;
+  --ink:#0B0F1A; --ink-2:#4e5a70; --ink-3:#8492a8;
+  --navy:#0B0F1A; --navy-ink:#ffffff; --blue:#1F33CC; --blue-soft:#e7eafc; --sky:#4C93F0; --sky-soft:#e8f1fd; --sky-ink:#14446f;
+  --ig:#b5386b; --li:#1e5a8a; --x:#0B0F1A;
+  --font-head:"Switzer",ui-sans-serif,system-ui,sans-serif;
+  --font-body:"General Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#080b12; --paper:#0f1520; --haze:#141b28; --line:#222c3d; --line-strong:#33405a;
+  --ink:#e6ebf4; --ink-2:#b0bccf; --ink-3:#7d8ba2;
+  --navy:#0f1520; --navy-ink:#e6ebf4; --blue:#7b8cf5; --blue-soft:#1a2142; --sky:#78b0f5; --sky-soft:#12243a; --sky-ink:#a9cdf7;
+  --ig:#e07aa5; --li:#7fb4e0; --x:#e6ebf4;
+}}
+:root[data-theme="dark"]{
+  --ground:#080b12; --paper:#0f1520; --haze:#141b28; --line:#222c3d; --line-strong:#33405a;
+  --ink:#e6ebf4; --ink-2:#b0bccf; --ink-3:#7d8ba2;
+  --navy:#0f1520; --navy-ink:#e6ebf4; --blue:#7b8cf5; --blue-soft:#1a2142; --sky:#78b0f5; --sky-soft:#12243a; --sky-ink:#a9cdf7;
+  --ig:#e07aa5; --li:#7fb4e0; --x:#e6ebf4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-block:40px 80px;padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3{font-family:var(--font-head);text-wrap:balance;margin:0;letter-spacing:-.015em}
+h1{font-size:clamp(34px,5vw,52px);line-height:1.02;font-weight:700}
+h2{font-size:clamp(22px,2.6vw,28px);font-weight:700;margin-bottom:6px}
+h3{font-size:19px;font-weight:700;line-height:1.25}
+p{margin:0}
+a{color:var(--blue)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.lede{max-width:62ch;color:var(--ink-2);font-size:16px}
+
+.cover{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:end;padding-bottom:28px;border-bottom:1px solid var(--line-strong)}
+.cover .stack{display:grid;gap:14px}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fact{background:var(--paper);padding:14px 16px;display:grid;gap:2px}
+.fact b{font-family:var(--font-mono);font-weight:500;font-size:22px;color:var(--blue);letter-spacing:-.02em}
+.fact span{font-size:12.5px;color:var(--ink-3)}
+
+section{padding-block:36px 0}
+.sec-head{display:grid;gap:6px;margin-bottom:20px;max-width:70ch}
+.sec-head p{color:var(--ink-2)}
+
+.pillars{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.pillar{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 14px 16px;display:grid;gap:8px;align-content:start}
+.pillar .dot{width:10px;height:10px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:6px}
+.pillar h3{font-size:16px}
+.pillar p{font-size:13.5px;color:var(--ink-2)}
+.pillar small{font-family:var(--font-mono);font-size:11px;color:var(--ink-3)}
+.p1{--pc:#0B0F1A}.p2{--pc:#1F33CC}.p3{--pc:#4C93F0}.p4{--pc:#7a8aa8}.p5{--pc:#0f8a6a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .p1{--pc:#9fb0cc}}
+:root[data-theme="dark"] .p1{--pc:#9fb0cc}
+
+.weeklabel{display:flex;align-items:baseline;gap:12px;margin:22px 0 10px;flex-wrap:wrap}
+.weeklabel .eyebrow{color:var(--blue)}
+.weeklabel h3{font-size:17px;color:var(--ink-2);font-weight:500;font-family:var(--font-body)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.cell{background:var(--paper);padding:12px 12px 14px;display:grid;gap:8px;align-content:start;min-height:158px}
+.cell.rest{background:var(--haze)}
+.cell .d{display:flex;justify-content:space-between;align-items:baseline}
+.cell .d b{font-family:var(--font-mono);font-weight:500;font-size:13px}
+.cell .d span{font-family:var(--font-mono);font-size:11px;color:var(--ink-3)}
+.cell .title{font-size:13.5px;line-height:1.3;font-weight:600}
+.cell .title a{color:inherit;text-decoration:none}
+.cell .title a:hover{text-decoration:underline}
+.tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pc)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
+.chip{font-family:var(--font-mono);font-size:10.5px;padding:2px 7px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink-2);background:transparent}
+.chip.ig{border-color:var(--ig);color:var(--ig)}
+.chip.li{border-color:var(--li);color:var(--li)}
+.chip.x{border-color:var(--x);color:var(--x)}
+.gate{font-family:var(--font-mono);font-size:10.5px;color:var(--sky-ink);background:var(--sky-soft);padding:2px 7px;border-radius:4px}
+
+.days{display:grid;gap:14px}
+.day{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;scroll-margin-top:20px}
+.day header{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.day header .date{font-family:var(--font-mono);font-size:12px;color:var(--ink-3);line-height:1.3}
+.day header .date b{display:block;font-size:20px;color:var(--ink);font-weight:500}
+.day header .why{font-size:13.5px;color:var(--ink-2);margin-top:6px;max-width:70ch}
+.day header .meta{display:grid;gap:6px;justify-items:end;text-align:right}
+.cuts{display:grid;grid-template-columns:repeat(3,1fr)}
+.cut{padding:14px 20px 18px;border-right:1px solid var(--line);display:grid;gap:8px;align-content:start}
+.cut:last-child{border-right:0}
+.cut .plat{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cut .plat b{font-family:var(--font-mono);font-weight:500;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.cut .plat span{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);text-align:right}
+.cut.ig .plat b{color:var(--ig)}.cut.li .plat b{color:var(--li)}.cut.x .plat b{color:var(--x)}
+.cut p.body{font-size:13.5px;color:var(--ink-2);white-space:pre-line}
+.cut ol,.cut ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);display:grid;gap:4px}
+.cut .prod{font-size:12px;color:var(--ink-3);border-top:1px dashed var(--line-strong);padding-top:8px;margin-top:4px}
+.cut .prod b{color:var(--ink-2);font-weight:600}
+li.note{color:var(--ink-3);font-style:italic}
+.day.flag{border-color:var(--blue)}
+
+.acctwrap{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.acct{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:8px;align-content:start}
+.acct .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.acct .h b{font-family:var(--font-head);font-size:16px}
+.acct .h span{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
+.acct p{font-size:13px;color:var(--ink-2)}
+.acct .q{font-family:var(--font-mono);font-size:12px;color:var(--ink);background:var(--haze);padding:6px 8px;border-radius:5px}
+.sofor{background:var(--navy);color:var(--navy-ink);border-radius:10px;padding:18px 20px;display:grid;gap:8px;border:1px solid var(--line)}
+.sofor h3{color:var(--navy-ink);font-size:16px}
+.sofor p{font-size:14px;opacity:.92;max-width:80ch}
+
+.tablewrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);background:var(--haze)}
+tr:last-child td{border-bottom:0}
+td b{color:var(--ink)}
+td.mono{font-family:var(--font-mono);font-size:12px;color:var(--ink-2);white-space:nowrap}
+
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:8px;align-content:start}
+.rule.never{border-color:var(--line-strong)}
+.rule ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:13.5px;color:var(--ink-2)}
+.taboo{display:flex;flex-wrap:wrap;gap:5px}
+.taboo span{font-family:var(--font-mono);font-size:11.5px;padding:3px 8px;border-radius:4px;background:var(--haze);color:var(--ink-3);text-decoration:line-through}
+
+.prep{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.list{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:8px;align-content:start}
+.list ol{margin:0;padding-left:20px;display:grid;gap:7px;font-size:13.5px;color:var(--ink-2)}
+.sources{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);display:grid;gap:5px;font-size:12.5px;color:var(--ink-3)}
+.sources a{color:var(--ink-2);text-decoration:none}
+.sources a:hover{text-decoration:underline}
+
+@media (max-width:920px){
+  .cover{grid-template-columns:1fr}
+  .pillars{grid-template-columns:1fr 1fr}
+  .acctwrap{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr 1fr}
+  .cuts{grid-template-columns:1fr}
+  .cut{border-right:0;border-bottom:1px solid var(--line)}
+  .cut:last-child{border-bottom:0}
+  .rules,.prep{grid-template-columns:1fr}
+  .day header{grid-template-columns:1fr}
+  .day header .meta{justify-items:start;text-align:left}
+}
+@media print{
+  body{background:#fff}
+  .day,.cell,.pillar,.acct,.rule,.list{break-inside:avoid}
+}
+</style>
+<div class="wrap">
+
+<header class="cover">
+  <div class="stack">
+    <p class="eyebrow">LearnHub Global Academy · Content calendar · Mon 28 Sep to Sun 11 Oct 2026</p>
+    <h1>Content calendar, 28 September to 11 October</h1>
+    <p class="lede">Fourteen posts across Instagram, LinkedIn and X, ending the night the early-bird price closes. Rewritten on 29 September against the brochure and the live code, then again on 30 September against the six weeks of lessons, which were drafted after this calendar was first written and changed what several posts should say. Week one covers what LearnHub is, who the bootcamp is for, and gives away two lessons free. Week two walks the three arcs, names the six career paths, and closes on Saturday 10 October when the price goes from ₦150,000 to ₦350,000. Each post is written once for LinkedIn and cut for the other two. The company page speaks throughout.</p>
+  </div>
+  <div class="facts">
+    <div class="fact"><b>14</b><span>posts, one per day</span></div>
+    <div class="fact"><b>6 + 8</b><span>Instagram carousels + flyers</span></div>
+    <div class="fact"><b>14</b><span>LinkedIn posts from the company page</span></div>
+    <div class="fact"><b>5 + 9</b><span>X threads + single posts</span></div>
+  </div>
+</header>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Source of truth · 30 Sep 2026</p>
+    <h2>The numbers every post below uses</h2>
+    <p>Taken from <span class="mono">lib/bootcamp/pricing.ts</span>, the brochure, and <span class="mono">content/bootcamp/CURRICULUM.md</span>. If any of these change, they change here first and the posts follow.</p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Fact</th><th>Value</th><th>Where it comes from</th></tr></thead>
+    <tbody>
+      <tr><td><b>Early-bird price</b></td><td>₦150,000, until end of Saturday 10 October WAT</td><td class="mono">pricing.ts</td></tr>
+      <tr><td><b>Full price</b></td><td>₦350,000, from Sunday 11 October</td><td class="mono">pricing.ts</td></tr>
+      <tr><td><b>Payment plan</b></td><td>₦200,000 then ₦150,000, second payment before week three. Full price only</td><td>brochure</td></tr>
+      <tr><td><b>Cohort one starts</b></td><td>Monday 12 October 2026</td><td>brochure, curriculum</td></tr>
+      <tr><td><b>Live session</b></td><td>Saturdays, 11am WAT, recorded</td><td>brochure</td></tr>
+      <tr><td><b>Seats</b></td><td>35</td><td>brochure. <b>Conflicts with the database, which seeds 25.</b> See the open questions</td></tr>
+      <tr><td><b>What you need</b></td><td>A laptop, a Claude Pro plan at $20 a month, a few dollars of Claude API credit from week five, and time to build weekly. No coding</td><td>brochure, curriculum. <b>The API credit is in the week 5 lessons but not in the brochure.</b> See the open questions</td></tr>
+      <tr><td><b>Certificate</b></td><td>Yes, only with all six projects, all assignments, all six tests and the final project. Public verification link</td><td>curriculum</td></tr>
+      <tr><td><b>You leave with</b></td><td>Seven projects, one a week plus the final, and a live product with an agent running it</td><td>brochure</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Research · 22 and 29 Sep 2026</p>
+    <h2>Competitor accounts and ours</h2>
+    <p>Five competitors plus our own three accounts, read on Instagram and their own sites. Follower counts are from the day they were read. Ours are in the set because they are the real starting line.</p>
+  </div>
+  <div class="acctwrap">
+    <div class="acct"><div class="h"><b>ALX Africa</b><span>123K · 1,761 posts</span></div><p>The reference point, and already in our lane. The highlight reel includes ALX-ANTHROPIC and AiCE, so the AI programme is not an opening we found first. The current push is user-generated: learners filming their own 90 seconds.</p><p class="q">"Your Story. Your 90 seconds. Tell it." · #IAMTHESTORY_ALX</p><p>They can run a campaign on student voices because they have thousands of students. We have none yet, and pretending otherwise would be the fastest way to get caught.</p></div>
+    <div class="acct"><div class="h"><b>AltSchool Africa</b><span>48.6K · 1,405 posts</span></div><p>Leads the bio with accreditation, not outcome. Reels-heavy grid, highlights built around applying: HOW TO APPLY, CERTIFIED, sTaRt 2026, School of Data. The link goes straight into a programme application.</p><p class="q">"Africa's leading online school. Fully accredited by UK's ASIC."</p><p>Accreditation is their trust argument. Ours is the seven things a student can link to, plus a certificate anyone can verify.</p></div>
+    <div class="acct"><div class="h"><b>Decagon</b><span>10K · 584 posts</span></div><p>Writes to employers, not to learners. The bio sells the graduates to companies rather than selling the programme to students.</p><p class="q">"the top 0.5% of quality and reliable engineering talent"</p><p>Twelve months, coding track, and a different business model. Worth knowing because it is the far end of the market we are entering.</p></div>
+    <div class="acct"><div class="h"><b>Darey.io</b><span>1,172 · 203 posts</span></div><p>The closest competitor. An AI and Agentic AI path running 8 to 12 weeks, live cohorts, labs, and a SignalScore that turns submitted work into a readiness score. NITDA and Cabo Verde Digital on the homepage, 4.3 on Trustpilot from 145 reviews, and xterns.ai for work experience afterwards.</p><p class="q">"Learn. Build Proof. Get Hired In One Ecosystem."</p><p>Their cohorts page redirects to a login, so the price is hidden. They also still run a cloud engineering path, the one we closed.</p></div>
+    <div class="acct"><div class="h"><b>SureSkill Cohort</b><span>20 · 301 posts</span></div><p>Short paid cohorts, AI tools, no code. Three hundred and one posts.</p><p class="q">"Learn Tech. Build Skills. Change Your Life."</p><p>Twenty followers after 301 posts. Posting volume is not the thing. That is the most useful number in this table.</p></div>
+    <div class="acct"><div class="h"><b>Us, today</b><span>6 · 2 · 10</span></div><p>Instagram 6 followers and 4 posts, X 2 followers and 9 posts, LinkedIn 10 followers and nothing since January. All three bios still sell cloud engineering, which we no longer teach.</p><p class="q">"Start with Cloud Engineering" · "Training Africa's next generation of Cloud Engineers"</p><p>Nothing here needs protecting. We can change every word on Monday and no audience will notice the break.</p></div>
+  </div>
+  <div class="sofor">
+    <h3>So, for us</h3>
+    <p>The decision on 29 September was to follow the brochure and sell employability, which means competing head-on with every school in this table rather than around them. That is a harder fight and the copy has to be picked accordingly, because two of the arguments available to us are ones we lose.</p>
+    <p>We lose on proof. Darey has 145 Trustpilot reviews, a readiness score and a government logo. AltSchool has UK accreditation. We have no graduates. So no post below claims outcomes, quotes a student, or implies anyone has finished anything. The certificate is described by what it takes to earn, not by what it is worth.</p>
+    <p>We lose on scale. ALX has 123,000 followers and runs free. We are not going to out-post or undercut that.</p>
+    <p>What is left is real and worth saying plainly. Six weeks against their eight to fifty-two. Thirty-five seats against their two hundred. A live session every Saturday with the person who built the school. Seven things on the internet you can send to anyone. One paid tool, named, at $20. And a price printed on the page, which not one competitor in this table does. Darey redirects you to a login to find theirs.</p>
+    <p>SureSkill is the warning: 301 posts, 20 followers. That is what happens when a page posts about itself every day. So two of the fourteen days teach something with no ask attached, and they are the ones most likely to travel.</p>
+    <p>Nobody in this set writes text-led carousels that read like a short argument. They make posters, reels and application prompts. One sentence a frame, in the site's own type, is an open lane, and it costs nothing but writing.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Pillars</p>
+    <h2>Five content pillars</h2>
+    <p>Every day below belongs to exactly one. If a post needs two, it is two posts.</p>
+  </div>
+  <div class="pillars">
+    <div class="pillar p1"><small>01</small><h3><span class="dot" style="background:var(--pc)"></span>What the school is</h3><p>An edtech company whose flagship is the AI Bootcamp. Who cohort one is for, and who it is not for.</p><small>Line: company first, cohort second. Never "I".</small></div>
+    <div class="pillar p2"><small>02</small><h3><span class="dot" style="background:var(--pc)"></span>Inside the six weeks</h3><p>One arc or week per post. What you do, which tools, and the project that is live by Sunday.</p><small>Line: name the shipped project, not the topic.</small></div>
+    <div class="pillar p3"><small>03</small><h3><span class="dot" style="background:var(--pc)"></span>Teach it free</h3><p>Real lessons from the curriculum, given away whole. Prompting, and the tells that give AI writing away.</p><small>Line: useful on its own. One line of ask at the end.</small></div>
+    <div class="pillar p4"><small>04</small><h3><span class="dot" style="background:var(--pc)"></span>The honest answers</h3><p>The laptop, the Claude Pro subscription, the time it takes, and what the certificate actually requires.</p><small>Line: answer plainly, including the costs people would rather not hear.</small></div>
+    <div class="pillar p5"><small>05</small><h3><span class="dot" style="background:var(--pc)"></span>Enrol</h3><p>The price, the 10 October deadline, the career paths, and where to pay.</p><small>Line: never imply a job is promised.</small></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Words</p>
+    <h2>The vocabulary</h2>
+    <p>Decisions already made, collected so nobody re-argues them. The left column is what goes in a post.</p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Say</th><th>Instead of</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><b>LearnHub</b></td><td>Learnhub, LearnAI</td><td>Camel case. It is how all three live pages and the site already spell it.</td></tr>
+      <tr><td><b>tech school</b>, edtech company</td><td>ecosystem, launchpad, journey</td><td>Every school on the continent says those, including the closest competitor, whose headline is literally "in one ecosystem".</td></tr>
+      <tr><td><b>the AI Bootcamp</b>, cohort one</td><td>the course, the programme, the training</td><td>It is what the brochure and the product call it.</td></tr>
+      <tr><td><b>the work to show for it</b></td><td>get hired, guaranteed job, land a role</td><td>The brochure's own line is "No bootcamp can promise you a job. This one makes sure you have the work to show for it." Careers are the subject; a job is never the promise.</td></tr>
+      <tr><td><b>a laptop, a Claude Pro plan at $20 a month, and a few dollars of API credit from week five</b></td><td>phone first, no laptop needed, all tools free, the one paid tool</td><td>All three are required. The first two are in the brochure; the third is in the week 5 lessons and nowhere in the sales material yet. "The one paid tool" was true in August and is not true now. Finding out on day one is how a cohort loses people in week one.</td></tr>
+      <tr><td><b>seven projects, one a week plus the final</b></td><td>a portfolio, a capstone, hands-on experience</td><td>Says what exists at the end and can be counted.</td></tr>
+      <tr><td><b>₦150,000 until Saturday 10 October, then ₦350,000</b></td><td>affordable, invest in yourself, contact us for pricing</td><td>Publishing it is the differentiator. Not one competitor in the research does.</td></tr>
+      <tr><td><b>a certificate you earn by finishing everything</b></td><td>get certified, certification included</td><td>It requires all six projects, all assignments, all six tests and the final. Saying so makes it worth more, not less.</td></tr>
+      <tr><td><b>thirty-five seats</b></td><td>limited slots, filling fast, don't miss out</td><td>The cap is real. Scarcity language makes a true fact sound invented.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">The two weeks</p>
+    <h2>Overview</h2>
+    <p>Posting times in West Africa Time. LinkedIn 08:00 on weekdays, 10:00 at weekends. Instagram 18:00, shared to story the same evening. X 09:00, with a 19:00 slot for quoting Pelumi's own post if he has one that day.</p>
+  </div>
+
+  <div class="weeklabel"><span class="eyebrow">Week one</span><h3>What LearnHub is, who cohort one is for, and two lessons given away free.</h3></div>
+  <div class="grid">
+    <div class="cell"><div class="d"><b>Mon 28</b><span>D1</span></div><span class="tag p1">What the school is</span><p class="title"><a href="#d1">What LearnHub is now</a></p><div class="chips"><span class="chip ig">IG flyer</span><span class="chip li">LI long</span><span class="chip x">X thread</span><span class="gate">bios changed</span></div></div>
+    <div class="cell"><div class="d"><b>Tue 29</b><span>D2</span></div><span class="tag p1">What the school is</span><p class="title"><a href="#d2">Three kinds of people use AI</a></p><div class="chips"><span class="chip ig">IG carousel</span><span class="chip li">LI short</span><span class="chip x">X single</span></div></div>
+    <div class="cell"><div class="d"><b>Wed 30</b><span>D3</span></div><span class="tag p4">The honest answers</span><p class="title"><a href="#d3">What you need before day one</a></p><div class="chips"><span class="chip ig">IG flyer</span><span class="chip li">LI short</span><span class="chip x">X single</span></div></div>
+    <div class="cell"><div class="d"><b>Thu 1 Oct</b><span>D4</span></div><span class="tag p3">Teach it free</span><p class="title"><a href="#d4">A good prompt has five parts</a></p><div class="chips"><span class="chip ig">IG carousel</span><span class="chip li">LI long</span><span class="chip x">X thread</span></div></div>
+    <div class="cell"><div class="d"><b>Fri 2</b><span>D5</span></div><span class="tag p2">Inside the six weeks</span><p class="title"><a href="#d5">Seven projects, not seven certificates</a></p><div class="chips"><span class="chip ig">IG carousel</span><span class="chip li">LI short</span><span class="chip x">X single</span></div></div>
+    <div class="cell rest"><div class="d"><b>Sat 3</b><span>D6</span></div><span class="tag p4">The honest answers</span><p class="title"><a href="#d6">Questions before you enrol</a></p><div class="chips"><span class="chip ig">IG carousel</span><span class="chip x">X single</span></div></div>
+    <div class="cell rest"><div class="d"><b>Sun 4</b><span>D7</span></div><span class="tag p2">Inside the six weeks</span><p class="title"><a href="#d7">Thirty-five seats and a Saturday call</a></p><div class="chips"><span class="chip ig">IG carousel</span><span class="chip li">LI long</span></div></div>
+  </div>
+
+  <div class="weeklabel"><span class="eyebrow">Week two</span><h3>The three arcs one at a time, then the career paths, then close on the deadline.</h3></div>
+  <div class="grid">
+    <div class="cell"><div class="d"><b>Mon 5</b><span>D8</span></div><span class="tag p3">Teach it free</span><p class="title"><a href="#d8">Seven signs a machine wrote it</a></p><div class="chips"><span class="chip ig">IG carousel</span><span class="chip li">LI long</span><span class="chip x">X thread</span></div></div>
+    <div class="cell"><div class="d"><b>Tue 6</b><span>D9</span></div><span class="tag p2">Inside the six weeks</span><p class="title"><a href="#d9">Arc one: your AI foundation</a></p><div class="chips"><span class="chip ig">IG flyer</span><span class="chip li">LI short</span><span class="chip x">X single</span></div></div>
+    <div class="cell"><div class="d"><b>Wed 7</b><span>D10</span></div><span class="tag p2">Inside the six weeks</span><p class="title"><a href="#d10">Week three: a live product</a></p><div class="chips"><span class="chip ig">IG flyer</span><span class="chip li">LI long</span><span class="chip x">X thread</span></div></div>
+    <div class="cell"><div class="d"><b>Thu 8</b><span>D11</span></div><span class="tag p2">Inside the six weeks</span><p class="title"><a href="#d11">Week four: video that sells it</a></p><div class="chips"><span class="chip ig">IG carousel</span><span class="chip li">LI short</span><span class="chip x">X single</span></div></div>
+    <div class="cell"><div class="d"><b>Fri 9</b><span>D12</span></div><span class="tag p2">Inside the six weeks</span><p class="title"><a href="#d12">Arc three: agents, then a career</a></p><div class="chips"><span class="chip ig">IG carousel</span><span class="chip li">LI long</span><span class="chip x">X thread</span></div></div>
+    <div class="cell rest"><div class="d"><b>Sat 10</b><span>D13</span></div><span class="tag p5">Enrol</span><p class="title"><a href="#d13">₦150,000 until tonight</a></p><div class="chips"><span class="chip ig">IG flyer</span><span class="chip li">LI short</span><span class="chip x">X single</span><span class="gate">deadline</span></div></div>
+    <div class="cell rest"><div class="d"><b>Sun 11</b><span>D14</span></div><span class="tag p5">Enrol</span><p class="title"><a href="#d14">It starts tomorrow</a></p><div class="chips"><span class="chip ig">IG flyer</span><span class="chip li">LI long</span><span class="chip x">X single</span></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Day by day</p>
+    <h2>The posts</h2>
+    <p>Each day has the LinkedIn version written in full, then the Instagram frames, which are the words on the slide and nothing else, then X. Production notes sit under a dashed line so they never end up in a caption.</p>
+  </div>
+  <div class="days">
+
+    <article class="day flag" id="d1">
+      <header>
+        <div class="date">Mon 28 Sep<b>D1</b></div>
+        <div><h3>What LearnHub is now</h3><p class="why">The relaunch post. It has to say LearnHub is a school and that cohort one of the AI Bootcamp is open, in that order. Everything in it is checkable in the brochure today.</p></div>
+        <div class="meta"><span class="tag p1">What the school is</span><span class="gate">Gate: three bios changed</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">Most people using AI at work are using about five percent of it. One-off prompts, generic answers, and no idea what the tools can actually do.
+
+LearnHub Global Academy is a tech school. Cohort one of the AI Bootcamp opens on 12 October, and it is six weeks of closing that gap.
+
+Three arcs, one project every week.
+
+Arc one, weeks 1 and 2. Your AI foundation. You set up a real builder stack, Claude Code, GitHub, Supabase and Vercel, and you learn to prompt with context, workflows and skills instead of one line at a time.
+
+Arc two, weeks 3 and 4. Build and create. A live website or web app, then the AI video that launches it.
+
+Arc three, weeks 5 and 6. Automate and earn. An AI agent running on your site, automations doing real work, and a career or business plan built on what you made.
+
+You leave with seven projects, one a week plus the final, and a certificate you only get if you finished all of it.
+
+What you need: a laptop, a Claude Pro plan at $20 a month, and time to build every week. No coding experience.
+
+Live sessions are Saturdays at 11am WAT, recorded. Thirty-five seats.
+
+₦150,000 until Saturday 10 October, then ₦350,000. The price is on the page because most schools in this market make you fill in a form to find out.
+
+learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> flyer 01. <b>CTA:</b> link in the body, not the comments.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>flyer · 18:00</span></div>
+<ul>
+<li class="note">Flyer 01. Label: AI BOOTCAMP · COHORT 1. Headline: "Six weeks. Seven projects." Subline: "Build with AI, not just chat with it. Starts 12 October."</li>
+</ul>
+<p class="prod"><b>Caption:</b> the LinkedIn post from paragraph two, cutting the three arcs down to one line each. <b>Then:</b> share to story with a link sticker.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>thread · 8 posts · 09:00 · pin it</span></div>
+<ol>
+<li>LearnHub Global Academy is a tech school. Cohort one of the AI Bootcamp opens 12 October: six weeks, seven projects, for people who want to use AI to build rather than to chat.</li>
+<li>Most people are using about five percent of these tools. One-off prompts, generic answers. The whole bootcamp is about closing that gap.</li>
+<li>Arc 1, weeks 1 and 2. Your AI foundation. A real builder stack: Claude Code, GitHub, Supabase, Vercel. Prompting with context, workflows and skills.</li>
+<li>Arc 2, weeks 3 and 4. Build and create. A live website or web app, then the AI video that launches it.</li>
+<li>Arc 3, weeks 5 and 6. Automate and earn. An agent running on your site, automations doing real work, and a career or business plan built on it.</li>
+<li>You need a laptop, a Claude Pro plan at $20 a month, and time to build weekly. No coding experience. Live sessions Saturdays 11am WAT, recorded.</li>
+<li>Thirty-five seats. You leave with seven projects and a certificate you only get by finishing everything.</li>
+<li>₦150,000 until Saturday 10 October, then ₦350,000. Published openly, because nobody else here does. learnhub.dev/enrol</li>
+</ol>
+<p class="prod"><b>Pin</b> this thread for both weeks. Replace the pinned cloud post.</p></div>
+      </div>
+    </article>
+
+    <article class="day" id="d2">
+      <header>
+        <div class="date">Tue 29 Sep<b>D2</b></div>
+        <div><h3>Three kinds of people use AI</h3><p class="why">Aimed at the person who has already quit an AI course. The job is to move the blame off them and onto the course they picked.</p></div>
+        <div class="meta"><span class="tag p1">What the school is</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">Most AI courses fail people in one specific way. They teach group one material to group three people.
+
+Group one builds AI. Engineers, researchers, people training models. Universities and DeepLearning.AI serve them well.
+
+Group two uses AI casually. An email, a homework question, something to settle an argument. YouTube serves them for free.
+
+Group three wants to build with it and be paid for that. Students and graduates who want skills employers are hiring for. Career changers who would rather not spend a year learning to code first. Marketers, founders and freelancers who want AI doing real work.
+
+Group three does not need the maths. They need a live product by week three.
+
+That is who the LearnHub AI Bootcamp is for, and it is why the first lesson is a setup and a prompt rather than a lecture. Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> slide 4 from the carousel, recropped square.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>carousel · 7 frames · 18:00</span></div>
+<ol>
+<li>Three kinds of people use AI. This bootcamp is for one of them.</li>
+<li>Group one builds AI. Engineers, researchers, people who train models. Universities serve them.</li>
+<li>Group two uses AI casually. An email, a homework question, a quick answer. YouTube serves them, free.</li>
+<li>Group three wants to build with it and get paid. Students, career changers, marketers, founders, freelancers. Almost nobody serves them properly.</li>
+<li>Group three does not need to understand a transformer. They need a live product, a video that sells it, and an agent running it.</li>
+<li>That is the whole bootcamp. Six weeks. Seven projects.</li>
+<li>LearnHub AI Bootcamp. Starts 12 October. Link in bio.</li>
+</ol>
+<p class="prod"><b>Caption:</b> "If you have ever opened an AI course and closed it again because lesson one was linear algebra, you were sitting in the wrong group's classroom. Nothing was wrong with you. The course was built for engineers, and you are not trying to become one." Then the LinkedIn last paragraph. <b>Design:</b> frames 2, 3 and 4 share one layout so the three groups read at a glance.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 09:00</span></div>
+<ol>
+<li>Most AI courses are built for engineers. Most people taking them are not engineers.<br><br>That gap is the whole reason the LearnHub AI Bootcamp exists. Six weeks, seven projects, no model training in sight.</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day" id="d3">
+      <header>
+        <div class="date">Wed 30 Sep<b>D3</b></div>
+        <div><h3>What you need before day one</h3><p class="why">The requirements, said before anyone asks, including the two that cost money. Every competitor buries these. Putting them in week one is the cheapest trust we can buy.</p></div>
+        <div class="meta"><span class="tag p4">The honest answers</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">What you need for the LearnHub AI Bootcamp, stated up front so nobody finds out on day one.
+
+A laptop. The lessons read well on a phone, so you can study on the move, but Claude Code, Supabase, Vercel and n8n all need a laptop and the building happens there.
+
+A Claude Pro plan, $20 a month. That is the only subscription. Everything else is taught on a free tier first, and where a free tier runs out, the lesson says so and names the cheapest way through.
+
+A few dollars of Claude API credit, from week five. Your Pro plan covers you using Claude. It does not cover a chatbot answering strangers on your website, so that runs on a separate pay-as-you-go account. A reply costs well under a US cent, and the first thing the lesson does is set a spend limit, so a busy week can never surprise you.
+
+Time to build every week. There is a project due every Sunday and no week that is only theory.
+
+What you do not need: any coding experience, any previous build, or any AI experience past the basics.
+
+Week 0 runs before the cohort starts and exists so nobody loses day one to a laptop check and five sign-up screens.
+
+Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> flyer 03.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>flyer · 18:00</span></div>
+<ul>
+<li class="note">Flyer 03. Label: BEFORE DAY ONE. Headline: "What you need before day one." Subline: "A laptop. Claude Pro, $20 a month. A few dollars of API credit from week five. Time to build every week. No coding."</li>
+</ul>
+<p class="prod"><b>Caption:</b> the LinkedIn post, whole. It is short enough. <b>Design:</b> light ground, so the grid is not two navy tiles in a row.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 09:00</span></div>
+<ol>
+<li>What you need for the LearnHub AI Bootcamp:<br><br>A laptop.<br>Claude Pro, $20 a month, the only subscription.<br>A few dollars of Claude API credit from week five.<br>Time to build every week.<br><br>What you do not need:<br><br>Coding.<br>A previous build.<br>Any AI experience past the basics.</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day flag" id="d4">
+      <header>
+        <div class="date">Thu 1 Oct<b>D4</b></div>
+        <div><h3>A good prompt has five parts</h3><p class="why">Week two of the curriculum, given away whole. No ask until the last frame. One of the two posts most likely to be saved and sent on, so it gets the most design attention in week one.</p></div>
+        <div class="meta"><span class="tag p3">Teach it free</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">"Act as a world class marketer" is not a prompt. It is a wish.
+
+People treat prompting as a list of magic words. It is closer to briefing a contractor. What comes back tracks the quality of what went in, and what goes in has five parts.
+
+Context. What the situation is, who the output is for, what already exists. The model cannot see your business.
+
+Role. Not "expert", which means nothing. Something specific: an editor who hates adverbs, a customer who is about to leave.
+
+Constraints. Length, format, what to leave out. This is where most of the quality comes from, and it is the part people skip.
+
+An example. One sample of what good looks like beats two paragraphs describing it.
+
+Iteration. The first answer is a draft. Push back the way you would with a junior colleague. And when a conversation has too many wrong turns in it, start a new one with a better brief instead of correcting it for the tenth time.
+
+That is the whole skill. There are no secret phrases, and anyone selling you a list of them is selling you a list.
+
+Week one of the bootcamp builds your first skill, which is how you stop writing the brief again every time. Week two goes past all of this into workflows and the six roles, which is where one-off prompting stops working. Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> the carousel as a PDF document, which LinkedIn makes swipeable. Post it as a document, not an image.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>carousel · 8 frames · 18:00</span></div>
+<ol>
+<li>A good prompt has five parts. Most people use one.</li>
+<li>Context. What is going on, who it is for, what already exists. The model cannot see your screen.</li>
+<li>Role. Who you want it to be. "You are an editor who cuts adverbs" beats "make this better".</li>
+<li>Constraints. Length, format, what to leave out. Constraints are where the quality comes from.</li>
+<li>An example. One sample of the output you want is worth two paragraphs describing it.</li>
+<li>Iteration. The first answer is a draft. Push back on it the way you would with a junior.</li>
+<li>What it does not have: magic words. "Act as an expert" does nothing. Context does everything.</li>
+<li>Week one of the LearnHub AI Bootcamp turns your best prompts into a skill. Week two goes past that into workflows. Link in bio.</li>
+</ol>
+<p class="prod"><b>Caption:</b> open with "Save this one." Then the LinkedIn post from paragraph two. Add the line that did not fit on a slide: knowing when to abandon a conversation and start fresh. <b>Design:</b> frames 2 to 6 numbered 1 to 5 in the mono face, large, top left.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>thread · 7 posts · 09:00</span></div>
+<ol>
+<li>Most people write one line and call it a prompt. A good one has five parts. No magic words involved.</li>
+<li>Context. What is going on, who it is for, what already exists. The model cannot see your screen, your business, or your last three attempts.</li>
+<li>Role. "Expert" means nothing. "An editor who cuts every adverb" means something. Be specific about who you want in the room.</li>
+<li>Constraints. Length, format, what to leave out. Skipped by almost everyone, and it is where the quality comes from.</li>
+<li>An example. One sample of the output you want is worth two paragraphs describing it. Paste one in.</li>
+<li>Iteration. The first answer is a draft. Push back. And when a chat is full of wrong turns, start a new one with a better brief.</li>
+<li>Week one of the LearnHub AI Bootcamp turns your best prompts into a skill, so you stop retyping the brief. Week two goes past that into workflows and the six roles, which is where one-off prompting stops working. learnhub.dev/enrol</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day" id="d5">
+      <header>
+        <div class="date">Fri 2 Oct<b>D5</b></div>
+        <div><h3>Seven projects, not seven certificates</h3><p class="why">The curriculum as things that exist rather than topics covered. This is the post to send to anyone who asks what the bootcamp covers, so it becomes the pinned carousel in the highlights.</p></div>
+        <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">Most courses end with a folder of notes you never open again. Here is what exists at the end of this one.
+
+An AI workspace that knows you, your first skill, and a one-page site live on the internet.
+Your own prompt library and voice skill, and published writing that sounds like you.
+A live website or web app that works on every device.
+A UGC-style ad and a motion graphic that launch it.
+An AI chatbot on your site, and an automation doing real work for it.
+A live offer with outreach sent, or three tailored job applications.
+Then the final project, which combines all three arcs into one real thing, presented at demo day.
+
+Seven projects. Every one of them is a link you can send to someone.
+
+Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> the carousel as a LinkedIn document.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>carousel · 9 frames · 18:00</span></div>
+<ol>
+<li>Seven things you will have built by demo day.</li>
+<li>Week 1. An AI workspace that knows you, your first skill, and a one-page site live on the internet.</li>
+<li>Week 2. Your own prompt library and voice skill, and published writing that sounds like you.</li>
+<li>Week 3. A live website or web app that works on every device.</li>
+<li>Week 4. A UGC-style ad and a motion graphic that launch it.</li>
+<li>Week 5. An AI chatbot on your site, and an automation doing real work for it.</li>
+<li>Week 6. A live offer with outreach sent, or three tailored job applications.</li>
+<li>Final project. All three arcs in one real thing, presented at demo day.</li>
+<li>Seven links you can send to anyone. LearnHub AI Bootcamp, starts 12 October.</li>
+</ol>
+<p class="prod"><b>Caption:</b> the LinkedIn post. <b>Design:</b> frames 2 to 8 share a layout with the week number in mono. This becomes the AI Bootcamp highlight cover.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 09:00</span></div>
+<ol>
+<li>Seven projects in six weeks, each one a link you can send to someone:<br><br>Wk 1 an AI workspace and a live one-page site<br>Wk 2 a prompt library and published writing<br>Wk 3 a live web app<br>Wk 4 a UGC ad and a motion graphic<br>Wk 5 a chatbot and an automation<br>Wk 6 a live offer or three applications<br>+ the final project</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day" id="d6">
+      <header>
+        <div class="date">Sat 3 Oct<b>D6</b></div>
+        <div><h3>Questions before you enrol</h3><p class="why">A Saturday carousel that clears the objections early rather than at the deadline, so week two can spend its days on the curriculum. No LinkedIn slot: the page is quiet at weekends and this is worth more on Instagram.</p></div>
+        <div class="meta"><span class="tag p4">The honest answers</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>carousel · 10 frames · 10:00</span></div>
+<ol>
+<li>Questions people ask before they enrol.</li>
+<li>Do I need to know how to code? No. You build websites and apps by directing AI, and every step is taught from zero.</li>
+<li>Do I need a laptop? Yes. Lessons read well on a phone, but the building happens on a laptop.</li>
+<li>What does it cost to run? One subscription, Claude Pro at $20 a month, plus a few dollars of Claude API credit from week five for the chatbot. Everything else starts on a free tier.</li>
+<li>What if I miss a Saturday session? They are recorded, so you catch up the same week.</li>
+<li>What if I fall behind? Your pod and the live session are there for exactly that. Tests can be retaken as many times as you need.</li>
+<li>How do I get certified? All six weekly projects approved, every assignment handed in, all six tests passed, and the final project presented.</li>
+<li>Is the certificate worth anything? It has a public verification link, so anyone can check it is real. And there are seven projects behind it.</li>
+<li>Can I pay in two parts? Yes, at full price: ₦200,000 then ₦150,000 before week three.</li>
+<li>Anything else, send a message. Link in bio.</li>
+</ol>
+<p class="prod"><b>Caption:</b> "The questions that arrive in the DMs, answered in one place. If yours is not here, send it." Then the price line and the date.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 10:00</span></div>
+<ol>
+<li>Before you enrol in the LearnHub AI Bootcamp:<br><br>Coding? Not needed.<br>Laptop? Yes.<br>Paid tools? One, Claude Pro at $20/mo.<br>Miss a Saturday? Recorded.<br>Certificate? Only if you finish everything.<br>Pay in parts? Yes, at full price.<br><br>Anything else, reply here.</li>
+</ol></div>
+        <div class="cut"><div class="plat"><b>LinkedIn</b><span>no post</span></div>
+<p class="body">Nothing on Saturday. The company page has ten followers and a quiet weekend post spends reach that Monday needs.</p></div>
+      </div>
+    </article>
+
+    <article class="day" id="d7">
+      <header>
+        <div class="date">Sun 4 Oct<b>D7</b></div>
+        <div><h3>Thirty-five seats and a Saturday call</h3><p class="why">The argument for the format, and for the cap. It borrows what the large programmes proved and names the failure mode they have, without naming them.</p></div>
+        <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 10:00</span></div>
+<p class="body">Cohort courses get finished and self-paced ones mostly do not, and it has very little to do with the content.
+
+A self-paced course has no date on it, so there is always tomorrow. A cohort has a start, an end, and a group of people who notice when you disappear. That pressure is what makes people finish. The videos matter far less than anyone expects.
+
+The large cohort programmes proved this, and they also showed the failure mode. Put two hundred people in a cohort and most of them are gone by month six. Peer mentorship becomes a lottery, where the quality of your experience depends entirely on which group you were dropped into, and two or three people end up carrying everyone.
+
+So this one is deliberately small.
+
+Thirty-five seats, so everyone is known by name by week two.
+A live session every Saturday at 11am WAT, where builds are reviewed and questions answered. Recorded if you cannot make it.
+A pod: a small group from your cohort to build alongside, so nobody gets stuck alone.
+A project due every week, reviewed and either approved or sent back.
+The cohort and the pod stay together after demo day.
+
+Six weeks is short enough that people actually finish.
+
+Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> the carousel as a document.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>carousel · 8 frames · 18:00</span></div>
+<ol>
+<li>Why cohort courses get finished and self-paced ones do not.</li>
+<li>A self-paced course has no deadline. So there is always tomorrow. Tomorrow is where courses go to die.</li>
+<li>A cohort has a start date, an end date, and 34 other people who notice when you go quiet.</li>
+<li>A live session every Saturday, 11am. Builds reviewed, questions answered. Recorded if you miss it.</li>
+<li>A pod. A small group from your cohort to build alongside, so nobody gets stuck alone.</li>
+<li>A project due every week, reviewed and either approved or sent back to you.</li>
+<li>Your cohort and your pod stay together after demo day.</li>
+<li>Thirty-five seats. LearnHub AI Bootcamp, starts 12 October. Link in bio.</li>
+</ol>
+<p class="prod"><b>Caption:</b> "The most useful thing about a cohort is not the content. It is the other 34 people." Then LinkedIn paragraphs two and four. <b>Note:</b> no completion percentage anywhere. The research supports the direction, not a number.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 19:00</span></div>
+<ol>
+<li>A live call with 200 people is a broadcast. People quietly stop turning up to those.<br><br>Cohort one of the LearnHub AI Bootcamp is 35 seats, with a live session every Saturday. Small enough that everyone is known by name by week two.</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day flag" id="d8">
+      <header>
+        <div class="date">Mon 5 Oct<b>D8</b></div>
+        <div><h3>Seven signs a machine wrote it</h3><p class="why">The post most likely to be sent to somebody else, because everybody has received writing like this. It also proves the editing standard rather than claiming it.</p></div>
+        <div class="meta"><span class="tag p3">Teach it free</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">Writing with AI is easy. Writing with AI so that it still sounds like you is the actual skill, and almost nobody teaches it.
+
+You can tell in a sentence when a post came straight out of a model. The pet words: delve, leverage, seamless, landscape, tapestry, "in today's fast-paced world". The fake contrast, where it is never just a cake, it is a memory. Everything grouped in threes. The opener that announces itself before saying anything: "let's dive in", "here's the thing". Every paragraph landing on a tidy one-line moral. An em dash in every sentence. And the praise nobody asked for, "great question", "it's important to note that".
+
+None of that is the model's fault. It is what happens when people stop at the first draft and call it finished.
+
+None of those are hard to remove once you can name them. The one move that finds them for you: open a fresh chat, paste the draft, and ask it to mark every line that sounds like AI wrote it and say why, without rewriting anything. Then fix those lines yourself, in your own words.
+
+Week two of the LearnHub AI Bootcamp teaches the model your voice as a reusable skill, so the draft starts closer to how you actually write, with these tells on the skill's never list. Then it spends the rest of the week on the edit.
+
+The project is your own prompt library and voice skill, plus published writing in your voice. Published, because the edit only gets serious when someone is going to read it.
+
+Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> carousel as a document. <b>Watch:</b> this post must not contain one of the tells it lists. Read it aloud before scheduling.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>carousel · 9 frames · 18:00</span></div>
+<ol>
+<li>Seven signs a machine wrote it.</li>
+<li>Pet words. Delve. Leverage. Seamless. Landscape. Tapestry. Nobody says tapestry.</li>
+<li>Fake contrast. "It's not just a cake. It's a memory." Say the true thing once.</li>
+<li>Everything comes in threes. Fresh, fast and affordable. Real people list two things, or four.</li>
+<li>Openers that announce. "Let's dive in." "Here's the thing." Start with the point instead.</li>
+<li>Tidy one-line endings. Every paragraph closing on a punchline reads like a template.</li>
+<li>Em dashes everywhere. Most people rarely type one. Models use them constantly.</li>
+<li>Hedging and praise. "Great question!" "It's important to note that." Cut both.</li>
+<li>Week two of the LearnHub AI Bootcamp puts these on your voice skill's never list, then spends the week on the edit. Link in bio.</li>
+</ol>
+<p class="prod"><b>Caption:</b> "Most AI writing fails for one reason. It reads like AI wrote it." Then the fresh-chat prompt from the LinkedIn post, and "Screenshot the slides and check your last post against them." <b>Note:</b> this is week 2 lesson 4's own list, given away whole, so anyone who enrols meets it again as the never list on their voice skill.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>thread · 9 posts · 09:00</span></div>
+<ol>
+<li>Seven signs a machine wrote your post. Check your last one against these.</li>
+<li>Pet words. Delve. Leverage. Seamless. Landscape. Tapestry. Nobody says tapestry out loud.</li>
+<li>Fake contrast. "It's not just a cake. It's a memory." Say the true thing once and move on.</li>
+<li>Everything in threes. Fresh, fast and affordable. Real people list two things, or four.</li>
+<li>Openers that announce themselves. "Let's dive in." "Here's the thing." "In this post I will." Start with the point.</li>
+<li>Tidy one-line endings. Every paragraph closing on a neat little moral reads like a template, because it is one.</li>
+<li>Em dashes everywhere. Most people rarely type one. Models use them constantly.</li>
+<li>Hedging and praise. "Great question!" "It's important to note that." Nobody talks like this.</li>
+<li>The move that catches them: fresh chat, paste the draft, "mark every line that sounds like AI wrote it and say why, do not rewrite it". Then fix those lines yourself. Week two of the LearnHub AI Bootcamp. learnhub.dev/enrol</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day" id="d9">
+      <header>
+        <div class="date">Tue 6 Oct<b>D9</b></div>
+        <div><h3>Arc one: your AI foundation</h3><p class="why">Weeks 1 and 2 in one post. The surprise here is week one, which is a builder setup and how agents work, not a prompting lecture. Agents in week one is the thing most people will not expect from an AI course, and it is what the brochure's week 1 row leads on.</p></div>
+        <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">Week one of the AI Bootcamp is not a lecture about prompting. It is a setup.
+
+By Sunday of week one you have a Claude Project that knows who you are and what you are building, your first custom skill, and a one-page site live on the internet. To get there you install and use the stack a real builder uses: Claude Code, GitHub, Supabase and Vercel.
+
+Most people using AI have never left the chat box. That is why their results are generic. Week one moves you out of it.
+
+It also teaches how an agent actually works, in week one rather than week five, because Claude Code is one and you use it from the first project onward. What the loop is, how to define done so it knows when to stop, and how a CLAUDE.md file and a context folder give it the things you would otherwise retype every morning. Then skills, which is what you stop typing altogether.
+
+Week two is the prompting, and it goes further than the usual advice. Context, roles and constraints. Why one-off prompting stops working and what replaces it, which is workflows and the six roles. Teaching the model your voice so writing sounds like you. Then prompts for the work you actually do: posts, emails, proposals, captions, offers, landing pages and launch copy.
+
+The project is your own prompt library and voice skill, and published writing in your voice.
+
+That is arc one. Two weeks, and you are no longer an average user of these tools.
+
+Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> flyer 09.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>flyer · 18:00</span></div>
+<ul>
+<li class="note">Flyer 09. Label: ARC ONE · WEEKS 1 AND 2. Headline: "Week one is a setup, not a lecture." Subline: "Claude Code, GitHub, Supabase and Vercel. How agents work, and your first skill. You finish the week with a site live on the internet."</li>
+</ul>
+<p class="prod"><b>Caption:</b> the LinkedIn post. <b>Design:</b> the four tool names set in the mono face, large, under the headline.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 09:00</span></div>
+<ol>
+<li>Most people using AI have never left the chat box. That is why their results are generic.<br><br>Week one of the LearnHub AI Bootcamp is a setup, not a lecture: Claude Code, GitHub, Supabase, Vercel. How agents work, and your first skill. You end the week with a site live on the internet.</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day flag" id="d10">
+      <header>
+        <div class="date">Wed 7 Oct<b>D10</b></div>
+        <div><h3>Week three: a live product</h3><p class="why">The week most people enrol for, and the single most persuasive thing the bootcamp does. Moved from week five in the earlier plan, which is why this post now sits in the middle of week two rather than at the end. Rebuilt 30 September against the week 3 drafts: the BUILD.md interview is the ownable part and nobody else teaches it, so it leads.</p></div>
+        <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">By the end of week three you have a website or a web app on a live URL, with a database and sign-in, that works on a phone.
+
+You will not have written a line of code by hand.
+
+What week three actually teaches is the part that decides whether these tools work for you, and it happens before any code. You sit through an interview in the Claude app about what you are building, and it comes back as a file called BUILD.md, written in your own words: what it is for, who uses it, the sites you want it to feel like and what to take from each, and a never list of the things it must not do. Your project gets a CLAUDE.md that points at all of it. Only then does anything get written, one section at a time, with a plan first.
+
+Everyone who has tried this and given up did the same thing, which is to describe a whole product in one message and accept whatever came back. Deciding first is the skill. The code is the easy part now.
+
+Then the rest. How a web app works, so you can tell when the answer is wrong. Adding a database and sign-in. Putting it live, with Claude Code doing the commits. Proving a bug is real before you let it be fixed. Making it work on every device, and monitoring it with basic security practice, which almost nobody teaches at this level and which is what separates a demo from a product.
+
+Tools: Claude Code, VS Code, GitHub, Supabase, Vercel, Sentry, v0 and Lovable.
+
+The test is the same one a customer applies. Can a stranger open it on a phone and use it.
+
+Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> flyer 11. If there is a real build to screenshot by the 7th, use that instead.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>flyer · 18:00</span></div>
+<ul>
+<li class="note">Flyer 11. Label: WEEK THREE. Headline: "A live product, on a real URL." Subline: "You decide first, in your own words, in a file called BUILD.md. Then a database, sign-in and every device. Without writing a line of code by hand."</li>
+</ul>
+<p class="prod"><b>Caption:</b> LinkedIn paragraphs one to three, then the tool list and the CTA. <b>Design:</b> navy ground.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>thread · 6 posts · 09:00</span></div>
+<ol>
+<li>By the end of week three of the LearnHub AI Bootcamp you have a web app on a live URL, with a database and sign-in, working on a phone. Without writing a line of code by hand.</li>
+<li>The part that decides whether this works for you is not the coding. It is everything that happens before any code gets written.</li>
+<li>You sit through an interview in the Claude app about what you are building. It comes back as a file, BUILD.md, in your own words: what it is for, who uses it, the sites you want it to feel like, and a never list.</li>
+<li>Everyone who tried this and gave up described a whole product in one message and accepted whatever came back. Deciding first is the skill. The code is the easy part now.</li>
+<li>Then the rest. How a web app actually works, so you can tell when the answer is wrong. A database. Sign-in. Putting it live, with Claude Code doing the commits.</li>
+<li>Then every device, proving a bug before you fix it, and monitoring with basic security practice. That is what separates a demo from a product, and almost nobody teaches it at this level.</li>
+<li>Claude Code, GitHub, Supabase, Vercel, Sentry, v0, Lovable. The test is whether a stranger can open it on a phone and use it. learnhub.dev/enrol</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day" id="d11">
+      <header>
+        <div class="date">Thu 8 Oct<b>D11</b></div>
+        <div><h3>Week four: video that sells it</h3><p class="why">Week four launches the week three product, which is the thing that makes the arc structure worth explaining. Lead on the objection that stops most people, which is being on camera. Rebuilt 30 September: the brief-first method and the honesty rule are both in the lessons and the project marking, and both were missing here. <b>Check with Pelumi:</b> the brochure's week 4 tool row does not list HyperFrames or video-use, and the lessons do.</p></div>
+        <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">Week four exists to launch what you built in week three. That pairing is the whole point of the arc.
+
+You do not have to be on camera for any of it.
+
+It starts where the good ones start, which is a brief. References studied frame by frame for what they actually do: a beat every half second to a second, a shot every two to four. A shot list with timings. Then realistic AI video and which tool is best for what, UGC-style ads, AI voice and avatars, motion graphics built as code, and editing video using agents rather than by hand.
+
+Tools: Google Flow for Veo, Kling, Higgsfield, ElevenLabs, Remotion, HyperFrames and CapCut. HyperFrames is open source and free for anyone, which is why the motion graphics lesson reaches for it first.
+
+One rule runs through the week and decides whether a project is approved: no AI person posing as a customer, no invented reviews, no made-up numbers, and the platform's AI label on anything realistic. You can make this work without lying about it, and the people who lie about it get found out.
+
+The project is a UGC-style ad and a motion graphic that launch your week three product.
+
+This is also the most directly sellable skill in the six weeks. Businesses that will never hire a developer will pay for an ad, and the people making those ads at the moment are mostly not using these tools yet.
+
+Cohort one starts 12 October. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> carousel as a document.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>carousel · 10 frames · 18:00</span></div>
+<ol>
+<li>Week four. The video that launches what you built in week three.</li>
+<li>You do not have to be on camera for any of it.</li>
+<li>It starts with a brief. References studied frame by frame, and a shot list with timings, before any tool opens.</li>
+<li>Veo and Kling. Realistic AI video, and knowing which one to reach for. Start from a real photo of the real thing.</li>
+<li>ElevenLabs and Higgsfield. Voice, narration, and a digital twin if you want one. The paid route, said plainly.</li>
+<li>Remotion and HyperFrames. Motion graphics built as code, so every timing and colour lives in one file. HyperFrames is free.</li>
+<li>CapCut, and editing with agents rather than by hand. One long video becomes many short ones.</li>
+<li>The rule: no AI person posing as a customer, no invented reviews, and the AI label on realistic shots. It is in the marking.</li>
+<li>You ship a UGC-style ad and a motion graphic. Both launch your week three product.</li>
+<li>LearnHub AI Bootcamp, starts 12 October. Link in bio.</li>
+</ol>
+<p class="prod"><b>Caption:</b> the LinkedIn post, plus the note that businesses which will never hire a developer will still pay for an ad.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 09:00</span></div>
+<ol>
+<li>Week three you build the product. Week four you make the video that launches it. You do not have to be on camera for any of it.<br><br>Veo, Kling, Higgsfield, ElevenLabs, Remotion, HyperFrames, CapCut.<br><br>And the rule that is in the marking: no AI person posing as a customer, no invented reviews. LearnHub AI Bootcamp, 12 October.</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day flag" id="d12">
+      <header>
+        <div class="date">Fri 9 Oct<b>D12</b></div>
+        <div><h3>Arc three: agents, then a career</h3><p class="why">Weeks 5 and 6, and the last content post before the deadline. It names the six career paths, which is the clearest answer to "what do I do with this", and it carries the brochure's own honest line about jobs. Rebuilt 30 September to add the approval rule, which is the brochure's first week 5 bullet and is enforced in lesson 4, lesson 6 and the project marking.</p></div>
+        <div class="meta"><span class="tag p2">Inside the six weeks</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 08:00</span></div>
+<p class="body">The last two weeks of the AI Bootcamp are the ones that turn six weeks of building into something you can be paid for.
+
+Week five is agents and automation. What an agent actually is and how it differs from a chatbot, because the answer decides which one a job needs. Building agents without code and in the Claude console. Giving an agent real tools through connectors and MCP, with one rule that never bends: an agent may draft anything, and nothing leaves without a person approving it. A chatbot live on your site, and your own AI operating system, which is your context, skills, tools and memory in one folder. Then automations that run on their own, using the tools companies actually use: Google Opal, n8n, Zapier and Make.
+
+The project is an AI chatbot live on your site and an automation doing real work for it.
+
+Week six is the career and business week. You choose a path and build the case for it:
+
+AI Automation Specialist, building workflows that save a business hours every week.
+AI UGC Ad Creator, making AI video ads for brands.
+AI Copywriter, writing posts, pages and campaigns in a client's voice.
+AI Web Product Builder, shipping websites and web apps for clients.
+AI Product Marketer, launching products with AI copy, video and automation.
+AI Agent Builder, setting up chatbots and agents for support and sales.
+
+Then your CV and LinkedIn rebuilt around what you actually built, how to find and apply for work using AI, and how to package it as a business instead if that is the path you want: the offer, the pricing, and the first clients.
+
+The project is a live offer with outreach sent, or three tailored job applications.
+
+No bootcamp can promise you a job. This one makes sure you have the work to show for it.
+
+Cohort one starts 12 October, and the early-bird price closes tomorrow night. learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> carousel as a document. <b>Note:</b> the last line is the first deadline mention in the calendar. Everything before this has been content.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>carousel · 11 frames · 18:00</span></div>
+<ol>
+<li>Weeks five and six. Where six weeks of building turns into something you get paid for.</li>
+<li>Week five. What an agent actually is, and how it differs from a chatbot.</li>
+<li>Building agents without code, and in the Claude console. A chatbot live on your own site.</li>
+<li>Giving an agent real tools. And the rule: it may draft anything, nothing leaves without a person approving it.</li>
+<li>Automations that run on their own. Google Opal, n8n, Zapier, Make.</li>
+<li>Week six. Six paths, and you choose one.</li>
+<li>AI Automation Specialist. AI UGC Ad Creator. AI Copywriter.</li>
+<li>AI Web Product Builder. AI Product Marketer. AI Agent Builder.</li>
+<li>Your CV and LinkedIn rebuilt around what you actually built. Finding and applying for work with AI.</li>
+<li>Or build a business instead. The offer, the pricing, and the first clients.</li>
+<li>No bootcamp can promise you a job. This one makes sure you have the work to show for it.</li>
+</ol>
+<p class="prod"><b>Caption:</b> the LinkedIn post, trimmed to week five, the six paths, and the closing line. Add the deadline.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>thread · 8 posts · 09:00</span></div>
+<ol>
+<li>The last two weeks of the LearnHub AI Bootcamp are the ones that turn six weeks of building into something you get paid for.</li>
+<li>Week five: agents and automation. What an agent actually is and how it differs from a chatbot. Building them with no code and in the Claude console.</li>
+<li>Then giving one real tools, with the rule that never bends: an agent may draft anything, nothing leaves without a person approving it.</li>
+<li>You ship a chatbot live on your own site, and an automation doing real work for it. Google Opal, n8n, Zapier, Make.</li>
+<li>Week six: you pick a path. AI Automation Specialist. AI UGC Ad Creator. AI Copywriter. AI Web Product Builder. AI Product Marketer. AI Agent Builder.</li>
+<li>Then your CV and LinkedIn rebuilt around what you actually built, and how to find and apply for work with AI.</li>
+<li>Or a business instead: the offer, the pricing, the first clients. You ship a live offer with outreach sent, or three tailored applications.</li>
+<li>No bootcamp can promise you a job. This one makes sure you have the work to show for it. Early-bird closes tomorrow night. learnhub.dev/enrol</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day flag" id="d13">
+      <header>
+        <div class="date">Sat 10 Oct<b>D13</b></div>
+        <div><h3>₦150,000 until tonight</h3><p class="why">The deadline post, and the sharpest thing in the two weeks, because not one competitor in the research publishes a price at all. The urgency is real: the number changes at midnight and the code enforces it.</p></div>
+        <div class="meta"><span class="tag p5">Enrol</span><span class="gate">Gate: checkout live</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 10:00</span></div>
+<p class="body">Go and look at any AI school in this market and try to find the price. You will find a contact form.
+
+Here is ours. ₦150,000 until tonight. ₦350,000 from tomorrow.
+
+That covers all six weeks of lessons in video and written form, a live session every Saturday, review and feedback on every project, your pod and the cohort community, demo day, and a certificate with a public verification link.
+
+Not included: your laptop, and a Claude Pro plan at $20 a month. Every other tool is taught on a free tier first.
+
+If ₦350,000 in one payment is the problem rather than the price, there is a plan: ₦200,000 now and ₦150,000 before week three.
+
+Thirty-five seats. Cohort one starts Monday.
+
+learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> flyer 13. <b>Gate:</b> this post is the one that needs Paystack checkout actually live. See the open questions.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>flyer · 10:00, and again to story at 19:00</span></div>
+<ul>
+<li class="note">Flyer 13. Label: EARLY-BIRD CLOSES TONIGHT. Headline: "₦150,000" with "₦350,000" struck through beside it. Subline: "Until midnight. Then it doubles. Cohort one starts Monday."</li>
+</ul>
+<p class="prod"><b>Caption:</b> the LinkedIn post, whole. <b>Design:</b> the number is the entire flyer, royal blue on navy, at least twice the size of any other headline in the set. Spend the most time on this one. <b>Story at 19:00</b> with a countdown sticker set to midnight, the only scarcity device used in the whole two weeks, and it is a real one.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 10:00</span></div>
+<ol>
+<li>The LearnHub AI Bootcamp is ₦150,000 until tonight, then ₦350,000.<br><br>That is on the page, not behind a contact form. Go and try to find any other AI school's price in this market.<br><br>35 seats. Starts Monday. learnhub.dev/enrol</li>
+</ol></div>
+      </div>
+    </article>
+
+    <article class="day" id="d14">
+      <header>
+        <div class="date">Sun 11 Oct<b>D14</b></div>
+        <div><h3>It starts tomorrow</h3><p class="why">The close. The early-bird has gone and the post says so plainly rather than pretending, which is the only honest way to use a deadline that has already passed. Everything the two weeks said, in one post, at the new price.</p></div>
+        <div class="meta"><span class="tag p5">Enrol</span><span class="mono" style="font-size:11px;color:var(--ink-3)">Owner: Pelumi</span></div>
+      </header>
+      <div class="cuts">
+        <div class="cut li"><div class="plat"><b>LinkedIn</b><span>company page · 10:00</span></div>
+<p class="body">The early-bird closed last night. Cohort one of the LearnHub AI Bootcamp starts tomorrow, and there are still seats.
+
+Everything about it, in one post.
+
+Who it is for. Students and graduates who want skills employers are hiring for. Career changers who would rather not spend a year learning to code. Marketers, founders and freelancers who want AI doing real work. Anyone done with tutorials.
+
+What it is. Six weeks, three arcs, a project every week.
+
+Arc one, weeks 1 and 2. Your AI foundation: a real builder stack, and prompting that gets you what you asked for.
+Arc two, weeks 3 and 4. Build and create: a live web app, then the video that launches it.
+Arc three, weeks 5 and 6. Automate and earn: an agent and automations, then a career or business plan built on them.
+Then the final project, presented at demo day.
+
+How it runs. Thirty-five seats. A live session every Saturday at 11am WAT, recorded. A pod. Review on every project.
+
+What you need. A laptop, a Claude Pro plan at $20 a month, and time to build weekly. No coding.
+
+What you leave with. Seven projects, each one a link you can send to someone, and a certificate with a public verification link that you only get by finishing all of it.
+
+What it costs. ₦350,000, or ₦200,000 now and ₦150,000 before week three.
+
+learnhub.dev/enrol</p>
+<p class="prod"><b>Image:</b> flyer 14. <b>Then:</b> the two weeks are over. Monday moves to cohort-in-progress content, which is a different calendar.</p></div>
+        <div class="cut ig"><div class="plat"><b>Instagram</b><span>flyer · 18:00</span></div>
+<ul>
+<li class="note">Flyer 14. Label: COHORT ONE. Headline: "It starts tomorrow." Subline: "Six weeks. Seven projects. ₦350,000, or two payments. Seats left."</li>
+</ul>
+<p class="prod"><b>Caption:</b> the LinkedIn post, trimmed to the three arcs and the last four paragraphs. <b>Then:</b> set the day 5 carousel as the AI Bootcamp highlight cover.</p></div>
+        <div class="cut x"><div class="plat"><b>X</b><span>single · 10:00 · then repost the pinned thread</span></div>
+<ol>
+<li>Early-bird closed last night. Cohort one of the LearnHub AI Bootcamp starts tomorrow and there are seats left.<br><br>Six weeks. Seven projects. ₦350,000, or ₦200k now and ₦150k before week three.<br><br>The whole thing is in the pinned thread. learnhub.dev/enrol</li>
+</ol></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Voice</p>
+    <h2>Voice rules</h2>
+    <p>The company page speaks, to one reader at a time. Pelumi's own accounts carry the first person and the history. These two voices do not mix, and the rule was set on 22 August after the masterclass page was written twice in the wrong one.</p>
+  </div>
+  <div class="rules">
+    <div class="rule"><h3>Always</h3><ul>
+      <li>Open on the reader's situation, never on the company name.</li>
+      <li>One idea per post. One call to action, one destination, and the destination is learnhub.dev/enrol.</li>
+      <li>Use the vocabulary above. Bootcamp, not programme. LearnHub, camel case.</li>
+      <li>Name what the student will have built, not what they will have learned about.</li>
+      <li>Say the price, and say the two costs that are not included.</li>
+      <li>Keep sentences short. Nigerian English rhythm is correct here and is not something to edit out.</li>
+      <li>Every figure in the mono face. It is the site's signature; keep it on social.</li>
+      <li>Read it aloud before scheduling. If a sentence sounds like a school addressing an intake, replace it.</li>
+      <li>Emoji in the three bios only, one per line. Never inside a post.</li>
+    </ul></div>
+    <div class="rule never"><h3>Never</h3><ul>
+      <li>"I". The company page is not a person. The story belongs on Pelumi's own accounts and gets reposted from there.</li>
+      <li>The 2025 closure, the cloud programme, the scholarships, or the student who paid ₦150,000. That is his marketing, not the company's.</li>
+      <li>Promise a job, imply a placement, or name a salary. The brochure's line is the ceiling: no bootcamp can promise you a job.</li>
+      <li>A testimonial, a student count, a completion rate or an outcome. Nobody has finished a cohort yet.</li>
+      <li>"Phone first" or "no laptop needed". A laptop and Claude Pro are both required and both are said out loud.</li>
+      <li>Scarcity language on top of a real cap or a real deadline. Thirty-five seats and midnight on the 10th are both true. "Filling fast" is not checkable.</li>
+      <li>Em dashes. Sentence case in headings. One exclamation mark per thousand words at most.</li>
+      <li>Stock photography of people in headsets pointing at screens.</li>
+    </ul>
+    <p class="eyebrow" style="margin-top:6px">Words that do not appear</p>
+    <div class="taboo"><span>unlock</span><span>unleash</span><span>transform your life</span><span>the future of work</span><span>in today's fast-paced world</span><span>ecosystem</span><span>launchpad</span><span>journey</span><span>empower</span><span>leverage</span><span>seamless</span><span>game changer</span><span>revolutionary</span><span>phone first</span><span>limited slots</span><span>don't miss out</span><span>dive in</span><span>guaranteed job</span><span>Learnhub</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Measurement</p>
+    <h2>What we measure</h2>
+    <p>Follower counts are not on this list. Two weeks from a standing start of six, two and ten followers gives a baseline and nothing more. These are the numbers that decide what cohort two's campaign looks like.</p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Signal</th><th>Where</th><th>Why it matters</th><th>Read it on</th></tr></thead>
+    <tbody>
+      <tr><td>Paid enrolments, and how many came before the 10th</td><td>Supabase enrolments</td><td>The objective. The early-bird split tells you whether the deadline did any work or whether people would have paid anyway.</td><td class="mono">daily</td></tr>
+      <tr><td>Waitlist signups that did not convert to payment</td><td>waitlist vs enrolments</td><td>The gap between interest and ₦150,000 is the real size of the price objection.</td><td class="mono">Sun 11 Oct</td></tr>
+      <tr><td>Saves and shares per carousel</td><td>Instagram insights</td><td>The only carousel measure that means anything. Likes are noise.</td><td class="mono">Sun 11 Oct</td></tr>
+      <tr><td>Which two posts travelled furthest</td><td>All three</td><td>The bet is that D4 and D8, the two free lessons, beat everything else. If the week posts win instead, cohort two leads with curriculum.</td><td class="mono">Sun 11 Oct</td></tr>
+      <tr><td>Questions in DMs and comments, collated</td><td>Instagram, LinkedIn, X inboxes</td><td>D6 answers eight. Whatever arrives that is not on that list is what the brochure is missing.</td><td class="mono">daily</td></tr>
+      <tr><td>Link taps that do not convert</td><td>Vercel Analytics vs enrolments</td><td>A big gap means the enrol page is losing people the posts already won.</td><td class="mono">Fri 2, Sat 10</td></tr>
+      <tr><td>LinkedIn: views, and which named people comment</td><td>LinkedIn</td><td>Who is watching is more useful than how many, on a page with ten followers.</td><td class="mono">Sun 11 Oct</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Before Monday</p>
+    <h2>Production and open questions</h2>
+  </div>
+  <div class="prep">
+    <div class="list"><h3>Production this week</h3><ol>
+      <li><b>Replace all three bios.</b> Every one still sells cloud engineering. This gates D1: the launch post lands on pages that contradict it otherwise. New copy is in <span class="mono">learnhub-social-launch.md</span> and needs the new price and date.</li>
+      <li><b>Point all three bio links</b> at learnhub.dev/enrol, replacing the two Linktrees.</li>
+      <li><b>LinkedIn page fields.</b> Industry to E-Learning Providers, type from Partnership to Privately held unless it is registered as one, specialties, and the custom button to Sign up.</li>
+      <li><b>Archive the four cloud posts</b> on Instagram rather than deleting them.</li>
+      <li><b>One carousel template and one flyer template</b>, both off the live site: navy and white grounds, Switzer headlines, General Sans body, a mono label, royal blue on one element. Six carousels and eight flyers come from these two.</li>
+      <li><b>Build week one first.</b> Flyers 01 and 03 plus carousels D2, D4, D5, D6 and D7 by Sunday. Week two by Wednesday 7.</li>
+      <li><b>Flyer 13 is the important one.</b> The price flyer carries the deadline and it is the post the whole two weeks builds towards.</li>
+    </ol></div>
+    <div class="list"><h3>Questions for Pelumi</h3><ol>
+      <li><b>Checkout has to be live before Saturday 10 October.</b> Right now learnhub.dev/enrol is still the waitlist form saying "no payment now", and the cohorts row is seeded <span class="mono">upcoming</span>, so the buy button is off. D13 is a deadline post pointing at a page that cannot take money. This is the one thing that breaks the campaign.</li>
+      <li><b>The brochure does not mention the API credit, and the lessons require it.</b> Week 5 lessons 3 and 5 have students open a Claude API account, add credit and set a spend limit, because Pro does not cover a bot answering strangers on their site. It is small money, a few dollars, but the brochure's "Not included" line still reads "your laptop and a Claude Pro plan ($20 a month)" and the curriculum's ground rules still say "One paid tool: Claude Pro." This calendar now says it on D3 and D6. The brochure, <span class="mono">CURRICULUM.md</span> and the /enrol page need the same line before D3 goes out, or the honest-answers post is the thing that gets caught out.</li>
+      <li><b>Thirty-five seats or twenty-five?</b> The brochure says 35 twice. The database seeds <span class="mono">paid_seat_cap</span> at 25 and the pricing test asserts against 25. The calendar uses 35 because that is what is published. Whichever is right, the other needs changing before D7 goes out.</li>
+      <li><b>The brochure's own CTA says "Join the waitlist"</b> while its price page says pay before the 10th. Those cannot both be true on 10 October.</li>
+      <li><b>Who posts.</b> Fourteen days across three platforms is real work. You, or the social freelancer?</li>
+      <li><b>Footage.</b> Anything usable left from the 22 August studio shoot? If not, every flyer is type-only and that is fine.</li>
+      <li><b>learnhub.dev itself.</b> The homepage still sells the career-matching product, not the bootcamp. Every link here goes to /enrol so it does not matter this time, but anyone who trims the URL lands somewhere else.</li>
+    </ol></div>
+  </div>
+
+  <div class="sources">
+    <span class="eyebrow">Sources</span>
+    <span>Price, deadline and seat cap from <span class="mono">Learnhub-ai/lib/bootcamp/pricing.ts</span> and <span class="mono">supabase/migrations/20260821170000_bootcamp_seed.sql</span>, read 29 September 2026.</span>
+    <span>Curriculum, arcs, weekly projects and certification from <span class="mono">Learnhub-ai/content/bootcamp/CURRICULUM.md</span> and <span class="mono">learnhub-launch/brochure/phone.html</span>, both read 29 September 2026.</span>
+    <span>Days 3, 4, 6, 8, 9, 10, 11 and 12 re-checked 30 September 2026 against the drafted lessons in <span class="mono">content/bootcamp/week-1</span> to <span class="mono">week-6</span>, which were all written after this calendar's first draft. What changed: the Claude API credit from week five, week 2 lesson 4's actual list of tells, week one's agent lessons, week three's BUILD.md interview, week four's brief-first method and honesty rule, and week five's approval rule.</span>
+    <span>Competitor and own-account figures read on Instagram, 22 September 2026: @alx_africa, @altschoolafrica, @decagonhq, @sureskillcohort, @darey_io, @learnhubglobalacademy, @LearnhubGlobal, and the LearnHub LinkedIn page. Darey.io programme structure and Trustpilot score read on darey.io the same day.</span>
+    <span>Design system from learnhub.dev as published 21 September 2026, not from the Remotion logo project.</span>
+  </div>
+</section>
+
+</div>

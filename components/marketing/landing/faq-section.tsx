@@ -54,7 +54,7 @@ function faqs(): FaqItem[] {
     },
     {
       q: "What happens when I save my seat?",
-      a: "You join the waitlist, with no payment. When seats open, you hear first.",
+      a: "You pay securely through Paystack, by card, bank transfer or USSD. Your seat is confirmed straight away, and we message you on WhatsApp before the start date.",
     },
   ];
 }

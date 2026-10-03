@@ -109,7 +109,7 @@ describe("idle timeout", () => {
   it("does not time out a buyer returning from Paystack", async () => {
     // Checkout is a bank app, an OTP and a connection we do not control. The
     // webhook enrols them either way; this page is the only place they are told.
-    const res = await updateSession(request("/bootcamp/enrol/callback", STALE));
+    const res = await updateSession(request("/enrol/callback", STALE));
 
     expect(signOut).not.toHaveBeenCalled();
     expect(res.status).not.toBe(307);
