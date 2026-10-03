@@ -38,10 +38,10 @@ export default async function LoginPage({
 
       <p className="mt-6 text-center text-sm text-muted">
         {/* Sign-up is closed while the app is owner-only; the way in for
-            everyone else is the bootcamp waitlist. */}
+            everyone else is enrolling in the bootcamp. */}
         New here?{" "}
         <Link href="/enrol" className="font-semibold text-blue hover:underline">
-          Join the AI Bootcamp waitlist
+          Enrol in the AI Bootcamp
         </Link>
       </p>
     </div>

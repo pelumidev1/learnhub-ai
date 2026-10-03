@@ -3,7 +3,7 @@ import { buttonClasses } from "@/components/ui/button";
 
 /**
  * The landing page's one action, with one label everywhere it appears. It
- * goes to the waitlist at /enrol.
+ * goes to checkout at /enrol.
  *
  * `light` is the silver pill for blue grounds (hero, pricing price panel);
  * `primary` is the shared blue button for white ones.

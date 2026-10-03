@@ -1,5 +1,7 @@
 /**
- * The cohorts the /enrol waitlist offers.
+ * The cohorts /enrol sells. October only since 2026-10-03, when the page
+ * turned from a waitlist into checkout: November and January come back here
+ * when they go on sale. Their keys stay valid in old `waitlist` rows.
  *
  * A config file for the same reason lib/masterclass.ts is: dates move while a
  * launch is being set up, and a code edit is reviewable where a dashboard edit
@@ -8,8 +10,6 @@
  */
 export const WAITLIST_COHORTS = [
   { key: "oct-2026", label: "12 October 2026, Cohort 1" },
-  { key: "nov-2026", label: "23 November 2026, Cohort 2" },
-  { key: "jan-2027", label: "11 January 2027, Cohort 3" },
 ] as const;
 
 export type WaitlistCohortKey = (typeof WAITLIST_COHORTS)[number]["key"];

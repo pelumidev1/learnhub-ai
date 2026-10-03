@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { getAuthUser } from "@/lib/supabase/server";
 import { activateFromReference } from "@/lib/bootcamp/enrol";
+import { COHORT } from "@/components/marketing/landing/bootcamp-facts";
+import { Logo } from "@/components/ui/logo";
 import { Icons } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Confirming your payment" };
@@ -10,10 +11,14 @@ export const metadata: Metadata = { title: "Confirming your payment" };
 /**
  * Where Paystack sends the buyer after checkout.
  *
+ * Public, because /enrol is a guest checkout and buyers cannot sign in yet.
+ * Nothing here needs the visitor to be anyone: activation looks the payment up
+ * by reference and asks Paystack, and the page says nothing about the buyer
+ * beyond the outcome.
+ *
  * This is the fast path, not the reliable one. The webhook is what guarantees
- * enrolment; this exists so somebody who just paid sees the answer immediately
- * instead of refreshing a dashboard and hoping. Both call the same idempotent
- * activation, so whichever lands first wins and the other does nothing.
+ * enrolment; this exists so somebody who just paid sees the answer immediately.
+ * Both call the same idempotent activation, so whichever lands first wins.
  *
  * The reference in the URL is a lookup key, never proof: anyone can open this
  * page with any reference. Paystack is asked directly what happened.
@@ -23,13 +28,10 @@ export default async function EnrolCallbackPage({
 }: {
   searchParams: Promise<{ reference?: string; trxref?: string }>;
 }) {
-  const user = await getAuthUser();
-  if (!user) redirect("/login?redirect=/bootcamp");
-
   const params = await searchParams;
   // Paystack sends both; they carry the same value.
   const reference = params.reference ?? params.trxref;
-  if (!reference) redirect("/bootcamp");
+  if (!reference) redirect("/enrol");
 
   const result = await activateFromReference(reference);
 
@@ -39,8 +41,8 @@ export default async function EnrolCallbackPage({
         icon="check"
         tone="good"
         title="You are in."
-        body="Your seat is confirmed. Week one opens on the cohort start date, and everything you need is in your dashboard."
-        cta={{ href: "/bootcamp", label: "Go to the bootcamp" }}
+        body={`Your seat in the AI Bootcamp, ${COHORT.label}, is confirmed. Paystack has emailed your receipt. We will message you on WhatsApp before the start date with everything you need.`}
+        cta={{ href: "/", label: "Back to LearnHub" }}
       />
     );
   }
@@ -54,7 +56,7 @@ export default async function EnrolCallbackPage({
         tone="neutral"
         title="That payment did not go through."
         body="Nothing has been charged. You can try again whenever you are ready."
-        cta={{ href: "/bootcamp", label: "Try again" }}
+        cta={{ href: "/enrol", label: "Try again" }}
       />
     );
   }
@@ -66,8 +68,8 @@ export default async function EnrolCallbackPage({
       icon="sparkle"
       tone="bad"
       title="We could not confirm that payment."
-      body="If you were charged, your seat is safe and this usually settles itself within a few minutes. Please do not pay again. If it is still not showing, reply to your registration email and it will be sorted by hand."
-      cta={{ href: "/bootcamp", label: "Back to the bootcamp" }}
+      body="If you were charged, your seat is safe and this usually settles itself within a few minutes. Please do not pay again. Keep your Paystack receipt; we have your WhatsApp number and will confirm with you."
+      cta={{ href: "/", label: "Back to LearnHub" }}
     />
   );
 }
@@ -94,20 +96,25 @@ function Shell({
         : "bg-paper-2 text-muted";
 
   return (
-    <div className="mx-auto max-w-lg py-10">
-      <div className="rounded-2xl border border-silver bg-white p-8 text-center shadow-soft">
-        <div className={`mx-auto grid h-12 w-12 place-items-center rounded-full ${ring}`}>
-          <Icon className="h-6 w-6" />
-        </div>
-        <h1 className="mt-4 font-serif leading-[1.08] text-[2.25rem] font-normal text-ink">{title}</h1>
-        <p className="mt-2 text-muted">{body}</p>
-        <Link
-          href={cta.href}
-          className="mt-6 inline-flex items-center justify-center rounded-full bg-blue px-6 py-3 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
-        >
-          {cta.label}
-        </Link>
+    <div className="flex min-h-svh flex-col bg-paper text-ink">
+      <div className="mx-auto w-full max-w-[1440px] px-5 pt-8 sm:pt-6 lg:px-[100px]">
+        <Logo size="lg" />
       </div>
+      <main className="mx-auto w-full max-w-lg flex-1 px-5 py-12">
+        <div className="rounded-2xl border border-silver bg-white p-8 text-center shadow-soft">
+          <div className={`mx-auto grid h-12 w-12 place-items-center rounded-full ${ring}`}>
+            <Icon className="h-6 w-6" />
+          </div>
+          <h1 className="mt-4 font-serif text-[2.25rem] font-normal leading-[1.08] text-ink">{title}</h1>
+          <p className="mt-2 text-muted">{body}</p>
+          <Link
+            href={cta.href}
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-blue px-6 py-3 text-sm font-bold text-white shadow-glow transition hover:brightness-110"
+          >
+            {cta.label}
+          </Link>
+        </div>
+      </main>
     </div>
   );
 }

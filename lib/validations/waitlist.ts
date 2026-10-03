@@ -31,3 +31,11 @@ export const WaitlistInput = z.object({
 });
 
 export type WaitlistValues = z.infer<typeof WaitlistInput>;
+
+/**
+ * The /enrol checkout form: the same three contact fields, with the cohort
+ * decided by the server (there is one on sale) rather than picked.
+ */
+export const EnrolInput = WaitlistInput.omit({ cohort: true });
+
+export type EnrolValues = z.infer<typeof EnrolInput>;

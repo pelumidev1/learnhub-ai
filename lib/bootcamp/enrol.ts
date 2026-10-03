@@ -38,7 +38,7 @@ export async function startCheckout(input: {
 
   const taken = await countPaidSeatsTaken(input.cohortId);
   if (!paidSeatsAvailable(taken, input.paidSeatCap)) {
-    return { ok: false, error: "This cohort is full. Join the waitlist for the next one." };
+    return { ok: false, error: "This cohort is full." };
   }
 
   const tier = currentTier();
@@ -76,13 +76,62 @@ export async function startCheckout(input: {
       email: input.email,
       amountKobo,
       reference,
-      callbackUrl: `${input.origin}/bootcamp/enrol/callback`,
+      callbackUrl: `${input.origin}/enrol/callback`,
       metadata: { user_id: input.userId, cohort_id: input.cohortId, tier },
     });
     return { ok: true, authorizationUrl };
   } catch (e) {
     console.error("paystack initialize failed", e);
     return { ok: false, error: "We couldn't reach the payment provider. Please try again." };
+  }
+}
+
+/**
+ * The account a guest buyer's seat is attached to, found or made by email.
+ *
+ * /enrol sells to people who cannot sign in yet (the app is owner-only, see
+ * lib/auth/access.ts), and an enrolment row needs a user. So the account is
+ * created here, without a password. Marking the email confirmed is safe
+ * because the account cannot be entered on the strength of it: the way in is
+ * Google with that address, or a password reset sent to it, and both prove
+ * ownership. The worst a stranger can do with someone else's email is pay
+ * for their seat.
+ */
+export async function findOrCreateBuyer(input: {
+  email: string;
+  name: string;
+  whatsapp: string;
+}): Promise<string | null> {
+  const service = createServiceClient();
+
+  const { data, error } = await service.auth.admin.createUser({
+    email: input.email,
+    email_confirm: true,
+    // full_name is what handle_new_user copies onto the profile.
+    user_metadata: { full_name: input.name, whatsapp: input.whatsapp },
+  });
+  if (data.user) return data.user.id;
+
+  if (error?.code !== "email_exists") {
+    console.error("buyer account create failed", error);
+    return null;
+  }
+
+  /* Already has an account. The admin API cannot filter by email, so page
+     through. Fine at today's few hundred users; past a few thousand, swap this
+     for a security-definer lookup function. */
+  for (let page = 1; ; page++) {
+    const { data: list, error: listError } = await service.auth.admin.listUsers({
+      page,
+      perPage: 1000,
+    });
+    if (listError) {
+      console.error("buyer account lookup failed", listError);
+      return null;
+    }
+    const match = list.users.find((u) => u.email?.toLowerCase() === input.email);
+    if (match) return match.id;
+    if (list.users.length < 1000) return null;
   }
 }
 
