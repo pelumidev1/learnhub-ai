@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createHmac } from "node:crypto";
 
 /**
@@ -17,6 +17,7 @@ beforeEach(async () => {
 
 afterEach(() => {
   delete process.env.PAYSTACK_SECRET_KEY;
+  vi.unstubAllEnvs();
 });
 
 const body = JSON.stringify({ event: "charge.success", data: { reference: "ref_123" } });
@@ -57,5 +58,34 @@ describe("isValidWebhookSignature", () => {
     // This is why the route must hand over the raw body text and never
     // JSON.stringify a parsed object back into shape.
     expect(isValidWebhookSignature(body + " ", sign(body))).toBe(false);
+  });
+});
+
+/**
+ * A test key on the live site lets anyone enrol with Paystack's public test
+ * card, so production refuses anything but a live key, wherever it is used.
+ */
+describe("live-key guard", () => {
+  it("refuses a test key on production", () => {
+    vi.stubEnv("VERCEL_ENV", "production");
+    expect(() => isValidWebhookSignature(body, sign(body))).toThrow(/not a live key/);
+  });
+
+  it("refuses a malformed key on production", () => {
+    vi.stubEnv("VERCEL_ENV", "production");
+    process.env.PAYSTACK_SECRET_KEY = "pk_live_public_key_pasted_by_mistake";
+    expect(() => isValidWebhookSignature(body, "x")).toThrow(/not a live key/);
+  });
+
+  it("accepts a live key on production", () => {
+    vi.stubEnv("VERCEL_ENV", "production");
+    const live = "sk_live_fixture";
+    process.env.PAYSTACK_SECRET_KEY = live;
+    expect(isValidWebhookSignature(body, sign(body, live))).toBe(true);
+  });
+
+  it("still accepts a test key on preview deploys", () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    expect(isValidWebhookSignature(body, sign(body))).toBe(true);
   });
 });

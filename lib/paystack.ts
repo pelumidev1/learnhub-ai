@@ -12,6 +12,15 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 function secretKey(): string {
   const key = process.env.PAYSTACK_SECRET_KEY;
   if (!key) throw new Error("PAYSTACK_SECRET_KEY is not set");
+  /* Production takes live keys only. With a test key, anyone could "pay" with
+     Paystack's published test card: the charge verifies as a success and its
+     webhook carries a valid signature, so the seat would be granted for
+     nothing. Paystack keys are per mode, so refusing the key is the whole
+     guard: a live key can neither open nor verify a test transaction.
+     Preview and local deploys still take test keys. */
+  if (process.env.VERCEL_ENV === "production" && !key.startsWith("sk_live_")) {
+    throw new Error("PAYSTACK_SECRET_KEY is not a live key on production");
+  }
   return key;
 }
 
