@@ -7,11 +7,11 @@ const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 export const easeOut = Easing.bezier(0.16, 1, 0.3, 1);
 
 /**
- * The reference's signature type move: a word goes from blurred to sharp in
- * 4-5 frames without sliding. `raised` drops it in from slightly above, which the
- * reference does on the last word of a line.
+ * A word arrives sharp: it fades up over 5 frames with a short rise, so a cut
+ * never lands on a soft frame. `raised` drops it in from slightly above instead,
+ * which the reference does on the last word of a line.
  */
-export const BlurWord: React.FC<{
+export const FadeWord: React.FC<{
   at: number;
   children: React.ReactNode;
   accent?: boolean;
@@ -25,8 +25,7 @@ export const BlurWord: React.FC<{
         display: "inline-block",
         color: accent ? C.blue : undefined,
         opacity: interpolate(f, [at, at + 5], [0, 1], clamp),
-        filter: `blur(${interpolate(f, [at, at + 5], [16, 0], clamp)}px)`,
-        translate: raised ? `0px ${interpolate(f, [at, at + 6], [-16, 0], { ...clamp, easing: easeOut })}px` : undefined,
+        translate: `0px ${interpolate(f, [at, at + 6], [raised ? -16 : 12, 0], { ...clamp, easing: easeOut })}px`,
         ...style,
       }}
     >
@@ -64,19 +63,19 @@ export const GrowWord: React.FC<{ at: number; children: string; size?: number; a
   const open = interpolate(f, [at, at + 6], [0, 1], { ...clamp, easing: easeOut });
   return (
     <span style={{ display: "inline-block", width: w * open, whiteSpace: "nowrap", paddingLeft: gap }}>
-      <BlurWord at={at} accent={accent} raised={raised}>
+      <FadeWord at={at} accent={accent} raised={raised}>
         {children}
-      </BlurWord>
+      </FadeWord>
     </span>
   );
 };
 
-/** A line of words that builds outward from the centre. The first word blurs in in place. */
+/** A line of words that builds outward from the centre. The first word fades in in place. */
 export const Line: React.FC<{ words: { t: string; at: number; accent?: boolean; raised?: boolean }[]; size?: number; color?: string }> = ({
   words, size = 96, color,
 }) => (
   <div style={{ display: "flex", fontSize: size, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.1, color }}>
-    <BlurWord at={words[0].at} accent={words[0].accent}>{words[0].t}</BlurWord>
+    <FadeWord at={words[0].at} accent={words[0].accent}>{words[0].t}</FadeWord>
     {words.slice(1).map((w) => (
       <GrowWord key={w.t + w.at} at={w.at} size={size} accent={w.accent} raised={w.raised}>
         {w.t}

@@ -4,7 +4,7 @@ import { Video } from "@remotion/media";
 import "./lib/brand";
 import { F } from "./lib/brand";
 import { cake, K } from "./lib/cake";
-import { BlurWord, Centre, clamp, easeOut } from "./lib/motion";
+import { FadeWord, Centre, clamp, easeOut } from "./lib/motion";
 
 export const CAKE_AD = { open: 30, layers: 216, end: 84 } as const;
 export const CAKE_AD_LEN = CAKE_AD.open + CAKE_AD.layers + CAKE_AD.end;
@@ -14,10 +14,10 @@ const Opener: React.FC = () => (
   <AbsoluteFill style={{ background: "#000", color: "#fff" }}>
     <Centre style={{ flexDirection: "column", gap: 4, fontFamily: F.serif, fontSize: 132, lineHeight: 1 }}>
       <div style={{ display: "flex", gap: 30 }}>
-        <BlurWord at={0}>Forgot</BlurWord>
-        <BlurWord at={4}>the</BlurWord>
+        <FadeWord at={0}>Forgot</FadeWord>
+        <FadeWord at={4}>the</FadeWord>
       </div>
-      <BlurWord at={8} raised style={{ fontStyle: "italic", color: K.blush }}>cake?</BlurWord>
+      <FadeWord at={8} raised style={{ fontStyle: "italic", color: K.blush }}>cake?</FadeWord>
     </Centre>
   </AbsoluteFill>
 );

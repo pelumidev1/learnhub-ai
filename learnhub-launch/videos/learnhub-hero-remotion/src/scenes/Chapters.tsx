@@ -3,7 +3,7 @@ import { AbsoluteFill, Easing, Img, interpolate, Sequence, useCurrentFrame } fro
 import { CakeAd } from "../CakeAd";
 import { cake, K } from "../lib/cake";
 import { C, F } from "../lib/brand";
-import { BlurWord, Centre, clamp, easeOut, glass, Line, Paper, usePush } from "../lib/motion";
+import { FadeWord, Centre, clamp, easeOut, glass, Line, Paper, usePush } from "../lib/motion";
 import { Coin, Mark } from "../lib/Mark";
 import { Cursor, Icon, Photo, Tick } from "../lib/ui";
 
@@ -14,9 +14,10 @@ const words = (text: string, accent: string[] = [], start = 0, step = 3): W[] =>
 /** One white line on a full-bleed photo ("Cascade" on the waterfall). */
 export const WordOnPhoto: React.FC<{ photo: string; text: string; len: number }> = ({ photo, text, len }) => (
   <AbsoluteFill style={{ fontFamily: F.sans }}>
-    <Photo name={photo} len={len} />
+    {/* Real photos are busier than the stand-ins were; the dim keeps the white line readable. */}
+    <Photo name={photo} len={len} dim={0.32} />
     <Centre>
-      <div style={{ textShadow: "0 2px 30px rgba(11,15,26,.35)" }}>
+      <div style={{ textShadow: "0 2px 30px rgba(11,15,26,.5)" }}>
         <Line words={words(text, [], 0, 3)} size={104} color="#fff" />
       </div>
     </Centre>
@@ -24,7 +25,7 @@ export const WordOnPhoto: React.FC<{ photo: string; text: string; len: number }>
 );
 
 /** A tiny claim on paper, held about 0.6s ("Higher quality", "Fewer tokens"). */
-export const Claim: React.FC<{ text: string; len: number; size?: number }> = ({ text, len, size = 76 }) => {
+export const Claim: React.FC<{ text: string; len: number; size?: number }> = ({ text, len, size = 100 }) => {
   const push = usePush(len, 0.05);
   return (
     <Paper>
@@ -35,43 +36,50 @@ export const Claim: React.FC<{ text: string; len: number; size?: number }> = ({ 
   );
 };
 
-/** Week 1 payoff: a mark tile on a landscape grows into a glass checklist that counts up. */
+/**
+ * Week 1 payoff, after the reference's stat card: a mark tile on a landscape
+ * grows into a tall, clear glass card. White type, a big count-up, then a list
+ * that ticks on. The glass is mostly blur with a faint white tint, as in the
+ * reference, so the photo reads through it.
+ */
 export const GlassChecklist: React.FC<{ len: number }> = ({ len }) => {
   const f = useCurrentFrame();
   const rows = ["AI assistant", "Coding agent", "Project folder", "Database", "Hosting"];
   const grow = interpolate(f, [12, 26], [0, 1], { ...clamp, easing: easeOut });
-  const w = 130 + (760 - 130) * grow;
-  const h = 130 + (600 - 130) * grow;
+  const w = 150 + (640 - 150) * grow;
+  const h = 150 + (720 - 150) * grow;
   const content = interpolate(f, [22, 30], [0, 1], clamp);
   const done = rows.filter((_, i) => f >= 30 + i * 6).length;
   return (
-    <AbsoluteFill style={{ fontFamily: F.sans, color: C.ink }}>
+    <AbsoluteFill style={{ fontFamily: F.sans, color: "#fff", textShadow: "0 1px 12px rgba(11,15,26,.28)" }}>
       <Photo name="highland" len={len} />
       <Centre>
-        <div style={{ ...glass, width: w, height: h, borderRadius: 32 + 4 * grow, opacity: interpolate(f, [0, 6], [0, 1], clamp), position: "relative", overflow: "hidden" }}>
+        <div style={{ width: w, height: h, borderRadius: 36, position: "relative", overflow: "hidden", opacity: interpolate(f, [0, 6], [0, 1], clamp),
+          background: "rgba(120,140,170,.18)", border: "1.5px solid rgba(255,255,255,.38)", backdropFilter: "blur(34px) saturate(1.3)",
+          boxShadow: "inset 0 1.5px 0 rgba(255,255,255,.45), 0 30px 70px -30px rgba(11,15,26,.45)" }}>
           <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", opacity: 1 - content }}>
-            <Mark size={70} color={C.blue} />
+            <Mark size={76} color="#fff" />
           </div>
-          <div style={{ padding: "40px 44px", opacity: content }}>
+          <div style={{ padding: "44px 48px", opacity: content }}>
             <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-              <Mark size={44} color={C.blue} />
-              <div style={{ fontSize: 34, fontWeight: 600 }}>Your AI setup</div>
-              <div style={{ marginLeft: "auto", fontFamily: F.mono, fontSize: 22, color: C.blue }}>{done} of 5 ready</div>
+              <Mark size={46} color="#fff" />
+              <div style={{ fontSize: 32, fontWeight: 600 }}>Your AI setup</div>
             </div>
-            <div style={{ display: "grid", gap: 14, marginTop: 30 }}>
-              {rows.map((r, i) => {
-                const on = interpolate(f, [30 + i * 6, 34 + i * 6], [0, 1], { ...clamp, easing: Easing.bezier(0.3, 1.6, 0.5, 1) });
-                return (
-                  <div key={r} style={{ display: "flex", alignItems: "center", background: "rgba(255,255,255,.7)", borderRadius: 18, padding: "16px 22px", fontSize: 28, fontWeight: 500 }}>
-                    <span style={{ flex: 1 }}>{r}</span>
-                    <div style={{ position: "relative", width: 34, height: 34 }}>
-                      <div style={{ position: "absolute", inset: 0, borderRadius: "50%", border: `2.5px solid ${C.silver}` }} />
-                      <div style={{ position: "absolute", inset: 0 }}><Tick on={on} /></div>
-                    </div>
+            <div style={{ fontSize: 30, fontWeight: 500, marginTop: 34, opacity: 0.92 }}>Tools ready</div>
+            <div style={{ fontSize: 112, fontWeight: 500, letterSpacing: "-0.02em", lineHeight: 1.05, marginTop: 6 }}>{done} of 5</div>
+            <div style={{ height: 1.5, background: "rgba(255,255,255,.35)", margin: "26px 0 14px" }} />
+            {rows.map((r, i) => {
+              const on = interpolate(f, [30 + i * 6, 34 + i * 6], [0, 1], { ...clamp, easing: Easing.bezier(0.3, 1.6, 0.5, 1) });
+              return (
+                <div key={r} style={{ display: "flex", alignItems: "center", height: 58, fontSize: 28, fontWeight: 500 }}>
+                  <span style={{ flex: 1, opacity: 0.6 + 0.4 * on }}>{r}</span>
+                  <div style={{ position: "relative", width: 32, height: 32 }}>
+                    <div style={{ position: "absolute", inset: 0, borderRadius: "50%", border: "2.5px solid rgba(255,255,255,.5)" }} />
+                    <div style={{ position: "absolute", inset: 0 }}><Tick size={32} on={on} /></div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </Centre>
@@ -79,71 +87,89 @@ export const GlassChecklist: React.FC<{ len: number }> = ({ len }) => {
   );
 };
 
-/** Week 2 title: a dock of soft tiles, the mark raised, a line building beneath it. */
+/**
+ * Week 2 title, measured off the reference's "Unlock more with Manus Studio"
+ * frame: a dock that spans most of the width, the mark's tile larger and raised
+ * with a dot beneath it, a long shelf line, and the words building left-aligned
+ * under the shelf.
+ */
 export const Dock: React.FC<{ len: number }> = ({ len }) => {
   const f = useCurrentFrame();
   const push = usePush(len);
-  const lift = interpolate(f, [0, 10], [0, -18], { ...clamp, easing: easeOut });
-  const tile = (i: number) => {
-    const centre = i === 2;
-    return (
-      <div key={i} style={{ width: 120, height: 120, borderRadius: 30, background: centre ? "#fff" : C.paper2, display: "grid", placeItems: "center",
-        translate: centre ? `0px ${lift}px` : undefined, boxShadow: "0 2px 4px rgba(11,15,26,.06), 0 18px 34px -18px rgba(11,15,26,.3)" }}>
-        {centre ? <Mark size={66} color={C.ink} /> : null}
-      </div>
-    );
-  };
+  const lift = interpolate(f, [0, 10], [0, 1], { ...clamp, easing: easeOut });
+  const side = (x: number) => (
+    <div key={x} style={{ position: "absolute", left: x, top: 338, width: 180, height: 180, borderRadius: 46, background: "#F1F2F5",
+      border: "2px solid #E6E8EE", boxSizing: "border-box", boxShadow: "0 10px 18px -8px rgba(11,15,26,.22)" }} />
+  );
   return (
     <Paper>
-      <Centre style={{ flexDirection: "column", gap: 40, scale: push }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
-          <div style={{ display: "flex", gap: 22, alignItems: "flex-end", padding: "18px 26px", borderBottom: `2px solid ${C.silver}` }}>{[0, 1, 2, 3, 4].map(tile)}</div>
-          <div style={{ width: 8, height: 8, borderRadius: 4, background: C.ink, marginTop: -6, opacity: interpolate(f, [8, 12], [0, 1], clamp) }} />
+      <div style={{ position: "absolute", inset: 0, scale: push }}>
+        {[398, 614, 1128, 1344].map(side)}
+        <div style={{ position: "absolute", left: 832 + 18 * (1 - lift), top: 205 + 120 * (1 - lift), width: 256 - 36 * (1 - lift), height: 256 - 36 * (1 - lift),
+          borderRadius: 62, background: "#fff", border: "3px solid #E6E8EE", boxSizing: "border-box", display: "grid", placeItems: "center",
+          boxShadow: "0 14px 24px -10px rgba(11,15,26,.22)" }}>
+          <Mark size={128 - 18 * (1 - lift)} color={C.ink} />
         </div>
-        <Line words={words("Your AI brain, trained on you", ["brain,"], 16, 4)} size={72} />
-      </Centre>
+        <div style={{ position: "absolute", left: 954, top: 529, width: 12, height: 12, borderRadius: 6, background: C.ink, opacity: interpolate(f, [8, 12], [0, 1], clamp) }} />
+        <div style={{ position: "absolute", left: 245, width: 1430, top: 572, height: 3, background: "#E4E6EC" }} />
+        <div style={{ position: "absolute", left: 372, top: 600, color: C.ink }}>
+          <Line words={words("Your AI brain, trained on you", ["brain,"], 14, 5)} size={96} />
+        </div>
+      </div>
     </Paper>
   );
 };
 
-/** Week 2 payoff: particles gather into a sphere; glass cards orbit it; the student's writing types. */
+/**
+ * Week 2 payoff, after the brain reference (reference/brain/): a dense, evenly
+ * spaced sphere of white dots on near-black, turning slowly, then breaking up
+ * from its upper-right edge into a loose cloud that keeps the sphere's shape.
+ * Glass cards name what it learns from; a line in the student's voice types.
+ */
+const BRAIN_N = 2600;
+// Per-dot random values, made once and seeded, so every render of a frame is identical.
+const BRAIN_RND = (() => {
+  let seed = 20261008;
+  const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+  return Array.from({ length: BRAIN_N }, () => ({ out: rnd(), jx: rnd() * 2 - 1, jy: rnd() * 2 - 1, lag: rnd(), ph: rnd() * Math.PI * 2 }));
+})();
+
 export const Brain: React.FC<{ len: number }> = ({ len }) => {
   const f = useCurrentFrame();
-  const t = f / 30;
-  // Seeded, so every render of a frame is identical.
-  let seed = 20261003;
-  const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
-  const N = 650, R = 290, CX = 960, CY = 560;
-  const ang = 0.4 * t;
+  const R = 300, CX = 960, CY = 500;
+  const ang = 0.012 * f + 0.4;
+  // The break-up front sweeps across the sphere from upper right to lower left.
+  const front = interpolate(f, [20, len], [-1.3, 1.1], clamp);
   const dots: React.ReactNode[] = [];
-  for (let i = 0; i < N; i++) {
-    const y = 1 - (2 * (i + 0.5)) / N, r = Math.sqrt(1 - y * y), th = Math.PI * (3 - Math.sqrt(5)) * i;
-    const sx = rnd() * 1920, sy = rnd() * 1080, delay = rnd() * 0.3;
-    const g = 1 - Math.pow(1 - Math.min(1, Math.max(0, (t - delay) / 1.1)), 3);
+  for (let i = 0; i < BRAIN_N; i++) {
+    const y = 1 - (2 * (i + 0.5)) / BRAIN_N, r = Math.sqrt(1 - y * y), th = Math.PI * (3 - Math.sqrt(5)) * i;
     const x0 = Math.cos(th) * r, z0 = Math.sin(th) * r;
     const x3 = x0 * Math.cos(ang) - z0 * Math.sin(ang), z3 = x0 * Math.sin(ang) + z0 * Math.cos(ang);
-    const px = sx + (CX + x3 * R - sx) * g, py = sy + (CY + y * R - sy) * g;
+    const k = BRAIN_RND[i];
+    // How far along the dot's side the front has passed: 0 = ordered, 1 = fully loose.
+    const reach = front - (-(x3 * 0.7) - y * 0.7) - k.lag * 0.35;
+    const a = Math.min(1, Math.max(0, reach / 0.7));
+    const loose = a * a * (3 - 2 * a);
+    const spread = R * loose * (0.04 + 0.22 * k.out);
+    const px = CX + x3 * R + x3 * spread + k.jx * 26 * loose + Math.sin(f / 9 + k.ph) * 4 * loose;
+    const py = CY - y * R - y * spread + k.jy * 26 * loose + Math.cos(f / 11 + k.ph) * 4 * loose;
     const depth = (z3 + 1) / 2;
-    dots.push(<circle key={i} cx={px} cy={py} r={1.3 + 1.7 * depth} fill={`rgba(205,222,255,${((0.25 + 0.75 * depth) * (0.5 + 0.5 * g)).toFixed(3)})`} />);
+    dots.push(<circle key={i} cx={px} cy={py} r={0.9 + 1.1 * depth + 0.5 * loose * k.out} fill="#fff" opacity={(0.18 + 0.82 * depth).toFixed(3)} />);
   }
   const line = "Order before 2pm, and it's at your door by evening.";
-  const typed = line.slice(0, Math.round(interpolate(f, [48, 76], [0, line.length], clamp)));
+  const typed = line.slice(0, Math.round(interpolate(f, [44, 72], [0, line.length], clamp)));
   const card = (label: string, x: number, y: number, at: number, dx: number) => (
-    <div style={{ position: "absolute", left: x, top: y, ...glass, background: "rgba(255,255,255,.12)", border: "1.5px solid rgba(255,255,255,.28)", color: "#fff",
+    <div style={{ position: "absolute", left: x, top: y, ...glass, background: "rgba(255,255,255,.10)", border: "1.5px solid rgba(255,255,255,.24)", color: "#fff",
       borderRadius: 22, padding: "18px 28px", fontSize: 28, fontWeight: 500,
-      opacity: interpolate(f, [at, at + 8], [0, 1], clamp), translate: `${interpolate(f, [at, at + 10], [dx, 0], { ...clamp, easing: easeOut })}px 0px`,
-      filter: `blur(${interpolate(f, [at, at + 6], [8, 0], clamp)}px)` }}>{label}</div>
+      opacity: interpolate(f, [at, at + 8], [0, 1], clamp), translate: `${interpolate(f, [at, at + 10], [dx, 0], { ...clamp, easing: easeOut })}px 0px` }}>{label}</div>
   );
   return (
-    <AbsoluteFill style={{ background: `radial-gradient(ellipse 70% 80% at 50% 55%, #18236A 0%, #0D1430 42%, #0B0F1A 75%)`, fontFamily: F.sans }}>
+    <AbsoluteFill style={{ background: "#05070C", fontFamily: F.sans, opacity: interpolate(f, [0, 5], [0, 1], clamp) }}>
       <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>{dots}</svg>
-      <div style={{ position: "absolute", left: CX - 230, top: CY - 230, width: 460, height: 460, borderRadius: "50%",
-        background: "radial-gradient(circle at 38% 30%, rgba(170,200,255,.42), rgba(42,70,240,.30) 40%, rgba(31,51,204,.12) 62%, rgba(31,51,204,0) 71%)",
-        boxShadow: "0 0 140px 24px rgba(76,147,240,.30)", opacity: interpolate(f, [26, 46], [0, 1], clamp), scale: interpolate(f, [26, 46], [0.6, 1], { ...clamp, easing: easeOut }) }} />
-      {card("My voice", 330, 360, 34, -40)}
-      {card("My notes", 1380, 300, 38, 40)}
-      {card("My goals", 1400, 690, 42, 40)}
-      <div style={{ position: "absolute", left: 0, right: 0, bottom: 90, textAlign: "center", fontFamily: F.serif, fontStyle: "italic", fontSize: 44, color: "rgba(255,255,255,.92)", opacity: interpolate(f, [46, 50], [0, 1], clamp) }}>
+      {card("My voice", 330, 330, 30, -40)}
+      {card("My notes", 1380, 280, 34, 40)}
+      {card("My goals", 1400, 640, 38, 40)}
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 110, textAlign: "center", fontFamily: F.serif, fontStyle: "italic", fontSize: 44, color: "rgba(255,255,255,.92)", opacity: interpolate(f, [42, 46], [0, 1], clamp) }}>
         “{typed}”
       </div>
     </AbsoluteFill>
@@ -282,19 +308,50 @@ export const Editor: React.FC<{ len: number }> = ({ len }) => {
             {pct >= 100 ? "Ready" : `Rendering ${pct}%`}
           </div>
         </div>
-        <div style={{ position: "absolute", left: 60, right: 60, bottom: 60, height: 330, background: "#fff", borderRadius: 20, border: `1.5px solid ${C.silver}`, padding: "30px 30px" }}>
-          <div style={{ position: "relative", height: 260 }}>
-            <div style={{ display: "flex", gap: 8, height: 90 }}>
-              {shots.map((s, i) => (
-                <div key={s} style={{ flex: 1, borderRadius: 12, overflow: "hidden", border: `2px solid ${K.velvet}`, translate: `0px ${interpolate(f, [8 + i * 5, 16 + i * 5], [-120, 0], { ...clamp, easing: Easing.bezier(0.3, 1.4, 0.5, 1) })}px`, opacity: interpolate(f, [8 + i * 5, 12 + i * 5], [0, 1], clamp) }}>
-                  <Img src={cake(s)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        {/* The timeline, laid out like the reference's: a toolbar with the timecode, a time
+            ruler, then labelled tracks (title, video, music) with named clips, and a
+            playhead that runs from a handle on the ruler down through every track. */}
+        <div style={{ position: "absolute", left: 60, right: 60, bottom: 40, height: 360, background: "#fff", borderRadius: 20, border: `1.5px solid ${C.silver}`, overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 22, height: 58, padding: "0 26px", fontSize: 22, color: C.muted, borderBottom: `1.5px solid ${C.silver}` }}>
+            <span>↖</span><span>↶</span><span>↷</span>
+            <span style={{ background: C.paper2, borderRadius: 8, padding: "4px 14px", color: C.ink, fontWeight: 500 }}>Main</span>
+            <span style={{ marginLeft: "auto", fontFamily: F.mono, fontSize: 20, color: C.ink }}>
+              00:00:{String(Math.floor(playhead * 8)).padStart(2, "0")}:{String(Math.floor((playhead * 8 * 30) % 30)).padStart(2, "0")}<span style={{ color: C.muted2 }}> / 00:00:08:00</span>
+            </span>
+          </div>
+          <div style={{ position: "relative", marginLeft: 96, marginRight: 26, height: 290 }}>
+            <div style={{ position: "relative", height: 40, borderBottom: `1.5px solid ${C.silver}` }}>
+              {Array.from({ length: 9 }, (_, k) => (
+                <div key={k} style={{ position: "absolute", left: `${(k / 8) * 100}%`, bottom: 0, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                  {k % 2 === 0 ? <span style={{ fontFamily: F.mono, fontSize: 16, color: C.muted2, translate: "-50% 0" }}>00:0{k / 2}</span> : null}
+                  <i style={{ width: 1.5, height: k % 2 === 0 ? 10 : 6, background: C.muted2 }} />
                 </div>
               ))}
             </div>
-            <div style={{ display: "flex", alignItems: "flex-end", gap: 5, height: 80, marginTop: 20, clipPath: `inset(0 ${100 - interpolate(f, [22, 40], [0, 100], clamp)}% 0 0)` }}>
-              {Array.from({ length: 110 }, (_, k) => <i key={k} style={{ flex: 1, height: 14 + ((k * 37) % 60), background: "#E9B8BF", borderRadius: 3 }} />)}
+            <div style={{ height: 44 }} />
+            <div style={{ display: "flex", gap: 6, height: 96 }}>
+              {shots.map((s, i) => (
+                <div key={s} style={{ position: "relative", flex: 1, borderRadius: 10, overflow: "hidden", border: `3px solid ${C.sky2}`, translate: `0px ${interpolate(f, [8 + i * 5, 16 + i * 5], [-120, 0], { ...clamp, easing: Easing.bezier(0.3, 1.4, 0.5, 1) })}px`, opacity: interpolate(f, [8 + i * 5, 12 + i * 5], [0, 1], clamp) }}>
+                  <Img src={cake(s)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <span style={{ position: "absolute", left: 0, top: 0, background: C.sky2, color: "#fff", fontSize: 15, fontWeight: 600, padding: "2px 10px", borderBottomRightRadius: 8 }}>{s}.mp4</span>
+                </div>
+              ))}
             </div>
-            <div style={{ position: "absolute", top: -14, left: `${playhead * 100}%`, width: 4, height: 230, background: C.ink, borderRadius: 4 }} />
+            <div style={{ position: "relative", height: 70, marginTop: 14, borderRadius: 10, background: "#E3EBFD", border: `2px solid ${C.sky2}`, overflow: "hidden", clipPath: `inset(0 ${100 - interpolate(f, [22, 40], [0, 100], clamp)}% 0 0)` }}>
+              <span style={{ position: "absolute", left: 12, top: 4, fontSize: 15, fontWeight: 600, color: C.blue }}>music.wav</span>
+              <div style={{ position: "absolute", left: 10, right: 10, bottom: 8, top: 26, display: "flex", alignItems: "center", gap: 4 }}>
+                {Array.from({ length: 140 }, (_, k) => <i key={k} style={{ flex: 1, height: `${30 + ((k * 37) % 70)}%`, background: C.sky2, borderRadius: 2 }} />)}
+              </div>
+            </div>
+            <div style={{ position: "absolute", top: 0, left: `${playhead * 100}%`, translate: "-50% 0", display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ width: 18, height: 18, borderRadius: "4px 4px 9px 9px", background: C.ink }} />
+              <div style={{ width: 3, height: 260, background: C.ink }} />
+            </div>
+          </div>
+          <div style={{ position: "absolute", left: 30, top: 58 + 40, display: "flex", flexDirection: "column", fontSize: 24, color: C.muted2, fontWeight: 600 }}>
+            <span style={{ height: 44, lineHeight: "44px" }}>T</span>
+            <span style={{ height: 96, lineHeight: "96px" }}>▤</span>
+            <span style={{ height: 84, lineHeight: "84px" }}>♫</span>
           </div>
         </div>
       </AbsoluteFill>
@@ -302,46 +359,55 @@ export const Editor: React.FC<{ len: number }> = ({ len }) => {
   );
 };
 
-/** Week 5: a glass automation card on a softened photo, swapping examples in place. */
+/**
+ * Week 5, after the reference's "Triggered by events": on a calm photo, a white
+ * trigger card, an arrow chip, then the AI step beside it. Each new example lands
+ * on top of the last pair, offset down and right, so the old cards peek out
+ * behind and the stack visibly grows. Nothing blurs: cards fade up sharp.
+ */
+const FLOWS = [
+  { icon: "mail", when: "When a customer sends an enquiry.", then: "Draft a reply and send it." },
+  { icon: "bag", when: "When a new order comes in.", then: "Write the buyer a thank-you note." },
+  { icon: "clock", when: "Every Monday at 8am.", then: "Send a summary of last week's sales." },
+] as const;
+
 export const Automation: React.FC<{ len: number }> = ({ len }) => {
   const f = useCurrentFrame();
-  const SWAP = 50;
-  const flow = (k: number, a: string, b: string, c: string, title: string, t0: number) => {
-    const vis = k === 0 ? interpolate(f, [SWAP, SWAP + 6], [1, 0], clamp) : interpolate(f, [SWAP + 2, SWAP + 9], [0, 1], clamp);
-    const lt = f - t0;
-    const node = (label: string, value: string, i: number, ai?: boolean) => (
-      <div style={{ flex: 1, borderRadius: 22, padding: "26px 26px", minHeight: 170, background: ai ? C.blue : "#fff", color: ai ? "#fff" : C.ink,
-        border: `1.5px solid ${ai ? C.blue : lt > i * 9 ? C.blue : C.silver}`, scale: ai ? interpolate(lt, [9, 13, 17], [1, 1.05, 1], clamp) : 1, position: "relative" }}>
-        {ai ? <Mark size={38} color="#fff" /> : <div style={{ fontFamily: F.mono, fontSize: 18, letterSpacing: ".12em", color: C.muted2 }}>{label}</div>}
-        <div style={{ fontSize: 30, fontWeight: 600, marginTop: 8 }}>{value}</div>
-        {ai ? <div style={{ fontSize: 20, opacity: 0.8 }}>AI step</div> : null}
-        {i === 2 ? <div style={{ position: "absolute", right: 18, top: 18 }}><Tick size={32} on={interpolate(lt, [26, 30], [0, 1], clamp)} /></div> : null}
-      </div>
-    );
-    const wire = (i: number) => (
-      <div style={{ position: "relative", width: 56, height: 3, background: C.silver, flex: "none" }}>
-        <div style={{ position: "absolute", top: -6, left: interpolate(lt, [4 + i * 9, 12 + i * 9], [0, 42], clamp), width: 15, height: 15, borderRadius: "50%", background: C.blue, opacity: lt > 4 + i * 9 ? 1 : 0 }} />
-      </div>
-    );
+  const T = [6, 40, 70];
+  const STEP = 22;
+  const W = 560, GAP = 44;
+  // How far the stack has grown, eased, so the whole group drifts up-left to stay centred.
+  const grown = T.slice(1).reduce((n, t) => n + interpolate(f, [t, t + 8], [0, 1], { ...clamp, easing: easeOut }), 0);
+  const left = (1920 - (W * 2 + GAP)) / 2 - (grown * STEP) / 2;
+  const top = 410 - (grown * STEP) / 2;
+  const card = (k: number, side: 0 | 1, at: number) => {
+    const fl = FLOWS[k];
+    const on = interpolate(f, [at, at + 6], [0, 1], clamp);
+    const land = interpolate(f, [at, at + 8], [0, 1], { ...clamp, easing: easeOut });
+    // The first pair rises into place; later ones slide down from the card beneath.
+    const off = k === 0 ? 0 : STEP * (k - 1 + land);
+    const rise = k === 0 ? (1 - land) * 18 : 0;
     return (
-      <div style={{ position: "absolute", inset: 0, padding: "40px 46px", opacity: vis, filter: `blur(${(1 - vis) * 10}px)` }}>
-        <div style={{ fontSize: 32, fontWeight: 600 }}>{title}</div>
-        <div style={{ display: "flex", alignItems: "center", marginTop: 46 }}>
-          {node("WHEN", a, 0)}{wire(0)}{node("", b, 1, true)}{wire(1)}{node("THEN", c, 2)}
-        </div>
+      <div key={`${k}${side}`} style={{ position: "absolute", left: left + side * (W + GAP) + off, top: top + off + rise, width: W, minHeight: 200,
+        background: "#fff", borderRadius: 28, padding: "30px 34px", boxSizing: "border-box", opacity: on, scale: k === 0 ? 0.97 + 0.03 * land : 1,
+        boxShadow: "0 1px 2px rgba(11,15,26,.06), 0 20px 44px -14px rgba(11,15,26,.28)" }}>
+        {side === 0 ? <Icon kind={fl.icon} size={44} color={C.blue} /> : <Mark size={44} color={C.blue} />}
+        <div style={{ fontSize: 32, fontWeight: 500, lineHeight: 1.3, marginTop: 16 }}>{side === 0 ? fl.when : fl.then}</div>
       </div>
     );
   };
+  const layer = Math.min(2, T.filter((t) => f >= t).length - 1);
+  const chipOff = layer <= 0 ? 0 : STEP * (layer - 1 + interpolate(f, [T[layer], T[layer] + 8], [0, 1], { ...clamp, easing: easeOut }));
   return (
     <AbsoluteFill style={{ fontFamily: F.sans, color: C.ink }}>
-      <Photo name="student-laptop" len={len} blur={14} />
-      <div style={{ position: "absolute", left: 200, top: 300, width: 1180, height: 420, ...glass, borderRadius: 36, overflow: "hidden" }}>
-        <div style={{ position: "absolute", right: 34, top: 34, zIndex: 2, display: "flex", alignItems: "center", gap: 10, fontSize: 22, fontWeight: 600, color: C.blue }}>
-          <span style={{ width: 12, height: 12, borderRadius: 6, background: C.blue, opacity: 0.5 + 0.5 * Math.abs(Math.sin(f / 8)) }} />Active
-        </div>
-        {flow(0, "New enquiry", "Reply drafted", "Email sent", "Reply to enquiries", 6)}
-        {flow(1, "New order", "Thank-you written", "Added to sheet", "Thank every customer", SWAP + 8)}
+      <Photo name="calm-water" len={len} dim={0.06} />
+      <div style={{ position: "absolute", top: 210, left: 0, right: 0, display: "flex", justifyContent: "center", textShadow: "0 2px 24px rgba(11,15,26,.25)" }}>
+        <Line words={words("Runs on its own", [], 0, 3)} size={76} color="#fff" />
       </div>
+      {FLOWS.map((_, k) => [card(k, 0, T[k]), card(k, 1, T[k] + (k === 0 ? 9 : 3))])}
+      <div style={{ position: "absolute", left: left + W + GAP / 2 - 32 + chipOff, top: top + 100 - 32 + chipOff, width: 64, height: 64, borderRadius: 32, background: "#fff",
+        display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30, color: C.muted2, boxShadow: "0 4px 14px rgba(11,15,26,.14)",
+        opacity: interpolate(f, [T[0] + 5, T[0] + 10], [0, 1], clamp), zIndex: 5 }}>→</div>
     </AbsoluteFill>
   );
 };
@@ -398,7 +464,7 @@ export const YouDecide: React.FC<{ len: number }> = ({ len }) => {
       <Centre style={{ scale: push }}>
         <div style={{ position: "relative", display: "flex", fontSize: 104, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.1 }}>
           <span style={{ position: "relative", marginRight: 34 }}>
-            <BlurWord at={0} accent>You</BlurWord>
+            <FadeWord at={0} accent>You</FadeWord>
             <svg viewBox="0 0 300 220" preserveAspectRatio="none" style={{ position: "absolute", left: -44, top: -30, width: "calc(100% + 88px)", height: "calc(100% + 60px)", overflow: "visible" }}>
               <path d="M168 22C92 10 18 44 14 110c-4 70 86 102 162 94 76-8 118-52 110-104C278 46 214 14 140 20" fill="none" stroke={C.blue} strokeWidth={6} strokeLinecap="round" strokeDasharray={760} strokeDashoffset={draw} />
             </svg>
@@ -410,21 +476,27 @@ export const YouDecide: React.FC<{ len: number }> = ({ len }) => {
   );
 };
 
-/** End card: the coin spins and settles on black; the name slides out; the address fades up. */
+/**
+ * End card, as the reference closes: on paper, the mark arrives alone and turns
+ * once, then the wordmark slides out beside it. One quiet line beneath carries
+ * the product and the address.
+ */
 export const EndCard: React.FC = () => {
   const f = useCurrentFrame();
-  const turn = interpolate(f, [0, 30], [-270, 360], { ...clamp, easing: easeOut });
-  const open = interpolate(f, [16, 28], [0, 1], { ...clamp, easing: easeOut });
+  const turn = interpolate(f, [0, 26], [-200, 360], { ...clamp, easing: easeOut });
+  const nameW = 560;
+  const open = interpolate(f, [18, 30], [0, 1], { ...clamp, easing: easeOut });
   return (
-    <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 50%, #12151E 0%, #050608 70%)`, color: "#fff" }}>
-      <Centre style={{ flexDirection: "column", gap: 34 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
-          <Coin size={130} turn={turn} dark />
-          <div style={{ fontFamily: F.display, fontWeight: 600, fontSize: 104, letterSpacing: "-0.015em", overflow: "hidden", whiteSpace: "nowrap", width: 500 * open, opacity: open, filter: `blur(${(1 - open) * 8}px)`, textShadow: "0 0 30px rgba(255,255,255,.3)" }}>LearnHub</div>
+    <Paper>
+      <Centre style={{ flexDirection: "column", gap: 40 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 30 }}>
+          <Coin size={140} turn={turn} />
+          <div style={{ fontFamily: F.display, fontWeight: 600, fontSize: 124, letterSpacing: "-0.015em", color: C.ink, overflow: "hidden", whiteSpace: "nowrap", width: nameW * open, opacity: open }}>LearnHub</div>
         </div>
-        <div style={{ fontFamily: F.sans, fontSize: 52, fontWeight: 500, color: C.sky2, opacity: interpolate(f, [34, 42], [0, 1], clamp), filter: `blur(${interpolate(f, [34, 40], [12, 0], clamp)}px)` }}>AI Bootcamp</div>
-        <div style={{ fontFamily: F.mono, fontSize: 28, color: "rgba(255,255,255,.7)", opacity: interpolate(f, [46, 54], [0, 1], clamp) }}>learnhub.dev</div>
+        <div style={{ fontSize: 40, fontWeight: 500, color: C.muted, opacity: interpolate(f, [40, 48], [0, 1], clamp), translate: `0px ${interpolate(f, [40, 48], [12, 0], { ...clamp, easing: easeOut })}px` }}>
+          <span style={{ color: C.blue }}>AI Bootcamp</span> · learnhub.dev
+        </div>
       </Centre>
-    </AbsoluteFill>
+    </Paper>
   );
 };

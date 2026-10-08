@@ -9,16 +9,18 @@ import { clamp, easeOut } from "./motion";
  * still renders end to end.
  */
 export const PHOTOS: Record<string, boolean> = {
-  "lagos-dawn": false,
-  highland: false,
-  "student-laptop": false,
-  "demo-day": false,
+  "lagos-dawn": true,
+  highland: true,
+  "calm-water": true,
+  "demo-day": true,
+  "ai-ready": true,
 };
 
 const STAND_IN: Record<string, string> = {
   "lagos-dawn": `linear-gradient(180deg, #C9D9EE 0%, #E9EEF6 48%, #B8C9DE 52%, #DCE5F1 100%)`,
   highland: `linear-gradient(180deg, #CFDDF0 0%, #EEF2F8 45%, #A9BBA6 70%, #8FA18D 100%)`,
-  "student-laptop": `radial-gradient(ellipse 50% 70% at 72% 55%, #8A6F5A 0%, rgba(138,111,90,0) 70%), linear-gradient(90deg, #EFE7DC, #D9CBB8)`,
+  "calm-water": `linear-gradient(180deg, #8FB4D8 0%, #CFDDEE 55%, #EEF2F6 100%)`,
+  "ai-ready": `radial-gradient(ellipse 50% 60% at 50% 45%, #2A46F0 0%, #0B0F1A 75%)`,
   "demo-day": `radial-gradient(ellipse 40% 40% at 65% 40%, #4C93F0 0%, rgba(76,147,240,0) 70%), radial-gradient(ellipse 30% 60% at 28% 60%, #4A3A30 0%, rgba(74,58,48,0) 70%), linear-gradient(180deg, #1A2234, #0B0F1A)`,
 };
 
@@ -30,7 +32,7 @@ export const Photo: React.FC<{ name: string; len: number; blur?: number; dim?: n
     <AbsoluteFill style={{ overflow: "hidden" }}>
       <AbsoluteFill style={{ scale, filter: blur ? `blur(${blur}px)` : undefined }}>
         {PHOTOS[name] ? (
-          <Img src={staticFile(`photos/${name}.png`)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <Img src={staticFile(`photos/${name}.jpg`)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
           <AbsoluteFill style={{ background: STAND_IN[name] }} />
         )}
@@ -68,9 +70,12 @@ export const Cursor: React.FC<{ path: [number, number, number][]; clickAt?: numb
   );
 };
 
-export const Icon: React.FC<{ kind: "browser" | "play"; size: number; color?: string }> = ({ kind, size, color = C.sky2 }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke={color} strokeWidth={1.8} strokeLinejoin="round">
-    <rect x={3} y={4.5} width={18} height={15} rx={3} />
-    {kind === "browser" ? <path d="M3 9h18M6.5 6.8h.01M9 6.8h.01" strokeLinecap="round" /> : <path d="M10.2 9.2v5.6l4.6-2.8z" fill={color} />}
+export const Icon: React.FC<{ kind: "browser" | "play" | "mail" | "bag" | "clock"; size: number; color?: string }> = ({ kind, size, color = C.sky2 }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke={color} strokeWidth={1.8} strokeLinejoin="round" strokeLinecap="round">
+    {kind === "browser" ? <><rect x={3} y={4.5} width={18} height={15} rx={3} /><path d="M3 9h18M6.5 6.8h.01M9 6.8h.01" /></> : null}
+    {kind === "play" ? <><rect x={3} y={4.5} width={18} height={15} rx={3} /><path d="M10.2 9.2v5.6l4.6-2.8z" fill={color} /></> : null}
+    {kind === "mail" ? <><rect x={3} y={5} width={18} height={14} rx={3} /><path d="M4 7.5l8 5.5 8-5.5" /></> : null}
+    {kind === "bag" ? <><path d="M5 8h14l-1.2 12H6.2z" /><path d="M9 8V6.5a3 3 0 0 1 6 0V8" /></> : null}
+    {kind === "clock" ? <><circle cx={12} cy={12} r={9} /><path d="M12 7v5l3 2" /></> : null}
   </svg>
 );

@@ -1,24 +1,24 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, Series, useCurrentFrame, useVideoConfig } from "remotion";
 import { measureText } from "@remotion/layout-utils";
-import { C, F } from "../lib/brand";
-import { BlurWord, Centre, clamp, easeOut, GrowWord, Paper, usePush } from "../lib/motion";
+import { F } from "../lib/brand";
+import { FadeWord, Centre, clamp, easeOut, GrowWord, Paper, usePush } from "../lib/motion";
 import { Coin } from "../lib/Mark";
 
 const TITLE = 96;
 
 /** Shot 1: a single-frame-ish flash of the gradient wash, like the reference's first frames. */
-export const Flash: React.FC<{ lines: [string, string] }> = ({ lines }) => (
+const Flash: React.FC<{ lines: [string, string] }> = ({ lines }) => (
   <AbsoluteFill
     style={{
-      background: `radial-gradient(ellipse 60% 80% at 80% 70%, ${C.blue500} 0%, rgba(42,70,240,0) 70%), radial-gradient(ellipse 70% 70% at 10% 90%, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 60%), linear-gradient(135deg, ${C.sky2}, ${C.blue})`,
+      background: `radial-gradient(ellipse 55% 45% at 12% 100%, rgba(200,225,255,.85) 0%, rgba(200,225,255,0) 70%), radial-gradient(ellipse 70% 55% at 85% 100%, rgba(42,70,240,.85) 0%, rgba(42,70,240,0) 70%), radial-gradient(ellipse 90% 50% at 50% 100%, rgba(76,147,240,.45) 0%, rgba(76,147,240,0) 75%), #030407`,
       fontFamily: F.sans,
       color: "#fff",
     }}
   >
-    <Centre style={{ flexDirection: "column", gap: 6 }}>
-      <div style={{ fontSize: 60, fontWeight: 500 }}>{lines[0]}</div>
-      <div style={{ fontSize: 96, fontWeight: 500 }}>{lines[1]}</div>
+    <Centre style={{ flexDirection: "column", gap: 18 }}>
+      <div style={{ fontSize: 108, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1 }}>{lines[0]}</div>
+      <div style={{ fontSize: 128, fontWeight: 500, letterSpacing: "-0.015em", lineHeight: 1 }}>{lines[1]}</div>
     </Centre>
   </AbsoluteFill>
 );
@@ -35,7 +35,7 @@ const CoinOnBlack: React.FC = () => {
       <Centre style={{ gap: 28 }}>
         <Coin size={120} turn={turn} dark />
         <div style={{ display: "flex", fontSize: 88, fontWeight: 600, letterSpacing: "-0.01em", textShadow: "0 0 24px rgba(255,255,255,.35)" }}>
-          <span style={{ display: "inline-block", overflow: "hidden", whiteSpace: "nowrap", width: nameW * open, opacity: open, filter: `blur(${(1 - open) * 8}px)` }}>
+          <span style={{ display: "inline-block", overflow: "hidden", whiteSpace: "nowrap", width: nameW * open, opacity: open }}>
             LearnHub
           </span>
           <span>AI Bootcamp</span>
@@ -61,8 +61,8 @@ const Introducing: React.FC<{ len: number }> = ({ len }) => {
 };
 
 /**
- * Shot 4: "Six" opens huge and centred, then blurs as it shrinks fast into its
- * place at the start of the line; the rest of the line blurs in after it.
+ * Shot 4: "Six" opens huge and centred, then shrinks fast into its place at
+ * the start of the line; the rest of the line fades in after it.
  * Its start offset is measured, so the big word sits dead centre whatever the font.
  */
 const SixWeeks: React.FC<{ len: number }> = ({ len }) => {
@@ -71,12 +71,11 @@ const SixWeeks: React.FC<{ len: number }> = ({ len }) => {
   const big = 4.2;
   const hold = interpolate(f, [0, 12], [big, big * 0.93], clamp);
   const shrink = interpolate(f, [12, 20], [0, 1], { ...clamp, easing: Easing.bezier(0.6, 0, 0.2, 1) });
-  const blur = interpolate(f, [12, 16, 20], [0, 9, 0], clamp);
   return (
     <Paper>
       <Centre style={{ scale: push }}>
         <div style={{ display: "flex", fontSize: TITLE, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.1 }}>
-          <span style={{ display: "inline-block", scale: hold + (1 - hold) * shrink, filter: `blur(${blur}px)` }}>Six</span>
+          <span style={{ display: "inline-block", scale: hold + (1 - hold) * shrink }}>Six</span>
           <GrowWord at={19}>weeks</GrowWord>
           <GrowWord at={22} raised>from</GrowWord>
           <GrowWord at={25}>now,</GrowWord>
@@ -93,7 +92,7 @@ const BuiltThis: React.FC<{ len: number }> = ({ len }) => {
     <Paper>
       <Centre style={{ scale: push }}>
         <div style={{ display: "flex", fontSize: TITLE, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.1 }}>
-          <BlurWord at={0}>you'll</BlurWord>
+          <FadeWord at={0}>you'll</FadeWord>
           <GrowWord at={3}>have</GrowWord>
           <GrowWord at={6} accent>built</GrowWord>
           <GrowWord at={9} accent raised>this.</GrowWord>
