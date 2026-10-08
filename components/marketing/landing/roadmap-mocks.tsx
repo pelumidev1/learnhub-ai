@@ -4,8 +4,8 @@ import { ToolMark } from "./tools-strip";
 
 /**
  * The three product pictures beside the roadmap's arcs, one per arc. Markup,
- * not screenshots, for the same reasons as LessonMockup: sharp, a few KB, and
- * tied to the curriculum rather than to a screen that will change.
+ * not screenshots: sharp, a few KB, and tied to the curriculum rather than to a
+ * screen that will change.
  *
  * Children of `.lh-stagger` rise in one after another when their row is
  * revealed (see Reveal and .lh-stagger in app/brand.css). Every one of these is

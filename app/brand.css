@@ -263,17 +263,9 @@
   background: radial-gradient(60% 55% at 50% 45%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%);
 }
 
-/* The lesson video's poster: the brand's metal, not a photograph. */
-.lh-mock-video {
-  background:
-    radial-gradient(80% 90% at 20% 0%, rgba(76, 147, 240, 0.9), rgba(76, 147, 240, 0) 60%),
-    linear-gradient(160deg, #2a46f0 0%, #1f33cc 45%, #0b0f1a 130%);
-}
-
 /* Depth. HeroDepth writes --p (0 to 1) as the hero scrolls away; each plane
    reads it at its own rate. Far moves with the scroll (lags behind the page),
-   the window flattens out of a slight tilt, and the near cards rise faster
-   than the window. Transforms only, so this is compositor work on a phone.
+   and the window holding the film flattens out of a slight tilt. Transforms only, so this is compositor work on a phone.
 
    Gated on no-preference: with reduced motion --p is never set, and outside
    this block nothing transforms, so the hero is static and flat. */
@@ -287,20 +279,6 @@
   .lh-depth-panel {
     transform-origin: 50% 100%;
     transform: rotateX(calc(9deg * (1 - min(var(--p, 0) * 3.5, 1))));
-  }
-  .lh-depth-near {
-    transform: translate3d(0, calc(var(--p, 0) * -140px), 0);
-  }
-  .lh-depth-near-2 {
-    transform: translate3d(0, calc(var(--p, 0) * -90px), 0);
-  }
-}
-
-/* On a phone the coach card hangs below the window rather than over it, and
-   travels less, or its rise would carry it over the lesson title. */
-@media (prefers-reduced-motion: no-preference) and (max-width: 639px) {
-  .lh-depth-near-2 {
-    transform: translate3d(0, calc(var(--p, 0) * -40px), 0);
   }
 }
 

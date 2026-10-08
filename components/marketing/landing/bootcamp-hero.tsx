@@ -1,6 +1,6 @@
 import { COHORT, priceNow, seatsLeft } from "./bootcamp-facts";
 import { HeroDepth } from "./hero-depth";
-import { LessonMockup } from "./lesson-mockup";
+import { HeroFilm } from "./hero-film";
 import { SeatLink } from "./seat-link";
 
 /** Staggered load-in delay (CSS var read by .lh-hero-in). */
@@ -9,11 +9,11 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 /**
  * The landing hero, rebuilt 2026-10-02 around the AI Bootcamp on the pattern of
  * artisan.co/ai-sales-agent: a centred serif headline on a deep blue wash that
- * pales as it falls, then the product itself, framed, floating where the wash
- * meets the page.
+ * pales as it falls, then the bootcamp film, framed, floating where the wash
+ * meets the page (the lesson mockup held this spot until 2026-10-08).
  *
- * Three planes give it depth on scroll (see HeroDepth): the glow behind the
- * window, the window, and the cards in front of it.
+ * Two planes give it depth on scroll (see HeroDepth): the glow behind the
+ * film, and the film.
  */
 export function BootcampHero() {
   // The page revalidates hourly, so this flips to the full price within an
@@ -25,7 +25,7 @@ export function BootcampHero() {
       <section className="relative">
         <div className="lh-depth-back lh-hero-glow pointer-events-none absolute inset-x-0 bottom-0 h-[70%]" aria-hidden />
 
-        <div className="relative mx-auto max-w-[1180px] px-5 pb-56 pt-32 text-center sm:pb-36 sm:pt-40">
+        <div className="relative mx-auto max-w-[1180px] px-5 pb-20 pt-32 text-center sm:pb-36 sm:pt-40">
           <span
             className="lh-hero-in inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-sm"
             style={d(0)}
@@ -73,7 +73,7 @@ export function BootcampHero() {
           </div>
 
           <div className="lh-hero-in lh-depth-stage mx-auto mt-16 max-w-[1040px] sm:mt-20" style={d(520)}>
-            <LessonMockup />
+            <HeroFilm />
           </div>
         </div>
       </section>
