@@ -1,0 +1,135 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/InstrumentSerif-Regular.woff2") format("woff2"); }
+    @font-face { font-family: "Instrument Serif"; font-style: italic; src: url("assets/fonts/InstrumentSerif-Italic.woff2") format("woff2"); }
+    @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Variable.woff2") format("woff2"); font-weight: 200 700; }
+    @font-face { font-family: "Switzer"; src: url("assets/fonts/Switzer-Variable.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Geist Mono"; src: url("assets/fonts/GeistMono-Regular.ttf") format("truetype"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "General Sans", sans-serif; color: #0B0F1A; }
+    .paper { position: absolute; inset: 0; background: #F6F7FB; }
+    .glow { position: absolute; left: 160px; right: 160px; top: 520px; height: 760px; border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(76,147,240,.24), rgba(76,147,240,0)); }
+    .serif { font-family: "Instrument Serif", serif; font-weight: 400; }
+    .mono { font-family: "Geist Mono", monospace; }
+    .acc { color: #1F33CC; font-style: italic; }
+    .win { position: absolute; background: #fff; border: 1.5px solid #E7EAF1; border-radius: 26px; overflow: hidden;
+      box-shadow: 0 2px 4px rgba(11,15,26,.06), 0 40px 90px -40px rgba(11,15,26,.32); }
+    .bar { height: 56px; background: #F6F7FB; border-bottom: 1.5px solid #E7EAF1; display: flex; align-items: center; gap: 11px; padding: 0 22px; }
+    .bar i { width: 14px; height: 14px; border-radius: 50%; background: #D8DEEA; display: block; }
+    .url { margin: 0 auto; font-family: "Geist Mono", monospace; font-size: 18px; color: #8A93A6; background: #fff; border: 1.5px solid #E7EAF1; border-radius: 999px; padding: 5px 28px; }
+    .tick { width: 34px; height: 34px; border-radius: 50%; background: #1F33CC; color: #fff; display: grid; place-items: center; flex: none; }
+    .tick svg { width: 19px; height: 19px; }
+    .btn { background: linear-gradient(180deg,#2A46F0,#1F33CC 55%,#182AB0); color: #fff; border-radius: 999px; font-weight: 600;
+      box-shadow: inset 0 1.5px 0 rgba(255,255,255,.32), 0 20px 40px -20px rgba(31,51,204,.6); display: inline-flex; align-items: center; justify-content: center; }
+    .glass { background: rgba(255,255,255,.58); border: 1.5px solid rgba(255,255,255,.85); backdrop-filter: blur(22px) saturate(1.6);
+      box-shadow: inset 0 1.5px 0 rgba(255,255,255,.95), 0 30px 70px -30px rgba(11,15,26,.38); }
+    .gpill { display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 10px 22px; font-size: 22px; font-weight: 600; color: #1F33CC; }
+    .wklabel { position: absolute; left: 64px; top: 72px; font-family: "Geist Mono", monospace; font-size: 22px; letter-spacing: .16em; color: #1F33CC; }
+    .cur { position: absolute; left: 0; top: 0; width: 52px; height: 52px; filter: drop-shadow(0 4px 8px rgba(11,15,26,.35)); }
+    .ring { position: absolute; left: 0; top: 0; width: 70px; height: 70px; margin: -35px 0 0 -35px; border-radius: 50%; border: 3px solid #1F33CC; opacity: 0; }
+    /* divider */
+    .div { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, #121828 0%, #0B0F1A 70%); }
+    .div .row { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 46px; }
+    .div .wk { font-size: 118px; font-weight: 600; color: #4C93F0; letter-spacing: -0.02em; }
+    .div .wn { position: relative; width: 100px; height: 600px; overflow: hidden;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%); }
+    .div .reel { position: absolute; left: 0; top: 0; width: 100%; }
+    .div .reel span { display: block; height: 150px; line-height: 150px; font-size: 118px; font-weight: 600; color: rgba(255,255,255,.22); }
+    /* title card */
+    .tc { position: absolute; inset: 0; background: #F6F7FB; }
+    .tc .in { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 30px; }
+    .tc .w { font-family: "Instrument Serif", serif; font-size: 150px; line-height: 1; display: inline-block; }
+    /* header pill */
+    .head { position: absolute; left: 0; right: 0; top: 52px; display: flex; justify-content: center; }
+    .head .pill { display: flex; align-items: center; gap: 13px; height: 86px; padding: 0 38px; border-radius: 999px; }
+    .head .w { font-family: "Instrument Serif", serif; font-size: 50px; line-height: 1; display: inline-block; }
+
+    #w3-br { left: 300px; right: 300px; top: 190px; bottom: -40px; }
+    .w3-page { padding: 64px 80px; }
+    .w3-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+    .w3-ph { height: 220px; border-radius: 20px; background: repeating-linear-gradient(135deg,#F6F7FB 0 22px,#fff 22px 44px); border: 2px dashed #D8DEEA; }
+    #w3-reveal { position: absolute; inset: 0; background: radial-gradient(circle at 30% 20%, #4C93F0 0%, #2A46F0 35%, #1F33CC 65%, #182AB0 100%); clip-path: circle(0px at 495px 533px); }
+    #w3-live { left: 300px; right: 300px; top: 190px; bottom: -40px; }
+    .w3-site { padding: 90px 90px; }
+    
+  </style>
+
+  <div id="root" data-composition-id="05-week3-live" data-width="1920" data-height="1080">
+    <div id="w3-demo" class="clip" data-start="1.8" data-duration="3.2" data-track-index="0">
+      <div class="paper"></div><div class="glow"></div>
+      <div class="win" id="w3-br">
+        <div class="bar"><i></i><i></i><i></i><span class="url">localhost · preview</span></div>
+        <div class="w3-page">
+          <div class="w3-blk" id="w3-b0" style="height:66px;width:62%;background:#0B0F1A;opacity:.9;border-radius:999px"></div>
+          <div class="w3-blk" id="w3-b1" style="height:22px;width:82%;background:#E7EAF1;margin-top:28px;border-radius:999px"></div>
+          <div class="w3-blk" id="w3-b2" style="height:22px;width:66%;background:#E7EAF1;margin-top:14px;border-radius:999px"></div>
+          <div class="w3-blk btn" id="w3-go" style="width:230px;height:70px;font-size:26px;margin-top:36px">Go live</div>
+          <div class="w3-cards"><div class="w3-blk w3-ph" id="w3-c0"></div><div class="w3-blk w3-ph" id="w3-c1"></div><div class="w3-blk w3-ph" id="w3-c2"></div></div>
+        </div>
+      </div>
+      <div id="w3-reveal">
+        <div class="win" id="w3-live">
+          <div class="bar"><i></i><i></i><i></i><span class="url" style="color:#0B0F1A">yourproject.com</span></div>
+          <div class="w3-site">
+            <div class="mono" style="font-size:20px;color:#1F33CC;letter-spacing:.14em">AMAKA'S BAKES</div>
+            <div class="serif" style="font-size:96px;line-height:1.02;margin-top:14px">Cakes that arrive <span class="acc">on time</span></div>
+            <div style="font-size:28px;color:#5B6472;margin-top:20px">Order before 2pm. At your door by evening.</div>
+            <div class="btn" style="width:250px;height:72px;font-size:26px;margin-top:34px">Order a cake</div>
+          </div>
+        </div>
+        <div class="glass gpill" id="w3-toast" style="position:absolute;right:250px;top:820px;font-size:28px;padding:16px 30px"><span class="tick"><svg viewBox="0 0 24 24" class=""><path d="m5 12 5 5L20 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Live</div>
+      </div>
+      <svg viewBox="0 0 24 24" id="w3-cur" class="cur"><path d="M5 3l14 8-6.2 1.6L10 19z" fill="#0B0F1A" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg><div id="w3-ring" class="ring"></div>
+      <div class="wklabel">WEEK 3</div>
+      <div class="head"><div class="pill glass" id="w3-pill"><span class="w" id="w3-h0">Your</span><span class="w" id="w3-h1">website,</span><span class="w acc" id="w3-h2">live</span></div></div>
+    </div>
+
+    <div class="tc clip" id="w3-tc" data-start="0.8" data-duration="1.0" data-track-index="1">
+      <div class="in" id="w3-tcin"><span class="w" id="w3-t0">Your</span><span class="w" id="w3-t1">website,</span><span class="w acc" id="w3-t2">live</span></div>
+    </div>
+
+    <div class="div clip" id="w3-div" data-start="0" data-duration="0.8" data-track-index="2">
+      <div class="row" id="w3-divrow"><div class="wk">Week</div><div class="wn"><div class="reel" id="w3-reel"><span>0</span><span>1</span><span>2</span><span id="w3-n3">3</span><span>4</span><span>5</span><span>6</span><span>7</span></div></div></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // A. divider: roll one step in 0.2s, then hold
+      tl.fromTo("#w3-reel", { y: -75 }, { y: -225, duration: 0.2, ease: "power4.out" }, 0.02);
+      tl.fromTo("#w3-n3", { color: "rgba(255,255,255,0.22)" }, { color: "rgba(255,255,255,1)", duration: 0.14, ease: "power2.out" }, 0.08);
+      tl.fromTo("#w3-divrow", { scale: 1 }, { scale: 1.015, duration: 0.8, ease: "none" }, 0);
+      // B. title card: words blur sharp, slow push
+      tl.fromTo("#w3-t0", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.84);
+      tl.fromTo("#w3-t1", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.93);
+      tl.fromTo("#w3-t2", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 1.02);
+      tl.fromTo("#w3-tcin", { scale: 1 }, { scale: 1.03, duration: 1.0, ease: "none" }, 0.8);
+      // C. demo header builds in place
+      tl.fromTo("#w3-pill", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power2.out" }, 1.82);
+      tl.fromTo("#w3-h0", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, 1.86);
+      tl.fromTo("#w3-h1", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, 1.95);
+      tl.fromTo("#w3-h2", { opacity: 0, filter: "blur(10px)", y: -14 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.18, ease: "power3.out" }, 2.04);
+      tl.fromTo("#w3-br", { y: 40 }, { y: 0, duration: 0.45, ease: "power3.out" }, 1.8);
+      tl.fromTo("#w3-b0", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 2.00);
+      tl.fromTo("#w3-b1", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 2.12);
+      tl.fromTo("#w3-b2", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 2.24);
+      tl.fromTo("#w3-go", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 2.36);
+      tl.fromTo("#w3-c0", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 2.48);
+      tl.fromTo("#w3-c1", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 2.60);
+      tl.fromTo("#w3-c2", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 2.72);
+      tl.fromTo("#w3-cur", { x: 1500, y: 900, opacity: 0 }, { opacity: 1, duration: 0.15 }, 2.6);
+      tl.fromTo("#w3-cur", { x: 1500, y: 900 }, { x: 484, y: 527, duration: 0.65, ease: "power2.inOut", immediateRender: false }, 2.6);
+      tl.fromTo("#w3-cur", { scale: 1 }, { scale: 0.82, duration: 0.07, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, 3.32);
+      tl.fromTo("#w3-ring", { x: 495, y: 533, scale: 0.3, opacity: 0.8 }, { scale: 1.6, opacity: 0, duration: 0.4, ease: "power2.out" }, 3.32);
+      tl.fromTo("#w3-go", { scale: 1 }, { scale: 0.94, duration: 0.07, yoyo: true, repeat: 1, immediateRender: false }, 3.32);
+      tl.fromTo("#w3-reveal", { clipPath: "circle(0px at 495px 533px)" }, { clipPath: "circle(2300px at 495px 533px)", duration: 0.37, ease: "power2.inOut" }, 3.45);
+      tl.fromTo("#w3-live", { y: 30, scale: 0.97 }, { y: 0, scale: 1, duration: 0.6, ease: "power3.out" }, 3.6);
+      tl.fromTo("#w3-toast", { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "back.out(1.8)" }, 4.15);
+      tl.fromTo("#w3-cur", { opacity: 1 }, { opacity: 0, duration: 0.1, immediateRender: false }, 3.5);
+      window.__timelines["05-week3-live"] = tl;
+    })();
+  </script>
+</template>

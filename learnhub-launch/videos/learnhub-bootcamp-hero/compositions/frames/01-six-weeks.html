@@ -1,0 +1,41 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/InstrumentSerif-Regular.woff2") format("woff2"); }
+    @font-face { font-family: "Instrument Serif"; font-style: italic; src: url("assets/fonts/InstrumentSerif-Italic.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #s01 { position: absolute; inset: 0; background: #F6F7FB; }
+    #s01-in { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+    #s01 .line { display: flex; gap: 32px; }
+    #s01 .w { font-family: "Instrument Serif", serif; font-size: 132px; line-height: 1.08; color: #0B0F1A; display: inline-block; }
+    #s01 .acc { color: #1F33CC; font-style: italic; }
+  </style>
+
+  <div id="root" data-composition-id="01-six-weeks" data-width="1920" data-height="1080">
+    <div id="s01" class="clip" data-start="0" data-duration="3.5" data-track-index="0">
+      <div id="s01-in">
+        <div class="line"><span class="w" id="s01-a0">Six</span><span class="w" id="s01-a1">weeks</span><span class="w" id="s01-a2">from</span><span class="w" id="s01-a3">now,</span></div>
+        <div class="line"><span class="w" id="s01-b0">you'll</span><span class="w" id="s01-b1">have</span><span class="w acc" id="s01-b2">built</span><span class="w acc" id="s01-b3">this.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // "Six" opens huge and centred, then shrinks into its place in the line (reference §3.4, ~15 frames).
+      tl.fromTo("#s01-a0", { x: 430, y: 70, scale: 4.1 }, { x: 430, y: 70, scale: 3.85, duration: 0.4, ease: "none" }, 0);
+      tl.fromTo("#s01-a0", { x: 430, y: 70, scale: 3.85 }, { x: 0, y: 0, scale: 1, duration: 0.5, ease: "power3.inOut", immediateRender: false }, 0.4);
+      ["#s01-a1", "#s01-a2", "#s01-a3"].forEach((s, i) => {
+        tl.fromTo(s, { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.72 + i * 0.09);
+      });
+      ["#s01-b0", "#s01-b1", "#s01-b2", "#s01-b3"].forEach((s, i) => {
+        const raised = i >= 2;
+        tl.fromTo(s, { opacity: 0, filter: "blur(16px)", y: raised ? -14 : 0 },
+          { opacity: 1, filter: "blur(0px)", y: 0, duration: raised ? 0.2 : 0.16, ease: "power3.out" }, 1.4 + i * 0.13);
+      });
+      tl.fromTo("#s01-in", { scale: 1 }, { scale: 1.03, duration: 3.5, ease: "none" }, 0);
+      window.__timelines["01-six-weeks"] = tl;
+    })();
+  </script>
+</template>

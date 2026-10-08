@@ -1,0 +1,11 @@
+{
+  "bgm": {
+    "path": "assets/bgm/track.mp3",
+    "volume": 0.9,
+    "query": "warm confident hip-hop instrumental, mid-tempo, clean drums, optimistic, no vocals",
+    "duration_s": 30
+  },
+  "bgm_pending": false,
+  "voices": [],
+  "sfx": []
+}

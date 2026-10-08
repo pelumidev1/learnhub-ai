@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #FFFFFF;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="42"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div
+        id="el-01-six-weeks"
+        class="scene"
+        data-composition-id="01-six-weeks"
+        data-composition-src="compositions/frames/01-six-weeks.html"
+        data-start="0"
+        data-duration="3.5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-02-course"
+        class="scene"
+        data-composition-id="02-course"
+        data-composition-src="compositions/frames/02-course.html"
+        data-start="3.5"
+        data-duration="4"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-03-week1-ready"
+        class="scene"
+        data-composition-id="03-week1-ready"
+        data-composition-src="compositions/frames/03-week1-ready.html"
+        data-start="7.5"
+        data-duration="5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-04-week2-brain"
+        class="scene"
+        data-composition-id="04-week2-brain"
+        data-composition-src="compositions/frames/04-week2-brain.html"
+        data-start="12.5"
+        data-duration="5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-05-week3-live"
+        class="scene"
+        data-composition-id="05-week3-live"
+        data-composition-src="compositions/frames/05-week3-live.html"
+        data-start="17.5"
+        data-duration="5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-06-week4-videos"
+        class="scene"
+        data-composition-id="06-week4-videos"
+        data-composition-src="compositions/frames/06-week4-videos.html"
+        data-start="22.5"
+        data-duration="5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-07-week5-autopilot"
+        class="scene"
+        data-composition-id="07-week5-autopilot"
+        data-composition-src="compositions/frames/07-week5-autopilot.html"
+        data-start="27.5"
+        data-duration="5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-08-week6-career"
+        class="scene"
+        data-composition-id="08-week6-career"
+        data-composition-src="compositions/frames/08-week6-career.html"
+        data-start="32.5"
+        data-duration="5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-09-you-decide"
+        class="scene"
+        data-composition-id="09-you-decide"
+        data-composition-src="compositions/frames/09-you-decide.html"
+        data-start="37.5"
+        data-duration="4.5"
+        data-track-index="1"
+      ></div>
+
+      <!-- Scratch mix: HeyGen BGM (scratch only, rights unclear) + bundled SFX. Replace before publishing. -->
+      <audio id="scratch-mix" src="assets/audio/scratch-mix.wav" data-start="0" data-duration="42" data-track-index="11" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

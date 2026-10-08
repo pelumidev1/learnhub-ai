@@ -1,0 +1,66 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/InstrumentSerif-Regular.woff2") format("woff2"); }
+    @font-face { font-family: "Instrument Serif"; font-style: italic; src: url("assets/fonts/InstrumentSerif-Italic.woff2") format("woff2"); }
+    @font-face { font-family: "Switzer"; src: url("assets/fonts/Switzer-Variable.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Geist Mono"; src: url("assets/fonts/GeistMono-Regular.ttf") format("truetype"); }
+    #root { position: absolute; inset: 0; overflow: hidden; color: #0B0F1A; }
+    #y09 { position: absolute; inset: 0; background: #F6F7FB; }
+    #y09-in { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 32px; }
+    #y09 .w { font-family: "Instrument Serif", serif; font-size: 140px; line-height: 1; display: inline-block; position: relative; }
+    #y09 .acc { color: #1F33CC; font-style: italic; }
+    #y09-loop { position: absolute; left: -46px; top: -34px; width: calc(100% + 92px); height: calc(100% + 68px); overflow: visible; }
+    #l09 { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 90% at 30% 20%, #4C93F0 0%, #2A46F0 38%, #1F33CC 66%, #182AB0 100%); }
+    #l09 .blob { position: absolute; width: 760px; height: 760px; border-radius: 50%; }
+    #l09-panel { position: absolute; left: 560px; top: 290px; width: 800px; height: 500px; border-radius: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: rgba(255,255,255,.8); border: 1.5px solid rgba(255,255,255,.95); backdrop-filter: blur(28px) saturate(1.6);
+      box-shadow: inset 0 1.5px 0 rgba(255,255,255,.95), 0 40px 90px -36px rgba(11,15,26,.5); }
+    #l09-lock { display: flex; align-items: center; gap: 22px; }
+    #l09-mark { width: 104px; height: 104px; color: #1F33CC; }
+    #l09-word { font-family: "Switzer", sans-serif; font-weight: 600; font-size: 96px; letter-spacing: -0.02em; }
+    #l09-sub { font-family: "Instrument Serif", serif; font-style: italic; font-size: 66px; color: #1F33CC; margin-top: 18px; }
+    #l09-url { font-family: "Geist Mono", monospace; font-size: 26px; color: #5B6472; margin-top: 22px; letter-spacing: .04em; }
+  </style>
+
+  <div id="root" data-composition-id="09-you-decide" data-width="1920" data-height="1080">
+    <div id="y09" class="clip" data-start="0" data-duration="2.1" data-track-index="0">
+      <div id="y09-in">
+        <span class="w acc" id="y09-w0">You<svg id="y09-loop" viewBox="0 0 300 220" preserveAspectRatio="none"><path id="y09-path" d="M168 22C92 10 18 44 14 110c-4 70 86 102 162 94 76-8 118-52 110-104C278 46 214 14 140 20" fill="none" stroke="#1F33CC" stroke-width="6" stroke-linecap="round"/></svg></span><span class="w" id="y09-w1">decide</span><span class="w" id="y09-w2">what</span><span class="w" id="y09-w3">to</span><span class="w" id="y09-w4">build.</span>
+      </div>
+    </div>
+
+    <div id="l09" class="clip" data-start="2.1" data-duration="2.4" data-track-index="1">
+      <div class="blob" style="left:-120px;top:520px;background:radial-gradient(closest-side,rgba(76,147,240,.6),rgba(76,147,240,0))"></div>
+      <div class="blob" style="left:1300px;top:-200px;background:radial-gradient(closest-side,rgba(11,15,26,.35),rgba(11,15,26,0))"></div>
+      <div id="l09-panel">
+        <div id="l09-lock">
+          <svg id="l09-mark" viewBox="0 0 420 420" fill="currentColor"><path fill-rule="evenodd" d="M233.52 333.58A145 145 0 1 1 332.63 267.87A67.3 67.3 0 0 0 233.52 333.58ZM133 190.5a77 77 0 1 0 154 0a77 77 0 1 0 -154 0Z"/><path d="M253 327a47.5 47.5 0 1 0 95 0a47.5 47.5 0 1 0 -95 0Z"/></svg>
+          <span id="l09-word">LearnHub</span>
+        </div>
+        <div id="l09-sub">AI Bootcamp</div>
+        <div id="l09-url">learnhub.dev</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      for (let i = 0; i < 5; i++) {
+        tl.fromTo("#y09-w" + i, { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.06 + i * 0.1);
+      }
+      // Hand-drawn loop around "You": the stroke draws on like a pen.
+      tl.fromTo("#y09-path", { strokeDasharray: 760, strokeDashoffset: 760 }, { strokeDashoffset: 0, duration: 0.55, ease: "power2.inOut" }, 0.75);
+      tl.fromTo("#y09-in", { scale: 1 }, { scale: 1.03, duration: 2.1, ease: "none" }, 0);
+      // Hard cut to the lockup on glass.
+      tl.fromTo("#l09-panel", { scale: 0.96, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" }, 2.1);
+      tl.fromTo("#l09-mark", { rotation: -90, scale: 0.6, opacity: 0 }, { rotation: 0, scale: 1, opacity: 1, duration: 0.55, ease: "power3.out" }, 2.2);
+      tl.fromTo("#l09-word", { opacity: 0, filter: "blur(14px)", x: -16 }, { opacity: 1, filter: "blur(0px)", x: 0, duration: 0.3, ease: "power3.out" }, 2.4);
+      tl.fromTo("#l09-sub", { opacity: 0, filter: "blur(14px)", y: -12 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.3, ease: "power3.out" }, 2.65);
+      tl.fromTo("#l09-url", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 2.9);
+      tl.fromTo("#l09-panel", { y: 0 }, { y: -8, duration: 2.0, ease: "none", immediateRender: false }, 2.5);
+      window.__timelines["09-you-decide"] = tl;
+    })();
+  </script>
+</template>

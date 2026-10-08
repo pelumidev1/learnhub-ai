@@ -1,0 +1,11 @@
+{
+  "provider": "auto",
+  "speed": 1,
+  "lines": [],
+  "bgm": {
+    "mode": "retrieve",
+    "query": "warm confident hip-hop instrumental, mid-tempo, clean drums, optimistic, no vocals",
+    "blob": "Six weeks of building real things with AI, every step on screen",
+    "arc": "Feature-Benefit Cascade, cut as title-then-proof chapters (reference: Manus 2.0 film, see reference/REFERENCE.md)"
+  }
+}

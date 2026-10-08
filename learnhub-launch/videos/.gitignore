@@ -1,0 +1,16 @@
+# Source only. Renders, media and third-party material stay local.
+node_modules/
+out/
+renders/
+snapshots/
+capture/
+.media/
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.gif
+# Third-party: the reference film and the cake demo assets.
+learnhub-bootcamp-hero/reference/
+learnhub-hero-remotion/public/cake/
+learnhub-hero-remotion/public/photos/

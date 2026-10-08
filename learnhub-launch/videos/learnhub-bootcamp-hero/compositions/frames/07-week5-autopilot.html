@@ -1,0 +1,140 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/InstrumentSerif-Regular.woff2") format("woff2"); }
+    @font-face { font-family: "Instrument Serif"; font-style: italic; src: url("assets/fonts/InstrumentSerif-Italic.woff2") format("woff2"); }
+    @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Variable.woff2") format("woff2"); font-weight: 200 700; }
+    @font-face { font-family: "Switzer"; src: url("assets/fonts/Switzer-Variable.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Geist Mono"; src: url("assets/fonts/GeistMono-Regular.ttf") format("truetype"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "General Sans", sans-serif; color: #0B0F1A; }
+    .paper { position: absolute; inset: 0; background: #F6F7FB; }
+    .glow { position: absolute; left: 160px; right: 160px; top: 520px; height: 760px; border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(76,147,240,.24), rgba(76,147,240,0)); }
+    .serif { font-family: "Instrument Serif", serif; font-weight: 400; }
+    .mono { font-family: "Geist Mono", monospace; }
+    .acc { color: #1F33CC; font-style: italic; }
+    .win { position: absolute; background: #fff; border: 1.5px solid #E7EAF1; border-radius: 26px; overflow: hidden;
+      box-shadow: 0 2px 4px rgba(11,15,26,.06), 0 40px 90px -40px rgba(11,15,26,.32); }
+    .bar { height: 56px; background: #F6F7FB; border-bottom: 1.5px solid #E7EAF1; display: flex; align-items: center; gap: 11px; padding: 0 22px; }
+    .bar i { width: 14px; height: 14px; border-radius: 50%; background: #D8DEEA; display: block; }
+    .url { margin: 0 auto; font-family: "Geist Mono", monospace; font-size: 18px; color: #8A93A6; background: #fff; border: 1.5px solid #E7EAF1; border-radius: 999px; padding: 5px 28px; }
+    .tick { width: 34px; height: 34px; border-radius: 50%; background: #1F33CC; color: #fff; display: grid; place-items: center; flex: none; }
+    .tick svg { width: 19px; height: 19px; }
+    .btn { background: linear-gradient(180deg,#2A46F0,#1F33CC 55%,#182AB0); color: #fff; border-radius: 999px; font-weight: 600;
+      box-shadow: inset 0 1.5px 0 rgba(255,255,255,.32), 0 20px 40px -20px rgba(31,51,204,.6); display: inline-flex; align-items: center; justify-content: center; }
+    .glass { background: rgba(255,255,255,.58); border: 1.5px solid rgba(255,255,255,.85); backdrop-filter: blur(22px) saturate(1.6);
+      box-shadow: inset 0 1.5px 0 rgba(255,255,255,.95), 0 30px 70px -30px rgba(11,15,26,.38); }
+    .gpill { display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 10px 22px; font-size: 22px; font-weight: 600; color: #1F33CC; }
+    .wklabel { position: absolute; left: 64px; top: 72px; font-family: "Geist Mono", monospace; font-size: 22px; letter-spacing: .16em; color: #1F33CC; }
+    .cur { position: absolute; left: 0; top: 0; width: 52px; height: 52px; filter: drop-shadow(0 4px 8px rgba(11,15,26,.35)); }
+    .ring { position: absolute; left: 0; top: 0; width: 70px; height: 70px; margin: -35px 0 0 -35px; border-radius: 50%; border: 3px solid #1F33CC; opacity: 0; }
+    /* divider */
+    .div { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, #121828 0%, #0B0F1A 70%); }
+    .div .row { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 46px; }
+    .div .wk { font-size: 118px; font-weight: 600; color: #4C93F0; letter-spacing: -0.02em; }
+    .div .wn { position: relative; width: 100px; height: 600px; overflow: hidden;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%); }
+    .div .reel { position: absolute; left: 0; top: 0; width: 100%; }
+    .div .reel span { display: block; height: 150px; line-height: 150px; font-size: 118px; font-weight: 600; color: rgba(255,255,255,.22); }
+    /* title card */
+    .tc { position: absolute; inset: 0; background: #F6F7FB; }
+    .tc .in { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 30px; }
+    .tc .w { font-family: "Instrument Serif", serif; font-size: 150px; line-height: 1; display: inline-block; }
+    /* header pill */
+    .head { position: absolute; left: 0; right: 0; top: 52px; display: flex; justify-content: center; }
+    .head .pill { display: flex; align-items: center; gap: 13px; height: 86px; padding: 0 38px; border-radius: 999px; }
+    .head .w { font-family: "Instrument Serif", serif; font-size: 50px; line-height: 1; display: inline-block; }
+
+    #w5-card { left: 290px; right: 290px; top: 300px; height: 430px; }
+    #w5-b { opacity: 0; }
+    .w5-flow { position: absolute; inset: 0; padding: 40px 50px; }
+    .w5-ti { font-size: 32px; font-weight: 600; }
+    .w5-row { display: flex; align-items: center; gap: 0; margin-top: 70px; }
+    .w5-node { position: relative; flex: 1; border: 1.5px solid #E7EAF1; background: #fff; border-radius: 22px; padding: 30px 30px; min-height: 190px;
+      box-shadow: 0 1px 2px rgba(11,15,26,.05), 0 20px 40px -24px rgba(11,15,26,.25); }
+    .w5-ai { background: #1F33CC; color: #fff; border-color: #1F33CC; }
+    .w5-mk { width: 40px; height: 40px; color: #fff; }
+    .w5-k { font-size: 18px; color: #8A93A6; letter-spacing: .12em; }
+    .w5-v { font-size: 32px; font-weight: 600; margin-top: 8px; }
+    .w5-sub { font-size: 20px; opacity: .8; margin-top: 2px; }
+    .w5-wire { position: relative; width: 70px; height: 3px; background: #D8DEEA; }
+    .w5-wire i { position: absolute; left: 0; top: -6px; width: 15px; height: 15px; border-radius: 50%; background: #1F33CC; opacity: 0; }
+    .w5-ok { position: absolute; right: 22px; top: 22px; }
+    
+  </style>
+
+  <div id="root" data-composition-id="07-week5-autopilot" data-width="1920" data-height="1080">
+    <div id="w5-demo" class="clip" data-start="1.8" data-duration="3.2" data-track-index="0">
+      <div class="paper"></div><div class="glow"></div>
+      <div class="win" id="w5-card">
+        <span class="glass gpill" id="w5-act" style="position:absolute;right:36px;top:30px;font-size:20px">● Active</span>
+        <div class="w5-flow" id="w5-a">
+          <div class="w5-hd"><span class="w5-ti">Reply to enquiries</span></div>
+          <div class="w5-row">
+            <div class="w5-node" id="w5-a0"><div class="mono w5-k">WHEN</div><div class="w5-v">New enquiry</div></div>
+            <div class="w5-wire"><i id="w5-ap0"></i></div>
+            <div class="w5-node w5-ai" id="w5-a1"><svg viewBox="0 0 420 420" class="w5-mk" fill="currentColor"><path fill-rule="evenodd" d="M233.52 333.58A145 145 0 1 1 332.63 267.87A67.3 67.3 0 0 0 233.52 333.58ZM133 190.5a77 77 0 1 0 154 0a77 77 0 1 0 -154 0Z"/><path d="M253 327a47.5 47.5 0 1 0 95 0a47.5 47.5 0 1 0 -95 0Z"/></svg><div class="w5-v">Reply drafted</div><div class="w5-sub">AI step</div></div>
+            <div class="w5-wire"><i id="w5-ap1"></i></div>
+            <div class="w5-node" id="w5-a2"><div class="mono w5-k">THEN</div><div class="w5-v">Email sent</div><span class="tick w5-ok" id="w5-aok"><svg viewBox="0 0 24 24" class=""><path d="m5 12 5 5L20 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </div>
+        </div>
+        <div class="w5-flow" id="w5-b">
+          <div class="w5-hd"><span class="w5-ti">Thank every customer</span></div>
+          <div class="w5-row">
+            <div class="w5-node" id="w5-b0"><div class="mono w5-k">WHEN</div><div class="w5-v">New order</div></div>
+            <div class="w5-wire"><i id="w5-bp0"></i></div>
+            <div class="w5-node w5-ai" id="w5-b1"><svg viewBox="0 0 420 420" class="w5-mk" fill="currentColor"><path fill-rule="evenodd" d="M233.52 333.58A145 145 0 1 1 332.63 267.87A67.3 67.3 0 0 0 233.52 333.58ZM133 190.5a77 77 0 1 0 154 0a77 77 0 1 0 -154 0Z"/><path d="M253 327a47.5 47.5 0 1 0 95 0a47.5 47.5 0 1 0 -95 0Z"/></svg><div class="w5-v">Thank-you written</div><div class="w5-sub">AI step</div></div>
+            <div class="w5-wire"><i id="w5-bp1"></i></div>
+            <div class="w5-node" id="w5-b2"><div class="mono w5-k">THEN</div><div class="w5-v">Added to sheet</div><span class="tick w5-ok" id="w5-bok"><svg viewBox="0 0 24 24" class=""><path d="m5 12 5 5L20 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="wklabel">WEEK 5</div>
+      <div class="head"><div class="pill glass" id="w5-pill"><span class="w" id="w5-h0">Work</span><span class="w" id="w5-h1">on</span><span class="w acc" id="w5-h2">autopilot</span></div></div>
+    </div>
+
+    <div class="tc clip" id="w5-tc" data-start="0.8" data-duration="1.0" data-track-index="1">
+      <div class="in" id="w5-tcin"><span class="w" id="w5-t0">Work</span><span class="w" id="w5-t1">on</span><span class="w acc" id="w5-t2">autopilot</span></div>
+    </div>
+
+    <div class="div clip" id="w5-div" data-start="0" data-duration="0.8" data-track-index="2">
+      <div class="row" id="w5-divrow"><div class="wk">Week</div><div class="wn"><div class="reel" id="w5-reel"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span id="w5-n5">5</span><span>6</span><span>7</span></div></div></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // A. divider: roll one step in 0.2s, then hold
+      tl.fromTo("#w5-reel", { y: -375 }, { y: -525, duration: 0.2, ease: "power4.out" }, 0.02);
+      tl.fromTo("#w5-n5", { color: "rgba(255,255,255,0.22)" }, { color: "rgba(255,255,255,1)", duration: 0.14, ease: "power2.out" }, 0.08);
+      tl.fromTo("#w5-divrow", { scale: 1 }, { scale: 1.015, duration: 0.8, ease: "none" }, 0);
+      // B. title card: words blur sharp, slow push
+      tl.fromTo("#w5-t0", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.84);
+      tl.fromTo("#w5-t1", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.93);
+      tl.fromTo("#w5-t2", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 1.02);
+      tl.fromTo("#w5-tcin", { scale: 1 }, { scale: 1.03, duration: 1.0, ease: "none" }, 0.8);
+      // C. demo header builds in place
+      tl.fromTo("#w5-pill", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power2.out" }, 1.82);
+      tl.fromTo("#w5-h0", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, 1.86);
+      tl.fromTo("#w5-h1", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, 1.95);
+      tl.fromTo("#w5-h2", { opacity: 0, filter: "blur(10px)", y: -14 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.18, ease: "power3.out" }, 2.04);
+      tl.fromTo("#w5-card", { y: 40 }, { y: 0, duration: 0.45, ease: "power3.out" }, 1.8);
+      tl.fromTo("#w5-a0", { borderColor: "#E7EAF1" }, { borderColor: "#1F33CC", duration: 0.15, immediateRender: false }, 2.25);
+      tl.fromTo("#w5-ap0", { x: 0, opacity: 1 }, { x: 55, opacity: 1, duration: 0.3, ease: "power1.inOut", immediateRender: false }, 2.37);
+      tl.fromTo("#w5-a1", { scale: 1 }, { scale: 1.05, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, 2.67);
+      tl.fromTo("#w5-ap1", { x: 0, opacity: 1 }, { x: 55, opacity: 1, duration: 0.3, ease: "power1.inOut", immediateRender: false }, 2.87);
+      tl.fromTo("#w5-aok", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "back.out(2.4)" }, 3.17);
+      tl.fromTo("#w5-a", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(10px)", duration: 0.22, immediateRender: false }, 3.55);
+      tl.fromTo("#w5-b", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, immediateRender: false }, 3.62);
+      tl.fromTo("#w5-b0", { borderColor: "#E7EAF1" }, { borderColor: "#1F33CC", duration: 0.15, immediateRender: false }, 3.85);
+      tl.fromTo("#w5-bp0", { x: 0, opacity: 1 }, { x: 55, opacity: 1, duration: 0.3, ease: "power1.inOut", immediateRender: false }, 3.97);
+      tl.fromTo("#w5-b1", { scale: 1 }, { scale: 1.05, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, 4.27);
+      tl.fromTo("#w5-bp1", { x: 0, opacity: 1 }, { x: 55, opacity: 1, duration: 0.3, ease: "power1.inOut", immediateRender: false }, 4.47);
+      tl.fromTo("#w5-bok", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "back.out(2.4)" }, 4.77);
+      tl.fromTo("#w5-act", { scale: 1 }, { scale: 1.08, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, 3.2);
+      window.__timelines["07-week5-autopilot"] = tl;
+    })();
+  </script>
+</template>

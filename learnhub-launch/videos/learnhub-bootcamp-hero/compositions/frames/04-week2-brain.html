@@ -1,0 +1,152 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/InstrumentSerif-Regular.woff2") format("woff2"); }
+    @font-face { font-family: "Instrument Serif"; font-style: italic; src: url("assets/fonts/InstrumentSerif-Italic.woff2") format("woff2"); }
+    @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Variable.woff2") format("woff2"); font-weight: 200 700; }
+    @font-face { font-family: "Geist Mono"; src: url("assets/fonts/GeistMono-Regular.ttf") format("truetype"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "General Sans", sans-serif; }
+
+    /* ---- Shot A: week divider (0.0-0.8s). Measured: hard cut in, 0.2s roll, hold. */
+    #b04-div { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, #121828 0%, #0B0F1A 70%); }
+    #b04-div .row { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 46px; }
+    #b04-div .wk { font-size: 118px; font-weight: 600; color: #4C93F0; letter-spacing: -0.02em; }
+    #b04-div .win { position: relative; width: 100px; height: 600px; overflow: hidden;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%); }
+    #b04-reel { position: absolute; left: 0; top: 0; width: 100%; }
+    #b04-reel span { display: block; height: 150px; line-height: 150px; font-size: 118px; font-weight: 600; color: rgba(255,255,255,.22); text-align: left; }
+
+    /* ---- Shot B: title card on paper (0.8-1.8s). Words blur sharp in 4-5 frames; slow push. */
+    #b04-tc { position: absolute; inset: 0; background: #F6F7FB; }
+    #b04-tc-in { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 30px; }
+    #b04-tc .w { font-family: "Instrument Serif", serif; font-size: 150px; line-height: 1; color: #0B0F1A; display: inline-block; }
+    #b04-tc .acc { color: #1F33CC; font-style: italic; }
+
+    /* ---- Shot C: the AI brain demo (1.8-5.0s), the film's one dark chapter. */
+    #b04-demo { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 50% 58%, #18236A 0%, #0D1430 42%, #0B0F1A 75%); color: #fff; }
+    #b04-orb { position: absolute; left: 730px; top: 340px; width: 460px; height: 460px; border-radius: 50%;
+      background: radial-gradient(circle at 38% 30%, rgba(170,200,255,.42), rgba(42,70,240,.30) 40%, rgba(31,51,204,.12) 62%, rgba(31,51,204,0) 71%);
+      box-shadow: 0 0 140px 24px rgba(76,147,240,.30), inset 0 0 0 2px rgba(140,180,255,.35), inset 0 -40px 90px rgba(11,15,26,.45); }
+    #b04-floor { position: absolute; left: 610px; top: 845px; width: 700px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse, rgba(76,147,240,.5), rgba(76,147,240,0) 70%); }
+    #b04-canvas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .b04-wklabel { position: absolute; left: 64px; top: 72px; font-family: "Geist Mono", monospace; font-size: 22px; letter-spacing: .16em; color: #4C93F0; }
+
+    /* Header builds in place inside a glass pill (reference: "Triggered by events"). */
+    #b04-head { position: absolute; left: 0; right: 0; top: 52px; display: flex; justify-content: center; }
+    #b04-head .pill { display: flex; align-items: center; gap: 14px; height: 86px; padding: 0 38px; border-radius: 999px;
+      background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.24);
+      box-shadow: inset 0 1.5px 0 rgba(255,255,255,.35), 0 24px 60px -20px rgba(0,0,0,.6); backdrop-filter: blur(22px) saturate(1.4); }
+    #b04-head .w { font-family: "Instrument Serif", serif; font-size: 50px; line-height: 1; display: inline-block; }
+    #b04-head .acc { color: #8DB4FF; font-style: italic; }
+
+    .b04-card { position: absolute; padding: 22px 28px; border-radius: 26px; background: rgba(255,255,255,.08);
+      border: 1.5px solid rgba(255,255,255,.22); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.32), 0 30px 70px -24px rgba(0,0,0,.65);
+      backdrop-filter: blur(22px) saturate(1.4); }
+    .b04-card .k { font-family: "Geist Mono", monospace; font-size: 17px; letter-spacing: .14em; color: #8DB4FF; }
+    .b04-card .v { font-size: 25px; margin-top: 6px; font-weight: 500; }
+    #b04-c1 { left: 250px; top: 400px; }
+    #b04-c2 { left: 1380px; top: 340px; }
+    #b04-c3 { left: 1300px; top: 670px; }
+    #b04-type { position: absolute; left: 0; right: 0; top: 860px; text-align: center; font-size: 30px; color: rgba(255,255,255,.88); }
+    #b04-caret { display: inline-block; width: 3px; height: 32px; background: #8DB4FF; vertical-align: -5px; margin-left: 4px; }
+  </style>
+
+  <div id="root" data-composition-id="04-week2-brain" data-width="1920" data-height="1080">
+
+    <div id="b04-demo" class="clip" data-start="1.8" data-duration="3.2" data-track-index="0">
+      <div id="b04-floor"></div>
+      <div id="b04-orb"></div>
+      <canvas id="b04-canvas" width="1920" height="1080"></canvas>
+      <div class="b04-wklabel">WEEK 2</div>
+      <div id="b04-head"><div class="pill" id="b04-pill"><span class="w" id="b04-h1">Your</span><span class="w" id="b04-h2">AI</span><span class="w acc" id="b04-h3">brain</span></div></div>
+      <div class="b04-card" id="b04-c1"><div class="k">MY VOICE</div><div class="v">Plain words. Short sentences.</div></div>
+      <div class="b04-card" id="b04-c2"><div class="k">MY NOTES</div><div class="v">12 files · 3 projects</div></div>
+      <div class="b04-card" id="b04-c3"><div class="k">MY GOALS</div><div class="v">Launch the cake shop</div></div>
+      <div id="b04-type"><span id="b04-typed"></span><span id="b04-caret"></span></div>
+    </div>
+
+    <div id="b04-tc" class="clip" data-start="0.8" data-duration="1.0" data-track-index="1">
+      <div id="b04-tc-in"><span class="w" id="b04-t1">Your</span><span class="w" id="b04-t2">AI</span><span class="w acc" id="b04-t3">brain</span></div>
+    </div>
+
+    <div id="b04-div" class="clip" data-start="0" data-duration="0.8" data-track-index="2">
+      <div class="row">
+        <div class="wk">Week</div>
+        <div class="win"><div id="b04-reel"><span>0</span><span>1</span><span id="b04-n2">2</span><span>3</span><span>4</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const SNAP = "power4.out";
+
+      // ---- A. Divider: 150px slots, window centre y=300. "1" centred at start; roll to "2" in 0.2s; hold with slight drift.
+      tl.fromTo("#b04-reel", { y: 300 - 150 - 75 }, { y: 300 - 300 - 75, duration: 0.2, ease: SNAP }, 0.02);
+      tl.fromTo("#b04-n2", { color: "rgba(255,255,255,0.22)" }, { color: "rgba(255,255,255,1)", duration: 0.14, ease: "power2.out" }, 0.08);
+      tl.fromTo("#b04-div .row", { scale: 1 }, { scale: 1.015, duration: 0.8, ease: "none" }, 0);
+
+      // ---- B. Title card: each word blurred -> sharp in ~5 frames, next 2-3 frames later; slow 3% push.
+      ["#b04-t1", "#b04-t2", "#b04-t3"].forEach((w, i) => {
+        tl.fromTo(w, { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.84 + i * 0.09);
+      });
+      tl.fromTo("#b04-tc-in", { scale: 1 }, { scale: 1.03, duration: 1.0, ease: "none" }, 0.8);
+
+      // ---- C. Demo cuts in already moving. Header builds in place; "brain" drops in from raised.
+            tl.fromTo("#b04-pill", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power2.out" }, 1.82);
+      tl.fromTo("#b04-h1", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 1.86);
+      tl.fromTo("#b04-h2", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 1.95);
+      tl.fromTo("#b04-h3", { opacity: 0, filter: "blur(10px)", y: -14 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.2, ease: "power3.out" }, 2.04);
+      tl.fromTo("#b04-orb", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.7, ease: "power2.out" }, 2.9);
+      tl.fromTo("#b04-floor", { opacity: 0 }, { opacity: 1, duration: 0.7 }, 2.95);
+      [["#b04-c1", -36], ["#b04-c2", 36], ["#b04-c3", 36]].forEach(([sel, dx], i) => {
+        tl.fromTo(sel, { opacity: 0, x: dx, filter: "blur(8px)" },
+          { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.35, ease: "power3.out" }, 3.3 + i * 0.14);
+      });
+      const line = "“Order before 2pm, and it’s at your door by evening.”";
+      const typed = document.getElementById("b04-typed");
+      const ty = { n: 0 };
+      tl.fromTo(ty, { n: 0 }, { n: line.length, duration: 0.95, ease: "none", immediateRender: false,
+        onUpdate: () => { typed.textContent = line.slice(0, Math.round(ty.n)); } }, 3.95);
+      tl.fromTo("#b04-type", { opacity: 0 }, { opacity: 1, duration: 0.1 }, 3.9);
+
+      // ---- Particle sphere from one seekable clock (seeded, deterministic). Already drifting at the cut.
+      const cv = document.getElementById("b04-canvas");
+      const ctx = cv.getContext("2d");
+      let seed = 20261003;
+      const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+      const N = 900, R = 300, CX = 960, CY = 570;
+      const pts = [];
+      for (let i = 0; i < N; i++) {
+        const y = 1 - (2 * (i + 0.5)) / N, r = Math.sqrt(1 - y * y), th = Math.PI * (3 - Math.sqrt(5)) * i;
+        const loose = rnd() < 0.12;
+        pts.push({ x: Math.cos(th) * r, y, z: Math.sin(th) * r, sx: rnd() * 1920, sy: rnd() * 1080,
+          delay: rnd() * 0.35, out: loose ? 1.1 + rnd() * 0.45 : 1 });
+      }
+      const ease = (t) => 1 - Math.pow(1 - t, 3);
+      const clock = { t: 0 };
+      function draw() {
+        const t = clock.t;
+        ctx.clearRect(0, 0, 1920, 1080);
+        const ang = 0.35 * t, ca = Math.cos(ang), sa = Math.sin(ang);
+        for (const p of pts) {
+          const g = ease(Math.min(1, Math.max(0, (t - 0.05 - p.delay) / 1.15)));
+          const x3 = p.x * ca - p.z * sa, z3 = p.x * sa + p.z * ca;
+          const rr = R * p.out * (1 + 0.025 * Math.sin(t * 2.2 + p.y * 3));
+          const tx = CX + x3 * rr, tyy = CY + p.y * rr;
+          const drift = (1 - g) * 40 * Math.sin(t * 0.8 + p.sx);
+          const px = p.sx + drift + (tx - p.sx - drift) * g, py = p.sy + (tyy - p.sy) * g;
+          const depth = (z3 + 1) / 2;
+          const a = (0.25 + 0.75 * depth) * (0.55 + 0.45 * g);
+          ctx.fillStyle = "rgba(205,222,255," + a.toFixed(3) + ")";
+          ctx.beginPath(); ctx.arc(px, py, 1.4 + 1.6 * depth, 0, 6.2832); ctx.fill();
+        }
+      }
+      tl.fromTo(clock, { t: 0 }, { t: 3.2, duration: 3.2, ease: "none", onUpdate: draw, immediateRender: false }, 1.8);
+
+      window.__timelines["04-week2-brain"] = tl;
+    })();
+  </script>
+</template>

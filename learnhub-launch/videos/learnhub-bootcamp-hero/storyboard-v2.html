@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LearnHub AI Bootcamp hero · storyboard v2</title>
+<style>
+  @font-face { font-family: "Serif"; src: url("capture/assets/InstrumentSerif-Regular.woff2") format("woff2"); }
+  @font-face { font-family: "Serif"; font-style: italic; src: url("capture/assets/InstrumentSerif-Italic.woff2") format("woff2"); }
+  @font-face { font-family: "Sans"; src: url("capture/assets/GeneralSans-Variable.woff2") format("woff2"); font-weight: 200 700; }
+  @font-face { font-family: "Word"; src: url("capture/assets/Switzer-Variable.woff2") format("woff2"); font-weight: 100 900; }
+  :root {
+    --ink:#0B0F1A; --muted:#5B6472; --muted2:#8A93A6; --silver:#E7EAF1; --silver2:#D8DEEA;
+    --paper:#F6F7FB; --paper2:#EFF2F8; --blue:#1F33CC; --blue6:#182AB0; --blue5:#2A46F0; --sky:#3B6FF0; --sky2:#4C93F0;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+    --shadow: 0 0.1cqw 0.2cqw rgba(11,15,26,.06), 0 2.4cqw 5.6cqw -2.4cqw rgba(11,15,26,.22);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #E9ECF3; font-family: "Sans", system-ui, sans-serif; color: var(--ink); }
+  header.top { padding: 40px 48px 8px; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+  header.top h1 { font-family: "Serif"; font-weight: 400; font-size: 44px; margin: 0; }
+  header.top .dek { color: var(--muted); font-size: 16px; }
+  header.top .tag { font-family: var(--mono); font-size: 12px; background: #fff; border: 1px solid var(--silver2); border-radius: 999px; padding: 4px 12px; }
+  .act { margin: 26px 48px 10px; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; padding: 0 48px; }
+  @media (max-width: 1100px) { .grid { grid-template-columns: 1fr; } }
+  .cell figure { margin: 0; }
+  .stage { aspect-ratio: 16 / 9; container-type: inline-size; position: relative; overflow: hidden; background: #fff; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,26,.06), 0 10px 30px -14px rgba(11,15,26,.25); }
+  .meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin: 10px 2px 4px; }
+  .meta b { color: var(--ink); font-weight: 600; }
+  .note { font-size: 13.5px; line-height: 1.5; color: #2b3240; margin: 0 2px; }
+  .note b { color: var(--ink); }
+  .chip { display: inline-block; margin: 8px 2px 0; font-family: var(--mono); font-size: 11px; color: var(--blue6); background: #fff; border: 1px solid var(--silver2); border-radius: 999px; padding: 2px 10px; }
+
+  /* ----- in-frame atoms (all sized in cqw so the sheet matches 1920x1080) ----- */
+  .wash { position: absolute; inset: 0; background: linear-gradient(180deg,#fff 0%, #F6F7FB 60%, #EFF2F8 100%); }
+  .glow { position: absolute; left: 50%; bottom: -30cqw; width: 90cqw; height: 60cqw; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(76,147,240,.22), rgba(76,147,240,0)); }
+  .caption { position: absolute; top: 3.4cqw; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: .8cqw; background: #fff; border: .1cqw solid var(--silver2); border-radius: 999px; padding: .8cqw 1.8cqw .8cqw 1.1cqw; font-size: 1.9cqw; font-weight: 600; white-space: nowrap; box-shadow: var(--shadow); }
+  .caption .dot { width: 2.2cqw; height: 2.2cqw; border-radius: 50%; background: var(--blue); display: grid; place-items: center; }
+  .caption .dot svg { width: 1.3cqw; height: 1.3cqw; }
+  .caption em { font-style: normal; color: var(--blue); }
+  .win { position: absolute; background: #fff; border: .1cqw solid var(--silver); border-radius: 1.4cqw; box-shadow: var(--shadow); overflow: hidden; }
+  .bar { height: 3cqw; background: var(--paper); border-bottom: .1cqw solid var(--silver); display: flex; align-items: center; gap: .6cqw; padding: 0 1.2cqw; }
+  .bar i { width: .8cqw; height: .8cqw; border-radius: 50%; background: var(--silver2); display: block; }
+  .url { margin: 0 auto; font-family: var(--mono); font-size: 1cqw; color: var(--muted2); background: #fff; border: .1cqw solid var(--silver); border-radius: 999px; padding: .25cqw 1.6cqw; }
+  .row { display: flex; align-items: center; gap: 1cqw; }
+  .tick { width: 1.7cqw; height: 1.7cqw; border-radius: 50%; background: var(--blue); flex: none; display: grid; place-items: center; }
+  .tick svg { width: 1cqw; height: 1cqw; }
+  .ghost { border: .14cqw dashed var(--silver2); border-radius: .8cqw; background: repeating-linear-gradient(135deg, var(--paper) 0 1cqw, #fff 1cqw 2cqw); }
+  .mono { font-family: var(--mono); }
+  .pill { display: inline-flex; align-items: center; gap: .5cqw; border-radius: 999px; padding: .35cqw 1.1cqw; font-size: 1.1cqw; font-weight: 600; }
+  .btn { background: linear-gradient(180deg,var(--blue5),var(--blue) 55%,var(--blue6)); color: #fff; border-radius: 999px; font-weight: 600; text-align: center; }
+  .serif { font-family: "Serif"; font-weight: 400; }
+  .mark { color: var(--blue); }
+  .seams { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; padding: 22px; font-family: var(--mono); font-size: 11px; }
+  .seams span { background: var(--paper2); border-radius: 6px; padding: 4px 8px; }
+  .seams b { color: var(--blue); font-weight: 600; }
+
+  .paper { position:absolute; inset:0; background:#F6F7FB; }
+  .dots { position:absolute; inset:0; background-image: radial-gradient(rgba(11,15,26,.05) .12cqw, transparent .14cqw); background-size: 1.6cqw 1.6cqw; }
+  .cursor { position:absolute; width:3cqw; height:3cqw; filter: drop-shadow(0 .2cqw .4cqw rgba(11,15,26,.35)); }
+  .ring { position:absolute; border:.2cqw solid var(--blue); border-radius:50%; opacity:.55; }
+  .ghostword { color: rgba(11,15,26,.28); filter: blur(.18cqw); }
+  .roll { position:absolute; inset:0; background: radial-gradient(ellipse at center, #121828 0%, #0B0F1A 70%); color:#fff; }
+</style>
+</head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="lh-mark" viewBox="0 0 420 420"><path fill-rule="evenodd" fill="currentColor" d="M233.52 333.58A145 145 0 1 1 332.63 267.87A67.3 67.3 0 0 0 233.52 333.58ZM133 190.5a77 77 0 1 0 154 0a77 77 0 1 0 -154 0Z"/><path fill="currentColor" d="M253 327a47.5 47.5 0 1 0 95 0a47.5 47.5 0 1 0 -95 0Z"/></symbol>
+<symbol id="ck" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><h1>LearnHub AI Bootcamp · hero film</h1><span class="tag">v2 · 1920×1080 · ~39s · 9 frames · muted-first</span>
+<span class="dek">Rebuilt on the reference study: title then proof, week by week. Plain titles, no company names. Static key moments; motion arrives with the build.</span></header>
+<div class="act">Act 1 · The promise</div><div class="grid"><div class="cell" id="frame-01"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div>
+ <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+  <div class="serif" style="font-size:9cqw;line-height:1">Six weeks.</div>
+  <div class="serif" style="font-size:5.6cqw;line-height:1.1;margin-top:1.4cqw">Real things, <em style="color:var(--blue)">built with AI.</em></div>
+ </div></div>
+    <div class="meta"><span><b>01 · SIX WEEKS</b></span><span>hook · 0.0–3.5s</span></div>
+    <p class="note"><b>"Six" opens huge and fills the frame,</b> then shrinks into "Six weeks." (about 15 frames, as the reference's "See"). The second line blurs in word by word, 5 frames apart; "built with AI" lands last in blue.</p>
+    <span class="chip">→ zoom-through</span></figure></div><div class="cell" id="frame-02"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div><div class="caption"><span class="dot"><svg><use href="#ck"/></svg></span>The LearnHub <em>AI Bootcamp</em></div>
+ <div class="win" style="left:9cqw;right:9cqw;top:11cqw;bottom:-3cqw">
+  <div class="bar"><i></i><i></i><i></i><span class="url">learnhub.dev/learn</span></div>
+  <div style="display:flex;height:100%">
+   <div style="width:15cqw;background:var(--paper);border-right:.1cqw solid var(--silver);padding:1.4cqw">
+    <div class="row" style="font-family:Word;font-weight:600;font-size:1.4cqw"><svg class="mark" style="width:1.6cqw;height:1.6cqw"><use href="#lh-mark"/></svg>LearnHub</div>
+    <div class="btn" style="margin-top:1.6cqw;padding:.6cqw;font-size:1cqw;text-align:left;padding-left:1cqw">Bootcamp</div>
+    <div style="margin-top:1cqw;display:grid;gap:.9cqw;font-size:1cqw;color:var(--muted)"><span>Dashboard</span><span>Progress</span><span>Settings</span></div>
+   </div>
+   <div style="flex:1;padding:1.8cqw 2.2cqw">
+    <div class="serif" style="font-size:3.2cqw;line-height:1.05">Your bootcamp</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1cqw;margin-top:1.4cqw">
+     <div class="win" style="position:static;padding:1cqw;opacity:1"><div class="mono" style="font-size:.8cqw;color:var(--muted2)">WEEK 1</div><div style="font-size:1.05cqw;font-weight:600;margin-top:.3cqw">Your AI tools</div></div><div class="win" style="position:static;padding:1cqw;opacity:1"><div class="mono" style="font-size:.8cqw;color:var(--muted2)">WEEK 2</div><div style="font-size:1.05cqw;font-weight:600;margin-top:.3cqw">Writing</div></div><div class="win" style="position:static;padding:1cqw;opacity:1"><div class="mono" style="font-size:.8cqw;color:var(--muted2)">WEEK 3</div><div style="font-size:1.05cqw;font-weight:600;margin-top:.3cqw">Your website</div></div><div class="win" style="position:static;padding:1cqw;opacity:0.75"><div class="mono" style="font-size:.8cqw;color:var(--muted2)">WEEK 4</div><div style="font-size:1.05cqw;font-weight:600;margin-top:.3cqw">Launch video</div></div><div class="win" style="position:static;padding:1cqw;opacity:0.55"><div class="mono" style="font-size:.8cqw;color:var(--muted2)">WEEK 5</div><div style="font-size:1.05cqw;font-weight:600;margin-top:.3cqw">Automations</div></div><div class="win" style="position:static;padding:1cqw;opacity:0.35"><div class="mono" style="font-size:.8cqw;color:var(--muted2)">WEEK 6</div><div style="font-size:1.05cqw;font-weight:600;margin-top:.3cqw">Your next step</div></div>
+    </div>
+   </div>
+   <div style="width:17cqw;padding:1.8cqw 1.8cqw 0 0">
+    <div class="win" style="position:static;padding:1.3cqw"><div style="font-size:.95cqw;color:var(--muted);font-weight:600">Your progress</div><div class="serif" style="font-size:3cqw;line-height:1">11%</div><div class="mono" style="font-size:.8cqw;color:var(--muted2)">1 of 9 lessons done</div><div class="btn" style="margin-top:1cqw;padding:.6cqw;font-size:1cqw">Continue →</div></div>
+   </div>
+  </div>
+ </div>
+ <div class="ring" style="left:79.6cqw;top:30.6cqw;width:4cqw;height:4cqw"></div><svg class="cursor" style="left:81cqw;top:31.6cqw" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z" fill="#0B0F1A" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="meta"><span><b>02 · THE COURSE</b></span><span>product · 3.5–7.5s</span></div>
+    <p class="note"><b>The camera pushes in across the page</b> as the six week cards cascade in; the cursor glides in an eased arc to "Continue" and clicks (a ring grows from the click).</p>
+    <span class="chip">→ cut</span></figure></div><div class="cell" id="frame-03-divider"><figure>
+    <div class="stage"><div class="roll"></div>
+ <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:3cqw;color:#fff">
+  <span style="font-size:6cqw;font-weight:600;color:#4C93F0">Week</span>
+  <span style="display:flex;flex-direction:column;line-height:1.15;font-size:6cqw;font-weight:600">
+   <span style="color:rgba(255,255,255,.18);font-size:4.6cqw">0</span><span>1</span><span style="color:rgba(255,255,255,.18);font-size:4.6cqw">2</span>
+  </span>
+ </div></div>
+    <div class="meta"><span><b>03a · WEEK DIVIDER</b></span><span>in each week · 0.7s</span></div>
+    <p class="note"><b>The reference's rolling word list, as the week counter.</b> "Week" is fixed; the numbers roll up and settle on the next week, neighbours dimmed. Opens every week chapter, then a hard cut to the title.</p>
+    <span class="chip">→ cut</span></figure></div></div><div class="act">Act 2 · Six weeks, title then proof</div><div class="grid"><div class="cell" id="frame-03-title"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div>
+ <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+  <div class="serif" style="font-size:5.4cqw">Your AI tools, <em style="color:var(--blue)">ready</em> <span class="ghostword">to work</span></div>
+ </div></div>
+    <div class="meta"><span><b>03b · TITLE CARD</b></span><span>in each week · 1.2s</span></div>
+    <p class="note"><b>Words blur in one at a time,</b> 4 to 8 frames apart, each sliding a few pixels into place (shown mid-build: "to work" still arriving). Then the line shrinks and docks at the top as the caption for the proof.</p>
+    <span class="chip">dock → caption</span></figure></div><div class="cell" id="frame-03"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div><span class="mono" style="position:absolute;left:3.2cqw;top:3.8cqw;font-size:1.1cqw;color:var(--blue);letter-spacing:.14em">WEEK 1</span><div class="caption"><span class="dot"><svg><use href="#ck"/></svg></span>Your AI tools, <em>ready to work</em></div>
+ <div class="win" style="left:30cqw;width:40cqw;top:12cqw;padding:2cqw">
+  <div class="row" style="border-bottom:.1cqw solid var(--silver);padding-bottom:1.2cqw"><span class="tick" style="width:3cqw;height:3cqw"><svg style="color:#fff;width:1.6cqw;height:1.6cqw"><use href="#lh-mark"/></svg></span><div><div style="font-weight:600;font-size:1.5cqw">Your AI setup</div><div class="mono" style="font-size:.95cqw;color:var(--muted2)">Week 1</div></div></div>
+  <div style="display:grid;gap:.8cqw;margin-top:1.2cqw;font-size:1.35cqw;font-weight:500"><div class="row" style="background:var(--paper);border-radius:1cqw;padding:.8cqw 1.1cqw;opacity:1"><span style="flex:1">AI assistant</span><span class="tick"><svg><use href="#ck"/></svg></span></div><div class="row" style="background:var(--paper);border-radius:1cqw;padding:.8cqw 1.1cqw;opacity:1"><span style="flex:1">Coding agent</span><span class="tick"><svg><use href="#ck"/></svg></span></div><div class="row" style="background:var(--paper);border-radius:1cqw;padding:.8cqw 1.1cqw;opacity:1"><span style="flex:1">Project folder</span><span class="tick"><svg><use href="#ck"/></svg></span></div><div class="row" style="background:var(--paper);border-radius:1cqw;padding:.8cqw 1.1cqw;opacity:1"><span style="flex:1">Database</span><span class="tick"><svg><use href="#ck"/></svg></span></div><div class="row" style="background:var(--paper);border-radius:1cqw;padding:.8cqw 1.1cqw;opacity:0.5"><span style="flex:1">Hosting</span><span class="tick" style="background:var(--silver2)"></span></div></div>
+ </div>
+ <div class="win" style="left:63cqw;top:36cqw;padding:1cqw 1.5cqw"><div class="mono" style="color:var(--blue);font-size:1.15cqw">my-first-skill</div><div style="font-size:1cqw;color:var(--muted)">Your first skill, saved</div></div></div>
+    <div class="meta"><span><b>03 · WEEK 1</b></span><span>feature · 7.5–12.0s</span></div>
+    <p class="note"><b>Rows tick on top to bottom,</b> one every 8 frames; then the skill chip drops in from the right. Tools are named by what they do; no product names or logos.</p>
+    <span class="chip">→ divider (cut)</span></figure></div><div class="cell" id="frame-04"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div><span class="mono" style="position:absolute;left:3.2cqw;top:3.8cqw;font-size:1.1cqw;color:var(--blue);letter-spacing:.14em">WEEK 2</span><div class="caption"><span class="dot"><svg><use href="#ck"/></svg></span>Writing that sounds <em>like you</em></div>
+ <div class="win" style="left:12cqw;width:22cqw;top:16cqw;padding:1.6cqw"><div class="mono" style="color:var(--blue);font-size:1.15cqw">my-voice</div><div style="font-size:1.05cqw;color:var(--muted);margin-top:.6cqw;line-height:1.5">Plain words.<br>Short sentences.<br>Sounds like you.</div></div>
+ <div class="win" style="left:37cqw;width:51cqw;top:12cqw;bottom:6cqw">
+  <div class="bar"><i></i><i></i><i></i><span class="url">launch-post</span></div>
+  <div style="padding:2cqw 2.4cqw">
+   <div class="serif" style="font-size:2.8cqw;line-height:1.1">Cakes that arrive on time</div>
+   <div style="margin-top:1.2cqw;font-size:1.3cqw;line-height:1.6;color:#2b3240">Order before 2pm and your cake is at the door by evening. Every one baked that morning, in your flavour.<span style="display:inline-block;width:.2cqw;height:1.5cqw;background:var(--blue);vertical-align:middle;margin-left:.2cqw"></span></div>
+   <div class="row" style="margin-top:1.6cqw"><span class="btn" style="padding:.5cqw 1.6cqw;font-size:1.1cqw">Publish</span><span class="pill" style="background:var(--paper2);color:var(--blue)">✓ Published</span></div>
+  </div>
+ </div><svg class="cursor" style="left:46cqw;top:41.5cqw" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z" fill="#0B0F1A" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="meta"><span><b>04 · WEEK 2</b></span><span>feature · 12.0–16.0s</span></div>
+    <p class="note"><b>The voice card lands, then the post types itself</b> with a caret (about 1.2s); the cursor clicks "Publish" and the "Published" pill springs on.</p>
+    <span class="chip">→ divider (cut)</span></figure></div><div class="cell" id="frame-05"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div><span class="mono" style="position:absolute;left:3.2cqw;top:3.8cqw;font-size:1.1cqw;color:var(--blue);letter-spacing:.14em">WEEK 3</span><div class="caption"><span class="dot"><svg><use href="#ck"/></svg></span>Your website, <em>live</em></div>
+ <div class="win" style="left:14cqw;right:14cqw;top:11cqw;bottom:-3cqw">
+  <div class="bar"><i></i><i></i><i></i><span class="url" style="color:var(--ink)">yourproject.com</span></div>
+  <div style="padding:2.6cqw 3.4cqw">
+   <div style="height:3.4cqw;width:58%;background:var(--ink);border-radius:999px;opacity:.88"></div>
+   <div style="height:1.2cqw;width:80%;background:var(--silver);border-radius:999px;margin-top:1.4cqw"></div>
+   <div style="height:1.2cqw;width:64%;background:var(--silver);border-radius:999px;margin-top:.8cqw"></div>
+   <div class="row" style="margin-top:1.8cqw"><div class="btn" style="width:12cqw;height:3.4cqw;display:grid;place-items:center;font-size:1.2cqw">Go live</div></div>
+  </div>
+ </div>
+ <div style="position:absolute;left:22cqw;top:34cqw;width:30cqw;height:30cqw;border-radius:50%;background:radial-gradient(circle at 40% 35%,#2A46F0,#1F33CC 60%,#182AB0);transform:translate(-30%,-30%)"></div>
+ <svg class="cursor" style="left:26cqw;top:35cqw" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z" fill="#0B0F1A" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+ <div class="win" style="right:9cqw;bottom:6cqw;padding:1.1cqw 1.8cqw 1.1cqw 1.1cqw"><div class="row"><span class="tick" style="width:2.6cqw;height:2.6cqw"><svg style="width:1.4cqw;height:1.4cqw"><use href="#ck"/></svg></span><div><div style="font-weight:600;font-size:1.4cqw">Live</div><div style="font-size:1cqw;color:var(--muted)">yourproject.com</div></div></div></div></div>
+    <div class="meta"><span><b>05 · WEEK 3</b></span><span>feature · 16.0–21.0s</span></div>
+    <p class="note"><b>Shown mid-transition.</b> The page builds block by block; the cursor clicks "Go live" and a royal-blue circle grows from the click until it fills the frame (the film's one signature reveal), opening on the finished site with a "Live" pill. No hosting brand.</p>
+    <span class="chip">→ divider (cut)</span></figure></div><div class="cell" id="frame-06"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div><span class="mono" style="position:absolute;left:3.2cqw;top:3.8cqw;font-size:1.1cqw;color:var(--blue);letter-spacing:.14em">WEEK 4</span><div class="caption"><span class="dot"><svg><use href="#ck"/></svg></span>A video to <em>launch it</em></div>
+ <div class="win" style="left:20cqw;right:20cqw;top:12cqw;height:20cqw;background:linear-gradient(160deg,var(--blue5),var(--blue) 50%,#0B0F1A 140%);display:grid;place-items:center">
+  <span style="width:5cqw;height:5cqw;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--blue);font-size:2cqw">▶</span></div>
+ <div class="win" style="left:12cqw;right:12cqw;top:35cqw;padding:1.4cqw 1.8cqw">
+  <div class="row" style="justify-content:space-between"><span class="mono" style="font-size:1.1cqw">launch-video</span><span class="pill" style="background:var(--paper2);color:var(--blue)">● Rendering… 72%</span></div>
+  <div style="position:relative;display:flex;gap:.5cqw;height:3.2cqw;margin-top:1cqw">
+   <div style="width:26%;background:var(--blue);border-radius:.6cqw"></div><div style="width:17%;background:var(--sky);border-radius:.6cqw"></div><div style="width:32%;background:var(--blue5);border-radius:.6cqw"></div><div style="flex:1;background:var(--sky2);border-radius:.6cqw;opacity:.5"></div>
+   <span style="position:absolute;left:48%;top:-.6cqw;bottom:-.6cqw;width:.25cqw;background:var(--ink);border-radius:9px"></span></div>
+ </div></div>
+    <div class="meta"><span><b>06 · WEEK 4</b></span><span>feature · 21.0–25.0s</span></div>
+    <p class="note"><b>Clips snap onto the track one by one</b>, the playhead sweeps and the preview changes with it; the status pill counts "Rendering… 8% → 72%" then flips to "Ready".</p>
+    <span class="chip">→ divider (cut)</span></figure></div><div class="cell" id="frame-07"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div><span class="mono" style="position:absolute;left:3.2cqw;top:3.8cqw;font-size:1.1cqw;color:var(--blue);letter-spacing:.14em">WEEK 5</span><div class="caption"><span class="dot"><svg><use href="#ck"/></svg></span>Work that runs <em>on its own</em></div>
+ <div class="win" style="left:16cqw;right:16cqw;top:13cqw;padding:2cqw 2.4cqw">
+  <div class="row" style="justify-content:space-between"><span style="font-weight:600;font-size:1.5cqw">Reply to enquiries</span><span class="pill" style="background:var(--paper2);color:var(--blue)">● Active</span></div>
+  <div class="row" style="margin-top:2.4cqw;gap:1.4cqw">
+   <div class="win" style="position:static;flex:1;padding:1.3cqw"><div class="mono" style="font-size:.9cqw;color:var(--muted2)">WHEN</div><div style="font-weight:600;font-size:1.3cqw">New enquiry</div></div>
+   <span style="color:var(--blue);font-size:2cqw">→</span>
+   <div class="win" style="position:static;flex:1;padding:1.3cqw;background:var(--blue);color:#fff;border-color:var(--blue)"><svg style="width:1.6cqw;height:1.6cqw;color:#fff"><use href="#lh-mark"/></svg><div style="font-weight:600;font-size:1.3cqw">Reply drafted</div><div style="font-size:1cqw;opacity:.8">AI step</div></div>
+   <span style="color:var(--blue);font-size:2cqw">→</span>
+   <div class="win" style="position:static;flex:1;padding:1.3cqw"><div class="mono" style="font-size:.9cqw;color:var(--muted2)">THEN</div><div style="font-weight:600;font-size:1.3cqw">Email sent</div></div>
+  </div>
+  <div class="row" style="margin-top:2cqw;font-size:1.15cqw;color:var(--muted)"><span class="tick"><svg><use href="#ck"/></svg></span>Done in seconds, while you were busy</div>
+ </div></div>
+    <div class="meta"><span><b>07 · WEEK 5</b></span><span>feature · 25.0–29.5s</span></div>
+    <p class="note"><b>The flow lights up left to right</b>, then the cards swap in place (the reference's automations beat) to a second example: "New order → Thank-you written → Added to sheet". No tool brands.</p>
+    <span class="chip">→ divider (cut)</span></figure></div></div><div class="act">Act 3 · Proof and close</div><div class="grid"><div class="cell" id="frame-08"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div><span class="mono" style="position:absolute;left:3.2cqw;top:3.8cqw;font-size:1.1cqw;color:var(--blue);letter-spacing:.14em">WEEK 6</span><div class="caption"><span class="dot"><svg><use href="#ck"/></svg></span>Every project, <em>reviewed</em></div>
+ <div class="win" style="left:8cqw;width:26cqw;top:17cqw;padding:1.6cqw;transform:rotate(-3deg)">
+  <div class="mono" style="font-size:.9cqw;color:var(--muted2)">WEEKLY PROJECT</div><div style="font-weight:600;font-size:1.4cqw;margin-top:.3cqw">Your website</div>
+  <div class="ghost" style="height:6cqw;margin-top:1cqw"></div>
+  <span class="pill" style="background:var(--blue);color:#fff;margin-top:1cqw">✓ Approved</span>
+ </div>
+ <div class="win" style="left:37cqw;width:52cqw;top:12cqw;aspect-ratio:1.414;padding:2cqw;display:flex;flex-direction:column;align-items:center;text-align:center">
+  <div class="row" style="font-family:Word;font-weight:600;font-size:1.5cqw"><svg class="mark" style="width:1.8cqw;height:1.8cqw"><use href="#lh-mark"/></svg>LearnHub</div>
+  <div style="border:.12cqw solid var(--ink);border-radius:999px;padding:.3cqw 1.2cqw;font-size:.8cqw;letter-spacing:.2em;margin-top:1cqw">CERTIFICATE OF COMPLETION</div>
+  <div class="serif" style="font-size:3.6cqw;margin-top:1.4cqw;line-height:1">Your name</div>
+  <div style="font-size:1cqw;color:var(--muted);margin-top:1cqw">has completed all of the work for</div>
+  <div class="serif" style="font-size:2.4cqw;color:var(--blue)">AI Bootcamp</div>
+  <div class="row" style="margin-top:auto;width:100%;justify-content:space-between;align-items:flex-end">
+   <div class="serif" style="font-style:italic;font-size:1.5cqw;border-bottom:.1cqw solid var(--ink)">Signature</div>
+   <span style="width:4.4cqw;height:4.4cqw;border-radius:50%;background:radial-gradient(circle at 30% 25%,var(--sky2),var(--blue) 55%,var(--blue6));display:grid;place-items:center"><svg style="width:2.2cqw;height:2.2cqw;color:#fff"><use href="#lh-mark"/></svg></span>
+   <span style="width:4.4cqw;height:4.4cqw;background:repeating-conic-gradient(var(--ink) 0 25%,#fff 0 50%) 0 0/1.1cqw 1.1cqw"></span>
+  </div>
+ </div>
+ <span class="pill" style="position:absolute;left:73cqw;top:47cqw;background:#fff;border:.1cqw solid var(--silver2);box-shadow:var(--shadow)">✓ Verified</span>
+ <span class="pill" style="position:absolute;left:12cqw;top:44cqw;background:#fff;border:.1cqw solid var(--silver2);box-shadow:var(--shadow)">Demo day</span></div>
+    <div class="meta"><span><b>08 · WEEK 6</b></span><span>proof · 29.5–34.5s</span></div>
+    <p class="note"><b>"Approved" stamps the project card</b>, then the certificate slides up beside it; "Verified" and "Demo day" pop on. The name reads "Your name": the viewer's.</p>
+    <span class="chip">→ blur-crossfade</span></figure></div><div class="cell" id="frame-09"><figure>
+    <div class="stage"><div class="paper"></div><div class="dots"></div><div class="glow"></div>
+ <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+  <div class="serif" style="font-size:5.6cqw;position:relative"><span style="color:var(--blue);position:relative">You<svg style="position:absolute;left:-1.6cqw;top:-1cqw;width:13cqw;height:8.6cqw" viewBox="0 0 130 86"><path d="M18 48c-6-22 22-38 52-38s54 12 52 30-30 34-62 34S12 66 10 46c-1-12 10-24 26-30" fill="none" stroke="#1F33CC" stroke-width="2.6" stroke-linecap="round"/></svg></span> decide what to build.</div>
+  <div class="row" style="gap:1.4cqw;font-family:Word;font-weight:600;font-size:3.6cqw;margin-top:4cqw;letter-spacing:-.02em"><svg class="mark" style="width:3.8cqw;height:3.8cqw"><use href="#lh-mark"/></svg>LearnHub</div>
+  <div class="serif" style="font-size:2.8cqw;color:var(--blue);margin-top:.6cqw">AI Bootcamp</div>
+  <div style="font-size:1.4cqw;color:var(--muted);margin-top:.8cqw">learnhub.dev</div>
+ </div></div>
+    <div class="meta"><span><b>09 · YOU DECIDE</b></span><span>close · 34.5–39.0s</span></div>
+    <p class="note"><b>Shown as both beats in one sketch.</b> "You decide what to build." blurs in word by word and a hand-drawn loop draws around "You"; the line clears and the lockup settles: mark + LearnHub, "AI Bootcamp", learnhub.dev. Holds to the end.</p>
+    <span class="chip">end · hold</span></figure></div><div class="cell"><figure><div class="stage" style="background:#fff">
+ <div class="seams"><span>01</span><b>zoom</b><span>02</span><b>cut</b><span>W1</span><b>cut</b><span>W2</span><b>cut</b><span>W3</span><b>circle</b><span>W4</span><b>cut</b><span>W5</span><b>cut</b><span>W6</span><b>blur</b><span>09</span></div>
+ <div style="position:absolute;left:22px;right:22px;bottom:18px;font-size:12px;color:var(--muted);line-height:1.6">
+  <div style="display:flex;gap:6px;margin-bottom:8px"><span style="width:26px;height:26px;border-radius:6px;background:#1F33CC"></span><span style="width:26px;height:26px;border-radius:6px;background:#0B0F1A"></span><span style="width:26px;height:26px;border-radius:6px;background:#F6F7FB;border:1px solid #D8DEEA"></span><span style="width:26px;height:26px;border-radius:6px;background:#fff;border:1px solid #D8DEEA"></span></div>
+  <b style="color:var(--ink)">From the reference:</b> title → proof chapters, blur-in words, rolling divider, cursor as a character, one circle reveal, count-ups.<br>
+  <b style="color:var(--ink)">Bans:</b> no company names or logos · no price, dates or cohort · no slogan-speak · one accent colour · words in every frame.
+ </div></div>
+ <div class="meta"><span><b>SEAMS · TOKENS</b></span><span>v2 · ~39s</span></div>
+ <p class="note"><b>Mostly hard cuts on the beat,</b> as in the reference; each week opens on the rolling divider. One circle reveal at the turning point.</p></figure></div></div><div style="height:60px"></div></body></html>
