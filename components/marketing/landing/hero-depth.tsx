@@ -6,14 +6,13 @@ import { usePrefersReducedMotion } from "./motion-budget";
 /**
  * Publishes the hero's scroll progress as `--p` (0 when the section's top is at
  * the top of the viewport, 1 once it has scrolled fully past), and nothing
- * else. Every layer reads that one number in CSS and moves at its own rate,
- * which is where the depth comes from: the glow lags, the product window
- * flattens out of its tilt, the floating cards run ahead of it.
+ * else. The glow behind the hero film reads that one number in CSS and lags
+ * behind the page as it scrolls, which is where the depth comes from.
  *
  * One custom property per frame, written only while the hero is on screen, so
  * the page does not re-render and an off-screen hero costs nothing. With
  * reduced motion the property is never set and the CSS falls back to a static,
- * flat composition (see .lh-depth-* in app/brand.css).
+ * flat composition (see .lh-depth-back in app/brand.css).
  */
 export function HeroDepth({
   children,

@@ -264,21 +264,14 @@
 }
 
 /* Depth. HeroDepth writes --p (0 to 1) as the hero scrolls away; each plane
-   reads it at its own rate. Far moves with the scroll (lags behind the page),
-   and the window holding the film flattens out of a slight tilt. Transforms only, so this is compositor work on a phone.
+   reads it at its own rate. The glow behind the film moves with the scroll,
+   lagging behind the page. Transforms only, so this is compositor work on a phone.
 
    Gated on no-preference: with reduced motion --p is never set, and outside
    this block nothing transforms, so the hero is static and flat. */
 @media (prefers-reduced-motion: no-preference) {
-  .lh-depth-stage {
-    perspective: 1600px;
-  }
   .lh-depth-back {
     transform: translate3d(0, calc(var(--p, 0) * 160px), 0);
-  }
-  .lh-depth-panel {
-    transform-origin: 50% 100%;
-    transform: rotateX(calc(9deg * (1 - min(var(--p, 0) * 3.5, 1))));
   }
 }
 

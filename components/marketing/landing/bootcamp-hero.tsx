@@ -12,8 +12,8 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
  * pales as it falls, then the bootcamp film, framed, floating where the wash
  * meets the page (the lesson mockup held this spot until 2026-10-08).
  *
- * Two planes give it depth on scroll (see HeroDepth): the glow behind the
- * film, and the film.
+ * The glow behind the film drifts on scroll (see HeroDepth); the film itself
+ * stays flat, as on the reference.
  */
 export function BootcampHero() {
   // The page revalidates hourly, so this flips to the full price within an
@@ -25,7 +25,7 @@ export function BootcampHero() {
       <section className="relative">
         <div className="lh-depth-back lh-hero-glow pointer-events-none absolute inset-x-0 bottom-0 h-[70%]" aria-hidden />
 
-        <div className="relative mx-auto max-w-[1180px] px-5 pb-20 pt-32 text-center sm:pb-36 sm:pt-40">
+        <div className="relative mx-auto max-w-[1256px] px-5 pb-20 pt-28 text-center sm:pb-28 sm:pt-24">
           <span
             className="lh-hero-in inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-sm"
             style={d(0)}
@@ -35,14 +35,14 @@ export function BootcampHero() {
           </span>
 
           <h1
-            className="lh-hero-in lh-balance mx-auto mt-6 max-w-[14ch] font-serif text-[2.9rem] font-normal leading-[1.02] tracking-[-0.015em] text-white sm:text-[5rem] lg:text-[5.75rem]"
+            className="lh-hero-in lh-balance mx-auto mt-5 max-w-[14ch] font-serif text-[2.9rem] font-normal leading-[1.02] tracking-[-0.015em] text-white sm:text-[4.5rem] lg:text-[4.75rem]"
             style={d(120)}
           >
             Build <em className="italic">real things</em> with AI in six weeks
           </h1>
 
           <p
-            className="lh-hero-in mx-auto mt-6 max-w-[34rem] text-base leading-relaxed text-white/80 sm:text-lg"
+            className="lh-hero-in mx-auto mt-5 max-w-[34rem] text-base leading-relaxed text-white/80 sm:text-lg"
             style={d(240)}
           >
             A live bootcamp for people who want to build and earn with AI. You
@@ -50,7 +50,7 @@ export function BootcampHero() {
             one real product or offer, launched.
           </p>
 
-          <div className="lh-hero-in mt-9 flex flex-col items-center gap-4" style={d(360)}>
+          <div className="lh-hero-in mt-7 flex flex-col items-center gap-3" style={d(360)}>
             <SeatLink tone="light" />
             {/* Two lines on a phone, one from sm up: the separators only
                 show where the pieces share a line. */}
@@ -72,7 +72,10 @@ export function BootcampHero() {
             </p>
           </div>
 
-          <div className="lh-hero-in lh-depth-stage mx-auto mt-16 max-w-[1040px] sm:mt-20" style={d(520)}>
+          {/* Sized and placed after artisan.co/ai-sales-agent: 1216px wide on a
+              laptop, flat, starting high enough that most of it is on the
+              first screen. */}
+          <div className="lh-hero-in mx-auto mt-10 max-w-[1216px] sm:mt-11" style={d(520)}>
             <HeroFilm />
           </div>
         </div>
