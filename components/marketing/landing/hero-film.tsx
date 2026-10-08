@@ -1,43 +1,33 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePrefersReducedMotion } from "./motion-budget";
 
 /**
  * The bootcamp film in the hero's framed panel, where the lesson mockup used to
  * sit. Made in learnhub-launch/videos/learnhub-hero-remotion; the web files are
  * two-pass encodes of that render (2.6 MB, and 1.8 MB for phones).
  *
- * It starts itself, muted, only when that is cheap for the reader: not with
- * reduced motion, and not when the browser says the reader is saving data.
- * Otherwise the poster stays up with a play button, and nothing downloads until
- * it is pressed. It pauses while scrolled out of view, so a reader lower down
- * the page is not decoding a hero they cannot see, and resumes on the way back
- * unless the reader paused it themselves.
+ * As on artisan.co, it does not start itself: the poster shows with a large
+ * play button in the centre, and one tap plays the film with sound on.
+ * Browsers only allow sound after a tap, and waiting for it means nothing
+ * downloads for a reader who never presses play, which matters on metered data.
  *
- * Controls follow artisan.co: a large play button in the centre while paused,
- * a click anywhere on the film to pause, and a small bar for play/pause and
- * sound.
+ * Once started: a click anywhere on the film pauses it, a small bar holds
+ * play/pause and sound, and it pauses while scrolled out of view, resuming on
+ * the way back unless the reader paused it themselves.
  */
-type NavigatorWithConnection = Navigator & { connection?: { saveData?: boolean } };
 
 const glassButton =
   "inline-flex items-center gap-2 rounded-full bg-ink/55 text-white ring-1 ring-white/20 backdrop-blur-md transition-colors duration-150 hover:bg-ink/70";
 
 export function HeroFilm() {
   const ref = useRef<HTMLVideoElement>(null);
-  const reduced = usePrefersReducedMotion();
   const [playing, setPlaying] = useState(false);
-  const [muted, setMuted] = useState(true);
-  // Becomes true once the film has been allowed to run, by the checks below or by a tap.
+  const [muted, setMuted] = useState(false);
+  // True from the first tap on play; until then only the poster and the play button show.
   const [wanted, setWanted] = useState(false);
   // A pause the reader chose; scrolling back into view must not override it.
   const userPaused = useRef(false);
-
-  useEffect(() => {
-    const saveData = (navigator as NavigatorWithConnection).connection?.saveData === true;
-    if (!reduced && !saveData) setWanted(true);
-  }, [reduced]);
 
   useEffect(() => {
     const video = ref.current;
@@ -51,6 +41,7 @@ export function HeroFilm() {
     return () => io.disconnect();
   }, [wanted]);
 
+  // Not muted by default: the tap on play is what lets the browser allow sound.
   const play = () => {
     userPaused.current = false;
     setWanted(true);
@@ -75,7 +66,6 @@ export function HeroFilm() {
         ref={ref}
         className="block aspect-video w-full cursor-pointer object-cover"
         poster="/video/hero-poster.jpg"
-        muted
         loop
         playsInline
         preload="none"
@@ -89,7 +79,7 @@ export function HeroFilm() {
       </video>
 
       {!playing && (
-        <button type="button" onClick={play} className="absolute inset-0 grid place-items-center" aria-label="Play the film">
+        <button type="button" onClick={play} className="absolute inset-0 grid place-items-center" aria-label="Play the film with sound">
           <span className="grid h-16 w-16 place-items-center rounded-full bg-white/15 text-white ring-1 ring-white/30 backdrop-blur-sm transition-transform duration-200 ease-out hover:scale-105 sm:h-20 sm:w-20">
             <svg className="ml-1 h-6 w-6 sm:h-7 sm:w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
               <path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5Z" />
@@ -98,7 +88,7 @@ export function HeroFilm() {
         </button>
       )}
 
-      {/* The bar shows once the film has started, so a paused film can be resumed from it too. */}
+      {/* The bar shows once the film has been started, so a paused film can be resumed from it too. */}
       {wanted && (
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between sm:bottom-4 sm:left-4 sm:right-4">
           <button
