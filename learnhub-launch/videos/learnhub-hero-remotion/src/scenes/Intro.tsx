@@ -2,13 +2,16 @@ import React from "react";
 import { AbsoluteFill, Easing, interpolate, Series, useCurrentFrame, useVideoConfig } from "remotion";
 import { measureText } from "@remotion/layout-utils";
 import { F } from "../lib/brand";
-import { FadeWord, Centre, clamp, easeOut, GrowWord, Paper, usePush } from "../lib/motion";
+import { FadeWord, Centre, clamp, easeOut, GrowWord, Paper, usePush, useVertical } from "../lib/motion";
 import { Coin } from "../lib/Mark";
 
 const TITLE = 96;
 
 /** Shot 1: a single-frame-ish flash of the gradient wash, like the reference's first frames. */
-const Flash: React.FC<{ lines: [string, string] }> = ({ lines }) => (
+const Flash: React.FC<{ lines: [string, string] }> = ({ lines }) => {
+  // On a phone the name breaks after "LearnHub", so both lines stay large.
+  const v = useVertical();
+  return (
   <AbsoluteFill
     style={{
       background: `radial-gradient(ellipse 55% 45% at 12% 100%, rgba(200,225,255,.85) 0%, rgba(200,225,255,0) 70%), radial-gradient(ellipse 70% 55% at 85% 100%, rgba(42,70,240,.85) 0%, rgba(42,70,240,0) 70%), radial-gradient(ellipse 90% 50% at 50% 100%, rgba(76,147,240,.45) 0%, rgba(76,147,240,0) 75%), #030407`,
@@ -18,23 +21,25 @@ const Flash: React.FC<{ lines: [string, string] }> = ({ lines }) => (
   >
     <Centre style={{ flexDirection: "column", gap: 18 }}>
       <div style={{ fontSize: 108, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1 }}>{lines[0]}</div>
-      <div style={{ fontSize: 128, fontWeight: 500, letterSpacing: "-0.015em", lineHeight: 1 }}>{lines[1]}</div>
+      <div style={{ fontSize: 128, fontWeight: 500, letterSpacing: "-0.015em", lineHeight: 1.05, textAlign: "center", whiteSpace: "pre-line" }}>{v ? lines[1].replace("LearnHub ", "LearnHub\n") : lines[1]}</div>
     </Centre>
   </AbsoluteFill>
-);
+  );
+};
 
 /** Shot 2: black, the coin spins beside "AI Bootcamp"; "LearnHub" slides out from behind it. */
 const CoinOnBlack: React.FC = () => {
   const f = useCurrentFrame();
   const turn = interpolate(f, [0, 26], [-200, 360], { ...clamp, easing: easeOut });
   // "LearnHub" opens its own width, so "AI Bootcamp" is pushed right as in the reference.
-  const nameW = measureText({ text: "LearnHub ", fontFamily: F.display, fontSize: 88, fontWeight: 600 }).width;
+  const size = useVertical() ? 66 : 88;
+  const nameW = measureText({ text: "LearnHub ", fontFamily: F.display, fontSize: size, fontWeight: 600 }).width;
   const open = interpolate(f, [12, 22], [0, 1], { ...clamp, easing: easeOut });
   return (
     <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 50%, #12151E 0%, #050608 70%)`, fontFamily: F.display, color: "#fff" }}>
       <Centre style={{ gap: 28 }}>
-        <Coin size={120} turn={turn} dark />
-        <div style={{ display: "flex", fontSize: 88, fontWeight: 600, letterSpacing: "-0.01em", textShadow: "0 0 24px rgba(255,255,255,.35)" }}>
+        <Coin size={size * 1.36} turn={turn} dark />
+        <div style={{ display: "flex", fontSize: size, fontWeight: 600, letterSpacing: "-0.01em", textShadow: "0 0 24px rgba(255,255,255,.35)" }}>
           <span style={{ display: "inline-block", overflow: "hidden", whiteSpace: "nowrap", width: nameW * open, opacity: open }}>
             LearnHub
           </span>
@@ -50,11 +55,14 @@ const Introducing: React.FC<{ len: number }> = ({ len }) => {
   const f = useCurrentFrame();
   const push = usePush(len);
   const turn = interpolate(f, [0, 22], [0, 360], { ...clamp, easing: easeOut });
+  const v = useVertical();
   return (
     <Paper>
-      <Centre style={{ gap: 26, scale: push }}>
+      <Centre style={{ gap: v ? 40 : 26, scale: push, flexDirection: v ? "column" : "row" }}>
         <Coin size={104} turn={turn} />
-        <div style={{ fontSize: 84, fontWeight: 500, letterSpacing: "-0.01em" }}>Introducing LearnHub AI Bootcamp</div>
+        <div style={{ fontSize: 84, fontWeight: 500, letterSpacing: "-0.01em", textAlign: "center", lineHeight: 1.15 }}>
+          {v ? <>Introducing<br />LearnHub AI Bootcamp</> : "Introducing LearnHub AI Bootcamp"}
+        </div>
       </Centre>
     </Paper>
   );
@@ -71,14 +79,15 @@ const SixWeeks: React.FC<{ len: number }> = ({ len }) => {
   const big = 4.2;
   const hold = interpolate(f, [0, 12], [big, big * 0.93], clamp);
   const shrink = interpolate(f, [12, 20], [0, 1], { ...clamp, easing: Easing.bezier(0.6, 0, 0.2, 1) });
+  const size = useVertical() ? 84 : TITLE;
   return (
     <Paper>
       <Centre style={{ scale: push }}>
-        <div style={{ display: "flex", fontSize: TITLE, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.1 }}>
+        <div style={{ display: "flex", fontSize: size, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.1 }}>
           <span style={{ display: "inline-block", scale: hold + (1 - hold) * shrink }}>Six</span>
-          <GrowWord at={19}>weeks</GrowWord>
-          <GrowWord at={22} raised>from</GrowWord>
-          <GrowWord at={25}>now,</GrowWord>
+          <GrowWord at={19} size={size}>weeks</GrowWord>
+          <GrowWord at={22} size={size} raised>from</GrowWord>
+          <GrowWord at={25} size={size}>now,</GrowWord>
         </div>
       </Centre>
     </Paper>
@@ -88,15 +97,23 @@ const SixWeeks: React.FC<{ len: number }> = ({ len }) => {
 /** Shot 4b: hard cut, the second half of the line on its own card, as the reference's claim cards. */
 const BuiltThis: React.FC<{ len: number }> = ({ len }) => {
   const push = usePush(len);
+  const v = useVertical();
   return (
     <Paper>
       <Centre style={{ scale: push }}>
+        {v ? (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", fontSize: TITLE, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.15 }}>
+            <div style={{ display: "flex" }}><FadeWord at={0}>you'll</FadeWord><GrowWord at={3}>have</GrowWord></div>
+            <div style={{ display: "flex" }}><FadeWord at={6} accent>built</FadeWord><GrowWord at={9} accent raised>this.</GrowWord></div>
+          </div>
+        ) : (
         <div style={{ display: "flex", fontSize: TITLE, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.1 }}>
           <FadeWord at={0}>you'll</FadeWord>
           <GrowWord at={3}>have</GrowWord>
           <GrowWord at={6} accent>built</GrowWord>
           <GrowWord at={9} accent raised>this.</GrowWord>
         </div>
+        )}
       </Centre>
     </Paper>
   );

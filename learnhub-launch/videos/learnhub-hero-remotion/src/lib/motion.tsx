@@ -1,5 +1,5 @@
 import React from "react";
-import { Easing, interpolate, useCurrentFrame } from "remotion";
+import { Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { measureText } from "@remotion/layout-utils";
 import { C, F } from "./brand";
 
@@ -32,6 +32,15 @@ export const FadeWord: React.FC<{
       {children}
     </span>
   );
+};
+
+/**
+ * True in the 1080×1920 Instagram cut. Every scene reads it and lays itself out
+ * for a tall frame, so both cuts come from the same shots, timing and sound.
+ */
+export const useVertical = () => {
+  const { width, height } = useVideoConfig();
+  return height > width;
 };
 
 /** Held shots push in about 3% over their length. */

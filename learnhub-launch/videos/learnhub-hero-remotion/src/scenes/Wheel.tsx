@@ -1,7 +1,7 @@
 import React from "react";
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, F } from "../lib/brand";
-import { clamp } from "../lib/motion";
+import { clamp, useVertical } from "../lib/motion";
 
 export const WHEEL_ITEMS = ["AI tools", "AI brain", "Websites", "Videos", "Automations", "A career"];
 
@@ -18,21 +18,26 @@ export const Wheel: React.FC<{ to: number }> = ({ to }) => {
   const pos = roll + drift;
   // Measured off the reference: items sit an even ~190px apart; only the fade and a
   // slight shrink suggest the drum.
-  const GAP = 190;
+  // On a phone the type drops to 104px and the drum shows more of the list, to fill the height.
+  const v = useVertical();
+  const GAP = v ? 150 : 190;
+  const SIZE = v ? 104 : 150;
+  const REACH = v ? 3.6 : 2.6;
+  const { width, height } = useVideoConfig();
   const STEP = 0.4;
   const N = WHEEL_ITEMS.length;
   return (
     <AbsoluteFill style={{ background: `radial-gradient(ellipse 60% 70% at 50% 50%, #161A24 0%, #07080B 75%)`, fontFamily: F.sans }}>
-      <div style={{ position: "absolute", left: 0, top: 530, width: 1920, height: 0, scale: interpolate(f, [0, 30], [1, 1.015], clamp) }}>
-        <div style={{ position: "relative", width: 1920, height: 0 }}>
-          <div style={{ position: "absolute", left: 320, top: 0, translate: "0 -50%", lineHeight: 1, fontSize: 150, fontWeight: 500, color: C.sky2, letterSpacing: "-0.01em" }}>
+      <div style={{ position: "absolute", left: 0, top: v ? height / 2 : 530, width, height: 0, scale: interpolate(f, [0, 30], [1, 1.015], clamp) }}>
+        <div style={{ position: "relative", width, height: 0 }}>
+          <div style={{ position: "absolute", left: v ? 70 : 320, top: 0, translate: "0 -50%", lineHeight: 1, fontSize: SIZE, fontWeight: 500, color: C.sky2, letterSpacing: "-0.01em" }}>
             Build
           </div>
           {WHEEL_ITEMS.map((item, i) => {
             // The list wraps like a real drum, so the first chapter still has items above it.
             const d = ((((i - pos) % N) + N + N / 2) % N) - N / 2;
             const a = d * STEP;
-            if (Math.abs(d) > 2.6) return null;
+            if (Math.abs(d) > REACH) return null;
             const cos = Math.cos(a);
             const active = 1 - Math.min(1, Math.abs(d));
             return (
@@ -40,18 +45,18 @@ export const Wheel: React.FC<{ to: number }> = ({ to }) => {
                 key={item}
                 style={{
                   position: "absolute",
-                  left: 824,
+                  left: v ? 400 : 824,
                   top: 0,
                   translate: `0px calc(${d * GAP}px - 50%)`,
                   transformOrigin: "left center",
                   scale: 0.88 + 0.12 * cos,
-                  fontSize: 150,
+                  fontSize: SIZE,
                   fontWeight: 500,
                   letterSpacing: "-0.01em",
                   whiteSpace: "nowrap",
                   lineHeight: 1,
                   color: `rgba(255,255,255,${0.27 + 0.73 * active})`,
-                  opacity: Math.min(1, Math.max(0, 2.6 - Math.abs(d))),
+                  opacity: Math.min(1, Math.max(0, REACH - Math.abs(d))),
                 }}
               >
                 {item}
