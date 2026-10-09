@@ -8,7 +8,7 @@ resources: []
 resources_checked_on: 2026-09-30
 ---
 
-Demo day is where six weeks of work meets an audience. You have five minutes to show one real thing: what it is, who it is for, that it works, and what happens next. Presenting clearly is a skill in its own right, and it is the same skill you will use in every interview and every sales call after this.
+At demo day you show six weeks of work to an audience. You have five minutes to show one real thing: what it is, who it's for, that it works, and what happens next. Presenting clearly is a skill in its own right, and it's the same skill you'll use in every interview and every sales call after this.
 
 ## Five minutes, one real thing
 
@@ -18,7 +18,7 @@ Your final project pulls the three arcs into one product or offer:
 - **Arc 2:** the live product and the videos that launch it
 - **Arc 3:** the agent and automations that run it, and the job or business route it leads to
 
-Five minutes is not long. You cannot show everything. Choose the one story that matters most to the person you most want to impress: an employer, a client, or a customer.
+Five minutes isn't long. You can't show everything. Choose the one story that matters most to the person you most want to impress: an employer, a client, or a customer.
 
 ## The shape of five minutes
 
@@ -30,7 +30,7 @@ Five minutes is not long. You cannot show everything. Choose the one story that 
 | 3:30 to 4:15 | **How it works,** briefly. Now name the tools, and one thing that went wrong and how you fixed it. |
 | 4:15 to 5:00 | **What happens next.** Your first paying client, your applications, your next build. And one clear ask of the room. |
 
-Write it as a short script in your voice, then turn it into five or six prompts you glance at. Do not read it word for word.
+Write it as a short script in your voice, then turn it into five or six prompts you glance at. Don't read it word for word.
 
 ## The live demo
 
@@ -46,17 +46,17 @@ A live demo is what makes people believe you. Plan it as carefully as the words:
 Power cuts, slow internet and apps that choose that exact moment to fail are part of doing this in real life. Be ready:
 
 - **Record a backup video** of the full demo, two minutes, with narration. If anything fails, say "let me show you the recording" and play it without apologising.
-- **Have screenshots** of the key moments ready too, in case video will not play.
+- **Have screenshots** of the key moments ready too, in case video won't play.
 - **Charge everything** the night before, and keep mobile data ready if the Wi-Fi goes.
 
-Nobody minds a failed live demo followed by a calm backup video. People remember panic.
+Nobody minds a failed demo if you calmly play the backup video. What people remember is panic.
 
 ## Rehearse
 
 - Rehearse out loud, standing, at least three times, with a timer.
 - Do it once for your pod and ask: *"What was the one thing you remember? What confused you?"*
 - Cut anything that runs over five minutes. Nobody ever complained that a demo was too short.
-- Prepare answers to the three questions you will almost certainly get: *"How long did it take?"*, *"What did it cost to run?"* and *"What would you build next?"*
+- Prepare answers to the three questions you'll almost certainly get: *"How long did it take?"*, *"What did it cost to run?"* and *"What would you build next?"*
 
 ## What you should be able to do after this
 

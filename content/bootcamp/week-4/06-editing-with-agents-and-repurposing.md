@@ -12,14 +12,14 @@ You now have pieces: phone clips, AI shots, a voiceover, a motion graphic. This 
 
 ## Putting the pieces together in CapCut
 
-CapCut is free on phone, laptop and the web, and it is what most short-form creators use. The free plan covers everything this course needs: cutting, multiple layers, captions, and exporting in 1080p.
+CapCut is free on phone, laptop and the web, and it's what most short-form creators use. The free plan covers everything this course needs: cutting, multiple layers, captions, and exporting in 1080p.
 
 One catch: effects and templates marked **Pro** put a watermark on your export unless you pay. Stay on the free ones and your video exports clean.
 
 The order that saves the most time:
 
 1. **Lay the voice down first.** Your talking clips or voiceover set the timing. Everything else fits around them.
-2. **Cut on the words.** Remove every pause, "um" and false start. Tighter than feels natural is right.
+2. **Cut on the words.** Remove every pause, "um" and false start. Cut tighter than feels natural. It plays better.
 3. **Add the other shots** over the top, following your shot list, a new one every two to four seconds.
 4. **Auto captions.** Generate them, then read every line and fix the mistakes, especially names and prices.
 5. **Export** at 1080p, 9:16.
@@ -30,7 +30,7 @@ Editing by hand takes longest on the dullest part: finding the good takes and cu
 
 **video-use** is a free, open-source tool that turns Claude Code into a video editor. You put your raw clips in a folder and say what you want. It transcribes every word, proposes a cut in plain English, waits for you to approve, then does the edit: cutting on word boundaries, removing retakes, adding captions and overlays.
 
-Setting it up takes one conversation, but it needs a few things on your laptop: Python, a tool called ffmpeg, and an ElevenLabs API key for the transcription, which uses your ElevenLabs credits. It is smoothest on a Mac. On Windows it works, with more steps. In the Claude Code panel:
+Setting it up takes one conversation, but it needs a few things on your laptop: Python, a tool called ffmpeg, and an ElevenLabs API key for the transcription, which uses your ElevenLabs credits. It's smoothest on a Mac. On Windows it works, with more steps. In the Claude Code panel:
 
 > *"Install video-use from github.com/browser-use/video-use by following its install.md. Tell me before you install anything, and tell me exactly what you need from me."*
 
@@ -40,11 +40,11 @@ Then, in a folder with your clips:
 
 > *"Edit these clips into a 30-second vertical ad following BRIEF.md. Show me your plan for the cut before you change anything."*
 
-Read the plan the way you read a build plan in week three. Approve it, check the result, ask for changes in plain words. If the setup fights you, CapCut does the same job by hand. The skill this lesson teaches is the order of an edit, not the tool.
+Read the plan the way you read a build plan in week three. Approve it, check the result, ask for changes in plain words. If the setup fights you, CapCut does the same job by hand. What matters is the order of the edit, and either tool can do it.
 
 ## One long video, many short ones
 
-If you ever record something long, like a live session, a tutorial or a talk, it is a week of short videos waiting to be cut.
+If you ever record something long, like a live session, a tutorial or a talk, you can cut a week of short videos out of it.
 
 1. **Find the moments.** Get a transcript (CapCut's captions, or video-use), and ask Claude: *"Here is the transcript of a 20-minute video. Find five moments that each work alone as a 30-second clip. For each: the start and end time, the hook line, and why someone would watch to the end."*
 2. **Cut each one** so it starts on the hook, not on "so, as I was saying".
@@ -60,7 +60,7 @@ Check every video on your phone, with the sound off:
 - Does the first second make you stop scrolling?
 - Can you read every caption, and are they clear of the app's buttons?
 - Is the one action, and your link, clearly there at the end?
-- Is anything invented? No fake customers, no numbers you cannot defend.
+- Is anything invented? No fake customers, no numbers you can't defend.
 - If any shot is realistic AI video, turn on the platform's AI label.
 
 ## What you should be able to do after this

@@ -8,7 +8,7 @@ resources: [{"label":"Use connectors to extend Claude","url":"https://support.cl
 resources_checked_on: 2026-09-30
 ---
 
-An agent that can only read what you paste in is a clever chat. Give it tools, and it can look up your calendar, read a file in your Drive, or add a row to a sheet. This lesson connects your agents to your real tools, and adds the one rule that keeps that safe.
+An agent that can only read what you paste in isn't much more than a chat. Give it tools, and it can look up your calendar, read a file in your Drive, or add a row to a sheet. This lesson connects your agents to your real tools, and adds the one rule that keeps that safe.
 
 ## An agent is only as useful as what it can reach
 
@@ -24,13 +24,13 @@ Connect one, and in any chat or Project you can say:
 
 Claude asks your permission to use the connector, reads what it needs, and answers from your real data instead of your memory of it.
 
-Connect only what a job needs. Amaka's delivery planner Project gets her calendar and her orders sheet. It does not get her email.
+Connect only what a job needs. Amaka's delivery planner Project gets her calendar and her orders sheet. It doesn't get her email.
 
 ## MCP, in plain words
 
-Behind most connectors is **MCP**, the Model Context Protocol. It is a standard plug. Any tool that offers an MCP server can be plugged into any AI app that supports MCP: Claude, Claude Code, and many others, without anyone writing a special connection for each pair.
+Behind most connectors is **MCP**, the Model Context Protocol. It's a standard plug. Any tool that offers an MCP server can be plugged into any AI app that supports MCP: Claude, Claude Code, and many others, without anyone writing a special connection for each pair.
 
-You will meet MCP in three places:
+You'll meet MCP in three places:
 
 - **Connectors in the Claude app.** Directory connectors are MCP underneath. You can also add a **custom connector** by pasting a company's MCP address. Free accounts can add one custom connector, paid plans more.
 - **Claude Code.** Ask it to connect an MCP server for a tool you use, and it will explain the steps.
@@ -40,7 +40,7 @@ Only add MCP servers from companies you trust, and read what access they ask for
 
 ## The approval step
 
-Here is the rule that matters more than any tool:
+This rule matters more than any tool:
 
 **An agent may draft anything. Nothing leaves without a person approving it.**
 
@@ -50,13 +50,13 @@ Posts, emails to customers, messages, payments, changes to your live site: the a
 
 Claude Code already works this way: it asks before changing files or running commands. Keep that on. When you connect Gmail, let the agent write drafts, not send.
 
-Why this matters so much: a wrong answer in a chat costs you a minute. A wrong email to fifty customers, or a wrong price posted publicly, costs you trust you cannot get back with an apology.
+A wrong answer in a chat costs you a minute. A wrong email to fifty customers, or a wrong price posted publicly, costs you trust you can't get back with an apology.
 
 ## What never to connect
 
 - Your bank or payment accounts, to anything that can act
-- Anything holding other people's private data that the job does not need
-- Tools from sources you cannot identify
+- Anything holding other people's private data that the job doesn't need
+- Tools from sources you can't identify
 
 ## What you should be able to do after this
 

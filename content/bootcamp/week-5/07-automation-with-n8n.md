@@ -8,11 +8,11 @@ resources: [{"label":"Install n8n with npm","url":"https://docs.n8n.io/deploy/ho
 resources_checked_on: 2026-09-30
 ---
 
-This is where your business starts running while you sleep. n8n is an automation tool: you connect boxes on a canvas, each box does one thing, and the chain runs whenever something happens or on a schedule.
+This lesson gets parts of your business running while you sleep. n8n is an automation tool: you connect boxes on a canvas, each box does one thing, and the chain runs whenever something happens or on a schedule.
 
 ## Why n8n
 
-There are three big automation tools, and companies use all three (next lesson covers the other two). n8n is the one this course teaches in depth because it is the strongest for AI steps, it can run for free on your own computer, and what you learn transfers to the others.
+There are three big automation tools, and companies use all three (next lesson covers the other two). n8n is the one this course teaches in depth because it's the strongest for AI steps, it can run for free on your own computer, and what you learn transfers to the others.
 
 ## Two ways to run it
 
@@ -27,9 +27,9 @@ Start on your laptop to learn. You installed Node.js in week one, so in the VS C
 npx n8n
 ```
 
-The first time, it downloads for a minute or two. Then open `http://localhost:5678` in Chrome and create your account. That is n8n, running on your computer.
+The first time, it downloads for a minute or two. Then open `http://localhost:5678` in Chrome and create your account. That's n8n, running on your computer.
 
-For the assignment, your automation has to run on a schedule, so it needs to be on while it is due. Either leave the laptop on at the time you schedule it, or start the n8n Cloud trial on the day you are ready to build, so the 14 days cover the week.
+For the assignment, your automation has to run on a schedule, so it needs to be on while it's due. Either leave the laptop on at the time you schedule it, or start the n8n Cloud trial on the day you're ready to build, so the 14 days cover the week.
 
 ## Triggers, steps and connections
 
@@ -39,7 +39,7 @@ Every workflow has the same three parts:
 - **Steps:** what happens next, one box each. Read something, change it, send it somewhere.
 - **Credentials:** the logins n8n uses to reach your tools. You add each one once, and n8n stores it. Like every key in this course, they never go in a screenshot.
 
-Data flows from box to box. Click any box after a test run and you can see exactly what came in and what went out. That is how you find a problem: look for the first box where the data looks wrong.
+Data flows from box to box. Click any box after a test run and you can see exactly what came in and what went out. That's how you find a problem: look for the first box where the data looks wrong.
 
 ## Building Amaka's morning plan
 
@@ -66,7 +66,7 @@ An automation with an AI step still follows a fixed path. The AI does one job in
 
 ## Checking it actually ran
 
-An automation you never check is a problem you have not found yet.
+If you never check an automation, you won't know when it breaks.
 
 - Open **Executions** in n8n to see every run: when it ran, and whether it succeeded or failed.
 - For the first week, read each morning's plan properly. Fix the instructions when the plan is wrong.

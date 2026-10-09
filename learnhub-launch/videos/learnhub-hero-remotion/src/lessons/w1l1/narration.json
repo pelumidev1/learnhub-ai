@@ -1,0 +1,172 @@
+{
+  "lesson": "Week 1, Lesson 1: What AI actually is, and how we got here",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "Most people met AI in November 2022, when ChatGPT launched. The story starts much earlier, and knowing it will change how you use these tools.",
+          "say": "Most people met AI in November twenty twenty-two, when Chat G P T launched. The story starts much earlier, and knowing it will change how you use these tools."
+        },
+        {
+          "id": "open-2",
+          "text": "In this lesson, you'll learn where AI came from, what a language model does when it answers you, and how to get better answers from it."
+        }
+      ]
+    },
+    {
+      "id": "turing",
+      "label": "The Turing test, 1950",
+      "beats": [
+        {
+          "id": "turing-1",
+          "text": "In 1950, the British mathematician Alan Turing asked a practical question: could a machine hold a conversation so well that you couldn't tell it from a person?",
+          "say": "In nineteen fifty, the British mathematician Alan Turing asked a practical question: could a machine hold a conversation so well that you couldn't tell it from a person?"
+        },
+        {
+          "id": "turing-2",
+          "text": "He didn't try to answer whether machines can think. Nobody can measure that. He chose a question you could test."
+        },
+        {
+          "id": "turing-3",
+          "text": "This course uses the same kind of test. What matters is whether the output is good enough to use."
+        }
+      ]
+    },
+    {
+      "id": "winters",
+      "label": "Why it went quiet twice",
+      "beats": [
+        {
+          "id": "winters-1",
+          "text": "The early excitement didn't last. In the 1970s, and again in the late 1980s, the technology fell short of what had been promised, and funding was cut.",
+          "say": "The early excitement didn't last. In the nineteen seventies, and again in the late nineteen eighties, the technology fell short of what had been promised, and funding was cut."
+        },
+        {
+          "id": "winters-2",
+          "text": "These periods are known as the AI winters."
+        },
+        {
+          "id": "winters-3",
+          "text": "Today's AI is far more capable, but the lesson still applies. Judge a tool by what it actually does for you."
+        },
+        {
+          "id": "winters-4",
+          "text": "By the end of this bootcamp, you'll have built enough with these tools to judge them yourself."
+        }
+      ]
+    },
+    {
+      "id": "transformer",
+      "label": "What changed in 2017",
+      "beats": [
+        {
+          "id": "transformer-1",
+          "text": "In 2017, researchers at Google published a paper called \"Attention Is All You Need\". It introduced the transformer, the design behind today's language models.",
+          "say": "In twenty seventeen, researchers at Google published a paper called Attention Is All You Need. It introduced the transformer, the design behind today's language models."
+        },
+        {
+          "id": "transformer-2",
+          "text": "Claude, ChatGPT and Gemini are all built on it.",
+          "say": "Claude, Chat G P T and Gemini are all built on it."
+        },
+        {
+          "id": "transformer-3",
+          "text": "In November 2022, OpenAI released ChatGPT, a simple chat window anyone could use. Within two months, it had an estimated hundred million users.",
+          "say": "In November twenty twenty-two, Open A I released Chat G P T, a simple chat window anyone could use. Within two months, it had an estimated hundred million users."
+        },
+        {
+          "id": "transformer-4",
+          "text": "The technology had been building for years. ChatGPT made it easy for everyone to use.",
+          "say": "The technology had been building for years. Chat G P T made it easy for everyone to use."
+        }
+      ]
+    },
+    {
+      "id": "predict",
+      "label": "What a model is actually doing",
+      "beats": [
+        {
+          "id": "predict-1",
+          "text": "So what does a language model do? It predicts the next word. It learned patterns from a huge amount of text, and it uses them to work out which words are most likely to come next."
+        },
+        {
+          "id": "predict-2",
+          "text": "That explains its common mistakes. It can invent a source, because a real-sounding title is a likely thing to write next."
+        },
+        {
+          "id": "predict-3",
+          "text": "A vague request gets a generic answer, because the most common answer is the safest prediction."
+        },
+        {
+          "id": "predict-4",
+          "text": "And the same question can get different answers, because the model chooses between likely words each time."
+        },
+        {
+          "id": "predict-5",
+          "text": "Most important of all: the model doesn't know what you're trying to do. It only knows what you tell it."
+        }
+      ]
+    },
+    {
+      "id": "amaka",
+      "label": "See it for yourself",
+      "beats": [
+        {
+          "id": "amaka-1",
+          "text": "Here's an example. Amaka runs a cake business in Lagos and sells on Instagram and WhatsApp.",
+          "say": "Here's an example. Ah-mah-kah runs a cake business in Lagos and sells on Instagram and WhatsApp."
+        },
+        {
+          "id": "amaka-2",
+          "text": "She asks ChatGPT for an Instagram caption for her cake business, and gets: \"Indulge in our delicious, freshly baked cakes! Perfect for every occasion. Order now!\"",
+          "say": "She asks Chat G P T for an Instagram caption for her cake business, and gets: Indulge in our delicious, freshly baked cakes! Perfect for every occasion. Order now!"
+        },
+        {
+          "id": "amaka-3",
+          "text": "It's generic, because the only thing the model knew was the word \"cake\"."
+        },
+        {
+          "id": "amaka-4",
+          "text": "Then she adds the details: her business name, same-day delivery in Lekki for orders before 2pm, this week's red velvet at ₦25,000, customers planning last-minute birthdays, and a short, warm tone with no hashtags.",
+          "say": "Then she adds the details: her business name, same-day delivery in Lekki for orders before two p.m., this week's red velvet at twenty-five thousand naira, customers planning last-minute birthdays, and a short, warm tone with no hashtags."
+        },
+        {
+          "id": "amaka-5",
+          "text": "This time the caption is specific to her business, because her instructions were."
+        },
+        {
+          "id": "amaka-6",
+          "text": "One more check: when a model gives you sources, open every link. Some won't exist."
+        }
+      ]
+    },
+    {
+      "id": "you",
+      "label": "What this means for you",
+      "beats": [
+        {
+          "id": "you-1",
+          "text": "To recap: a language model predicts the next word, based on what you give it."
+        },
+        {
+          "id": "you-2",
+          "text": "So the quality of the answer depends on the detail in your request."
+        },
+        {
+          "id": "you-3",
+          "text": "Try it now with your own work. Ask once in one line, then again with five lines of detail, and compare the two."
+        },
+        {
+          "id": "you-4",
+          "text": "In the next lesson: Claude, ChatGPT and Gemini, and what each one is best at.",
+          "say": "In the next lesson: Claude, Chat G P T and Gemini, and what each one is best at."
+        }
+      ]
+    }
+  ]
+}

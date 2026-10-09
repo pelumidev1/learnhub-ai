@@ -14,3 +14,5 @@ capture/
 learnhub-bootcamp-hero/reference/
 learnhub-hero-remotion/public/cake/
 learnhub-hero-remotion/public/photos/
+# Lesson film images and voice clips: regenerated or kept locally.
+learnhub-hero-remotion/public/lessons/

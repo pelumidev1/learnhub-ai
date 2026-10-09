@@ -8,13 +8,13 @@ resources: []
 resources_checked_on: 2026-09-30
 ---
 
-You have built something every week for five weeks. That is more proof of skill than most applicants bring to an interview. This week turns it into a next step: a job, clients, or a business. It starts with choosing one direction, because a CV, a LinkedIn page or an offer that tries to point everywhere points nowhere.
+You have built something every week for five weeks. That's more to show than many applicants bring to an interview. This week turns it into a next step: a job, clients, or a business. It starts with choosing one direction, because a CV, a LinkedIn page or an offer that tries to cover every direction doesn't convince anyone.
 
 No course can promise you a job. This one makes sure you have the work to show for it.
 
 ## Six roles
 
-Each role below is built from specific weeks of this course. Look at which weeks you enjoyed and which projects you are proudest of.
+Each role below is built from specific weeks of this course. Look at which weeks you enjoyed and which projects you're proudest of.
 
 | Role | What they do | Built in weeks |
 |---|---|---|
@@ -31,14 +31,14 @@ These job titles are new, and companies write them differently. The same work mi
 
 The seventh route is to sell what you can now do: as a freelancer, an agency of one, or by using it in a business you already run, the way Amaka does with her cakes. Lesson five covers the offer, the price and the first client.
 
-You can do both. Plenty of people take a job and sell one small service on the side, or freelance until a job appears. Choose the one you will work on *first*.
+You can do both. Plenty of people take a job and sell one small service on the side, or freelance until a job appears. Choose the one you'll work on *first*.
 
 ## How to choose
 
 Answer these honestly, in writing, in your About me Claude Project:
 
-1. **Which week's project would you happily do again next week?** Enjoyment predicts whether you will keep going.
-2. **Which project would you show a stranger first?** That is your strongest proof.
+1. **Which week's project would you happily do again next week?** Enjoyment predicts whether you'll keep going.
+2. **Which project would you show a stranger first?** That's your strongest proof.
 3. **Who near you needs it?** Businesses you already know, an industry you have worked in, a community you belong to.
 4. **Do you need a salary soon, or can you build slowly?** A job gives stability; a business gives control and takes longer to pay.
 
@@ -46,7 +46,7 @@ Then ask Claude to read your answers and your `context` folder, and to push back
 
 > *"Here are my answers. Which one path fits best, and what is the weakest part of my case for it? Be direct."*
 
-Chidi, an accounting graduate, loved week five and his proudest project was an automation that turned bank statements into a monthly summary. His path: **AI automation specialist**, aimed at finance and operations teams, where his accounting background is an advantage, not a detour.
+Chidi, an accounting graduate, loved week five and his proudest project was an automation that turned bank statements into a monthly summary. His path: **AI automation specialist**, aimed at finance and operations teams, where his accounting background helps him.
 
 Amaka's path is already decided: **her own business**, using AI to grow it, and later selling a simple "cake shop starter site" to other home bakers.
 
@@ -62,6 +62,6 @@ Every lesson this week uses that sentence. Your CV, your LinkedIn page, your app
 
 ## What you should be able to do after this
 
-Name the path you are taking first, back it with a project you have already built, and write it as one sentence your whole week can point at.
+Name the path you're taking first, back it with a project you have already built, and write it as one sentence your whole week can point at.
 
 ## Transcript

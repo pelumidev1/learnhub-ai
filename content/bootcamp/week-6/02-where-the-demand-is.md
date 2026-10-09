@@ -8,11 +8,11 @@ resources: [{"label":"LinkedIn Jobs","url":"https://www.linkedin.com/jobs","kind
 resources_checked_on: 2026-09-30
 ---
 
-Articles about AI and jobs are full of confident numbers that contradict each other. This lesson skips them. You will learn where the work is moving, and then how to check the demand yourself, in your city, this week, which is worth more than any global statistic.
+Articles about AI and jobs are full of confident numbers that contradict each other. This lesson skips them. You'll learn where the work is moving, and then how to check the demand yourself, in your city, this week, which is worth more than any global statistic.
 
 ## Where the work is moving
 
-The pattern is the same in every industry: **AI does the first draft, people direct it and check it.** Work that used to take a team now takes one person who knows how to direct AI and keep the quality high. That person is who you have spent six weeks becoming.
+The pattern is the same in every industry: **AI does the first draft, people direct it and check it.** Work that used to take a team now takes one person who knows how to direct AI and keep the quality high. That's the person you've spent six weeks learning to be.
 
 ## Six industries
 
@@ -41,11 +41,11 @@ For the business route, search the other way round: look at local businesses in 
 
 Adverts show what companies say they want. Conversations show what they will actually pay for.
 
-Message five people who run or work in a business in your chosen industry. Not to sell. To ask:
+Message five people who run or work in a business in your chosen industry. Don't try to sell anything. Just ask:
 
 > *"I am learning to use AI to save businesses time. What takes up hours in your week that you wish you did not have to do?"*
 
-Write down their answers word for word. Amaka asked five home bakers. Four said the same thing: answering the same price and delivery questions on WhatsApp, all day. That is her first offer, and it is the chatbot she already built for herself.
+Write down their answers word for word. Amaka asked five home bakers. Four said the same thing: answering the same price and delivery questions on WhatsApp, all day. That's her first offer, and it's the chatbot she already built for herself.
 
 ## What you should be able to do after this
 

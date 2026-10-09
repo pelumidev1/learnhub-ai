@@ -1,0 +1,114 @@
+{
+ "open-1": {
+  "key": "bc63f3e785d5",
+  "seconds": 10.453
+ },
+ "open-2": {
+  "key": "543912bd654a",
+  "seconds": 7.616
+ },
+ "turing-1": {
+  "key": "430d93b18e55",
+  "seconds": 9.984
+ },
+ "turing-2": {
+  "key": "2fe57806ca91",
+  "seconds": 6.123
+ },
+ "turing-3": {
+  "key": "8b1a41032a77",
+  "seconds": 5.696
+ },
+ "winters-1": {
+  "key": "2d6e8cf76588",
+  "seconds": 10.069
+ },
+ "winters-2": {
+  "key": "c8573740956c",
+  "seconds": 2.56
+ },
+ "winters-3": {
+  "key": "d088f625a56c",
+  "seconds": 6.933
+ },
+ "winters-4": {
+  "key": "a96f8ee81ef5",
+  "seconds": 4.544
+ },
+ "transformer-1": {
+  "key": "9be6c8eca587",
+  "seconds": 10.475
+ },
+ "transformer-2": {
+  "key": "0738295d5526",
+  "seconds": 3.541
+ },
+ "transformer-3": {
+  "key": "2353f98a9a1b",
+  "seconds": 11.221
+ },
+ "transformer-4": {
+  "key": "dca984c8d4e0",
+  "seconds": 5.824
+ },
+ "predict-1": {
+  "key": "8890bfc6f357",
+  "seconds": 10.688
+ },
+ "predict-2": {
+  "key": "719fb3d965d5",
+  "seconds": 7.445
+ },
+ "predict-3": {
+  "key": "c6f56c1b80c9",
+  "seconds": 5.952
+ },
+ "predict-4": {
+  "key": "d8b011546a6d",
+  "seconds": 6.101
+ },
+ "predict-5": {
+  "key": "b6baf2c9f951",
+  "seconds": 5.568
+ },
+ "amaka-1": {
+  "key": "32d59be22848",
+  "seconds": 6.357
+ },
+ "amaka-2": {
+  "key": "ef926de58b07",
+  "seconds": 11.2
+ },
+ "amaka-3": {
+  "key": "14f518f6958c",
+  "seconds": 3.883
+ },
+ "amaka-4": {
+  "key": "2c8fd31d5ce8",
+  "seconds": 15.531
+ },
+ "amaka-5": {
+  "key": "f73742707e50",
+  "seconds": 4.288
+ },
+ "amaka-6": {
+  "key": "15c236ce72bf",
+  "seconds": 5.099
+ },
+ "you-1": {
+  "key": "f4bd8cc15cda",
+  "seconds": 4.608
+ },
+ "you-2": {
+  "key": "1eb5744c183b",
+  "seconds": 3.883
+ },
+ "you-3": {
+  "key": "7ede226d9aa4",
+  "seconds": 7.04
+ },
+ "you-4": {
+  "key": "f38c9fc5f5b5",
+  "seconds": 5.483
+ }
+}

@@ -8,7 +8,7 @@ resources: [{"label":"Chrome DevTools device mode","url":"https://developer.chro
 resources_checked_on: 2026-09-29
 ---
 
-Most of your customers will open your link on a phone, often a mid-range Android on mobile data. If it only works on your laptop, it does not work.
+Most of your customers will open your link on a phone, often a mid-range Android on mobile data. A site that only works on your laptop won't get you many orders.
 
 ## Phone first
 
@@ -35,14 +35,14 @@ Look for text that runs off the edge, buttons too small to tap, and anything you
 
 ## The real phone test
 
-The laptop check catches most problems. It does not catch all of them. After each push, open the live link on a real phone:
+The laptop check catches most problems, but not all of them. After each push, open the live link on a real phone:
 
 - Place a real order from start to finish.
 - Turn the phone sideways.
 - Try it on mobile data, not wi-fi. Is it slow?
 - Ask someone in your pod to try it on their phone, which is different from yours.
 
-Amaka's test found that the date picker opened off-screen on her sister's older Android. She would not have seen that on her laptop.
+Amaka's test found that the date picker opened off-screen on her sister's older Android. She wouldn't have seen that on her laptop.
 
 ## Reporting a bug to Claude Code
 
@@ -57,19 +57,19 @@ Add a screenshot. Claude Code can read images: paste the screenshot straight int
 
 ## Prove it before you fix it
 
-Do not ask for a fix straight away. Ask for the cause first:
+Don't ask for a fix straight away. Ask for the cause first:
 
 > *"Find out what causes this and show me the evidence. Do not change anything yet."*
 
-Sometimes the cause is not where you think. Amaka's "text cut off on phones" turned out to be the screenshot app cropping the image. The page was fine. A fix at that point would have broken something that worked.
+Sometimes the cause isn't where you think. Amaka's "text cut off on phones" turned out to be the screenshot app cropping the image. The page was fine. A fix at that point would have broken something that worked.
 
 When the cause is proven: *"Now fix it, and tell me how to check the fix worked."* Knowing the cause is also how you stop the same bug coming back.
 
 ## When a fix makes it worse
 
-Sometimes a fix breaks something else. Do not keep piling fixes on top.
+Sometimes a fix breaks something else. Don't keep piling fixes on top.
 
-- If you have not committed yet, ask Claude Code to undo its last change.
+- If you haven't committed yet, ask Claude Code to undo its last change.
 - If you have: *"Go back to the last commit that worked, and push. Keep the history, so we can see what went wrong."*
 
 Then try again with a clearer bug report. This is why you commit after every step that works.

@@ -8,15 +8,15 @@ resources: [{"label":"Google Opal","url":"https://opal.google","kind":"tool","co
 resources_checked_on: 2026-09-30
 ---
 
-You do not need code to build something that works like an agent. This lesson uses two free tools you can share with other people today.
+You don't need code to build something that works like an agent. This lesson uses two free tools you can share with other people today.
 
 ## Google Opal: describe it, get an app
 
 Opal is a free Google Labs tool. You describe a small app in plain words, and it builds it as a chain of steps you can see and edit: an input, some AI steps, an output. Then you share it with a link, like a Google Doc.
 
-Since early 2026 Opal also has an **Agent step**: instead of you fixing every step, it plans the approach, picks the tools it needs and works through them. That is the difference between a recipe and an agent from lesson one, inside one box.
+Since early 2026 Opal also has an **Agent step**: instead of you fixing every step, it plans the approach, picks the tools it needs and works through them. So one box in Opal can behave like the agent from lesson one, while the rest of the app stays a fixed recipe.
 
-Opal is available in more than 160 countries. Sign in with your Google account. If it does not open where you are, use Claude Projects below for this lesson.
+Opal is available in more than 160 countries. Sign in with your Google account. If it doesn't open where you are, use Claude Projects below for this lesson.
 
 ## Amaka's order helper
 
@@ -48,7 +48,7 @@ No-code agents are the right choice when:
 - a person checks the output before it goes anywhere
 - speed of building matters more than fine control
 
-They are the wrong choice when the agent has to run by itself on a schedule, sit inside your own website, or handle customers' data at scale. That is what the rest of this week builds.
+They're the wrong choice when the agent has to run by itself on a schedule, sit inside your own website, or handle customers' data at scale. That's what the rest of this week builds.
 
 ## What you should be able to do after this
 

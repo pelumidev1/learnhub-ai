@@ -8,7 +8,7 @@ resources: [{"label":"Zapier pricing","url":"https://zapier.com/pricing","kind":
 resources_checked_on: 2026-09-30
 ---
 
-You know n8n now. Open a job advert for an operations, marketing or automation role, and you will just as often see Zapier or Make. The good news: they are the same idea with different words, and an afternoon is enough to be comfortable in either.
+You know n8n now. Open a job advert for an operations, marketing or automation role, and you'll just as often see Zapier or Make. They're the same idea with different words, and an afternoon is enough to be comfortable in either.
 
 ## Same idea, different words
 

@@ -10,7 +10,7 @@ resources_checked_on: 2026-09-29
 
 Everything you have used so far answers questions. Claude Code, the tool you installed in the last lesson, does something different. You give it a goal and it does the work.
 
-That difference changes how you talk to it, and most people never learn it.
+That changes how you should talk to it, and most people never pick it up.
 
 ## Chat answers, an agent finishes
 
@@ -44,25 +44,25 @@ Amaka wants a price list page for Amaka's Bakes.
 
 > Build a one-page price list for Amaka's Bakes as a single HTML file. Four cakes: red velvet, chocolate, vanilla and carrot, each 8 inch, ₦25,000. Say same-day delivery in Lekki for orders before 2pm. It is done when the page opens on a phone and every price is readable without zooming.
 
-Claude Code writes the file, opens it, checks it against what she asked for, and fixes what is off. She reviews a finished page.
+Claude Code writes the file, opens it, checks it against what she asked for, and fixes what's off. She reviews a finished page.
 
 ## Defining done
 
-Look at the last sentence of Amaka's goal. That is what tells the agent when to stop.
+Look at the last sentence of Amaka's goal. That's what tells the agent when to stop.
 
 A vague goal gets a vague stopping point. "Make me a website" could end anywhere. A clear goal says:
 
 - **What** you want made
-- **Who** it is for
+- **Who** it's for
 - **What finished looks like**, specific enough that you could check it yourself
 
 Writing "it is done when..." is the most useful habit you can build with agents.
 
 ## Watch it, steer it
 
-Claude Code asks before it changes files or runs commands. Read what it wants to do before you say yes. That is your safety check.
+Claude Code asks before it changes files or runs commands. Read what it wants to do before you say yes. That's your safety check.
 
-If it heads the wrong way, press **Esc** to stop it, tell it what you want instead, and let it carry on. You are the one in charge of the goal. The agent is doing the steps.
+If it heads the wrong way, press **Esc** to stop it, tell it what you want instead, and let it carry on. You decide the goal. The agent works out the steps.
 
 ## What you should be able to do after this
 

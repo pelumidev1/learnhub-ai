@@ -8,7 +8,7 @@ resources: [{"label":"Google Flow, with Veo","url":"https://labs.google/fx/tools
 resources_checked_on: 2026-09-29
 ---
 
-AI video is the one part of this course where the free tiers run out fast. This lesson is honest about that, and shows you how to get real results on the free allowance before you spend anything.
+AI video is the one part of this course where the free tiers run out fast. This lesson tells you exactly where they run out, and how to get real results on the free allowance before you spend anything.
 
 ## What each tool costs you
 
@@ -22,13 +22,13 @@ Prices checked on 29 September 2026. They change often, so check again before yo
 
 So the plan for most people is: **draft and test everything in Flow on the free credits**, and pay only when you know exactly which shot you need in high quality.
 
-Kling's free clips are fine for practice, but your project ad is commercial, because it sells something. Do not publish a free Kling clip in it.
+Kling's free clips are fine for practice, but your project ad is commercial, because it sells something. Don't publish a free Kling clip in it.
 
 ## Start from a real photo
 
-The single biggest improvement to AI video is not the prompt. It is starting from a real image.
+The biggest improvement you can make to AI video is starting from a real image instead of only a prompt.
 
-All three tools can turn a still photo into a moving shot. Give them a real photo of your real product and the result looks like your product. Give them only words and you get a cake, not *your* cake.
+All three tools can turn a still photo into a moving shot. Give them a real photo of your real product and the result looks like your product. Give them only words and you get a generic cake that could be anyone's.
 
 Amaka takes a photo of her red velvet on her kitchen counter, in daylight, on her phone. That photo becomes the first frame of her shot.
 
@@ -36,7 +36,7 @@ Amaka takes a photo of her red velvet on her kitchen counter, in daylight, on he
 
 One generation is one shot, five to eight seconds. Never ask for a whole ad at once. Describe a shot in this order:
 
-1. **Subject.** What we are looking at.
+1. **Subject.** What we're looking at.
 2. **Action.** The one thing that moves.
 3. **Setting.** Where it is.
 4. **Camera.** Still, slow push in, handheld, from above.
@@ -65,7 +65,7 @@ AI video gives itself away in the same few places. Check every shot for these be
 - **Too perfect:** perfect light, perfect skin, perfectly smooth camera. Ask for "handheld" and "filmed on a phone".
 - **Physics:** icing that moves like liquid, a knife that passes through without cutting.
 
-When a shot fails, do not keep regenerating the same prompt and burning credits. Change one thing, or film that shot yourself on your phone.
+When a shot fails, don't keep regenerating the same prompt and burning credits. Change one thing, or film that shot yourself on your phone.
 
 ## What you should be able to do after this
 

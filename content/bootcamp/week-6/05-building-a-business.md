@@ -8,11 +8,11 @@ resources: [{"label":"Selar","url":"https://selar.com","kind":"tool","cost":"Fee
 resources_checked_on: 2026-09-30
 ---
 
-"I build websites with AI" is not something anyone can buy. It has no edges: no scope, no timeline, no finish line, no price. Every enquiry turns into a long negotiation, and most end with "let me think about it". This lesson turns what you can do into something a customer can say yes to.
+"I build websites with AI" isn't something anyone can buy. There's no scope, no timeline and no price, so nobody knows what they'd be paying for. Every enquiry turns into a long negotiation, and most end with "let me think about it". This lesson turns what you can do into something a customer can say yes to.
 
-## A service is not an offer
+## A service isn't an offer
 
-"I do websites", "I do automation" and "I make videos" are services. They describe *how* you work. A customer does not buy how you work. They buy a result they can picture.
+"I do websites", "I do automation" and "I make videos" are services. They describe *how* you work. A customer doesn't buy how you work. They buy a result they can picture.
 
 ## The four parts of an offer
 
@@ -27,19 +27,19 @@ Amaka's first offer, from the five conversations in lesson two:
 
 > **WhatsApp question bot for home bakers.** A chatbot on your website that answers price, flavour and delivery questions day and night, trained on your menu. Includes: setup, your knowledge file, one round of changes, and a short video showing you how to update it. Not included: a new website, online payments. Ready in 5 working days. ₦80,000.
 
-Anyone reading that knows exactly what they get, when, and for how much. That is what makes it easy to buy.
+Anyone reading that knows exactly what they get, when, and for how much. That's what makes it easy to buy.
 
 ## Pricing
 
 Beginners almost always price too low. Three ways to check your price:
 
-- **The value.** What is the result worth to the buyer? If Amaka's bot saves a baker an hour a day of answering questions, and catches orders that used to be missed at night, it is worth far more than ₦80,000 over a year.
+- **The value.** What's the result worth to the buyer? If Amaka's bot saves a baker an hour a day of answering questions, and catches orders that used to be missed at night, it's worth far more than ₦80,000 over a year.
 - **The market.** What do others charge for something similar? Ask around, and look at freelancers selling the same thing.
 - **Your time.** How many hours will it really take, including changes and support? Double your first guess.
 
-Say the price plainly, in writing. Do not apologise for it and do not discount before anyone has asked.
+Say the price plainly, in writing. Don't apologise for it and don't discount before anyone has asked.
 
-## A ladder, not a single price
+## A ladder of prices
 
 Not every buyer is ready for your biggest offer. Give them steps up:
 
@@ -55,18 +55,18 @@ Many buyers start on the small step and move up once they trust you. The prices 
 
 Your first clients almost always come from people who already know you, or from people who have seen your work.
 
-1. **Tell people you know.** Friends, family, former colleagues, your pod. Not a sales pitch: *"I now build X for Y. Do you know anyone who might need it?"*
+1. **Tell people you know.** Friends, family, former colleagues, your pod. Don't pitch them. Just say: *"I now build X for Y. Do you know anyone who might need it?"*
 2. **Show your work in public.** One post showing something you built, with the screen, what broke, and a live link. The best first sales often start with one stranger asking *"How did you build that?"*
 3. **Go back to the five businesses from lesson two.** You asked what took up their week. Now you have an offer that solves it.
 4. **Send one message a day** to someone who fits your offer, specific to them, with proof attached. The same rules as job applications: few, tailored, honest.
 
-**Never fake it.** No invented testimonials, no made-up client counts, no "only 2 slots left" when that is not true. When you get a real happy client, ask them for a short written review, with permission to share it.
+**Never fake it.** No invented testimonials, no made-up client counts, no "only 2 slots left" when that isn't true. When you get a real happy client, ask them for a short written review, with permission to share it.
 
 ## Getting paid
 
 - **Invoice and bank transfer** is fine for your first clients. Agree the price and scope in writing first, and take part of the payment before you start.
 - **Selar** lets you sell a fixed offer from a simple checkout page, with no website needed.
-- **Paystack** takes card and bank payments inside your own site, when you are ready to build that.
+- **Paystack** takes card and bank payments inside your own site, when you're ready to build that.
 
 Both charge a small fee per payment and nothing to start, so you only pay when you get paid. Check their current fees on their websites.
 

@@ -24,14 +24,14 @@ Paste it into your Claude Project and ask:
 
 > *"Here is the job advert and what I found about the company. What problem is this role really being hired to solve? Which one of my projects in context/projects.md is closest to that problem? What should I ask them in an interview?"*
 
-Chidi finds that a logistics firm is hiring an "operations associate" to cut down manual reporting. His bank-statement automation is almost exactly that problem. That is the centre of his application.
+Chidi finds that a logistics firm is hiring an "operations associate" to cut down manual reporting. His bank-statement automation is almost exactly that problem. That's the centre of his application.
 
-## Tailor, do not rewrite
+## Tailor, don't rewrite
 
 Keep one strong base CV from lesson three. For each application, change only what matters:
 
 - **The order of your projects:** the closest one first.
-- **The words:** use the advert's own words where they are true of you.
+- **The words:** use the advert's own words where they're true of you.
 - **A short cover note:** three short paragraphs at most.
 
 Draft the cover note with Claude, then make it yours:
@@ -44,11 +44,11 @@ Read it aloud. If it could have been sent to any company, rewrite the first line
 
 Every application gets at least one link to something you built, placed where it will be seen: the first lines of the cover note, and the top of the CV.
 
-If you can, go one step further: make something small for *them*. A two-minute screen recording showing how you would automate one of their visible tasks, or a quick improvement to something on their website. One application like that is worth fifty generic ones, because it answers the only question that matters before they have even asked it.
+If you can, go one step further: make something small for *them*. A two-minute screen recording showing how you would automate one of their visible tasks, or a quick improvement to something on their website. One application like that does more than fifty generic ones, because it shows them you can do the job before they've asked.
 
 ## Follow up, and spot the scams
 
-**Follow up once,** about a week later, politely and briefly: you applied, you are still interested, here is the link again. Then move on.
+**Follow up once,** about a week later, politely and briefly: you applied, you're still interested, here is the link again. Then move on.
 
 **Spot the scams.** Fake job offers target people who are looking for work, and AI makes them look more convincing. Walk away if:
 

@@ -8,36 +8,36 @@ resources: [{"label":"Download VS Code","url":"https://code.visualstudio.com","k
 resources_checked_on: 2026-09-29
 ---
 
-This is the lesson people are nervous about, and it is the one that makes weeks three to six possible. Do it on your laptop, with a charger nearby and a decent connection. Budget an hour, not twenty minutes, the first time.
+This is the lesson people are nervous about, and it's the one that makes weeks three to six possible. Do it on your laptop, with a charger nearby and a decent connection. Give it an hour the first time.
 
-If something fails, write down exactly what you saw and post it in your pod. Getting stuck here is normal. Staying stuck is not necessary.
+If something fails, write down exactly what you saw and post it in your pod. Lots of people get stuck at this step. Asking early saves you an evening.
 
 ## VS Code: where you build
 
-VS Code is a free app for working on a project's files. You will not write code in it. Claude Code will, inside VS Code, and you will watch every file it creates or changes, right there beside the chat.
+VS Code is a free app for working on a project's files. You won't write code in it. Claude Code will, inside VS Code, and you'll watch every file it creates or changes, right there beside the chat.
 
 1. Download it from code.visualstudio.com and install it.
 2. Make a folder called `learnhub` in your Documents folder.
-3. In VS Code, choose **File**, then **Open Folder**, and pick `learnhub`. If it asks whether you trust the folder, say yes. It is yours.
+3. In VS Code, choose **File**, then **Open Folder**, and pick `learnhub`. If it asks whether you trust the folder, say yes. It's yours.
 
-That folder is where you will build for the rest of the bootcamp.
+That folder is where you'll build for the rest of the bootcamp.
 
 ## Claude Code inside VS Code
 
 1. In VS Code, press **Cmd+Shift+X** (Mac) or **Ctrl+Shift+X** (Windows) to open Extensions.
 2. Search for **Claude Code**, check the publisher is **Anthropic**, and click **Install**.
 3. Click the Claude Code icon (a small spark) in the bar on the left.
-4. Click **Sign in** and finish in your browser, with your Claude Pro account. The free plan does not include Claude Code, which is why Pro was step one of lesson three.
+4. Click **Sign in** and finish in your browser, with your Claude Pro account. The free plan doesn't include Claude Code, which is why Pro was step one of lesson three.
 
 Test it. Type: *"Create a file called hello.md that says hello, then tell me what you did."* Claude Code shows you the file before it saves it and asks for your permission. Click accept, and the file appears in the list on the left.
 
-That is the pattern for everything you build: you ask, it proposes, you read, you approve.
+That's the pattern for everything you build: you ask, it proposes, you read, you approve.
 
 ## The terminal, the few times you need it
 
 The terminal is a window where you type instructions to your computer instead of clicking. VS Code has one built in: choose **Terminal**, then **New Terminal**. It opens at the bottom, already inside your `learnhub` folder.
 
-You will only need it for a few setup steps. These five commands are enough:
+You'll only need it for a few setup steps. These five commands are enough:
 
 | Command | What it does |
 |---|---|
@@ -56,7 +56,7 @@ And **Node.js**, which runs the websites you build in week three and the videos 
 
 ## GitHub, so Claude Code can save your work
 
-GitHub stores your code and every version of it. It is your undo button: if a change breaks everything, you go back to the last version that worked.
+GitHub stores your code and every version of it. It's your undo button: if a change breaks everything, you go back to the last version that worked.
 
 Sign up at github.com first. Then give Claude Code permission to save to your GitHub account, once, with the GitHub CLI:
 
@@ -84,10 +84,10 @@ From now on, when you tell Claude Code "commit and push", it can.
 
 Two more free accounts. Use **Continue with GitHub** for both, so one login covers all three.
 
-- **Supabase** (supabase.com) is a database with sign-in built in. You will use it in week three. The free plan gives you two projects. A free project pauses after a week with no activity, which is fine: you can wake it up from the dashboard.
+- **Supabase** (supabase.com) is a database with sign-in built in. You'll use it in week three. The free plan gives you two projects. A free project pauses after a week with no activity, which is fine: you can wake it up from the dashboard.
 - **Vercel** (vercel.com) puts your site on the internet at a real link. The free Hobby plan is for personal, non-commercial projects, which is everything you build in this course until you start charging for it.
 
-You do not need to create anything inside Supabase or Vercel yet. Signing in is enough.
+You don't need to create anything inside Supabase or Vercel yet. Signing in is enough.
 
 ## Check it all works
 

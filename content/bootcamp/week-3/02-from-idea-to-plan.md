@@ -10,13 +10,13 @@ resources_checked_on: 2026-09-29
 
 Type "build me a modern website for my cake business" and Claude Code will build one. It will look like every other AI website: a purple gradient, a big centred headline, three boxes with icons, and a line about elevating your experience.
 
-That is not because AI cannot design. "Modern" is not a decision, it is a mood. With nothing decided, the model gives you the average of every website it has seen.
+AI can design. The problem is that "modern" doesn't tell it anything specific, so it gives you the average of every website it has seen.
 
-The fix is not a better prompt. It is deciding first, in writing, before the model gets a vote. Expect the deciding to take longer than the building. That is the point.
+A better prompt won't fix that. What fixes it's making the decisions yourself, in writing, before Claude Code starts. Expect the deciding to take longer than the building.
 
 ## Decide first: the interview
 
-You will not enjoy writing this document from a blank page, so make Claude pull it out of you. Open the Claude desktop app, in your **About me** project from week one so it already knows you, and paste this:
+Writing this document from a blank page is hard, so let Claude interview you for it. Open the Claude desktop app, in your **About me** project from week one so it already knows you, and paste this:
 
 > *You are interviewing me before I build a website with you. Do not write any code, copy or design ideas yet. Your only job is to get decisions out of me.*
 >
@@ -37,9 +37,9 @@ You will not enjoy writing this document from a blank page, so make Claude pull 
 >
 > *When all ten are answered, write it up as BUILD.md. Keep my exact words. Do not summarise me and do not improve my sentences. Then stop. Do not start building.*
 
-That last line matters. The model will want to start building at question three. Let it, and you are back to the average website.
+That last line matters. The model will want to start building at question three, and if you let it, you're back to the average website.
 
-For question 5, use the headline and offer you wrote in week two. The model can write a hundred versions of your line. It cannot find *your* line.
+For question 5, use the headline and offer you wrote in week two. The model can write a hundred lines for you, but it can't know which one sounds like you.
 
 A few of Amaka's answers, so you can see how specific "specific" is:
 
@@ -53,7 +53,7 @@ The "never" list is the most useful part of the whole document. A model is far b
 
 ## Save your reference sites
 
-Find two or three real websites you like. Not screenshots of them: save the actual page, so Claude Code can read how it was made instead of guessing.
+Find two or three real websites you like. Save the actual page rather than a screenshot, so Claude Code can read how it was made instead of guessing.
 
 In Chrome, open the site, right-click, choose **Save as**, and pick **Webpage, Complete**. Save it into your project's `context/references` folder (you make the folder in the next step).
 
@@ -62,7 +62,7 @@ Then add a line to `BUILD.md` for each one, saying what to **take** and what to 
 > *Bakery site: take how each cake photo fills the phone screen. Leave its colours and its pop-up.*
 > *Restaurant site: take the short menu on one page. Leave everything else.*
 
-That take-and-leave split is the single most useful thing you can give Claude Code about design.
+Claude Code gets more out of these take and leave notes than out of any description of the look you want.
 
 ## Set up the project folder
 
@@ -72,7 +72,7 @@ Then give Claude Code better taste in general. Anthropic makes a free plugin cal
 
 If the list is empty, open the **Marketplaces** tab, add `anthropics/claude-plugins-official` (Anthropic's own plugin list), and search again.
 
-You never need to call it. The plugin makes pages good. Your `BUILD.md` makes them yours.
+You never need to call it. The plugin improves the design in general, and your `BUILD.md` makes it specific to you.
 
 Last, the project's `CLAUDE.md`, the file Claude Code reads at the start of every session (you met it in week one). Ask Claude Code to create it with this:
 
@@ -98,7 +98,7 @@ These tools change often: check their current documentation, not what you rememb
 4. Anything I now have to do myself
 ```
 
-That last section means you always know what just happened, even when you cannot read the code.
+That last section means you always know what just happened, even when you can't read the code.
 
 ## Plan mode
 
@@ -106,16 +106,16 @@ In plan mode, Claude Code reads and thinks but changes nothing until you approve
 
 > *"Read BUILD.md and the reference sites in context/references. Write me a detailed plan before you touch code. The plan must include: for each reference site, what we take and what we leave; every page, with its sections in order and one sentence on why each section exists; the stack decisions and why; what you are assuming and what you need to ask me; and the checks that will prove it is done. Keep version one as small as BUILD.md says."*
 
-Answer its questions. They are usually the gaps in your document.
+Answer its questions. They're usually the gaps in your document.
 
 ## Read the plan like a client
 
-Read it slowly. You are checking four things:
+Read it slowly. You're checking four things:
 
-1. **The sections.** Argue with the list of sections until it is right. A wrong section costs one sentence now and a rebuild later.
-2. **Anything you did not ask for.** Payments, a blog, customer accounts. Cut them. Every extra feature is extra to break.
+1. **The sections.** Argue with the list of sections until it's right. Fixing a wrong section now takes one sentence. Fixing it later means rebuilding.
+2. **Anything you did not ask for.** Payments, a blog, customer accounts. Cut them. Every extra feature is one more thing that can break.
 3. **Anything missing from BUILD.md.** Point at the line.
-4. **Its assumptions.** An assumption it states out loud is fine. One it buried is how you get a surprise in step six.
+4. **Its assumptions.** An assumption it states openly is fine. A hidden one is how you get a surprise in step six.
 
 Say what to change in plain words. When the plan is right, ask it to save the plan as `PLAN.md` in the project so every future session can read it.
 
@@ -127,7 +127,7 @@ Now leave plan mode and build **one step of the plan at a time**:
 
 Check it. If it works, save it: *"Commit this with a short note saying what changed, and push."* If a later step goes wrong, you go back to the last version that worked, not to the beginning.
 
-Ask for a whole page at once and you get a whole page of things to fix at once, and you will accept choices you do not like because rejecting them means starting over. One section at a time is slower on paper and much faster in practice.
+Ask for a whole page at once and you get a whole page of things to fix at once, and you'll accept choices you don't like because rejecting them means starting over. Going one section at a time looks slower, but you finish sooner.
 
 ## What you should be able to do after this
 

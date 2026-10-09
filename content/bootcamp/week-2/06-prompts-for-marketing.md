@@ -8,13 +8,13 @@ resources: [{"label":"Prompt engineering overview, Anthropic docs","url":"https:
 resources_checked_on: 2026-09-29
 ---
 
-Next week you build a website or web app. It needs words: what it is, who it is for, why anyone should care. This lesson writes those words, so you arrive at week three with copy ready to put on the page.
+Next week you build a website or web app. It needs words: what it is, who it's for, why anyone should care. This lesson writes those words, so you arrive at week three with copy ready to put on the page.
 
 Marketing copy fails in the same way AI writing fails. It says things that could be true of anyone. "Quality service. Affordable prices." The prompts below force the model, and you, to be specific.
 
 ## Positioning before copy
 
-Decide what you are saying before you ask for sentences. Use the Strategist step from lesson 3:
+Decide what you're saying before you ask for sentences. Use the Strategist step from lesson 3:
 
 > *"I am building [what]. It is for [who]. The alternatives they use today are [what they do now]. What I do differently is [real difference]. Ask me five questions that would make this sharper. Do not write any copy yet."*
 
@@ -22,7 +22,7 @@ Answer the questions. Then:
 
 > *"From my answers, write one sentence each for: who this is for, the problem they have, and why mine is the better choice. Plain words a customer would use."*
 
-Amaka's answers pointed somewhere she had not expected. Her best customers are not people who love cake. They are people who forgot a birthday and need one today. That became her positioning: *the cake you can still get this afternoon.*
+Amaka's answers pointed somewhere she had not expected. Her best customers aren't people who love cake. They're people who forgot a birthday and need one today. That became her positioning: *the cake you can still get this afternoon.*
 
 ## Your offer in one line
 
@@ -44,21 +44,21 @@ The [CHECK] instruction catches invented claims before they go live. Replace eve
 
 Launch copy tells people the thing now exists. You need three short pieces:
 
-1. **The announcement post.** What it is, who it is for, the offer, the link.
+1. **The announcement post.** What it is, who it's for, the offer, the link.
 2. **A WhatsApp broadcast** to people who already know you. Shorter and more personal.
-3. **A follow-up** for three days later, with one new reason to act: a deadline, a first customer's reaction, a detail you did not mention.
+3. **A follow-up** for three days later, with one new reason to act: a deadline, a first customer's reaction, a detail you didn't mention.
 
-Run each through your voice skill. Launch copy is where writing drifts back into "We are thrilled to announce", which is a phrase no customer has ever cared about.
+Run each through your voice skill. Launch copy is where writing drifts back into "We are thrilled to announce", and no customer cares about that.
 
 ## Check the facts
 
-Marketing copy is where invented facts do the most damage. A statistic nobody can find, a "study" that does not exist, a claim about a competitor that is not true. You learned in week one that models make up sources. A customer who catches one stops trusting everything else on the page.
+Marketing copy is where invented facts do the most damage. A statistic nobody can find, a "study" that doesn't exist, a claim about a competitor that isn't true. You learned in week one that models make up sources. A customer who catches one stops trusting everything else on the page.
 
-When your copy leans on a fact you did not supply, ask for the source. Claude and ChatGPT can both search the web and show you links to what they found:
+When your copy leans on a fact you didn't supply, ask for the source. Claude and ChatGPT can both search the web and show you links to what they found:
 
 > *"Search the web for this claim and give me the sources, with links. If you cannot find a real source, say so. Do not guess: [paste the claim]"*
 
-Then open the links yourself. You are checking two things: the page exists, and it says what the model claims it says. Models sometimes link a real page that does not back up the claim at all.
+Then open the links yourself. You're checking two things: the page exists, and it says what the model claims it says. Models sometimes link a real page that doesn't back up the claim at all.
 
 Tools built for research, such as Perplexity, work the same way. Use whichever you like. Opening the link is the part that matters.
 
@@ -76,6 +76,6 @@ Fix what it finds. Your week three site will use this copy, and your week four v
 
 ## What you should be able to do after this
 
-Have a positioning line, a one-line offer and landing page copy for the thing you build next week, with nothing on it you cannot prove.
+Have a positioning line, a one-line offer and landing page copy for the thing you build next week, with nothing on it you can't prove.
 
 ## Transcript

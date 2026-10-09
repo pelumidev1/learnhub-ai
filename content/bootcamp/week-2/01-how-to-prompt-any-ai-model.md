@@ -8,18 +8,18 @@ resources: [{"label":"Prompt engineering overview, Anthropic docs","url":"https:
 resources_checked_on: 2026-09-29
 ---
 
-Two people ask Claude for "a caption for my cake business". One gets something generic. The other gets a caption she could post as it is. They used the same model on the same day. The second person gave it more to work with.
+Two people ask Claude for "a caption for my cake business". One gets something generic. The other gets a caption she could post as it is. They used the same model on the same day. The second person just gave it more to work with.
 
-Prompting has no magic words. You are briefing someone smart who knows nothing about you. Brief them the way you would brief a new freelancer on their first day, and Claude, ChatGPT and Gemini all do better. This lesson works in all three.
+There are no magic words in prompting. You're briefing someone smart who knows nothing about you. Brief them the way you would brief a new freelancer on their first day, and Claude, ChatGPT and Gemini all do better. This lesson works in all three.
 
-## Context: what it cannot know
+## Context: what it can't know
 
-The model knows a lot about cakes. It knows nothing about *your* cakes. Everything it does not know, it fills in with the average, and the average is where generic comes from.
+The model knows a lot about cakes. It knows nothing about *your* cakes. Everything it doesn't know, it fills in with the average, and the average is where generic comes from.
 
 Give it the facts only you have:
 
 - Who the work is for, in one sentence
-- What you are selling or saying
+- What you're selling or saying
 - What makes you different, with a real detail
 - Where the work will appear: Instagram, an email, a WhatsApp status
 
@@ -38,7 +38,7 @@ Constraints do most of the work. They answer the question the model would ask yo
 - **Length:** "under 50 words", "three bullet points"
 - **Format:** "a table", "plain text I can paste into WhatsApp"
 - **Must include:** the price, the deadline, the delivery area
-- **Must avoid:** words you hate, claims you cannot prove, hashtags
+- **Must avoid:** words you hate, claims you can't prove, hashtags
 
 Last week you defined done for an agent. This is the same habit, on a smaller job.
 
@@ -60,11 +60,11 @@ The second prompt is longer, and it saves her three rounds of "make it shorter" 
 
 ## Show one example of good
 
-When you have one piece of work you like, paste it in: *"Here is a caption that did well for me. Match its length and tone. Do not copy its words."* One real example teaches the model more than a paragraph describing what you want. That is also why your skill from week one has a "What good looks like" section.
+When you have one piece of work you like, paste it in: *"Here is a caption that did well for me. Match its length and tone. Do not copy its words."* One real example teaches the model more than a paragraph describing what you want. That's also why your skill from week one has a "What good looks like" section.
 
 ## When to start a fresh chat
 
-Long chats drift. The model gives weight to everything earlier in the conversation, including the three drafts you rejected. If you have corrected the same thing twice, stop. Open a new chat and write one better brief that includes what you learned. The next lesson explains why arguing longer does not fix it.
+Long chats drift. The model gives weight to everything earlier in the conversation, including the three drafts you rejected. If you have corrected the same thing twice, stop. Open a new chat and write one better brief that includes what you learned. The next lesson explains why arguing longer doesn't fix it.
 
 ## What you should be able to do after this
 

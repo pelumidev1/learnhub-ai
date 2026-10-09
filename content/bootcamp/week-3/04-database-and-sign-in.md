@@ -43,7 +43,7 @@ Then test it: submit the form on `localhost`, and open **Table Editor** in Supab
 
 Every table needs rules about who can read and write it. Supabase calls this **Row Level Security**, or RLS.
 
-With RLS on and no rules, nobody can read the table through your site. That is the safe starting point. Then you add rules for exactly what your BUILD.md says. Amaka's are:
+With RLS on and no rules, nobody can read the table through your site. That's the safe starting point. Then you add rules for exactly what your BUILD.md says. Amaka's are:
 
 - anyone can **add** an order
 - only Amaka, signed in, can **read** orders
@@ -54,17 +54,17 @@ Ask Claude Code to write rules like these and to explain each one. Then check th
 
 > *"Add sign-in with email and password using Supabase Auth. Only signed-in users can see the orders page. Customers do not sign in."*
 
-Supabase sends the sign-in emails for you. Its built-in email sender only sends a few emails an hour. That is fine while you are building and testing. Before real customers sign up in numbers, you will need your own email sender, and Claude Code can set one up for you then.
+Supabase sends the sign-in emails for you. Its built-in email sender only sends a few emails an hour. That's fine while you're building and testing. Before real customers sign up in numbers, you'll need your own email sender, and Claude Code can set one up for you then.
 
 ## The same keys on Vercel
 
-Your `.env.local` file stays on your laptop and never goes to GitHub. So Vercel does not have your keys yet.
+Your `.env.local` file stays on your laptop and never goes to GitHub. So Vercel doesn't have your keys yet.
 
 1. In Vercel, open your project, then **Settings**, then **Environment Variables**.
 2. Add the same names and values that are in `.env.local` for the URL and publishable key.
 3. Go to **Deployments** and **Redeploy** the latest one. Changes to these settings only apply to a new deployment.
 
-Now test on the live link: place an order on your phone, sign in on your laptop, and check it is there.
+Now test on the live link: place an order on your phone, sign in on your laptop, and check it's there.
 
 ## What you should be able to do after this
 

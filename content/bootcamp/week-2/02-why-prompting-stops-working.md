@@ -8,29 +8,23 @@ resources: [{"label":"Anthropic's interactive prompt engineering tutorial","url"
 resources_checked_on: 2026-08-22
 ---
 
-You have probably done this. You ask for something, the answer is not right, so you ask again with more words. Then again. Twenty minutes later you are arguing with a text box and you have a worse version of what you started with.
+You have probably done this. You ask for something, the answer isn't right, so you ask again with more words. Then again. Twenty minutes later you're arguing with a text box and you have a worse version of what you started with.
 
-The instinct at that point is that the prompt was not good enough. That the right combination of words exists and you have not found it.
+At that point it's tempting to think the prompt wasn't good enough, and that the right words exist somewhere if you keep trying. Usually they don't.
 
-It usually does not.
+## Better work comes from a better process
 
-## The quality does not come from a better prompt
+Think about how a real piece of work gets made. A product launch doesn't have one person doing everything. Somebody researches the market. Somebody decides the angle. Somebody writes it. Somebody else tears it apart. Somebody edits.
 
-It comes from a better process.
+Nobody expects one person to hold all five roles at once and do all of them well. But that's exactly what a single prompt asks the model to do.
 
-Think about how a real piece of work gets made. A product launch does not have one person doing everything. Somebody researches the market. Somebody decides the angle. Somebody writes it. Somebody else tears it apart. Somebody edits.
+## Give it something to change
 
-Nobody expects one person to hold all five roles at once and do all of them well. But that is exactly what a single prompt asks the model to do.
+This habit improves people's output more than any prompt trick: instead of asking AI to create something from nothing, give it your rough material and ask it to change it.
 
-## Transform, do not create
+A blank page is the worst possible input, because the model has nothing to work from except the average of everything it has read. That's where generic output comes from. The model isn't being lazy. It just has nothing of yours to work with.
 
-Here is the shift that changes people's output more than any prompt trick.
-
-Do not ask AI to create. Ask it to transform.
-
-A blank page is the worst possible input, because the model has nothing to work from except the average of everything it has read. That is where generic output comes from. It is not the model being lazy. It is the model having nothing of yours to work with.
-
-Give it something rough and ask it to change that thing, and the output has your fingerprints on it because your material was the input.
+Give it something rough and ask it to change that thing, and the result sounds like you, because it started with your material.
 
 Here is what that looks like. Amaka needs an "about" paragraph for her Instagram page.
 
@@ -42,27 +36,25 @@ Here is what that looks like. Amaka needs an "about" paragraph for her Instagram
 
 Then: *"Turn this into a three sentence bio. Keep my words where you can. Do not add anything I did not say."*
 
-The result has her cousin's wedding in it, her mum's kitchen, and the cake people actually praise. The model did the tidying. The substance was hers.
-
-A voice note is the fastest rough draft there is. Use it.
+The result has her cousin's wedding in it, her mum's kitchen, and the cake people actually praise. The model tidied it up, but everything in it came from her. A voice note is the quickest rough draft you can make.
 
 ## Never let one AI grade its own homework
 
-When you ask the same conversation to check its own work, it defends what it wrote. It has the whole thread behind it and it is predicting what comes next in a conversation where it already committed to a position.
+When you ask the same conversation to check its own work, it defends what it wrote. It has the whole thread behind it and it's predicting what comes next in a conversation where it already committed to a position.
 
-Open a new chat. Paste the output with no history and no context about who made it. Ask what is weak.
+Open a new chat. Paste the output with no history and no context about who made it. Ask what's weak.
 
-You will get a different answer, and it will be the useful one.
+You'll usually get a different answer, and it's usually the more useful one.
 
 The exact words Amaka uses, in a fresh chat, ideally in a different tool:
 
 > *"Someone sent me this bio for a cake business's Instagram page. I am a customer deciding whether to order. What is weak, unclear or unconvincing? Most important first. Do not rewrite it."*
 
-"Do not rewrite it" matters. You want the diagnosis, not a new draft that starts the argument all over again.
+"Do not rewrite it" matters. You want to know what's wrong. A new draft just starts the argument again.
 
 ## What you should be able to do after this
 
-Notice when you are arguing with a model instead of directing it, and stop. That is the skill. The next lesson is what you do instead.
+Notice when you're arguing with a model instead of directing it, and stop. The next lesson shows you what to do instead.
 
 ## Transcript
 

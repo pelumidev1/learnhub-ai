@@ -14,7 +14,7 @@ This lesson gives you one prompt pattern for each, built on the last three lesso
 
 ## Start from something rough
 
-Every prompt below begins with your material, not a blank page. A voice note, three bullet points, the customer's message. The model tidies. You supply the substance.
+Every prompt below starts with your own material: a voice note, three bullet points, or the customer's message. The model tidies it up, and the substance stays yours.
 
 ## Posts
 
@@ -24,13 +24,13 @@ Change the platform and the audience and the pattern still works. Instagram want
 
 ## Emails and replies
 
-The fastest win. Paste what they sent you, then say what you want to happen.
+This is where you'll save the most time. Paste what they sent you, then say what you want to happen.
 
 > *"Here is a customer's message. Write my reply. I want to say no to the discount politely, offer free delivery instead, and keep them. Under 80 words. Warm, not grovelling. Their message: [paste]"*
 
-Amaka gets messages asking for a ₦5,000 discount most weeks. She used to spend ten minutes on each reply. Now it is one minute, and every reply says the same true thing.
+Amaka gets messages asking for a ₦5,000 discount most weeks. She used to spend ten minutes on each reply. Now it's one minute, and every reply says the same true thing.
 
-For a hard email, one you are nervous about, ask for two versions: *"one direct, one softer"*. Pick one and edit it.
+For a hard email, one you're nervous about, ask for two versions: *"one direct, one softer"*. Pick one and edit it.
 
 ## Proposals
 
@@ -42,15 +42,15 @@ For a quote or proposal, the model needs your prices and your terms. Never let i
 
 ## Captions and statuses
 
-You built a captions skill in week one. Use it. If you have not got one for this job yet, this prompt is the first draft of it:
+You built a captions skill in week one. Use it. If you haven't got one for this job yet, this prompt is the first draft of it:
 
 > *"Two WhatsApp status captions for today's cake: [cake, price]. Under 25 words each. One mentions the 2pm same-day cutoff. No hashtags."*
 
 ## Save what works
 
-When a prompt gives you something you post with light edits, save it. A notes file is fine to start. That file is your prompt library, and it is part of this week's project.
+When a prompt gives you something you post with light edits, save it. A notes file is fine to start. That file is your prompt library, and it's part of this week's project.
 
-Every prompt you save three times with small changes is a skill waiting to happen. You know how to build that now.
+If you've saved the same prompt three times with small changes, turn it into a skill. You know how to do that now.
 
 ## What you should be able to do after this
 

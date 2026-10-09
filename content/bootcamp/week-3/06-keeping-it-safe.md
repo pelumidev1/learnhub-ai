@@ -8,7 +8,7 @@ resources: [{"label":"Sentry for Next.js","url":"https://docs.sentry.io/platform
 resources_checked_on: 2026-09-29
 ---
 
-The moment your link is public, strangers can find it. Most will be customers. A few will be people trying things they should not. This lesson closes the doors they try first.
+Once your link is public, strangers can find it. Most will be customers, but a few will try things they shouldn't. This lesson closes the gaps they try first.
 
 ## Secrets stay secret
 
@@ -31,7 +31,7 @@ If any answer surprises you, fix the rule before you push. Supabase also flags e
 
 ## Lock your accounts
 
-Most sites are not hacked through their code. They are taken over through an account.
+Most sites aren't broken into through their code. Someone gets into an account instead.
 
 - Turn on **two-factor authentication** for GitHub, Vercel, Supabase and your email.
 - Use a password manager and a different password for each.
@@ -45,17 +45,17 @@ Before you share your link widely, ask Claude Code to check your work as an atta
 
 Claude Code also has a built-in `/security-review` command that does a similar check on your latest changes. Fix the serious items one at a time, testing after each.
 
-A review is not a guarantee. It catches the common mistakes, and the common mistakes are what attackers try first.
+A review isn't a guarantee. It catches the common mistakes, and the common mistakes are what attackers try first.
 
 ## Watching it after launch
 
-A live site needs checking, the way a shop needs opening every morning. Start with the tool that tells you something broke before a customer does.
+A live site needs checking regularly, like any shop. Start with the tool that tells you something broke before a customer does.
 
 **Sentry** watches your live site and sends you an alert when something breaks for a real visitor. Its free Developer plan covers one person and 5,000 errors a month, which is plenty. Sign up at sentry.io with GitHub, then ask Claude Code:
 
 > *"Add Sentry to this Next.js app so I am told when something breaks for a real visitor, on the pages and on the server. Use Sentry's setup wizard. Add a friendly error page so visitors never see a raw crash. Then show me how to trigger a test error and where it appears in Sentry."*
 
-Trigger the test error, and check the alert arrives. An alarm you have never heard go off is not an alarm.
+Trigger the test error, and check the alert arrives. If you've never seen an alert arrive, you can't be sure it works.
 
 Then the dashboards you already have:
 
@@ -67,9 +67,7 @@ Amaka checks Sentry whenever an alert arrives, and the three dashboards every Mo
 
 ## The last 10 percent
 
-In one good sitting, AI can take a project most of the way. The last part is not code, it is judgement: taking real photos of real cakes, writing prices you will actually honour, getting a real customer to try it, and deciding what not to ship yet.
-
-No tool does that part for you. It is also the part that makes the site yours.
+In one good sitting, AI can take a project most of the way. What's left is judgement rather than code: taking real photos of real cakes, writing prices you'll actually honour, getting a real customer to try it, and deciding what not to ship yet. No tool does that part for you.
 
 ## What you should be able to do after this
 

@@ -8,13 +8,13 @@ resources: [{"label":"Google Flow, with Veo","url":"https://labs.google/fx/tools
 resources_checked_on: 2026-09-29
 ---
 
-UGC means user-generated content: video that looks like an ordinary person made it on their phone, not a brand with a budget. It is the most copied ad format on Instagram and TikTok right now, for a simple reason. It does not look like an ad, so people do not skip it.
+UGC means user-generated content: video that looks like an ordinary person made it on their phone, not a brand with a budget. It's the most copied ad format on Instagram and TikTok right now, because it doesn't look like an ad, so people don't skip it.
 
 ## Why UGC works
 
-People scroll past anything polished, because polished means "someone wants my money". A person talking to their phone camera in their own kitchen looks like a friend's post. By the time the viewer realises it is selling something, they are already three seconds in.
+People scroll past anything polished, because polished means "someone wants my money". A person talking to their phone camera in their own kitchen looks like a friend's post. By the time the viewer realises it's selling something, they're already three seconds in.
 
-It is also the cheapest format there is. You need a phone, a window and something to say.
+It's also the cheapest format there is. You need a phone, a window and something to say.
 
 ## What makes it look real
 
@@ -27,13 +27,13 @@ Everything that makes a normal advert look expensive makes UGC look fake. Aim fo
 - **A little mess.** A cup on the counter, a sentence that restarts.
 - **Fast.** Same pace rule as lesson one: something changes every second or two.
 
-The strongest UGC is usually filmed, not generated. Use AI for the shots you cannot film: the product in a setting you do not have, a close-up you cannot get, a scene that would need three people.
+The strongest UGC is usually filmed, not generated. Use AI for the shots you can't film: the product in a setting you don't have, a close-up you can't get, a scene that would need three people.
 
 ## The honest line
 
-This is the rule on this course, and it is not optional:
+On this course, this rule isn't optional:
 
-**An AI person must never pretend to be a customer.** No invented reviews, no AI actor saying "I ordered this and it changed my life", no made-up results. That is a fake testimonial, it misleads people deciding where to spend their money, and it destroys trust the moment someone notices. It can also break advertising rules.
+**An AI person must never pretend to be a customer.** No invented reviews, no AI actor saying "I ordered this and it changed my life", no made-up results. That's a fake testimonial, it misleads people deciding where to spend their money, and it destroys trust the moment someone notices. It can also break advertising rules.
 
 What you *can* do:
 
@@ -57,13 +57,13 @@ Her brief says: 30 seconds, one action (order before 2pm for same-day delivery),
 | 20 to 26 | Text on screen: "212 cakes delivered this year" | Added in editing, a real number |
 | 26 to 30 | "Order before 2pm. Link in bio." | Amaka to camera, filmed |
 
-One AI shot out of six. The rest took twenty minutes with her phone. That mix is normal, and it is why the ad looks real.
+Only one of the six shots is AI. She filmed the rest on her phone in twenty minutes, and that mix is a big part of why the ad looks real.
 
 ## Captions and sound
 
-Most people watch with the sound off. **Every spoken line needs captions on screen,** big enough to read on a phone, placed where the app's buttons will not cover them (away from the bottom and the right edge).
+Most people watch with the sound off. **Every spoken line needs captions on screen,** big enough to read on a phone, placed where the app's buttons won't cover them (away from the bottom and the right edge).
 
-Keep music quiet under the voice, or use none. A clear voice beats a trending song you cannot hear the words over.
+Keep music quiet under the voice, or use none. A clear voice beats a trending song you can't hear the words over.
 
 ## What you should be able to do after this
 

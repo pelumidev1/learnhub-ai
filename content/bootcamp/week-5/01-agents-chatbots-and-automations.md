@@ -16,23 +16,23 @@ An automation is a recipe. Something happens, and the same steps run, in the sam
 
 *A new order arrives, so the order is added to a spreadsheet and a confirmation email is sent.*
 
-No thinking is involved, which is its strength. It is cheap, fast and predictable. It never has a bad day and never invents anything. Most of the time-saving in a small business comes from plain automations like this.
+There's no thinking involved, and that's the point: it's cheap, fast and does the same thing every time. It never invents anything. Most of the time-saving in a small business comes from plain automations like this.
 
-You can put an AI step in the middle, like "summarise this message" or "sort this enquiry into order, complaint or question", and it is still an automation, because the path is fixed. You will build these in n8n in lesson seven.
+You can put an AI step in the middle, like "summarise this message" or "sort this enquiry into order, complaint or question", and it's still an automation, because the path is fixed. You'll build these in n8n in lesson seven.
 
 ## Chatbot: answers questions
 
 A chatbot waits for someone to ask something, then answers. The chatbot you build in lesson five answers visitors' questions about your business, from your knowledge file, and hands them to the order page.
 
-It talks. It does not go and do things on its own.
+It talks, but it doesn't go off and do things by itself.
 
 ## Agent: given a goal, decides the steps
 
 An agent gets a goal and works out the steps itself: it looks things up, uses tools, checks its work, and goes round again until the goal is met. You met this loop in week one: Claude Code is an agent.
 
-*"Look at this week's orders, work out which cakes sold best, and draft next week's Instagram plan around them."* Nobody wrote down the steps. The agent decides them.
+*"Look at this week's orders, work out which cakes sold best, and draft next week's Instagram plan around them."* Nobody wrote down the steps, so the agent decides them.
 
-That flexibility is powerful and it has a cost. Agents take longer, cost more per task, and can take a wrong turn. They need a clear "it is done when...", and a person approving anything that leaves the building.
+That flexibility is useful, but it costs you. Agents take longer, cost more per task, and can take a wrong turn. They need a clear "it is done when...", and a person approving anything that leaves the building.
 
 ## Choosing: start with the simplest
 
@@ -42,7 +42,7 @@ That flexibility is powerful and it has a cost. Agents take longer, cost more pe
 | Answering people's questions from what you know | Chatbot |
 | A goal where the steps change each time, and a judgment is needed | Agent |
 
-The rule builders follow: **use the simplest one that does the job.** If a recipe works, do not build an agent. Many "AI agents" sold online are automations with an AI step, and that is fine. It is usually the right answer.
+The rule builders follow: **use the simplest one that does the job.** If a recipe works, don't build an agent. Many "AI agents" sold online are automations with an AI step, and that's fine. For most jobs it's the right choice.
 
 Amaka's week:
 

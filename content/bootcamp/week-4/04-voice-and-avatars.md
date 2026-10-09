@@ -8,19 +8,19 @@ resources: [{"label":"ElevenLabs pricing","url":"https://elevenlabs.io/pricing",
 resources_checked_on: 2026-09-29
 ---
 
-Plenty of people will never want to be filmed. That is fine. This lesson is the other route: a voice without a face, or a face that is not filmed.
+Plenty of people never want to be filmed, and that's fine. This lesson covers the other route: a voice without a face, or a face that isn't filmed.
 
 ## The faceless route
 
-A faceless video is product shots, text on screen and a voiceover. No person on camera at all. It works well for products that look good (food, clothes, places) and for anyone who does not want their face online.
+A faceless video is product shots, text on screen and a voiceover. No person on camera at all. It works well for products that look good (food, clothes, places) and for anyone who doesn't want their face online.
 
-The voice does most of the work. A flat, robotic voiceover makes everything around it look cheap. That is where ElevenLabs comes in.
+The voice matters most. A flat, robotic voiceover makes everything around it look cheap, which is why this lesson uses ElevenLabs.
 
 ## AI voice with ElevenLabs
 
 ElevenLabs turns a script into speech that sounds like a person. Prices checked on 29 September 2026:
 
-- **Free:** 10,000 credits a month, enough to try voices and make short voiceovers. No voice cloning, and **no commercial licence**, so it is for practice, not for your ad.
+- **Free:** 10,000 credits a month, enough to try voices and make short voiceovers. No voice cloning, and **no commercial licence**, so it's for practice, not for your ad.
 - **Starter, $6 a month:** more credits, instant voice cloning, and a commercial licence. This is the cheapest way to use an AI voice in something you sell with.
 
 To get a good read:
@@ -42,23 +42,23 @@ Two rules:
 
 An avatar is an AI person who presents on video. A **digital twin** is an avatar of *you*: trained on your photos, speaking with your cloned voice.
 
-The full route, on Higgsfield, goes: train a character from a set of clear photos of you, clone your voice, fix one look you like, then generate talking videos from a script, and reframe each one for vertical and wide screens. It is paid, and it takes an afternoon to set up. Once it works, you can make a presenter video without setting up a camera.
+The full route, on Higgsfield, goes: train a character from a set of clear photos of you, clone your voice, fix one look you like, then generate talking videos from a script, and reframe each one for vertical and wide screens. It's paid, and it takes an afternoon to set up. Once it works, you can make a presenter video without setting up a camera.
 
 ## When an avatar helps, and when it hurts
 
 **It helps when:**
 
 - the video explains something, like a tutorial, and the viewer cares about the information more than the person
-- you need to post often and cannot film that often
+- you need to post often and can't film that often
 - you would otherwise not make video at all
 
 **It hurts when:**
 
 - the business runs on trust in a real person. Amaka's customers are buying from *Amaka*. An avatar of her would feel like a trick the moment someone noticed
 - it pretends to be a customer (lesson three: never)
-- it is nearly right. A face that is 95 percent human is more unsettling than a cartoon
+- it's nearly right. A face that's 95 percent human is more unsettling than a cartoon
 
-The honest default: **if you can be on camera, be on camera, and use AI for everything around you.** Use an avatar when the choice is between an avatar and no video, and say it is AI.
+A good default: **if you can be on camera, be on camera, and use AI for everything around you.** Use an avatar when the choice is between an avatar and no video, and say it's AI.
 
 ## What you should be able to do after this
 

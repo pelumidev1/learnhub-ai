@@ -8,13 +8,13 @@ resources: [{"label":"Agent Skills, Anthropic docs","url":"https://platform.clau
 resources_checked_on: 2026-09-29
 ---
 
-People can tell when a post was written by AI, even when they cannot say why. They scroll past it. For anything with your name on it, that costs you more than the time the AI saved.
+People can tell when a post was written by AI, even when they can't say why. They scroll past it. For anything with your name on it, that costs you more than the time the AI saved.
 
-Keep using AI, and give it your voice in writing. Then it has something to match besides the average of the internet.
+You don't have to stop using AI. Write your voice down for it, so it has something to copy besides the average of the internet.
 
 ## Collect your real writing
 
-Find five to ten pieces you wrote yourself, before AI touched them. Messages to customers, old posts that did well, an email you were proud of, voice note transcripts. Casual writing counts. It is often the most *you*.
+Find five to ten pieces you wrote yourself, before AI touched them. Messages to customers, old posts that did well, an email you were proud of, voice note transcripts. Casual writing counts, and it's often the most like you.
 
 Amaka pulls eight things: six WhatsApp replies to customers, one Instagram post from 2021 that got a lot of comments, and the voice note transcript from lesson 2.
 
@@ -24,14 +24,14 @@ Paste them into a fresh chat and ask:
 
 > *"These are all written by me. Describe my writing voice so another writer could copy it. Cover sentence length, words I use often, how I open and close, how formal I am, and anything I never do. Quote my own lines as examples. Do not flatter me."*
 
-Read what comes back and correct it. The model will get some things wrong. Amaka's came back saying she "uses humour frequently". She does not; she is warm, which is different. She changes that line.
+Read what comes back and correct it. The model will get some things wrong. Amaka's came back saying she "uses humour frequently". She does not; she's warm, which is different. She changes that line.
 
 ## Turn it into a voice skill
 
 Take the corrected description and make it a skill, using the template from week one. The parts that matter most:
 
 - **Rules** from the description: "Short sentences. Talk to one customer. Mention real details: the area, the price, what people said."
-- **Never** for the words and habits you do not want. This section does the most work.
+- **Never** for the words and habits you don't want. This section does the most work.
 - **What good looks like** with two or three of your real pieces, pasted as they are.
 
 Call it something like `my-voice`, and write the description with the words you actually type: *"Use when I ask you to write, rewrite or edit anything that will go out under my name."*
@@ -54,7 +54,7 @@ A useful last step, in a fresh chat: *"Mark every line in this that sounds like 
 
 This is your assignment this week. Write one paragraph with the skill. Then write the same paragraph without it. Put them side by side.
 
-If you cannot tell them apart, your skill is too vague. Add more Never lines and one more real example, then try again.
+If you can't tell them apart, your skill is too vague. Add more Never lines and one more real example, then try again.
 
 ## What you should be able to do after this
 

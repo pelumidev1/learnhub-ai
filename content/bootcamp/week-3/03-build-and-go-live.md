@@ -12,7 +12,7 @@ By the end of this lesson your project is on the internet at a real link, and ev
 
 ## Set up the project
 
-Step 1 of most plans is setting up the project. If yours does not say how, use this:
+Step 1 of most plans is setting up the project. If yours doesn't say how, use this:
 
 > *"Set up a new Next.js project in this folder with TypeScript and Tailwind, using the App Router. Put all the site's words in one file. I am not a developer: as you go, explain each decision in one plain sentence, and at the end tell me which files I will actually edit and which I should leave alone."*
 
@@ -24,7 +24,7 @@ Ask Claude Code:
 
 > *"How do I see this running on my laptop? Start it for me."*
 
-It starts a local version and gives you a link like `http://localhost:3000`. Open it in Chrome. Only your laptop can see this link. It is where you check each step before anyone else sees it.
+It starts a local version and gives you a link like `http://localhost:3000`. Open it in Chrome. Only your laptop can see this link. It's where you check each step before anyone else sees it.
 
 If the page is blank or shows an error, copy the whole error, paste it into Claude Code, and say what you expected to see.
 
@@ -47,11 +47,11 @@ You do this once per project:
 1. Sign in to vercel.com.
 2. Click **Add New**, then **Project**.
 3. Find your repository in the list and click **Import**.
-4. Leave the settings as they are and click **Deploy**.
+4. Leave the settings as they're and click **Deploy**.
 
-After a minute or two you get a link ending in `.vercel.app`. Open it on your phone. That is your project, live.
+After a minute or two you get a link ending in `.vercel.app`. Open it on your phone. That's your project, live.
 
-If it fails because the project uses Supabase, that is expected until the next lesson adds your keys. Go on to lesson 4 and come back.
+If it fails because the project uses Supabase, that's expected until the next lesson adds your keys. Go on to lesson 4 and come back.
 
 ## Every save goes live
 
@@ -62,7 +62,7 @@ From now on the loop is:
 3. Tell it to commit and push.
 4. Vercel sees the new version and puts it live within a minute or two.
 
-You never upload files by hand. Pushing to GitHub is the upload.
+You never upload files by hand. Pushing to GitHub does it.
 
 ## When the build fails
 
@@ -74,14 +74,14 @@ Sometimes a change works on your laptop and fails on Vercel. The Vercel dashboar
 
 The live site keeps showing the last version that worked while you fix it, so a failed build never takes your site down.
 
-## Your own domain, when you are ready
+## Your own domain, when you're ready
 
-A `.vercel.app` link works, but `amakasbakes.com` is what customers remember. A `.com` costs about $10 to $15 a year from a registrar such as Namecheap. It is optional on this course, because it is not free, but it is the first thing to buy when your site starts bringing in money.
+A `.vercel.app` link works, but `amakasbakes.com` is what customers remember. A `.com` costs about $10 to $15 a year from a registrar such as Namecheap. It's optional on this course, because it isn't free, but it's the first thing to buy when your site starts bringing in money.
 
 1. Buy the domain at the registrar.
 2. In Vercel, open your project, then **Settings**, then **Domains**, and click **Add Domain**.
 3. Vercel shows you the exact records to add. Copy them into your registrar's DNS settings (on Namecheap, **Advanced DNS**). Use the values Vercel shows for your project, not ones from a tutorial.
-4. Wait. It can take from a few minutes to a few hours. Vercel shows a green tick when it is ready.
+4. Wait. It can take from a few minutes to a few hours. Vercel shows a green tick when it's ready.
 
 ## What you should be able to do after this
 

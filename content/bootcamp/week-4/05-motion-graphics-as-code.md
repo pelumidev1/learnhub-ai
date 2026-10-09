@@ -14,9 +14,9 @@ This lesson is the full method, from an empty folder to a finished file. Your pr
 
 ## Video made from code
 
-Both tools build a video the way week three built a website: from files in a folder. You preview it in your browser, change it by asking Claude Code, and export an MP4 when it is right.
+Both tools build a video the way week three built a website: from files in a folder. You preview it in your browser, change it by asking Claude Code, and export an MP4 when it's right.
 
-That is worth learning for two reasons:
+That's worth learning for two reasons:
 
 - **Exact.** Every word lands on the frame you chose, every colour matches your site, every time.
 - **Reusable.** Change the price in one file and the whole video updates. Make one, and next month's version takes minutes.
@@ -33,7 +33,7 @@ Both do the same job, and you only need one. Pick with this table:
 | **Needs on your laptop** | Node.js, from week one | Node.js, plus FFmpeg, a free video tool Claude Code installs for you |
 | **Good to know** | Around longer, so there are more examples online and more job adverts name it | Newer, and built for AI agents to write from the start |
 
-If you are unsure, start with **HyperFrames**: no licence to think about, whoever you later make videos for. If a job advert or a client asks for Remotion, the way you work in this lesson is the same, so switching takes an afternoon.
+If you're unsure, start with **HyperFrames**: no licence to think about, whoever you later make videos for. If a job advert or a client asks for Remotion, the way you work in this lesson is the same, so switching takes an afternoon.
 
 ## Set up the one you chose
 
@@ -52,17 +52,17 @@ Then set the project up, including one small helper that matters more than anyth
 
 > *"Check this laptop has everything this tool needs to render a video, including FFmpeg, and install what is missing, asking me before anything that needs my password. Then set the project up for a vertical video, 1080 by 1920, 30 frames a second. Load my site's fonts from files in the project. Finally, write a helper that renders any frames I name as still images and puts them side by side on one contact sheet, so you can look at your own work after every change."*
 
-That contact sheet is how Claude Code sees. A video is too fast to judge by watching, and Claude Code cannot watch at all, but it can read an image. Every step from here ends with "render a contact sheet and fix what you see".
+That contact sheet is how Claude Code sees. A video is too fast to judge by watching, and Claude Code can't watch at all, but it can read an image. Every step from here ends with "render a contact sheet and fix what you see".
 
 ## Start from a reference
 
-Describing a feeling ("make it modern and energetic") gets you something generic. Showing one gets you something specific. The single biggest jump in quality comes from handing Claude Code a video that already moves the way you want.
+If you describe a feeling ("make it modern and energetic"), you get something generic. Quality jumps most when you hand Claude Code a video that already moves the way you want.
 
 Pick one from your lesson one research:
 
-- **Similar in shape to yours.** An app or a website being shown, if that is what you sell. A product being shown, if that is what you sell.
+- **Similar in shape to yours.** An app or a website being shown, if that's what you sell. A product being shown, if that's what you sell.
 - **Lots of movement on the thing itself.** You want to learn how they animate cards, numbers, buttons and text.
-- **Energy you actually like.** You will ask Claude Code to match it.
+- **Energy you actually like.** You'll ask Claude Code to match it.
 
 Save it as a file in a `reference` folder, then:
 
@@ -70,7 +70,7 @@ Save it as a file in a `reference` folder, then:
 
 Read the breakdown. If something you love is missing, point at the second it happens and ask again.
 
-Study a reference as closely as you like, but take the techniques, not the artwork. Your colours, your words, your product.
+Study a reference as closely as you like, but copy its techniques, not its artwork. The colours, words and product should be yours.
 
 ## Write the story as a beat file
 
@@ -98,7 +98,7 @@ Amaka's 12 seconds, as six beats:
 
 ## Build the pieces before the scenes
 
-This is the step most people skip, and it is the one that makes the result look professional.
+This is the step most people skip, and it's the one that makes the result look professional.
 
 Before any scene, ask Claude Code to build every moving part of your product on its own, then put them all together in one short "test reel" you can watch. For Amaka: the phone frame, a cake card, the price that counts up, the form field that types itself, the button that presses, the check that draws.
 
@@ -122,7 +122,7 @@ Approve the beats file and the test reel, then build beat by beat:
 
 > *"Build beat 2 from the beats file, using the kit exactly like the test reel does, but full screen and bigger. Text on screen must be readable on a phone. Inside this scene, something meaningful should move at least every 8 frames, and the cursor or finger must never cover a word. Render strips of every movement, including the hand-off into beat 3, fix what you see, and tell me which animations you used."*
 
-That "every 8 frames" line matters. "Make it more dynamic" means nothing to Claude Code. A rule it can count, it can check itself against.
+The "every 8 frames" rule is there for a reason. Claude Code can't check its work against "make it more dynamic", but it can count frames.
 
 Look at the preview, scrub along the timeline, and say what to change in plain words. Commit each beat that works, the same way as week three. Then the next one.
 
@@ -141,14 +141,14 @@ When you give feedback, short and specific beats long and polite:
 - "Too much is happening in the background. Halve it."
 - "Everything is too fast. Slow the whole video down."
 
-Pasting a screenshot of the frame that is wrong works even better. Claude Code reads the image and knows exactly what you mean.
+Pasting a screenshot of the frame that's wrong works even better. Claude Code reads the image and knows exactly what you mean.
 
 ## Sound
 
-Half of what makes a video feel finished is sound. If your project uses sound, lesson four's ElevenLabs is where it comes from. Three layers, added in this order once the picture is right:
+Sound does a lot to make a video feel finished. If your project uses sound, lesson four's ElevenLabs is where it comes from. Three layers, added in this order once the picture is right:
 
 1. **Music made for your cut.** Instead of a random track, ask for music whose sections change where your beats change: a hit when the logo lands, a quieter moment under the key line.
-2. **A voice that explains,** if you want one: one short line per beat that adds to what is on screen, rather than reading it out.
+2. **A voice that explains,** if you want one: one short line per beat that adds to what's on screen, rather than reading it out.
 3. **A small sound for every action:** a soft pop as words appear, a click on every tap, a chime when the check draws.
 
 > *"Add sound to the finished picture: an instrumental track timed so its sections change on my beats, and a small sound effect for every visible action, read from the scenes' own timing. Keep the effects under the music, make sure nothing clips, and set the overall loudness right for social media. Render the audio alone so I can check it, and tell me the credits used before you generate anything."*
@@ -157,11 +157,11 @@ Remember the video must still make sense with the sound off. Most people will wa
 
 ## Pace
 
-The most common problem with a first cut is that it is too fast. Everything looks impressive and nothing can be read.
+The most common problem with a first cut is that it's too fast. Everything looks impressive and nothing can be read.
 
-The test: if you have to pause the video to read something, it is too fast. A line of text needs about a second sitting still. A product step needs about half a second of stillness after it finishes.
+The test: if you have to pause the video to read something, it's too fast. A line of text needs about a second sitting still. A product step needs about half a second of stillness after it finishes.
 
-The fix is often not to change any animation, just to slow the whole picture down:
+Often you don't need to change any animation. Just slow the whole picture down:
 
 > *"The video is too fast. Make the whole picture 1.5 times slower without changing any animation code. Keep the music and sound effects at normal speed, move each sound to its new moment, and fit the music to the new length."*
 
@@ -169,7 +169,7 @@ Keep the sound out of the slowing. Slowed music drops in pitch and a slowed voic
 
 ## Render, check and export
 
-Before any big change, export the cut you have. It is your undo button if an experiment goes wrong.
+Before any big change, export the cut you have. It's your undo button if an experiment goes wrong.
 
 When every beat is right:
 
@@ -177,9 +177,9 @@ When every beat is right:
 
 Then check the file, not the preview:
 
-- Watch it on your **phone**, not your laptop. That is where people will see it.
+- Watch it on your **phone**, not your laptop. That's where people will see it.
 - Watch it with the sound **off**. Does it still make sense?
-- Pause on the first frame. It becomes the thumbnail in some apps, so make sure it is not blank.
+- Pause on the first frame. It becomes the thumbnail in some apps, so make sure it isn't blank.
 
 Export the sizes you need from the same project instead of cropping one video:
 
@@ -201,11 +201,11 @@ Export the sizes you need from the same project instead of cropping one video:
 - Only your brand colours and fonts, in sentence case, one accent word per line
 - No finger or cursor covers a word, and no number is caught mid-count
 - The background is calm and the product carries the movement
-- It makes sense with the sound off, and the sound is not too loud
+- It makes sense with the sound off, and the sound isn't too loud
 - You checked the exported file on your phone
 
 ## What you should be able to do after this
 
-Choose between Remotion and HyperFrames for a job and set up either one with Claude Code. Study a reference video and turn it into a beat-by-beat plan. Build and test the animated pieces before the scenes, direct each scene with rules Claude Code can check, review the frames and fix what is wrong, add sound and fix the pace, and export a finished video in the sizes each platform needs.
+Choose between Remotion and HyperFrames for a job and set up either one with Claude Code. Study a reference video and turn it into a beat-by-beat plan. Build and test the animated pieces before the scenes, direct each scene with rules Claude Code can check, review the frames and fix what's wrong, add sound and fix the pace, and export a finished video in the sizes each platform needs.
 
 ## Transcript

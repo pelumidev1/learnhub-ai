@@ -14,10 +14,10 @@ Most CVs say what someone is. Yours can show what you have done. "Skilled in AI 
 
 Every line on your CV and LinkedIn page should pass one test: **could someone check it?**
 
-- *"Proficient in automation"* cannot be checked.
+- *"Proficient in automation"* can't be checked.
 - *"Built an n8n workflow that turns daily orders into a delivery plan, running every morning since October"*, with a screenshot, can.
 
-Numbers help only when they are true and you could defend them. "Saves about three hours a week" is fine if it does. Never round up, never invent. An interviewer who catches one inflated number stops believing the rest.
+Numbers help only when they're true and you could defend them. "Saves about three hours a week" is fine if it does. Never round up, never invent. An interviewer who catches one inflated number stops believing the rest.
 
 ## Your projects are your experience
 
@@ -44,7 +44,7 @@ Then edit it yourself, line by line:
 - Keep it to **one page.**
 - Keep the layout plain: simple headings, no tables or columns, no photos. Many companies read CVs with software first, and fancy layouts confuse it.
 - Read every line aloud and ask: *is this true, and could I talk about it for two minutes in an interview?* If not, cut it.
-- Run your voice skill from week two over it, so it does not read like every other AI-written CV.
+- Run your voice skill from week two over it, so it doesn't read like every other AI-written CV.
 
 ## Your LinkedIn page
 

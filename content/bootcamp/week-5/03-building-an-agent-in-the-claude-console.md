@@ -38,15 +38,15 @@ The agent's instructions are a plain text file with a few settings at the top, t
 
 ## Let Claude Code set it up
 
-You do not need to write code for this. Claude Code has a guided setup for managed agents. Make a new folder, open it in VS Code, and in the Claude Code panel type:
+You don't need to write code for this. Claude Code has a guided setup for managed agents. Make a new folder, open it in VS Code, and in the Claude Code panel type:
 
 ```
 /claude-api managed-agents-onboard
 ```
 
-It interviews you about the agent, then sets it up: the agent file, the environment and a first session. Answer its questions the way you answered the `BUILD.md` interview in week three. Specific answers get a useful agent.
+It interviews you about the agent, then sets it up: the agent file, the environment and a first session. Answer its questions the way you answered the `BUILD.md` interview in week three. The more specific your answers, the more useful the agent.
 
-Amaka's first agent: every Monday it searches for Lagos events and public holidays in the next fortnight, checks them against her `context/work.md`, and writes her a one-page note: "these three dates will bring birthday and party orders, here is a post idea for each". It writes a note. It posts nothing.
+Amaka's first agent: every Monday it searches for Lagos events and public holidays in the next fortnight, checks them against her `context/work.md`, and writes her a one-page note: "these three dates will bring birthday and party orders, here is a post idea for each". It only writes a note. It never posts anything.
 
 Once it works, managed agents can also run on a **schedule**, so the Monday note appears without anyone starting it. Ask Claude Code to set that up only after you have read three of its notes and trust them.
 
@@ -54,7 +54,7 @@ Once it works, managed agents can also run on a **schedule**, so the Monday note
 
 You pay for what the agent reads and writes, like the chatbot, and a long research run reads a lot. Set a low spend limit, watch the **Usage** page in the Console after your first few runs, and choose a smaller model for simple jobs.
 
-Do not build a managed agent when:
+Don't build a managed agent when:
 
 - Claude Code on your laptop would do the job while you watch
 - an automation with fixed steps would do it (lesson seven)

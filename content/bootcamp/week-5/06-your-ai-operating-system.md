@@ -8,7 +8,7 @@ resources: [{"label":"Manage Claude's memory, Claude Code docs","url":"https://c
 resources_checked_on: 2026-09-30
 ---
 
-Over five weeks you have built pieces: a context folder, skills, a voice, projects, agents, tools. This lesson puts them in one place, so that every time you open it, an agent already knows your business, how you work, and what it must never do. Builders call this an AI operating system. It is a folder.
+Over five weeks you have built pieces: a context folder, skills, a voice, projects, agents, tools. This lesson puts them in one place, so that every time you open it, an agent already knows your business, how you work, and what it must never do. Builders call this an AI operating system, though really it's just a folder.
 
 ## One folder that knows your whole business
 
@@ -32,17 +32,17 @@ Most of these you already have from week one. Move them in and fill the gaps.
 
 ## The North Star file
 
-`CLAUDE.md` is the first thing Claude Code reads in this folder, every session. Keep it short. It is a map, not an encyclopedia: who this is for, where everything lives, and the rules.
+`CLAUDE.md` is the first thing Claude Code reads in this folder, every session. Keep it short. Think of it as a map: who this is for, where everything lives, and the rules.
 
 The most useful habit in it:
 
 > *"Load the relevant files before starting any task. If the answer is not in these files, ask me. Do not guess and do not invent."*
 
-That one instruction turns an agent that makes things up into one that asks.
+With that one instruction, the agent asks you instead of making things up.
 
 ## The routing table
 
-As the folder grows, the agent should not read every file for every task. A small table in `CLAUDE.md` tells it which files each kind of work needs:
+As the folder grows, the agent shouldn't read every file for every task. A small table in `CLAUDE.md` tells it which files each kind of work needs:
 
 | If the task is about... | Load first |
 |---|---|
@@ -59,11 +59,11 @@ Skills sit alongside this. Add one line: *"Check the skills folder at the start 
 
 ## Memory it keeps itself
 
-Every time you correct an agent, that correction is lost when the session ends, unless it is written down. So give it a place to write:
+Every time you correct an agent, that correction is lost when the session ends, unless it's written down. So give it a place to write:
 
 > *"If you learn something about me or my business that is not written down yet, add it to context/memory.md and tell me you did."*
 
-Amaka corrects it once: *"We stopped doing carrot cake in August."* It adds a line to `memory.md` and says so. Next week, it will not suggest carrot cake.
+Amaka corrects it once: *"We stopped doing carrot cake in August."* It adds a line to `memory.md` and says so. Next week, it won't suggest carrot cake.
 
 Read `memory.md` every week or two. Delete anything wrong. An agent that remembers a mistake repeats it with confidence.
 
