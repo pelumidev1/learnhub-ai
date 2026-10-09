@@ -2,7 +2,7 @@
 title: Your CLAUDE.md and context folder
 duration_minutes: 16
 published: true
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/Qca309dkhng?rel=0
 chapters: [{"label":"Every session starts as a stranger","at":14},{"label":"CLAUDE.md, the file it always reads","at":33},{"label":"Your context folder","at":57},{"label":"Own your context","at":84},{"label":"One goal per session","at":100},{"label":"Build yours now","at":119}]
 resources: [{"label":"How Claude remembers your project","url":"https://code.claude.com/docs/en/memory","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29

@@ -2,7 +2,7 @@
 title: Build your first skill
 duration_minutes: 18
 published: true
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/Fvq2iCCDGjU?rel=0
 chapters: [{"label":"Find the repetition","at":11},{"label":"Write it as instructions","at":21},{"label":"Spend your effort on the description","at":37},{"label":"Say what you don't want","at":50},{"label":"Put it where you work","at":69},{"label":"The template, filled in","at":83},{"label":"This week you ship","at":119}]
 resources: [{"label":"Agent Skills, Anthropic docs","url":"https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview","kind":"doc","cost":"Free"},{"label":"Anthropic Academy","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free"}]
 resources_checked_on: 2026-08-22

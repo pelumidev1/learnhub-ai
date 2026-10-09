@@ -2,7 +2,7 @@
 title: Your builder setup: VS Code, Claude Code, GitHub, Supabase and Vercel
 duration_minutes: 22
 published: true
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/d0057NNqsL8?rel=0
 chapters: [{"label":"VS Code: where you build","at":21},{"label":"Claude Code inside VS Code","at":46},{"label":"The terminal, the few times you need it","at":74},{"label":"GitHub, so Claude Code can save your work","at":106},{"label":"Supabase and Vercel","at":131},{"label":"Check it all works","at":151}]
 resources: [{"label":"Download VS Code","url":"https://code.visualstudio.com","kind":"tool","cost":"Free"},{"label":"Claude Code in VS Code","url":"https://code.claude.com/docs/en/vs-code","kind":"doc","cost":"Free"},{"label":"GitHub CLI","url":"https://cli.github.com","kind":"tool","cost":"Free"},{"label":"Node.js","url":"https://nodejs.org","kind":"tool","cost":"Free"},{"label":"Supabase pricing","url":"https://supabase.com/pricing","kind":"doc","cost":"Free plan available"},{"label":"Vercel pricing","url":"https://vercel.com/pricing","kind":"doc","cost":"Free Hobby plan"}]
 resources_checked_on: 2026-09-29

@@ -2,7 +2,7 @@
 title: Setting up Claude properly: Pro, the desktop app, Projects and memory
 duration_minutes: 15
 published: true
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/k43WlyhyhRQ?rel=0
 chapters: [{"label":"Getting Pro","at":15},{"label":"Install the desktop app","at":39},{"label":"Memory: what Claude remembers","at":58},{"label":"Projects: a room for each piece of work","at":80},{"label":"Your first project: you","at":113}]
 resources: [{"label":"Claude plans and prices","url":"https://claude.com/pricing","kind":"doc","cost":"Free to read"},{"label":"Download the Claude desktop app","url":"https://claude.com/download","kind":"tool","cost":"Free"},{"label":"What are Projects?","url":"https://support.claude.com/en/articles/9517075-what-are-projects","kind":"doc","cost":"Free"},{"label":"Chat search and memory","url":"https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-28

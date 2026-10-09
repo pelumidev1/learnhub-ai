@@ -2,7 +2,7 @@
 title: Chat vs agents: the loop, and defining done
 duration_minutes: 14
 published: true
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/KDiU9hhJqe8?rel=0
 chapters: [{"label":"Chat answers, an agent finishes","at":13},{"label":"The loop every agent runs","at":35},{"label":"One job, both ways","at":58},{"label":"Defining done","at":92},{"label":"Watch it, steer it","at":113}]
 resources: [{"label":"How Claude Code works","url":"https://code.claude.com/docs/en/how-claude-code-works","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29

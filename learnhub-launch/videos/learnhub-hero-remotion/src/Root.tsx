@@ -3,6 +3,7 @@ import { Composition, Folder } from "remotion";
 import { Hero, HERO_LEN } from "./Hero";
 import { CakeAd, CAKE_AD_LEN } from "./CakeAd";
 import { LESSONS } from "./lessons";
+import { THUMBS, Thumbnail } from "./lessons/Thumbnail";
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -12,6 +13,9 @@ export const RemotionRoot: React.FC = () => (
     {/* Bootcamp lesson films: narrated, captioned, 16:9 for the lesson page. */}
     <Folder name="Lessons">
       {LESSONS.map(([id, l]) => <Composition key={id} id={id} component={l.Film} durationInFrames={l.length} fps={30} width={1920} height={1080} />)}
+    </Folder>
+    <Folder name="Thumbnails">
+      {THUMBS.map((t) => <Composition key={t.lesson} id={`Thumb-W${t.week}L${t.lesson}`} component={Thumbnail} defaultProps={t} durationInFrames={1} fps={30} width={1280} height={720} />)}
     </Folder>
     <Composition id="CakeAd" component={CakeAd} durationInFrames={CAKE_AD_LEN} fps={30} width={1080} height={1920} />
   </>
