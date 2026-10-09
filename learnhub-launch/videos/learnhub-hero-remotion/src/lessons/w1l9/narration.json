@@ -1,0 +1,123 @@
+{
+  "lesson": "Week 1, Lesson 9: Build your first skill",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "This lesson takes you through five steps, and at the end you'll have a skill that works."
+        }
+      ]
+    },
+    {
+      "id": "rep",
+      "label": "Find the repetition",
+      "beats": [
+        {
+          "id": "rep-1",
+          "text": "Open your chat history and look for a paragraph you've typed three or more times."
+        },
+        {
+          "id": "rep-2",
+          "text": "That's your first skill. Start with the boring thing you keep doing by hand."
+        }
+      ]
+    },
+    {
+      "id": "ins",
+      "label": "Write it as instructions",
+      "beats": [
+        {
+          "id": "ins-1",
+          "text": "It's tempting to write: you are a world-class copywriter. That does almost nothing."
+        },
+        {
+          "id": "ins-2",
+          "text": "Write rules instead. The first two lines are the whole post, because LinkedIn cuts off there. No hashtags. The model can follow that."
+        }
+      ]
+    },
+    {
+      "id": "desc",
+      "label": "Spend your effort on the description",
+      "beats": [
+        {
+          "id": "desc-1",
+          "text": "Spend more time on the description than on the instructions."
+        },
+        {
+          "id": "desc-2",
+          "text": "Use the exact words you type when you want this job done. They're often different from what you call the task in your head."
+        }
+      ]
+    },
+    {
+      "id": "neg",
+      "label": "Say what you don't want",
+      "beats": [
+        {
+          "id": "neg-1",
+          "text": "The lines that change the output most are the ones about what you don't want."
+        },
+        {
+          "id": "neg-2",
+          "text": "One real voice file bans twelve words, including delve, foster, leverage and crucial. The model can't check itself against \"write clearly\", but it can check every sentence for the word leverage."
+        }
+      ]
+    },
+    {
+      "id": "where",
+      "label": "Put it where you work",
+      "beats": [
+        {
+          "id": "where-1",
+          "text": "Claude Code reads skills from a folder called .claude/skills, inside your project. Keep a copy somewhere you can find it too, because the same skill works in more than one tool."
+        }
+      ]
+    },
+    {
+      "id": "filled",
+      "label": "The template, filled in",
+      "beats": [
+        {
+          "id": "filled-1",
+          "text": "Every skill has the same parts: a name, a description, when to use it, the steps, the rules, what never to do, and an example of good."
+        },
+        {
+          "id": "filled-2",
+          "text": "Here's Amaka's. The description uses her own words. The steps ask which cake and which occasion, then write two options under fifty words."
+        },
+        {
+          "id": "filled-3",
+          "text": "The rules mention same-day delivery in Lekki and the price in naira. The never list bans words like indulge and delectable. And it ends with one real caption she liked."
+        },
+        {
+          "id": "filled-4",
+          "text": "Every line came from something she was already typing, or something she was tired of fixing."
+        }
+      ]
+    },
+    {
+      "id": "ship",
+      "label": "This week you ship",
+      "beats": [
+        {
+          "id": "ship-1",
+          "text": "This week you ship your AI workspace: a Claude project that knows you, your CLAUDE.md and context folder, your first skill, and a one-page site about you, live on the internet."
+        },
+        {
+          "id": "ship-2",
+          "text": "Build the page through your skill and your context folder. Give Claude Code a goal with a clear \"it's done when\", and put the result live."
+        },
+        {
+          "id": "ship-3",
+          "text": "At the end, you'll have the page, and a skill you can use to make the next one. The full brief is on this week's work page."
+        }
+      ]
+    }
+  ]
+}

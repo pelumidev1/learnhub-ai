@@ -3,7 +3,7 @@ title: Claude, ChatGPT and Gemini: what each is best at
 duration_minutes: 14
 published: true
 video_url:
-chapters: [{"label":"Why you need more than one","at":0},{"label":"Claude: writing, thinking, building","at":0},{"label":"ChatGPT: the all-rounder","at":0},{"label":"Gemini: your Google life","at":0},{"label":"Pick a home base","at":0},{"label":"Try it: one task, three tools","at":0},{"label":"The others you will hear about","at":0}]
+chapters: [{"label":"Why you need more than one","at":5},{"label":"Claude: writing, thinking, building","at":26},{"label":"ChatGPT: the all-rounder","at":58},{"label":"Gemini: inside your Google account","at":81},{"label":"Pick a home base","at":102},{"label":"Try it: one task, three tools","at":129},{"label":"The others you'll hear about","at":162}]
 resources: [{"label":"Claude plans","url":"https://claude.com/pricing","kind":"doc","cost":"Free to read"},{"label":"Gemini plans","url":"https://gemini.google/subscriptions/","kind":"doc","cost":"Free to read"},{"label":"ChatGPT plans","url":"https://chatgpt.com/pricing","kind":"doc","cost":"Free to read"}]
 resources_checked_on: 2026-09-29
 ---
@@ -54,7 +54,7 @@ All three companies ship changes every few weeks, so any ranking you read online
 
 ## The others you'll hear about
 
-There are more assistants than these three. You don't need to set any of them up this week, but you should know what they're when someone mentions one.
+There are more assistants than these three. You don't need to set any of them up this week, but you should know what they are when someone mentions one.
 
 - **Perplexity** answers questions by searching the web and showing you the sources it used. It's built for research. In week two you learn to check sources with whichever tool you use, and Perplexity is one option.
 - **Meta AI** is the assistant inside WhatsApp, Instagram and Facebook. For many people it's the first AI they ever used, because it was already on their phone. It's fine for quick questions, but it's not where you'd do serious work.
@@ -69,3 +69,31 @@ The skills you learn on this course carry across all of them. Giving a model the
 Pick the right assistant for a task without thinking about it for long, and use a second one to check the first.
 
 ## Transcript
+
+### Why you need more than one
+
+People argue about which AI is best the way they argue about football clubs. It's not a useful argument. Claude, ChatGPT and Gemini are all good, and each one is better than the others at something. You'll use all three in this bootcamp, and this lesson shows you which one to open first.
+
+### Claude: writing, thinking, building
+
+Claude is the assistant this bootcamp is built around, for three reasons. First, it writes well. Its writing sounds less like a template, and it follows directions on tone, which matters in week two when you teach it your voice. Second, it handles long material. Give it a long document or a whole project, and it keeps track of all of it. Third, it has Claude Code, the tool you'll use to build websites and apps from week three. That's why Claude Pro is the one paid tool on this course.
+
+### ChatGPT: the all-rounder
+
+ChatGPT is the most widely used AI assistant in the world. It's strong at images, voice conversations, quick questions and research, and its free plan is generous. It also comes with Codex, OpenAI's coding agent. You won't build with it here, but it's useful for a second opinion on code Claude wrote.
+
+### Gemini: inside your Google account
+
+Gemini is built into Google. If your email, documents and files are in Gmail, Docs and Drive, Gemini can work with them. It's also how you'll make AI video in week four. Its free plan is generous too, and Google runs student offers in some countries, so check before you pay.
+
+### Pick a home base
+
+Here's how to use them together. Claude is your home base. Your context, projects and skills live there, and most work starts there. ChatGPT and Gemini are your second opinions. When something matters, paste Claude's work into one of them in a fresh chat, and ask what's weak. And use each one for what it does best: images in ChatGPT, and anything in your Google files in Gemini.
+
+### Try it: one task, three tools
+
+Try this now. Pick a real task, like a WhatsApp message telling past customers about a new price list, and give the same request to all three. Compare the answers. Which one sounds most like a person? Which one invented something you didn't say? Which one would you actually send? Then paste your favourite into one of the other two, in a new chat, and ask what's weak about it, without rewriting it. These tools change every few weeks, so online rankings go out of date fast. Judge them on your own work.
+
+### The others you'll hear about
+
+You'll hear about other assistants too. You don't need to set them up, but it helps to know what they are. Perplexity searches the web and shows you its sources. Meta AI is inside WhatsApp, Instagram and Facebook. And Microsoft Copilot is built into Windows and Office. DeepSeek is free and capable, but its privacy policy says what you type is stored in China, so never paste anything private into it. Grok is xAI's assistant, built into X. The skills in this course work with all of them. In the next lesson, you'll set up Claude properly.

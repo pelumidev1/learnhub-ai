@@ -1,0 +1,121 @@
+{
+  "lesson": "Week 1, Lesson 5: Your builder setup",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "This is the lesson people are most nervous about, and it's the one that makes weeks three to six possible. Do it on your laptop, with a charger nearby. Give it an hour the first time, and if something fails, post exactly what you saw in your pod."
+        }
+      ]
+    },
+    {
+      "id": "vscode",
+      "label": "VS Code: where you build",
+      "beats": [
+        {
+          "id": "vscode-1",
+          "text": "VS Code is a free app for working on a project's files. You won't write the code. Claude Code will, inside VS Code, and you'll see every file it creates or changes."
+        },
+        {
+          "id": "vscode-2",
+          "text": "Download it from code.visualstudio.com, make a folder called learnhub in your Documents, and open it in VS Code. That folder is where you'll build for the rest of the bootcamp."
+        }
+      ]
+    },
+    {
+      "id": "cc",
+      "label": "Claude Code inside VS Code",
+      "beats": [
+        {
+          "id": "cc-1",
+          "text": "Open Extensions, search for Claude Code, check the publisher is Anthropic, and install it. Then click the Claude Code icon and sign in with your Claude Pro account."
+        },
+        {
+          "id": "cc-2",
+          "text": "Test it. Ask it to create a file called hello.md that says hello. It shows you the file and asks your permission before it saves it."
+        },
+        {
+          "id": "cc-3",
+          "text": "That's the pattern for everything you build: you ask, it proposes, you read, and you approve."
+        }
+      ]
+    },
+    {
+      "id": "terminal",
+      "label": "The terminal, the few times you need it",
+      "beats": [
+        {
+          "id": "terminal-1",
+          "text": "The terminal is a window where you type instructions to your computer instead of clicking. VS Code has one built in, and you'll only need it for a few setup steps."
+        },
+        {
+          "id": "terminal-2",
+          "text": "Five commands are enough. pwd shows where you are. ls lists what's in a folder. mkdir makes a folder. cd moves into one, and cd dot dot moves back up."
+        },
+        {
+          "id": "terminal-3",
+          "text": "Then install two tools: Git, which saves versions of your work, and Node.js, which runs the websites you'll build."
+        }
+      ]
+    },
+    {
+      "id": "github",
+      "label": "GitHub, so Claude Code can save your work",
+      "beats": [
+        {
+          "id": "github-1",
+          "text": "GitHub stores your code and every version of it. It's your undo button: if a change breaks everything, you go back to the version that worked."
+        },
+        {
+          "id": "github-2",
+          "text": "Sign up at github.com, install the GitHub command line tool, and run gh auth login. Answer its questions, then approve in your browser."
+        },
+        {
+          "id": "github-3",
+          "text": "From then on, when you tell Claude Code to commit and push, it can."
+        }
+      ]
+    },
+    {
+      "id": "supa",
+      "label": "Supabase and Vercel",
+      "beats": [
+        {
+          "id": "supa-1",
+          "text": "Two more free accounts. Use Continue with GitHub for both, so one login covers all three."
+        },
+        {
+          "id": "supa-2",
+          "text": "Supabase is a database with sign-in built in, for week three. Vercel puts your site on the internet at a real link."
+        },
+        {
+          "id": "supa-3",
+          "text": "You don't need to create anything inside them yet. Signing in is enough."
+        }
+      ]
+    },
+    {
+      "id": "check",
+      "label": "Check it all works",
+      "beats": [
+        {
+          "id": "check-1",
+          "text": "Finally, let Claude Code check your setup. Ask it to check Git, Node and GitHub, and tell you in plain English whether you can save your work."
+        },
+        {
+          "id": "check-2",
+          "text": "Then take screenshots for this week's assignment: Claude Pro, ChatGPT, Gemini, GitHub, Supabase and Vercel, all signed in, and Claude Code open in VS Code."
+        },
+        {
+          "id": "check-3",
+          "text": "If you have all seven, your builder setup is done. In the next lesson: chat versus agents."
+        }
+      ]
+    }
+  ]
+}

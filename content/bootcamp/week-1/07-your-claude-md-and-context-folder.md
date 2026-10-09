@@ -3,7 +3,7 @@ title: Your CLAUDE.md and context folder
 duration_minutes: 16
 published: true
 video_url:
-chapters: [{"label":"Every session starts as a stranger","at":0},{"label":"CLAUDE.md, the file it always reads","at":0},{"label":"Your context folder","at":0},{"label":"Own your context","at":0},{"label":"One goal per session","at":0},{"label":"Build yours now","at":0}]
+chapters: [{"label":"Every session starts as a stranger","at":14},{"label":"CLAUDE.md, the file it always reads","at":33},{"label":"Your context folder","at":57},{"label":"Own your context","at":84},{"label":"One goal per session","at":100},{"label":"Build yours now","at":119}]
 resources: [{"label":"How Claude remembers your project","url":"https://code.claude.com/docs/en/memory","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29
 ---
@@ -81,6 +81,32 @@ Answer honestly, then read every file before you approve it. A wrong line in the
 
 ## What you should be able to do after this
 
-Set up a folder where Claude Code already knows who you're and how you work, and keep it working by starting a fresh session for each new goal.
+Set up a folder where Claude Code already knows who you are and how you work, and keep it working by starting a fresh session for each new goal.
 
 ## Transcript
+
+Every time you start Claude Code, it starts from nothing. In this lesson you fix that once, and every session after it starts out knowing you.
+
+### Every session starts as a stranger
+
+Think of a very good new hire on their first day. They're clever and fast, but they can't do much until someone tells them who the customers are and how things are done. An agent is the same. You onboard it with context: who you are, what you do, and the rules you want followed.
+
+### CLAUDE.md, the file it always reads
+
+CLAUDE.md is a plain text file in your project folder. Claude Code reads it at the start of every session, before you type anything. Keep it short. It loads every time, so it should only hold what matters on every task. You don't have to write it from scratch. Type slash init in Claude Code, and it writes a starter file for you to edit.
+
+### Your context folder
+
+Everything else goes in a folder called context, with one file per subject: about you, your work, your voice, and your customers. Your CLAUDE.md points to them. A line starting with an at sign pulls a file in at the start of every session. Amaka's ends with a rule: if something isn't in these files, ask me, don't guess. Without it, Claude Code fills gaps with guesses. With it, Claude Code asks.
+
+### Own your context
+
+These are plain text files on your own laptop. You can read every line, fix anything wrong, and take them anywhere. Codex reads a file called AGENTS.md the same way, so the same context works there too.
+
+### One goal per session
+
+A session can only hold so much. When it fills up, Claude Code shortens the older part of the conversation, and early instructions can get lost. So put the rules that matter every time in CLAUDE.md, and start a fresh session for each new goal, with slash clear.
+
+### Build yours now
+
+Open your learnhub folder in Claude Code. Ask it to interview you one question at a time, then create your context files and a short CLAUDE.md. Read every file before you approve it. A wrong line in there turns into a wrong answer in every session after. In the next lesson: skills.

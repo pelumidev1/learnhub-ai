@@ -1,9 +1,9 @@
 import React from "react";
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { F } from "../../lib/brand";
-import { Sfx } from "../../lib/sfx";
+import { Sfx } from "../sfx";
 import { ACCENT, Chip, Counter, DIM, FullBleed, Ground, INK, Mono, Pop, Rise, Shot, Snow, springy, Type, Words } from "../kit";
-import { Chapter } from "../timeline";
+import { at, Bot, card, Check, GPTScreen, Later, Left, Middle, S, Strike, You } from "../screens";
 
 /**
  * Week 1, Lesson 1: What AI actually is, and how we got here.
@@ -14,25 +14,8 @@ import { Chapter } from "../timeline";
  * start; `at()` gives positions on the chapter's clock.
  */
 
-type S = { c: Chapter };
 const IMG = "lessons/w1l1/img/";
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
-
-/** A frame on the chapter clock, partway through a beat (`frac` 0 is its first word). */
-const at = (c: Chapter, id: string, frac = 0) => {
-  const beat = c.beats.find((x) => x.id === id);
-  if (!beat) throw new Error(`No beat ${id}`);
-  return Math.round(beat.at + beat.len * frac);
-};
-
-const Left: React.FC<{ children: React.ReactNode; top?: number; width?: number }> = ({ children, top = 300, width = 1100 }) => (
-  <div style={{ position: "absolute", left: 160, top, width }}>{children}</div>
-);
-const Middle: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
-  <AbsoluteFill style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", ...style }}>{children}</AbsoluteFill>
-);
-
-const card: React.CSSProperties = { background: "rgba(255,255,255,.05)", border: "1.5px solid rgba(255,255,255,.12)", borderRadius: 28 };
 
 /* ── Shared diagrams ────────────────────────────────────────────────── */
 
@@ -66,36 +49,6 @@ const Track: React.FC<{ from: number; to: number; dur: number; glow?: number }> 
         );
       })}
     </AbsoluteFill>
-  );
-};
-
-/** A recreated ChatGPT conversation, full frame, in its real dark design. */
-const GPTScreen: React.FC<{ children: React.ReactNode; input?: React.ReactNode }> = ({ children, input }) => (
-  <AbsoluteFill style={{ background: "#000", fontFamily: F.sans }}>
-    <div style={{ position: "absolute", left: 360, top: 110, fontSize: 30, fontWeight: 500 }}>ChatGPT <span style={{ color: DIM, fontSize: 22 }}>⌄</span></div>
-    <div style={{ position: "absolute", left: 360, right: 360, top: 200, display: "flex", flexDirection: "column", gap: 36 }}>{children}</div>
-    <div style={{ position: "absolute", left: 360, right: 360, bottom: 70, minHeight: 92, borderRadius: 46, background: "#212121", border: "1px solid #303030", display: "flex", alignItems: "center", padding: "16px 22px 16px 36px", gap: 24 }}>
-      <span style={{ fontSize: 40, color: "#cfcfcf" }}>+</span>
-      <span style={{ flex: 1, fontSize: 30, color: input ? "#fff" : "#8f8f8f", lineHeight: 1.4 }}>{input ?? "Ask anything"}</span>
-      <div style={{ width: 56, height: 56, borderRadius: 28, background: "#fff", color: "#000", display: "grid", placeItems: "center", fontSize: 30, fontWeight: 600, flex: "none" }}>↑</div>
-    </div>
-  </AbsoluteFill>
-);
-const You: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div style={{ alignSelf: "flex-end", maxWidth: "78%", background: "#2f2f2f", borderRadius: 32, padding: "20px 30px", fontSize: 32, lineHeight: 1.45 }}>{children}</div>
-);
-const Bot: React.FC<{ children: React.ReactNode }> = ({ children }) => <div style={{ fontSize: 34, lineHeight: 1.55 }}>{children}</div>;
-
-/** Only mounts once its moment comes, so a later message never holds space early. */
-const Later: React.FC<{ at: number; children: React.ReactNode }> = ({ at: s, children }) => (useCurrentFrame() >= s ? <Rise at={s}>{children}</Rise> : null);
-
-const Strike: React.FC<{ at: number; children: React.ReactNode; thick?: number }> = ({ at: s, children, thick = 6 }) => {
-  const p = interpolate(useCurrentFrame(), [s, s + 14], [0, 1], { ...clamp, easing: springy });
-  return (
-    <span style={{ position: "relative", display: "inline-block", opacity: 1 - 0.5 * p }}>
-      {children}
-      <span style={{ position: "absolute", left: -8, top: "54%", height: thick, borderRadius: thick, background: "#fff", width: `calc(${p * 100}% + ${p * 16}px)` }} />
-    </span>
   );
 };
 
@@ -565,15 +518,6 @@ export const Amaka: React.FC<S> = ({ c }) => {
 };
 
 /* ── 6. Key takeaways ───────────────────────────────────────────────── */
-
-const Check: React.FC<{ at: number }> = ({ at: s }) => {
-  const p = interpolate(useCurrentFrame(), [s, s + 14], [0, 1], { ...clamp, easing: springy });
-  return (
-    <div style={{ width: 64, height: 64, borderRadius: 32, background: ACCENT, display: "grid", placeItems: "center", scale: 0.6 + 0.4 * p, opacity: p, flex: "none" }}>
-      <svg viewBox="0 0 24 24" width={36} height={36}><path d="m5 12 5 5L20 7" fill="none" stroke={INK} strokeWidth={3.4} strokeLinecap="round" strokeLinejoin="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - p} /></svg>
-    </div>
-  );
-};
 
 export const Takeaways: React.FC<S> = ({ c }) => {
   const y3 = at(c, "you-3");

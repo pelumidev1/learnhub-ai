@@ -3,7 +3,7 @@ title: Chat vs agents: the loop, and defining done
 duration_minutes: 14
 published: true
 video_url:
-chapters: [{"label":"Chat answers, an agent finishes","at":0},{"label":"The loop every agent runs","at":0},{"label":"One job, both ways","at":0},{"label":"Defining done","at":0},{"label":"Watch it, steer it","at":0}]
+chapters: [{"label":"Chat answers, an agent finishes","at":13},{"label":"The loop every agent runs","at":35},{"label":"One job, both ways","at":58},{"label":"Defining done","at":92},{"label":"Watch it, steer it","at":113}]
 resources: [{"label":"How Claude Code works","url":"https://code.claude.com/docs/en/how-claude-code-works","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29
 ---
@@ -69,3 +69,25 @@ If it heads the wrong way, press **Esc** to stop it, tell it what you want inste
 Tell when a job needs chat and when it needs an agent, and give Claude Code a goal with a clear "it is done when..." that it can actually finish.
 
 ## Transcript
+
+Everything you've used so far answers questions. Claude Code is different: you give it a goal, and it does the work.
+
+### Chat answers, an agent finishes
+
+With chat, you ask a question, get an answer, and then do the job yourself. With an agent, you give it a goal and get back a finished result: files written, pages built, checks run. Chat is still right for a quick question, or for thinking something through. An agent is for work with several steps that ends in something real.
+
+### The loop every agent runs
+
+Every agent repeats the same three steps until the goal is met. It gathers context by looking at your files and instructions. It takes action, like writing a file or running a command. And it checks the result, then goes round again. One task can take twenty rounds. Claude Code, Codex and Claude Cowork all run this same loop.
+
+### One job, both ways
+
+Here's one job done both ways. Amaka wants a price list page for her bakery. In chat, she asks what should go on a price list page. She gets good ideas, but she still has to build it. In Claude Code, she gives it the goal: four cakes, their prices, and same-day delivery in Lekki. Then one more line: it's done when the page opens on a phone and every price is readable without zooming. Claude Code writes the page, checks it against what she asked for, and fixes what's off. She reviews a finished page.
+
+### Defining done
+
+That last line is what tells the agent when to stop. A vague goal gets a vague stopping point. A clear goal says what you want made, who it's for, and what finished looks like, clearly enough that you could check it yourself. Ending a goal with "it's done when" is the most useful habit you can build with agents.
+
+### Watch it, steer it
+
+Claude Code asks before it changes files or runs commands. Read what it wants to do before you say yes. If it heads the wrong way, press Escape, tell it what you want instead, and let it carry on. You decide the goal. The agent works out the steps. In the next lesson, you'll set up your CLAUDE.md and context folder.

@@ -1,0 +1,70 @@
+{
+ "open-1": {
+  "key": "59f5a1bd3b58",
+  "seconds": 6.592
+ },
+ "finish-1": {
+  "key": "715458cc0e25",
+  "seconds": 4.352
+ },
+ "finish-2": {
+  "key": "2830e24b97cb",
+  "seconds": 6.123
+ },
+ "finish-3": {
+  "key": "075d19e67256",
+  "seconds": 8.512
+ },
+ "loop-1": {
+  "key": "61f4c2d9eca1",
+  "seconds": 3.883
+ },
+ "loop-2": {
+  "key": "f6130456456b",
+  "seconds": 10.496
+ },
+ "loop-3": {
+  "key": "404be66b5c19",
+  "seconds": 6.037
+ },
+ "both-1": {
+  "key": "197e1ef66a66",
+  "seconds": 4.928
+ },
+ "both-2": {
+  "key": "fbe6bd292df7",
+  "seconds": 6.144
+ },
+ "both-3": {
+  "key": "afbd71e3f07a",
+  "seconds": 12.565
+ },
+ "both-4": {
+  "key": "7abac75de649",
+  "seconds": 6.891
+ },
+ "done-1": {
+  "key": "df8dfa366b01",
+  "seconds": 3.115
+ },
+ "done-2": {
+  "key": "295eace55bc7",
+  "seconds": 9.728
+ },
+ "done-3": {
+  "key": "90ca1b986529",
+  "seconds": 4.907
+ },
+ "steer-1": {
+  "key": "68ebb31f8fe9",
+  "seconds": 6.72
+ },
+ "steer-2": {
+  "key": "eb5e662c6538",
+  "seconds": 8.469
+ },
+ "steer-3": {
+  "key": "167a038bf825",
+  "seconds": 4.352
+ }
+}

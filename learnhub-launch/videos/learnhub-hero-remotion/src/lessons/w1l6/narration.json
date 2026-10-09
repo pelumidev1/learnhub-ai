@@ -1,0 +1,111 @@
+{
+  "lesson": "Week 1, Lesson 6: Chat vs agents",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "Everything you've used so far answers questions. Claude Code is different: you give it a goal, and it does the work."
+        }
+      ]
+    },
+    {
+      "id": "finish",
+      "label": "Chat answers, an agent finishes",
+      "beats": [
+        {
+          "id": "finish-1",
+          "text": "With chat, you ask a question, get an answer, and then do the job yourself."
+        },
+        {
+          "id": "finish-2",
+          "text": "With an agent, you give it a goal and get back a finished result: files written, pages built, checks run."
+        },
+        {
+          "id": "finish-3",
+          "text": "Chat is still right for a quick question, or for thinking something through. An agent is for work with several steps that ends in something real."
+        }
+      ]
+    },
+    {
+      "id": "loop",
+      "label": "The loop every agent runs",
+      "beats": [
+        {
+          "id": "loop-1",
+          "text": "Every agent repeats the same three steps until the goal is met."
+        },
+        {
+          "id": "loop-2",
+          "text": "It gathers context by looking at your files and instructions. It takes action, like writing a file or running a command. And it checks the result, then goes round again."
+        },
+        {
+          "id": "loop-3",
+          "text": "One task can take twenty rounds. Claude Code, Codex and Claude Cowork all run this same loop."
+        }
+      ]
+    },
+    {
+      "id": "both",
+      "label": "One job, both ways",
+      "beats": [
+        {
+          "id": "both-1",
+          "text": "Here's one job done both ways. Amaka wants a price list page for her bakery."
+        },
+        {
+          "id": "both-2",
+          "text": "In chat, she asks what should go on a price list page. She gets good ideas, but she still has to build it."
+        },
+        {
+          "id": "both-3",
+          "text": "In Claude Code, she gives it the goal: four cakes, their prices, and same-day delivery in Lekki. Then one more line: it's done when the page opens on a phone and every price is readable without zooming."
+        },
+        {
+          "id": "both-4",
+          "text": "Claude Code writes the page, checks it against what she asked for, and fixes what's off. She reviews a finished page."
+        }
+      ]
+    },
+    {
+      "id": "done",
+      "label": "Defining done",
+      "beats": [
+        {
+          "id": "done-1",
+          "text": "That last line is what tells the agent when to stop."
+        },
+        {
+          "id": "done-2",
+          "text": "A vague goal gets a vague stopping point. A clear goal says what you want made, who it's for, and what finished looks like, clearly enough that you could check it yourself."
+        },
+        {
+          "id": "done-3",
+          "text": "Ending a goal with \"it's done when\" is the most useful habit you can build with agents."
+        }
+      ]
+    },
+    {
+      "id": "steer",
+      "label": "Watch it, steer it",
+      "beats": [
+        {
+          "id": "steer-1",
+          "text": "Claude Code asks before it changes files or runs commands. Read what it wants to do before you say yes."
+        },
+        {
+          "id": "steer-2",
+          "text": "If it heads the wrong way, press Escape, tell it what you want instead, and let it carry on. You decide the goal. The agent works out the steps."
+        },
+        {
+          "id": "steer-3",
+          "text": "In the next lesson, you'll set up your CLAUDE.md and context folder."
+        }
+      ]
+    }
+  ]
+}

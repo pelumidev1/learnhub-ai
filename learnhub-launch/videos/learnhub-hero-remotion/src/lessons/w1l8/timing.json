@@ -1,0 +1,58 @@
+{
+ "open-1": {
+  "key": "791d3ecd49a4",
+  "seconds": 10.027
+ },
+ "problem-1": {
+  "key": "46790c3d0c44",
+  "seconds": 9.088
+ },
+ "problem-2": {
+  "key": "07c7888ae239",
+  "seconds": 9.408
+ },
+ "problem-3": {
+  "key": "56a9b4220994",
+  "seconds": 12.437
+ },
+ "finds-1": {
+  "key": "01d5458cf180",
+  "seconds": 6.315
+ },
+ "finds-2": {
+  "key": "949f6b82ee9d",
+  "seconds": 9.003
+ },
+ "finds-3": {
+  "key": "92a36e102d3c",
+  "seconds": 4.608
+ },
+ "real-1": {
+  "key": "bed50c981e2d",
+  "seconds": 9.067
+ },
+ "real-2": {
+  "key": "da82b4a3e878",
+  "seconds": 10.411
+ },
+ "real-3": {
+  "key": "313aad77be10",
+  "seconds": 10.624
+ },
+ "one-1": {
+  "key": "d1953861077f",
+  "seconds": 5.867
+ },
+ "one-2": {
+  "key": "684d7d3a3ca7",
+  "seconds": 5.696
+ },
+ "cant-1": {
+  "key": "1b2e157926aa",
+  "seconds": 6.443
+ },
+ "cant-2": {
+  "key": "8ff233bb95f8",
+  "seconds": 9.195
+ }
+}

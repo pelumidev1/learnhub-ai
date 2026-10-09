@@ -1,0 +1,70 @@
+{
+ "open-1": {
+  "key": "1edf2d1e79c0",
+  "seconds": 4.309
+ },
+ "rep-1": {
+  "key": "d83e6ade6aaf",
+  "seconds": 4.331
+ },
+ "rep-2": {
+  "key": "ef82be394636",
+  "seconds": 3.925
+ },
+ "ins-1": {
+  "key": "e9c7f4646754",
+  "seconds": 4.565
+ },
+ "ins-2": {
+  "key": "491d95c51c08",
+  "seconds": 8.427
+ },
+ "desc-1": {
+  "key": "516086384f33",
+  "seconds": 3.413
+ },
+ "desc-2": {
+  "key": "d87bfd1588e7",
+  "seconds": 6.656
+ },
+ "neg-1": {
+  "key": "f62532dbe61e",
+  "seconds": 4.053
+ },
+ "neg-2": {
+  "key": "270623561364",
+  "seconds": 12.352
+ },
+ "where-1": {
+  "key": "a5c6afddd351",
+  "seconds": 11.605
+ },
+ "filled-1": {
+  "key": "2b9fcb34c0e7",
+  "seconds": 8.192
+ },
+ "filled-2": {
+  "key": "89af8d419728",
+  "seconds": 8.619
+ },
+ "filled-3": {
+  "key": "33d38657fd49",
+  "seconds": 11.093
+ },
+ "filled-4": {
+  "key": "b970fe17f40d",
+  "seconds": 5.12
+ },
+ "ship-1": {
+  "key": "8b16c4a78362",
+  "seconds": 11.712
+ },
+ "ship-2": {
+  "key": "4dbcd022295b",
+  "seconds": 7.893
+ },
+ "ship-3": {
+  "key": "886a729d73ef",
+  "seconds": 6.912
+ }
+}

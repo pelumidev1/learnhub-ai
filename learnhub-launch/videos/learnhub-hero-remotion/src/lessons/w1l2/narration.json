@@ -1,0 +1,133 @@
+{
+  "lesson": "Week 1, Lesson 2: Claude, ChatGPT and Gemini: what each is best at",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "why",
+      "label": "Why you need more than one",
+      "beats": [
+        {
+          "id": "why-1",
+          "text": "People argue about which AI is best the way they argue about football clubs. It's not a useful argument."
+        },
+        {
+          "id": "why-2",
+          "text": "Claude, ChatGPT and Gemini are all good, and each one is better than the others at something. You'll use all three in this bootcamp, and this lesson shows you which one to open first."
+        }
+      ]
+    },
+    {
+      "id": "claude",
+      "label": "Claude: writing, thinking, building",
+      "beats": [
+        {
+          "id": "claude-1",
+          "text": "Claude is the assistant this bootcamp is built around, for three reasons."
+        },
+        {
+          "id": "claude-2",
+          "text": "First, it writes well. Its writing sounds less like a template, and it follows directions on tone, which matters in week two when you teach it your voice."
+        },
+        {
+          "id": "claude-3",
+          "text": "Second, it handles long material. Give it a long document or a whole project, and it keeps track of all of it."
+        },
+        {
+          "id": "claude-4",
+          "text": "Third, it has Claude Code, the tool you'll use to build websites and apps from week three. That's why Claude Pro is the one paid tool on this course."
+        }
+      ]
+    },
+    {
+      "id": "chatgpt",
+      "label": "ChatGPT: the all-rounder",
+      "beats": [
+        {
+          "id": "chatgpt-1",
+          "text": "ChatGPT is the most widely used AI assistant in the world. It's strong at images, voice conversations, quick questions and research, and its free plan is generous."
+        },
+        {
+          "id": "chatgpt-2",
+          "text": "It also comes with Codex, OpenAI's coding agent. You won't build with it here, but it's useful for a second opinion on code Claude wrote."
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini: inside your Google account",
+      "beats": [
+        {
+          "id": "gemini-1",
+          "text": "Gemini is built into Google. If your email, documents and files are in Gmail, Docs and Drive, Gemini can work with them."
+        },
+        {
+          "id": "gemini-2",
+          "text": "It's also how you'll make AI video in week four. Its free plan is generous too, and Google runs student offers in some countries, so check before you pay."
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "label": "Pick a home base",
+      "beats": [
+        {
+          "id": "home-1",
+          "text": "Here's how to use them together. Claude is your home base. Your context, projects and skills live there, and most work starts there."
+        },
+        {
+          "id": "home-2",
+          "text": "ChatGPT and Gemini are your second opinions. When something matters, paste Claude's work into one of them in a fresh chat, and ask what's weak."
+        },
+        {
+          "id": "home-3",
+          "text": "And use each one for what it does best: images in ChatGPT, and anything in your Google files in Gemini."
+        }
+      ]
+    },
+    {
+      "id": "try",
+      "label": "Try it: one task, three tools",
+      "beats": [
+        {
+          "id": "try-1",
+          "text": "Try this now. Pick a real task, like a WhatsApp message telling past customers about a new price list, and give the same request to all three."
+        },
+        {
+          "id": "try-2",
+          "text": "Compare the answers. Which one sounds most like a person? Which one invented something you didn't say? Which one would you actually send?"
+        },
+        {
+          "id": "try-3",
+          "text": "Then paste your favourite into one of the other two, in a new chat, and ask what's weak about it, without rewriting it."
+        },
+        {
+          "id": "try-4",
+          "text": "These tools change every few weeks, so online rankings go out of date fast. Judge them on your own work."
+        }
+      ]
+    },
+    {
+      "id": "others",
+      "label": "The others you'll hear about",
+      "beats": [
+        {
+          "id": "others-1",
+          "text": "You'll hear about other assistants too. You don't need to set them up, but it helps to know what they are."
+        },
+        {
+          "id": "others-2",
+          "text": "Perplexity searches the web and shows you its sources. Meta AI is inside WhatsApp, Instagram and Facebook. And Microsoft Copilot is built into Windows and Office."
+        },
+        {
+          "id": "others-3",
+          "text": "DeepSeek is free and capable, but its privacy policy says what you type is stored in China, so never paste anything private into it. Grok is xAI's assistant, built into X."
+        },
+        {
+          "id": "others-4",
+          "text": "The skills in this course work with all of them. In the next lesson, you'll set up Claude properly."
+        }
+      ]
+    }
+  ]
+}

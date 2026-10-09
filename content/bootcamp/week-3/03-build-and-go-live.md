@@ -47,7 +47,7 @@ You do this once per project:
 1. Sign in to vercel.com.
 2. Click **Add New**, then **Project**.
 3. Find your repository in the list and click **Import**.
-4. Leave the settings as they're and click **Deploy**.
+4. Leave the settings as they are and click **Deploy**.
 
 After a minute or two you get a link ending in `.vercel.app`. Open it on your phone. That's your project, live.
 

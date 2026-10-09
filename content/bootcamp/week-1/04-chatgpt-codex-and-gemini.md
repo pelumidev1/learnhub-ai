@@ -3,7 +3,7 @@ title: ChatGPT, Codex and Gemini: Projects, Gems and when to use which
 duration_minutes: 14
 published: true
 video_url:
-chapters: [{"label":"You do not need to pay for these","at":0},{"label":"ChatGPT: Projects and memory","at":0},{"label":"What happened to custom GPTs","at":0},{"label":"Codex: a second pair of eyes on code","at":0},{"label":"Gemini: build a Gem","at":0},{"label":"When to use which","at":0}]
+chapters: [{"label":"You don't need to pay for these","at":15},{"label":"ChatGPT: Projects and memory","at":33},{"label":"What happened to custom GPTs","at":57},{"label":"Codex: a second pair of eyes on code","at":85},{"label":"Gemini: build a Gem","at":108},{"label":"When to use which","at":142}]
 resources: [{"label":"Custom GPT retirement and migration FAQ","url":"https://help.openai.com/en/articles/20001519-custom-gpt-retirement-and-migration-faq","kind":"doc","cost":"Free"},{"label":"Codex plans and limits","url":"https://learn.chatgpt.com/docs/pricing","kind":"doc","cost":"Free"},{"label":"Tips for creating Gems","url":"https://support.google.com/gemini/answer/15235603","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-28
 ---
@@ -57,3 +57,29 @@ Now every time you want an honest critique, you have a place to paste it.
 Reach for ChatGPT, Codex or Gemini on purpose, for the job each does best, with your context already set up in each.
 
 ## Transcript
+
+Claude is your home base. This lesson sets up the other two, so they're ready when you need a second opinion, an image, or something from your Google files.
+
+### You don't need to pay for these
+
+ChatGPT and Gemini both have free plans that cover everything this bootcamp asks of them. Both also sell cheaper plans in local currency in some countries. If you want one later, that's fine, but you don't need it for this course.
+
+### ChatGPT: Projects and memory
+
+ChatGPT has Projects that work much like Claude's: a space with its own instructions and files. It also has memory, which you can review in its settings. Do what you did in Claude. Check what it remembers about you, create one project for the bootcamp, and give it the same few lines about you. Now either assistant can pick up your work.
+
+### What happened to custom GPTs
+
+You'll find lots of tutorials about building custom GPTs. Skip them. OpenAI stopped personal accounts creating new GPTs, on every plan, and existing GPTs are due to stop working on 11 December 2026. They're being replaced by plugins. When a GPT moves over, its instructions become a skill. That's what you'll build yourself in lessons eight and nine.
+
+### Codex: a second pair of eyes on code
+
+Codex is OpenAI's coding agent, and it's included on the free plan, with limited use. You'll build with Claude Code on this course. But from week three, when Claude Code writes something you don't fully understand, ask Codex to review it and explain what could break. It's the same rule as before: never let one AI mark its own homework.
+
+### Gemini: build a Gem
+
+A Gem is Gemini's version of a saved assistant: a name, instructions and optional files. It's free on a personal Google account. Go to gemini.google.com, open the sidebar, choose Gems, then New Gem. Call it Second opinion. For its instructions, write: you review work someone else made. Say plainly what is weak, unclear or wrong, most important first. Don't rewrite it unless I ask. Now, whenever you want an honest critique, you have a place to paste it.
+
+### When to use which
+
+Here's the short version. To write, think something through or build, open Claude. For an honest critique of Claude's work, use your Gemini Gem or a fresh ChatGPT chat. For images, ChatGPT. For anything in Gmail, Docs or Drive, Gemini. And to review code Claude Code wrote, Codex. In the next lesson, you'll set up your builder tools.

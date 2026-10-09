@@ -1,0 +1,62 @@
+{
+ "open-1": {
+  "key": "ecbc8208cfbb",
+  "seconds": 8.171
+ },
+ "stranger-1": {
+  "key": "29d49bab399f",
+  "seconds": 9.771
+ },
+ "stranger-2": {
+  "key": "e09ed5480864",
+  "seconds": 6.443
+ },
+ "claudemd-1": {
+  "key": "8eb2b53506f5",
+  "seconds": 8.619
+ },
+ "claudemd-2": {
+  "key": "5124f2a922ae",
+  "seconds": 5.333
+ },
+ "claudemd-3": {
+  "key": "81b02b7f3e23",
+  "seconds": 6.485
+ },
+ "folder-1": {
+  "key": "5b68d4d9d6db",
+  "seconds": 7.872
+ },
+ "folder-2": {
+  "key": "97d7cdd14596",
+  "seconds": 6.955
+ },
+ "folder-3": {
+  "key": "78dc6b012709",
+  "seconds": 9.792
+ },
+ "own-1": {
+  "key": "81f49c4b3303",
+  "seconds": 6.528
+ },
+ "own-2": {
+  "key": "101908d7e805",
+  "seconds": 5.973
+ },
+ "session-1": {
+  "key": "68d6326ac863",
+  "seconds": 9.131
+ },
+ "session-2": {
+  "key": "97185de3e346",
+  "seconds": 7.317
+ },
+ "build-1": {
+  "key": "db9b11ec8471",
+  "seconds": 9.728
+ },
+ "build-2": {
+  "key": "4d35cf40ac6e",
+  "seconds": 8.576
+ }
+}

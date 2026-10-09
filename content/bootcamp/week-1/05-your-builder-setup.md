@@ -3,7 +3,7 @@ title: Your builder setup: VS Code, Claude Code, GitHub, Supabase and Vercel
 duration_minutes: 22
 published: true
 video_url:
-chapters: [{"label":"VS Code: where you build","at":0},{"label":"Claude Code inside VS Code","at":0},{"label":"The terminal, the few times you need it","at":0},{"label":"GitHub, so Claude Code can save your work","at":0},{"label":"Supabase and Vercel","at":0},{"label":"Check it all works","at":0}]
+chapters: [{"label":"VS Code: where you build","at":21},{"label":"Claude Code inside VS Code","at":46},{"label":"The terminal, the few times you need it","at":74},{"label":"GitHub, so Claude Code can save your work","at":106},{"label":"Supabase and Vercel","at":131},{"label":"Check it all works","at":151}]
 resources: [{"label":"Download VS Code","url":"https://code.visualstudio.com","kind":"tool","cost":"Free"},{"label":"Claude Code in VS Code","url":"https://code.claude.com/docs/en/vs-code","kind":"doc","cost":"Free"},{"label":"GitHub CLI","url":"https://cli.github.com","kind":"tool","cost":"Free"},{"label":"Node.js","url":"https://nodejs.org","kind":"tool","cost":"Free"},{"label":"Supabase pricing","url":"https://supabase.com/pricing","kind":"doc","cost":"Free plan available"},{"label":"Vercel pricing","url":"https://vercel.com/pricing","kind":"doc","cost":"Free Hobby plan"}]
 resources_checked_on: 2026-09-29
 ---
@@ -104,3 +104,29 @@ If you have all seven, your builder setup is done. This week's project uses ever
 Open your project folder in VS Code, work with Claude Code beside your files, use the built-in terminal when a step needs it, and let Claude Code save your work to GitHub.
 
 ## Transcript
+
+This is the lesson people are most nervous about, and it's the one that makes weeks three to six possible. Do it on your laptop, with a charger nearby. Give it an hour the first time, and if something fails, post exactly what you saw in your pod.
+
+### VS Code: where you build
+
+VS Code is a free app for working on a project's files. You won't write the code. Claude Code will, inside VS Code, and you'll see every file it creates or changes. Download it from code.visualstudio.com, make a folder called learnhub in your Documents, and open it in VS Code. That folder is where you'll build for the rest of the bootcamp.
+
+### Claude Code inside VS Code
+
+Open Extensions, search for Claude Code, check the publisher is Anthropic, and install it. Then click the Claude Code icon and sign in with your Claude Pro account. Test it. Ask it to create a file called hello.md that says hello. It shows you the file and asks your permission before it saves it. That's the pattern for everything you build: you ask, it proposes, you read, and you approve.
+
+### The terminal, the few times you need it
+
+The terminal is a window where you type instructions to your computer instead of clicking. VS Code has one built in, and you'll only need it for a few setup steps. Five commands are enough. pwd shows where you are. ls lists what's in a folder. mkdir makes a folder. cd moves into one, and cd dot dot moves back up. Then install two tools: Git, which saves versions of your work, and Node.js, which runs the websites you'll build.
+
+### GitHub, so Claude Code can save your work
+
+GitHub stores your code and every version of it. It's your undo button: if a change breaks everything, you go back to the version that worked. Sign up at github.com, install the GitHub command line tool, and run gh auth login. Answer its questions, then approve in your browser. From then on, when you tell Claude Code to commit and push, it can.
+
+### Supabase and Vercel
+
+Two more free accounts. Use Continue with GitHub for both, so one login covers all three. Supabase is a database with sign-in built in, for week three. Vercel puts your site on the internet at a real link. You don't need to create anything inside them yet. Signing in is enough.
+
+### Check it all works
+
+Finally, let Claude Code check your setup. Ask it to check Git, Node and GitHub, and tell you in plain English whether you can save your work. Then take screenshots for this week's assignment: Claude Pro, ChatGPT, Gemini, GitHub, Supabase and Vercel, all signed in, and Claude Code open in VS Code. If you have all seven, your builder setup is done. In the next lesson: chat versus agents.

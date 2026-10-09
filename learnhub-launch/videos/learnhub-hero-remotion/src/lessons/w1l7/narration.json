@@ -1,0 +1,109 @@
+{
+  "lesson": "Week 1, Lesson 7: Your CLAUDE.md and context folder",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "Every time you start Claude Code, it starts from nothing. In this lesson you fix that once, and every session after it starts out knowing you."
+        }
+      ]
+    },
+    {
+      "id": "stranger",
+      "label": "Every session starts as a stranger",
+      "beats": [
+        {
+          "id": "stranger-1",
+          "text": "Think of a very good new hire on their first day. They're clever and fast, but they can't do much until someone tells them who the customers are and how things are done."
+        },
+        {
+          "id": "stranger-2",
+          "text": "An agent is the same. You onboard it with context: who you are, what you do, and the rules you want followed."
+        }
+      ]
+    },
+    {
+      "id": "claudemd",
+      "label": "CLAUDE.md, the file it always reads",
+      "beats": [
+        {
+          "id": "claudemd-1",
+          "text": "CLAUDE.md is a plain text file in your project folder. Claude Code reads it at the start of every session, before you type anything."
+        },
+        {
+          "id": "claudemd-2",
+          "text": "Keep it short. It loads every time, so it should only hold what matters on every task."
+        },
+        {
+          "id": "claudemd-3",
+          "text": "You don't have to write it from scratch. Type slash init in Claude Code, and it writes a starter file for you to edit."
+        }
+      ]
+    },
+    {
+      "id": "folder",
+      "label": "Your context folder",
+      "beats": [
+        {
+          "id": "folder-1",
+          "text": "Everything else goes in a folder called context, with one file per subject: about you, your work, your voice, and your customers."
+        },
+        {
+          "id": "folder-2",
+          "text": "Your CLAUDE.md points to them. A line starting with an at sign pulls a file in at the start of every session."
+        },
+        {
+          "id": "folder-3",
+          "text": "Amaka's ends with a rule: if something isn't in these files, ask me, don't guess. Without it, Claude Code fills gaps with guesses. With it, Claude Code asks."
+        }
+      ]
+    },
+    {
+      "id": "own",
+      "label": "Own your context",
+      "beats": [
+        {
+          "id": "own-1",
+          "text": "These are plain text files on your own laptop. You can read every line, fix anything wrong, and take them anywhere."
+        },
+        {
+          "id": "own-2",
+          "text": "Codex reads a file called AGENTS.md the same way, so the same context works there too."
+        }
+      ]
+    },
+    {
+      "id": "session",
+      "label": "One goal per session",
+      "beats": [
+        {
+          "id": "session-1",
+          "text": "A session can only hold so much. When it fills up, Claude Code shortens the older part of the conversation, and early instructions can get lost."
+        },
+        {
+          "id": "session-2",
+          "text": "So put the rules that matter every time in CLAUDE.md, and start a fresh session for each new goal, with slash clear."
+        }
+      ]
+    },
+    {
+      "id": "build",
+      "label": "Build yours now",
+      "beats": [
+        {
+          "id": "build-1",
+          "text": "Open your learnhub folder in Claude Code. Ask it to interview you one question at a time, then create your context files and a short CLAUDE.md."
+        },
+        {
+          "id": "build-2",
+          "text": "Read every file before you approve it. A wrong line in there turns into a wrong answer in every session after. In the next lesson: skills."
+        }
+      ]
+    }
+  ]
+}

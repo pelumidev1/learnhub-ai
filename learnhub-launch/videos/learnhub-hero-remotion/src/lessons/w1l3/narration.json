@@ -1,0 +1,115 @@
+{
+  "lesson": "Week 1, Lesson 3: Setting up Claude properly",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "Most people use Claude as a blank chat box. By the end of this lesson, yours will know who you are and what you're working on, before you type a word."
+        }
+      ]
+    },
+    {
+      "id": "pro",
+      "label": "Getting Pro",
+      "beats": [
+        {
+          "id": "pro-1",
+          "text": "Claude Pro costs twenty dollars a month, or seventeen dollars a month if you pay for a year. It's the one paid tool on this course."
+        },
+        {
+          "id": "pro-2",
+          "text": "It unlocks Claude Code, which you'll need from week three, and it gives you far more use than the free plan."
+        },
+        {
+          "id": "pro-3",
+          "text": "Before you pay, compare the price on claude.ai with the price in your phone's app store. They aren't always the same."
+        }
+      ]
+    },
+    {
+      "id": "app",
+      "label": "Install the desktop app",
+      "beats": [
+        {
+          "id": "app-1",
+          "text": "Next, download the desktop app from claude.com/download, for Mac or Windows, and sign in."
+        },
+        {
+          "id": "app-2",
+          "text": "It's the same Claude as in the browser, but it stays open in its own window. Install the phone app too, so you can read and think on the move, and build on your laptop."
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "label": "Memory: what Claude remembers",
+      "beats": [
+        {
+          "id": "memory-1",
+          "text": "Claude has memory, and it's on by default. After your chats, it keeps notes about you: your role, your preferences, and how you like answers laid out."
+        },
+        {
+          "id": "memory-2",
+          "text": "Open Settings, then Memory, and read what it has stored. Delete anything that's wrong. It takes two minutes."
+        },
+        {
+          "id": "memory-3",
+          "text": "If you want a chat that isn't remembered, use an incognito chat."
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "Projects: a room for each piece of work",
+      "beats": [
+        {
+          "id": "projects-1",
+          "text": "A Project is a space for one piece of work, and it has three things a normal chat doesn't."
+        },
+        {
+          "id": "projects-2",
+          "text": "Instructions, which tell Claude how to behave in this project, every time."
+        },
+        {
+          "id": "projects-3",
+          "text": "Knowledge: files Claude can read in every chat, like notes, drafts and examples of your writing."
+        },
+        {
+          "id": "projects-4",
+          "text": "And its own memory, so what Claude learns in one project stays in that project."
+        },
+        {
+          "id": "projects-5",
+          "text": "Free accounts get five projects, and Pro gets as many as you need. A simple rule: if you'll come back to a piece of work more than twice, give it a project."
+        }
+      ]
+    },
+    {
+      "id": "you",
+      "label": "Your first project: you",
+      "beats": [
+        {
+          "id": "you-1",
+          "text": "Your first project is about you. Create one called About me."
+        },
+        {
+          "id": "you-2",
+          "text": "In the instructions, write a few lines: who you are, where you are, what you do now, and the sentence you wrote in week zero about what you want to build or sell."
+        },
+        {
+          "id": "you-3",
+          "text": "Then add three or four pieces of your own writing to its knowledge, like emails or posts."
+        },
+        {
+          "id": "you-4",
+          "text": "You'll keep adding to this project for six weeks. Whenever the work is about you, start here. In the next lesson, you'll set up ChatGPT, Codex and Gemini."
+        }
+      ]
+    }
+  ]
+}

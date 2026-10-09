@@ -3,7 +3,7 @@ title: What AI actually is, and how we got here
 duration_minutes: 14
 published: true
 video_url:
-chapters: [{"label":"The Turing test, 1950","at":26},{"label":"Why it went quiet twice","at":52},{"label":"What changed in 2017","at":80},{"label":"What a model is actually doing","at":116},{"label":"See it for yourself","at":156},{"label":"What this means for you","at":208}]
+chapters: [{"label":"The Turing test, 1950","at":25},{"label":"Why it went quiet twice","at":50},{"label":"What changed in 2017","at":77},{"label":"What a model is actually doing","at":112},{"label":"See it for yourself","at":151},{"label":"What this means for you","at":202}]
 resources: [{"label":"Anthropic Academy","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free, issues certificates"},{"label":"Elements of AI, University of Helsinki","url":"https://www.elementsofai.com/","kind":"course","cost":"Free"},{"label":"Microsoft Generative AI for Beginners","url":"https://github.com/microsoft/generative-ai-for-beginners","kind":"course","cost":"Free, MIT licensed"}]
 resources_checked_on: 2026-08-22
 ---

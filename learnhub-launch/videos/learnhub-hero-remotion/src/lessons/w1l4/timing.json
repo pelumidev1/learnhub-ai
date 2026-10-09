@@ -1,0 +1,78 @@
+{
+ "open-1": {
+  "key": "47793ca8da0a",
+  "seconds": 9.131
+ },
+ "free-1": {
+  "key": "acb5caf02df0",
+  "seconds": 6.677
+ },
+ "free-2": {
+  "key": "16bbcf2aa67b",
+  "seconds": 8.597
+ },
+ "chatgpt-1": {
+  "key": "1e85a8f17c77",
+  "seconds": 10.389
+ },
+ "chatgpt-2": {
+  "key": "1f89e78f3dec",
+  "seconds": 7.979
+ },
+ "chatgpt-3": {
+  "key": "4f5dc5b92e89",
+  "seconds": 2.283
+ },
+ "gpts-1": {
+  "key": "44961385c859",
+  "seconds": 4.437
+ },
+ "gpts-2": {
+  "key": "3634575a1233",
+  "seconds": 13.248
+ },
+ "gpts-3": {
+  "key": "e5c5244d2bae",
+  "seconds": 7.147
+ },
+ "codex-1": {
+  "key": "b14391792a37",
+  "seconds": 5.739
+ },
+ "codex-2": {
+  "key": "75678791a1ed",
+  "seconds": 10.005
+ },
+ "codex-3": {
+  "key": "deb4f70f181e",
+  "seconds": 4.416
+ },
+ "gem-1": {
+  "key": "7671246e305a",
+  "seconds": 8.768
+ },
+ "gem-2": {
+  "key": "a8f7cf2df78b",
+  "seconds": 7.36
+ },
+ "gem-3": {
+  "key": "336105083a96",
+  "seconds": 10.069
+ },
+ "gem-4": {
+  "key": "d629a2f4ae7e",
+  "seconds": 3.968
+ },
+ "which-1": {
+  "key": "62746a74f2ea",
+  "seconds": 4.651
+ },
+ "which-2": {
+  "key": "125f62c17046",
+  "seconds": 15.296
+ },
+ "which-3": {
+  "key": "34bacc9efda6",
+  "seconds": 2.56
+ }
+}

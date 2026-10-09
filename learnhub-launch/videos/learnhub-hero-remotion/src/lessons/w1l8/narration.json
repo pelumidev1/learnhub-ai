@@ -1,0 +1,99 @@
+{
+  "lesson": "Week 1, Lesson 8: Skills: what you stop typing",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "A prompt is what you type. A skill is what you stop typing: the instructions you used to paste in every time, saved once so the model picks them up by itself."
+        }
+      ]
+    },
+    {
+      "id": "problem",
+      "label": "The problem it solves",
+      "beats": [
+        {
+          "id": "problem-1",
+          "text": "If you've pasted the same voice rules into every chat, you know the problem. Your corrections don't carry over, and every new conversation starts from nothing."
+        },
+        {
+          "id": "problem-2",
+          "text": "A skill is a folder with a SKILL.md file in it. It holds the instructions for one recurring job, and the model reads it when that job comes up."
+        },
+        {
+          "id": "problem-3",
+          "text": "Anthropic released the format as an open standard in October 2025, so the same folder works in ChatGPT, Cursor, Copilot, VS Code and Gemini CLI."
+        }
+      ]
+    },
+    {
+      "id": "finds",
+      "label": "How the model finds a skill",
+      "beats": [
+        {
+          "id": "finds-1",
+          "text": "The model doesn't read your skills straight away. At startup, it reads only each skill's name and description."
+        },
+        {
+          "id": "finds-2",
+          "text": "It opens the full file when something you ask matches that description. That's how a model can have fifty skills available without getting confused."
+        },
+        {
+          "id": "finds-3",
+          "text": "So write the description in the words you'd actually type when you want that job done."
+        }
+      ]
+    },
+    {
+      "id": "real",
+      "label": "What it looks like in real life",
+      "beats": [
+        {
+          "id": "real-1",
+          "text": "Amaka starts every caption chat by pasting the same paragraph: her business name, delivery details, prices, and how captions should sound."
+        },
+        {
+          "id": "real-2",
+          "text": "She saves it as a skill. A weak description says: social media content generation for a bakery brand. She never types those words, so the skill never opens."
+        },
+        {
+          "id": "real-3",
+          "text": "A strong one says: use when I ask for an Instagram caption, a WhatsApp status, or a post about my cakes. Those are her words, so the skill opens when she needs it."
+        }
+      ]
+    },
+    {
+      "id": "one",
+      "label": "One skill, one job",
+      "beats": [
+        {
+          "id": "one-1",
+          "text": "Keep one skill per task: one for your newsletter, one for LinkedIn posts, and one for proposals."
+        },
+        {
+          "id": "one-2",
+          "text": "A single writing skill that tries to cover all three usually does none of them the way you want."
+        }
+      ]
+    },
+    {
+      "id": "cant",
+      "label": "What a skill can't do",
+      "beats": [
+        {
+          "id": "cant-1",
+          "text": "A skill can't give you taste you don't have. If an idea is bad, a skill will just help you carry it out faster."
+        },
+        {
+          "id": "cant-2",
+          "text": "It saves judgment you already have. So look for three things you've retyped enough times to be worth a skill. In the next lesson, you'll build your first one."
+        }
+      ]
+    }
+  ]
+}

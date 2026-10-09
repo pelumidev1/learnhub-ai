@@ -1,0 +1,125 @@
+{
+  "lesson": "Week 1, Lesson 4: ChatGPT, Codex and Gemini",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "Claude is your home base. This lesson sets up the other two, so they're ready when you need a second opinion, an image, or something from your Google files."
+        }
+      ]
+    },
+    {
+      "id": "free",
+      "label": "You don't need to pay for these",
+      "beats": [
+        {
+          "id": "free-1",
+          "text": "ChatGPT and Gemini both have free plans that cover everything this bootcamp asks of them."
+        },
+        {
+          "id": "free-2",
+          "text": "Both also sell cheaper plans in local currency in some countries. If you want one later, that's fine, but you don't need it for this course."
+        }
+      ]
+    },
+    {
+      "id": "chatgpt",
+      "label": "ChatGPT: Projects and memory",
+      "beats": [
+        {
+          "id": "chatgpt-1",
+          "text": "ChatGPT has Projects that work much like Claude's: a space with its own instructions and files. It also has memory, which you can review in its settings."
+        },
+        {
+          "id": "chatgpt-2",
+          "text": "Do what you did in Claude. Check what it remembers about you, create one project for the bootcamp, and give it the same few lines about you."
+        },
+        {
+          "id": "chatgpt-3",
+          "text": "Now either assistant can pick up your work."
+        }
+      ]
+    },
+    {
+      "id": "gpts",
+      "label": "What happened to custom GPTs",
+      "beats": [
+        {
+          "id": "gpts-1",
+          "text": "You'll find lots of tutorials about building custom GPTs. Skip them."
+        },
+        {
+          "id": "gpts-2",
+          "text": "OpenAI stopped personal accounts creating new GPTs, on every plan, and existing GPTs are due to stop working on 11 December 2026. They're being replaced by plugins."
+        },
+        {
+          "id": "gpts-3",
+          "text": "When a GPT moves over, its instructions become a skill. That's what you'll build yourself in lessons eight and nine."
+        }
+      ]
+    },
+    {
+      "id": "codex",
+      "label": "Codex: a second pair of eyes on code",
+      "beats": [
+        {
+          "id": "codex-1",
+          "text": "Codex is OpenAI's coding agent, and it's included on the free plan, with limited use."
+        },
+        {
+          "id": "codex-2",
+          "text": "You'll build with Claude Code on this course. But from week three, when Claude Code writes something you don't fully understand, ask Codex to review it and explain what could break."
+        },
+        {
+          "id": "codex-3",
+          "text": "It's the same rule as before: never let one AI mark its own homework."
+        }
+      ]
+    },
+    {
+      "id": "gem",
+      "label": "Gemini: build a Gem",
+      "beats": [
+        {
+          "id": "gem-1",
+          "text": "A Gem is Gemini's version of a saved assistant: a name, instructions and optional files. It's free on a personal Google account."
+        },
+        {
+          "id": "gem-2",
+          "text": "Go to gemini.google.com, open the sidebar, choose Gems, then New Gem. Call it Second opinion."
+        },
+        {
+          "id": "gem-3",
+          "text": "For its instructions, write: you review work someone else made. Say plainly what is weak, unclear or wrong, most important first. Don't rewrite it unless I ask."
+        },
+        {
+          "id": "gem-4",
+          "text": "Now, whenever you want an honest critique, you have a place to paste it."
+        }
+      ]
+    },
+    {
+      "id": "which",
+      "label": "When to use which",
+      "beats": [
+        {
+          "id": "which-1",
+          "text": "Here's the short version. To write, think something through or build, open Claude."
+        },
+        {
+          "id": "which-2",
+          "text": "For an honest critique of Claude's work, use your Gemini Gem or a fresh ChatGPT chat. For images, ChatGPT. For anything in Gmail, Docs or Drive, Gemini. And to review code Claude Code wrote, Codex."
+        },
+        {
+          "id": "which-3",
+          "text": "In the next lesson, you'll set up your builder tools."
+        }
+      ]
+    }
+  ]
+}

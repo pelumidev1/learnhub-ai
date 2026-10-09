@@ -1,0 +1,86 @@
+{
+ "why-1": {
+  "key": "a75930223d07",
+  "seconds": 6.507
+ },
+ "why-2": {
+  "key": "f71d8ea3d61b",
+  "seconds": 11.243
+ },
+ "claude-1": {
+  "key": "75dbe0e1653b",
+  "seconds": 4.245
+ },
+ "claude-2": {
+  "key": "9cda7985444f",
+  "seconds": 8.96
+ },
+ "claude-3": {
+  "key": "50ef5a1abe68",
+  "seconds": 6.784
+ },
+ "claude-4": {
+  "key": "6d2aa123e855",
+  "seconds": 8.789
+ },
+ "chatgpt-1": {
+  "key": "eb0eb075fac5",
+  "seconds": 11.755
+ },
+ "chatgpt-2": {
+  "key": "5bbda9b665eb",
+  "seconds": 8.683
+ },
+ "gemini-1": {
+  "key": "0da566d24b40",
+  "seconds": 8.341
+ },
+ "gemini-2": {
+  "key": "ae83146f744d",
+  "seconds": 9.835
+ },
+ "home-1": {
+  "key": "75e71e9ffb79",
+  "seconds": 7.723
+ },
+ "home-2": {
+  "key": "72d1e93d8440",
+  "seconds": 9.216
+ },
+ "home-3": {
+  "key": "718a6655282c",
+  "seconds": 7.275
+ },
+ "try-1": {
+  "key": "36b420334f1e",
+  "seconds": 8.811
+ },
+ "try-2": {
+  "key": "a41afd4e2acd",
+  "seconds": 7.936
+ },
+ "try-3": {
+  "key": "3a1866b25b21",
+  "seconds": 6.357
+ },
+ "try-4": {
+  "key": "4f68413d2493",
+  "seconds": 6.443
+ },
+ "others-1": {
+  "key": "b883449b6181",
+  "seconds": 5.376
+ },
+ "others-2": {
+  "key": "ed3a9f215963",
+  "seconds": 11.776
+ },
+ "others-3": {
+  "key": "5c0f3833ed29",
+  "seconds": 12.032
+ },
+ "others-4": {
+  "key": "8f9014d69de0",
+  "seconds": 5.461
+ }
+}

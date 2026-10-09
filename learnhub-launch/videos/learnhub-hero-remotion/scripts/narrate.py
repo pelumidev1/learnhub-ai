@@ -43,10 +43,31 @@ kokoro = Kokoro(
     espeak_config=EspeakConfig(lib_path=espeakng_loader.get_library_path(), data_path=str(data)),
 )
 
+# How the voice should say words it would otherwise mangle. Applied to every
+# line without its own "say", so lessons only spell out the unusual cases.
+SAY = [
+    ("ChatGPT", "Chat G P T"), ("OpenAI", "Open A I"), ("xAI", "x A I"), ("DeepSeek", "Deep Seek"),
+    ("claude.ai", "claude dot A I"), ("claude.com/download", "claude dot com slash download"),
+    ("CLAUDE.md", "Claude dot M D"), ("SKILL.md", "skill dot M D"), ("AGENTS.md", "agents dot M D"),
+    ("VS Code", "V S Code"), ("GitHub", "Git Hub"), ("Node.js", "Node J S"), ("SOP", "S O P"),
+    ("code.visualstudio.com", "code dot visual studio dot com"), ("gemini.google.com", "gemini dot google dot com"),
+    ("github.com", "git hub dot com"), ("hello.md", "hello dot M D"), ("gh auth login", "G H auth login"),
+    ("pwd shows", "P W D shows"), ("ls lists", "L S lists"), ("mkdir makes", "make dir makes"), ("cd moves", "C D moves"),
+    ("cd dot dot", "C D dot dot"), ("slash init", "slash in it"), (".claude/skills", "dot claude slash skills"),
+    ("Gemini CLI", "Gemini C L I"), ("October 2025", "October twenty twenty-five"), ("11 December 2026", "the eleventh of December, twenty twenty-six"),
+]
+
+
+def spoken(text):
+    for a, b in SAY:
+        text = text.replace(a, b)
+    return text
+
+
 timing = {}
 for chapter in spec["chapters"]:
     for beat in chapter["beats"]:
-        said = beat.get("say", beat["text"])
+        said = beat.get("say") or spoken(beat["text"])
         key = hashlib.sha1(f'{spec["voice"]}|{spec["speed"]}|{said}'.encode()).hexdigest()[:12]
         wav = out / f'{beat["id"]}.wav'
         if old.get(beat["id"], {}).get("key") == key and wav.exists():

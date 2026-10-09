@@ -149,12 +149,69 @@ export const Type: React.FC<{ at: number; text: string; cps?: number; caret?: bo
   );
 };
 
-export const Chip: React.FC<{ children: React.ReactNode; on?: boolean; style?: React.CSSProperties }> = ({ children, on, style }) => (
-  <div style={{ display: "inline-flex", alignItems: "center", gap: 14, padding: "16px 28px", borderRadius: 999, fontSize: 34, fontWeight: 500,
-    background: on ? ACCENT : "rgba(255,255,255,.07)", color: on ? INK : "#fff", border: on ? "none" : "1.5px solid rgba(255,255,255,.14)", ...style }}>
-    {children}
-  </div>
-);
+/**
+ * Brand marks for the tools the course teaches. Files come from Simple Icons
+ * and LobeHub (both open licences) in public/lessons/logos. Single-colour marks
+ * are drawn as a mask in `c`, so one file works on any ground; full-colour marks
+ * keep their own colours.
+ */
+const LOGOS: Record<string, { f: string; c?: string }> = {
+  "Claude Code": { f: "lobe-claudecode.svg", c: "#D97757" },
+  "Claude Cowork": { f: "lobe-claude-color.svg" },
+  Claude: { f: "lobe-claude-color.svg" },
+  Anthropic: { f: "anthropic.svg", c: "#fff" },
+  ChatGPT: { f: "lobe-openai.svg", c: "#fff" },
+  OpenAI: { f: "lobe-openai.svg", c: "#fff" },
+  Codex: { f: "lobe-codex.svg", c: "#fff" },
+  "Gemini CLI": { f: "lobe-gemini-color.svg" },
+  Gemini: { f: "lobe-gemini-color.svg" },
+  Perplexity: { f: "lobe-perplexity-color.svg" },
+  "Meta AI": { f: "lobe-meta-color.svg" },
+  "GitHub Copilot": { f: "lobe-githubcopilot.svg", c: "#fff" },
+  Copilot: { f: "lobe-copilot.svg", c: "#fff" },
+  DeepSeek: { f: "lobe-deepseek-color.svg" },
+  Grok: { f: "lobe-grok.svg", c: "#fff" },
+  Cursor: { f: "cursor.svg", c: "#fff" },
+  "VS Code": { f: "vscode.svg" },
+  GitHub: { f: "github.svg", c: "#fff" },
+  Supabase: { f: "supabase.svg", c: "#3ECF8E" },
+  Vercel: { f: "vercel.svg", c: "#fff" },
+  "Node.js": { f: "nodedotjs.svg", c: "#5FA04E" },
+  Git: { f: "git.svg", c: "#F05032" },
+  Gmail: { f: "gmail.svg", c: "#EA4335" },
+  Docs: { f: "googledocs.svg", c: "#4285F4" },
+  Drive: { f: "googledrive.svg", c: "#1FA463" },
+};
+// Longest first, so "Claude Code" wins over "Claude".
+const BRANDS = Object.keys(LOGOS).sort((a, b) => b.length - a.length);
+
+/** The tool a label starts with ("Claude Pro" → Claude), if any. */
+export const brandOf = (s: unknown) =>
+  typeof s === "string" ? BRANDS.find((k) => s === k || s.startsWith(k + " ") || s.startsWith(k + ",") || s.startsWith(k + ":")) : undefined;
+
+export const Brand: React.FC<{ name: string; size: number; style?: React.CSSProperties }> = ({ name, size, style }) => {
+  const l = LOGOS[name];
+  const url = staticFile(`lessons/logos/${l.f}`);
+  return l.c ? (
+    <div style={{ width: size, height: size, flex: "none", background: l.c, WebkitMaskImage: `url(${url})`, maskImage: `url(${url})`,
+      WebkitMaskSize: "contain", maskSize: "contain", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat", WebkitMaskPosition: "center", maskPosition: "center", ...style }} />
+  ) : (
+    <Img src={url} style={{ width: size, height: size, flex: "none", ...style }} />
+  );
+};
+
+/** A pill label. One that names a tool shows its logo first. */
+export const Chip: React.FC<{ children: React.ReactNode; on?: boolean; style?: React.CSSProperties }> = ({ children, on, style }) => {
+  const b = brandOf(children);
+  const size = (typeof style?.fontSize === "number" ? style.fontSize : 34) * 1.15;
+  return (
+    <div style={{ display: "inline-flex", alignItems: "center", gap: 14, padding: "16px 28px", borderRadius: 999, fontSize: 34, fontWeight: 500,
+      background: on ? ACCENT : "rgba(255,255,255,.07)", color: on ? INK : "#fff", border: on ? "none" : "1.5px solid rgba(255,255,255,.14)", ...style }}>
+      {b ? <Brand name={b} size={size} /> : null}
+      {children}
+    </div>
+  );
+};
 
 /** Slow, deterministic snowfall for the AI winters. */
 const FLAKES = Array.from({ length: 90 }, (_, i) => ({ x: random(`x${i}`) * 1920, y: random(`y${i}`) * 1080, s: 2 + random(`s${i}`) * 4, v: 0.6 + random(`v${i}`) * 1.4, w: random(`w${i}`) * Math.PI * 2 }));

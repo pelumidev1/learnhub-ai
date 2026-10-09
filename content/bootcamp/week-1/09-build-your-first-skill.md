@@ -3,7 +3,7 @@ title: Build your first skill
 duration_minutes: 18
 published: true
 video_url:
-chapters: [{"label":"Find the repetition","at":0},{"label":"Write it like an SOP","at":0},{"label":"Spend your effort on the description","at":0},{"label":"The negatives do the heavy lifting","at":0},{"label":"Where to put it","at":0},{"label":"The template, filled in","at":0},{"label":"This week's ship","at":0}]
+chapters: [{"label":"Find the repetition","at":11},{"label":"Write it as instructions","at":21},{"label":"Spend your effort on the description","at":37},{"label":"Say what you don't want","at":50},{"label":"Put it where you work","at":69},{"label":"The template, filled in","at":83},{"label":"This week you ship","at":119}]
 resources: [{"label":"Agent Skills, Anthropic docs","url":"https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview","kind":"doc","cost":"Free"},{"label":"Anthropic Academy","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free"}]
 resources_checked_on: 2026-08-22
 ---
@@ -117,3 +117,32 @@ Have one working skill on your machine that you actually use, and know exactly w
 
 ## Transcript
 
+This lesson takes you through five steps, and at the end you'll have a skill that works.
+
+### Find the repetition
+
+Open your chat history and look for a paragraph you've typed three or more times. That's your first skill. Start with the boring thing you keep doing by hand.
+
+### Write it as instructions
+
+It's tempting to write: you are a world-class copywriter. That does almost nothing. Write rules instead. The first two lines are the whole post, because LinkedIn cuts off there. No hashtags. The model can follow that.
+
+### Spend your effort on the description
+
+Spend more time on the description than on the instructions. Use the exact words you type when you want this job done. They're often different from what you call the task in your head.
+
+### Say what you don't want
+
+The lines that change the output most are the ones about what you don't want. One real voice file bans twelve words, including delve, foster, leverage and crucial. The model can't check itself against "write clearly", but it can check every sentence for the word leverage.
+
+### Put it where you work
+
+Claude Code reads skills from a folder called .claude/skills, inside your project. Keep a copy somewhere you can find it too, because the same skill works in more than one tool.
+
+### The template, filled in
+
+Every skill has the same parts: a name, a description, when to use it, the steps, the rules, what never to do, and an example of good. Here's Amaka's. The description uses her own words. The steps ask which cake and which occasion, then write two options under fifty words. The rules mention same-day delivery in Lekki and the price in naira. The never list bans words like indulge and delectable. And it ends with one real caption she liked. Every line came from something she was already typing, or something she was tired of fixing.
+
+### This week you ship
+
+This week you ship your AI workspace: a Claude project that knows you, your CLAUDE.md and context folder, your first skill, and a one-page site about you, live on the internet. Build the page through your skill and your context folder. Give Claude Code a goal with a clear "it's done when", and put the result live. At the end, you'll have the page, and a skill you can use to make the next one. The full brief is on this week's work page.
