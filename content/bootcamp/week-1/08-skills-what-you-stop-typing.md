@@ -2,7 +2,7 @@
 title: Skills, or what you stop typing
 duration_minutes: 15
 published: true
-video_url: https://www.youtube-nocookie.com/embed/nAzNdJ0ufZs?rel=0
+video_url: https://www.youtube-nocookie.com/embed/-EAWIeW2Y_M?rel=0
 chapters: [{"label":"The problem it solves","at":16},{"label":"How the model finds a skill","at":50},{"label":"What it looks like in real life","at":73},{"label":"One skill, one job","at":106},{"label":"What a skill can't do","at":121}]
 resources: [{"label":"Anthropic Academy","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free, issues certificates"},{"label":"Agent Skills, Anthropic docs","url":"https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-08-22
