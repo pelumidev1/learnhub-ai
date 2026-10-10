@@ -3,7 +3,7 @@ title: Prompts for everyday work: posts, emails, proposals and captions
 duration_minutes: 15
 published: false
 video_url:
-chapters: [{"label":"Start from something rough","at":0},{"label":"Posts","at":0},{"label":"Emails and replies","at":0},{"label":"Proposals","at":0},{"label":"Captions and statuses","at":0},{"label":"Save what works","at":0}]
+chapters: [{"label":"Start from something rough","at":24},{"label":"Posts","at":38},{"label":"Emails and replies","at":65},{"label":"Proposals","at":102},{"label":"Captions and statuses","at":141},{"label":"Save what works","at":162}]
 resources: [{"label":"Prompting best practices, Anthropic docs","url":"https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29
 ---
@@ -57,3 +57,29 @@ If you've saved the same prompt three times with small changes, turn it into a s
 Handle a post, a reply, a proposal and a caption each in a few minutes, starting from your own rough material, and have at least four saved prompts in your library.
 
 ## Transcript
+
+Most of what you write in a week is small: a post, a reply, a quote for a client, a status update. Each one takes a few minutes, and together they eat hours. This lesson gives you one prompt pattern for each, built on the last three lessons. Copy them, then change every detail to your own.
+
+### Start from something rough
+
+Every prompt here starts with your own material: a voice note, three bullet points, or the customer's message. The model tidies it up, and the substance stays yours. Keep your voice skill switched on.
+
+### Posts
+
+For a post: turn these notes into a LinkedIn post. Audience: small business owners in Lagos. Under 150 words. The first two lines have to make someone stop scrolling, because LinkedIn cuts off there. End with a question. Then paste your notes. Change the platform and the audience and the pattern still works. Instagram wants it shorter, and on X, keep to one idea.
+
+### Emails and replies
+
+This is where you'll save the most time. Paste what they sent you, then say what you want to happen. Here's a customer's message. Write my reply. I want to say no to the discount politely, offer free delivery instead, and keep them. Under 80 words. Warm, but not grovelling. Amaka gets asked for a ₦5,000 discount most weeks. Each reply used to take her ten minutes. Now it takes one, and every reply says the same true thing. For an email you're nervous about, ask for two versions, one direct and one softer. Pick one and edit it.
+
+### Proposals
+
+For a quote or a proposal, the model needs your prices and your terms. Never let it invent either. Amaka's prompt: a corporate client wants 60 cupcakes for a staff event on Friday. ₦1,500 each, delivery ₦5,000 anywhere in Lekki and VI, and a 50 percent deposit to confirm. Sections: what you get, price, what I need from you, next step. Under 200 words. Use only the numbers I've given you. That last line matters, because models sometimes add a discount or a guarantee you never offered. Check every number before you send.
+
+### Captions and statuses
+
+You built a captions skill in week one, so use it. If you don't have one for this job yet, this prompt is its first draft. Two WhatsApp status captions for today's cake, with the cake and the price. Under 25 words each. One mentions the 2pm same-day cutoff. No hashtags.
+
+### Save what works
+
+When a prompt gives you something you post with light edits, save it. A notes file is fine to start. That file is your prompt library, and it's part of this week's project. If you've saved the same prompt three times with small changes, turn it into a skill. You know how to do that now. By the end of this lesson, you should have at least four saved prompts in your library.

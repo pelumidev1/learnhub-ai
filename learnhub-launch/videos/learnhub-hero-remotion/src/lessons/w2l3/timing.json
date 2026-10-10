@@ -1,0 +1,78 @@
+{
+ "open-1": {
+  "key": "6463dfc18ef9",
+  "seconds": 11.861
+ },
+ "open-2": {
+  "key": "c19876b2e82e",
+  "seconds": 3.072
+ },
+ "six-1": {
+  "key": "579dedc1c771",
+  "seconds": 9.472
+ },
+ "six-2": {
+  "key": "c2de09601ecb",
+  "seconds": 12.309
+ },
+ "six-3": {
+  "key": "fc762c0cbfd9",
+  "seconds": 7.403
+ },
+ "six-4": {
+  "key": "40aab61c1d26",
+  "seconds": 5.013
+ },
+ "six-5": {
+  "key": "6a1a5a9b9625",
+  "seconds": 7.957
+ },
+ "six-6": {
+  "key": "72ec3e358173",
+  "seconds": 7.125
+ },
+ "order-1": {
+  "key": "f52ec9a463b1",
+  "seconds": 11.179
+ },
+ "order-2": {
+  "key": "e5c4154af4da",
+  "seconds": 3.627
+ },
+ "chain-1": {
+  "key": "ec86009f7dd4",
+  "seconds": 7.445
+ },
+ "chain-2": {
+  "key": "e100d791bc95",
+  "seconds": 11.499
+ },
+ "chain-3": {
+  "key": "4d7f9d6a24d4",
+  "seconds": 11.072
+ },
+ "chain-4": {
+  "key": "f20ace6b7a5b",
+  "seconds": 7.275
+ },
+ "chain-5": {
+  "key": "3861a59bf2a4",
+  "seconds": 8.491
+ },
+ "chain-6": {
+  "key": "5fde90cc6a1a",
+  "seconds": 12.843
+ },
+ "chain-7": {
+  "key": "ea1edf933c5b",
+  "seconds": 8.043
+ },
+ "turn-1": {
+  "key": "2badc57b2c19",
+  "seconds": 5.632
+ },
+ "turn-2": {
+  "key": "a9dd47eab35b",
+  "seconds": 7.467
+ }
+}

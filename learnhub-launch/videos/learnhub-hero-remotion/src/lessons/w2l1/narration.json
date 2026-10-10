@@ -1,0 +1,151 @@
+{
+  "lesson": "Week 2, Lesson 1: How to prompt any AI model: context, roles and constraints",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "Two people ask Claude for a caption for their cake business. One gets something generic. The other gets a caption she could post as it is."
+        },
+        {
+          "id": "open-2",
+          "text": "Same model, same day. The second person just gave it more to work with."
+        }
+      ]
+    },
+    {
+      "id": "brief",
+      "label": "No magic words",
+      "beats": [
+        {
+          "id": "brief-1",
+          "text": "There are no magic words in prompting. You're briefing someone smart who knows nothing about you."
+        },
+        {
+          "id": "brief-2",
+          "text": "Brief it the way you'd brief a new freelancer on their first day, and Claude, ChatGPT and Gemini all do better. Everything in this lesson works in all three."
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "label": "Context: what it can't know",
+      "beats": [
+        {
+          "id": "context-1",
+          "text": "The model knows a lot about cakes. It knows nothing about your cakes. Whatever it doesn't know, it fills in with the average, and the average is where generic writing comes from."
+        },
+        {
+          "id": "context-2",
+          "text": "So give it the facts only you have. Who the work is for, in one sentence. What you're selling or saying."
+        },
+        {
+          "id": "context-3",
+          "text": "What makes you different, with a real detail. And where the work will appear: Instagram, an email, or a WhatsApp status."
+        },
+        {
+          "id": "context-4",
+          "text": "Your Claude Project from week one already holds most of this. In a fresh chat anywhere else, paste it in."
+        }
+      ]
+    },
+    {
+      "id": "role",
+      "label": "Role: who is answering",
+      "beats": [
+        {
+          "id": "role-1",
+          "text": "A role tells the model which kind of expert to answer as. A copywriter for small Lagos food businesses gives you a different answer from a food blogger."
+        },
+        {
+          "id": "role-2",
+          "text": "Keep roles plain and specific. Words like world-class and expert add nothing. The useful part is the job and the audience."
+        }
+      ]
+    },
+    {
+      "id": "con",
+      "label": "Constraints: the shape of done",
+      "beats": [
+        {
+          "id": "con-1",
+          "text": "Constraints do most of the work. They answer the question the model would ask you if it could: when is this finished?"
+        },
+        {
+          "id": "con-2",
+          "text": "Length, like under 50 words or three bullet points. Format, like a table, or plain text you can paste into WhatsApp."
+        },
+        {
+          "id": "con-3",
+          "text": "What it must include, such as the price, the deadline and the delivery area. And what it must avoid: words you hate, claims you can't prove, hashtags."
+        },
+        {
+          "id": "con-4",
+          "text": "Last week you defined done for an agent. This is the same habit on a smaller job."
+        }
+      ]
+    },
+    {
+      "id": "ex",
+      "label": "An example to copy",
+      "beats": [
+        {
+          "id": "ex-1",
+          "text": "Here's Amaka's first attempt: write a caption for my red velvet cake."
+        },
+        {
+          "id": "ex-2",
+          "text": "Her second sets the role: you write Instagram captions for a home bakery in Lekki, Lagos. Customers are mostly women ordering birthday cakes for family, often at short notice."
+        },
+        {
+          "id": "ex-3",
+          "text": "Then the facts: an 8 inch red velvet, ₦25,000, same-day delivery in Lekki for orders before 2pm. Customers keep saying it isn't too sweet."
+        },
+        {
+          "id": "ex-4",
+          "text": "Then the constraints: two options, each under 50 words. Include the price and the 2pm cutoff. No hashtags, and don't use the words indulge or delectable."
+        },
+        {
+          "id": "ex-5",
+          "text": "The second prompt is longer, and it saves her three rounds of make it shorter and you forgot the price."
+        }
+      ]
+    },
+    {
+      "id": "good",
+      "label": "Show one example of good",
+      "beats": [
+        {
+          "id": "good-1",
+          "text": "When you have one piece of work you like, paste it in and say: match its length and tone, but don't copy its words."
+        },
+        {
+          "id": "good-2",
+          "text": "One real example teaches the model more than a paragraph describing what you want. That's why your skill from week one has a section called what good looks like."
+        }
+      ]
+    },
+    {
+      "id": "fresh",
+      "label": "When to start a fresh chat",
+      "beats": [
+        {
+          "id": "fresh-1",
+          "text": "Long chats drift. The model gives weight to everything earlier in the conversation, including the three drafts you rejected."
+        },
+        {
+          "id": "fresh-2",
+          "text": "If you've corrected the same thing twice, stop. Open a new chat and write one better brief that includes what you learned."
+        },
+        {
+          "id": "fresh-3",
+          "text": "Your task: write a prompt with context, a role and constraints for a real job you have this week. The next lesson explains why arguing longer doesn't fix a bad answer."
+        }
+      ]
+    }
+  ]
+}

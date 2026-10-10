@@ -1,0 +1,74 @@
+{
+ "open-1": {
+  "key": "2eb1d5994925",
+  "seconds": 11.243
+ },
+ "open-2": {
+  "key": "38e34094ab11",
+  "seconds": 7.36
+ },
+ "collect-1": {
+  "key": "14ca79ca0dfa",
+  "seconds": 10.837
+ },
+ "collect-2": {
+  "key": "78e67670647c",
+  "seconds": 15.019
+ },
+ "describe-1": {
+  "key": "01ea5bce0010",
+  "seconds": 5.739
+ },
+ "describe-2": {
+  "key": "8ecdc553a988",
+  "seconds": 12.267
+ },
+ "describe-3": {
+  "key": "70f12fbee955",
+  "seconds": 9.28
+ },
+ "skill-1": {
+  "key": "bcb2e8669c05",
+  "seconds": 4.8
+ },
+ "skill-2": {
+  "key": "004321f8541f",
+  "seconds": 8.896
+ },
+ "skill-3": {
+  "key": "4f1381a620a7",
+  "seconds": 9.536
+ },
+ "skill-4": {
+  "key": "c876c91e6372",
+  "seconds": 10.027
+ },
+ "tells-1": {
+  "key": "daab1269dfc3",
+  "seconds": 6.123
+ },
+ "tells-2": {
+  "key": "e69970ccfdbe",
+  "seconds": 10.048
+ },
+ "tells-3": {
+  "key": "4c30e8122a90",
+  "seconds": 7.509
+ },
+ "tells-4": {
+  "key": "5a5f46f1a207",
+  "seconds": 6.016
+ },
+ "tells-5": {
+  "key": "efd062629499",
+  "seconds": 9.173
+ },
+ "test-1": {
+  "key": "db20148c77c8",
+  "seconds": 7.36
+ },
+ "test-2": {
+  "key": "cb1e4a1d7c3f",
+  "seconds": 7.125
+ }
+}

@@ -1,0 +1,82 @@
+{
+ "open-1": {
+  "key": "056ce698c381",
+  "seconds": 9.579
+ },
+ "open-2": {
+  "key": "e0efcb17a696",
+  "seconds": 8.064
+ },
+ "rough-1": {
+  "key": "3b111b773895",
+  "seconds": 6.4
+ },
+ "rough-2": {
+  "key": "f8290f471a2a",
+  "seconds": 4.971
+ },
+ "posts-1": {
+  "key": "86a7f80268b6",
+  "seconds": 8.235
+ },
+ "posts-2": {
+  "key": "57bb33f378ed",
+  "seconds": 7.808
+ },
+ "posts-3": {
+  "key": "575b2a7b10ae",
+  "seconds": 7.531
+ },
+ "replies-1": {
+  "key": "6bd3018a398d",
+  "seconds": 5.291
+ },
+ "replies-2": {
+  "key": "24b3eb476068",
+  "seconds": 11.563
+ },
+ "replies-3": {
+  "key": "f34e0c6f9cd9",
+  "seconds": 10.667
+ },
+ "replies-4": {
+  "key": "5a41bff215de",
+  "seconds": 6.4
+ },
+ "prop-1": {
+  "key": "b9c60e1d9330",
+  "seconds": 6.037
+ },
+ "prop-2": {
+  "key": "c1ed93a58b00",
+  "seconds": 13.696
+ },
+ "prop-3": {
+  "key": "ed5357ff29ab",
+  "seconds": 7.531
+ },
+ "prop-4": {
+  "key": "80cce6f02794",
+  "seconds": 8.107
+ },
+ "cap-1": {
+  "key": "e8b52346faf8",
+  "seconds": 7.147
+ },
+ "cap-2": {
+  "key": "391dc61e9389",
+  "seconds": 10.965
+ },
+ "save-1": {
+  "key": "79ba68a5223a",
+  "seconds": 10.005
+ },
+ "save-2": {
+  "key": "e9f030d3a9bd",
+  "seconds": 6.528
+ },
+ "save-3": {
+  "key": "bd7e0f2ac9ea",
+  "seconds": 4.267
+ }
+}

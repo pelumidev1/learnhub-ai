@@ -84,19 +84,43 @@ export const FullBleed: React.FC<{ src: string; side?: "left" | "bottom" | "none
  * `accent` take the accent colour and get an underline that draws once the
  * line has landed.
  */
+/**
+ * Which face the big headline words use. Week 1 shipped in General Sans; from
+ * week 2 the films follow learnhub.dev, where headings are Instrument Serif
+ * (CLAUDE.md, 2026-10-02). A lesson opts in through makeLesson's `serif`.
+ */
+export const SerifHeadings = React.createContext(false);
+
+/**
+ * Style for a headline set by hand rather than through Words. The serif has
+ * one weight and a small x-height, so it runs regular and a touch larger.
+ */
+export const useHeading = (size: number): React.CSSProperties =>
+  React.useContext(SerifHeadings) ? { fontFamily: F.serif, fontWeight: 400, fontSize: size * 1.12, letterSpacing: "-0.01em" } : { fontSize: size };
+
+/** A headline set by hand: Instrument Serif when the lesson asks for it, General Sans otherwise. */
+export const Heading: React.FC<{ size: number; style?: React.CSSProperties; children: React.ReactNode }> = ({ size, style, children }) => (
+  <div style={{ fontWeight: 600, ...style, ...useHeading(size) }}>{children}</div>
+);
+
 export const Words: React.FC<{ text: string; at?: number; size?: number; accent?: string[]; stagger?: number; style?: React.CSSProperties; weight?: number }> = ({
   text, at = 0, size = 96, accent = [], stagger = 3, style, weight = 500,
 }) => {
   const f = useCurrentFrame();
+  const serif = React.useContext(SerifHeadings);
   const words = text.split(" ");
   const landed = at + words.length * stagger + 8;
+  const px = serif ? size * 1.12 : size;
   return (
-    <div style={{ fontSize: size, fontWeight: weight, lineHeight: 1.08, letterSpacing: "-0.02em", display: "flex", flexWrap: "wrap", columnGap: size * 0.26, ...style }}>
+    <div style={{ fontSize: px, fontWeight: serif ? 400 : weight, lineHeight: 1.08, letterSpacing: serif ? "-0.01em" : "-0.02em",
+      fontFamily: serif ? F.serif : undefined, display: "flex", flexWrap: "wrap", columnGap: px * 0.26, ...style }}>
       {words.map((w, i) => {
         const s = at + i * stagger;
         const hot = accent.includes(w.replace(/[.,:?!]$/, ""));
+        // Instrument Serif has no ₦ glyph, so a price stays in the body face.
+        const naira = serif && w.includes("₦") ? { fontFamily: F.sans, fontWeight: 500, fontSize: size * 0.94 } : null;
         return (
-          <span key={i} style={{ position: "relative", display: "inline-block", color: hot ? ACCENT : undefined,
+          <span key={i} style={{ position: "relative", display: "inline-block", color: hot ? ACCENT : undefined, ...naira,
             opacity: interpolate(f, [s, s + 6], [0, 1], clamp),
             translate: interpolate(f, [s, s + 16], ["0px 40px", "0px 0px"], { ...clamp, easing: springy }) }}>
             {w}

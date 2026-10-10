@@ -1,0 +1,74 @@
+{
+ "open-1": {
+  "key": "041f726b83ba",
+  "seconds": 6.912
+ },
+ "open-2": {
+  "key": "ec81b9c11145",
+  "seconds": 5.397
+ },
+ "open-3": {
+  "key": "02279dc430b4",
+  "seconds": 5.248
+ },
+ "process-1": {
+  "key": "85f3fff59db1",
+  "seconds": 10.624
+ },
+ "process-2": {
+  "key": "ae3e154ebcdf",
+  "seconds": 8.683
+ },
+ "change-1": {
+  "key": "a99ed59b7fc3",
+  "seconds": 10.176
+ },
+ "change-2": {
+  "key": "7adcc295bb8c",
+  "seconds": 11.477
+ },
+ "change-3": {
+  "key": "f61cb4110b47",
+  "seconds": 6.485
+ },
+ "change-4": {
+  "key": "6e50488bd487",
+  "seconds": 7.275
+ },
+ "change-5": {
+  "key": "62f1768f7c41",
+  "seconds": 6.891
+ },
+ "change-6": {
+  "key": "02199a001985",
+  "seconds": 7.04
+ },
+ "change-7": {
+  "key": "6e6a520feb37",
+  "seconds": 9.707
+ },
+ "change-8": {
+  "key": "74cd11830942",
+  "seconds": 3.691
+ },
+ "grade-1": {
+  "key": "abfdc05a0b72",
+  "seconds": 9.216
+ },
+ "grade-2": {
+  "key": "f032543da766",
+  "seconds": 10.688
+ },
+ "grade-3": {
+  "key": "bb27d7d1c56b",
+  "seconds": 15.104
+ },
+ "grade-4": {
+  "key": "8ad55cb57abb",
+  "seconds": 5.653
+ },
+ "grade-5": {
+  "key": "fa38aa453228",
+  "seconds": 6.741
+ }
+}

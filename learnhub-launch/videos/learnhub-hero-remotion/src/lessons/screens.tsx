@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { F } from "../lib/brand";
-import { ACCENT, Brand, brandOf, DIM, FullBleed, INK, Mono, Pop, Rise, springy, Words } from "./kit";
+import { ACCENT, Brand, brandOf, DIM, FullBleed, INK, Mono, Pop, Rise, springy, Type, Words } from "./kit";
 import { Chapter } from "./timeline";
 
 /**
@@ -238,3 +238,46 @@ export const Terminal: React.FC<{ children: React.ReactNode; title?: string }> =
     </Pop>
   </AbsoluteFill>
 );
+
+/* ── Prompts and chains (week 2 onwards) ───────────────────────────── */
+
+/**
+ * A prompt as a card: a small label, then the words typing on. `hot` gives it
+ * the accent border, for the better of two prompts. Frames are shot-local.
+ */
+export const PromptCard: React.FC<{ label?: string; text: string; at?: number; cps?: number; size?: number; hot?: boolean; width?: number; style?: React.CSSProperties }> = ({
+  label, text, at: s = 6, cps = 50, size = 46, hot, width = 1600, style,
+}) => (
+  <Pop at={Math.max(0, s - 6)} style={{ width, ...style }}>
+    <div style={{ ...card, padding: "36px 46px", borderColor: hot ? ACCENT : undefined }}>
+      {label ? <Mono style={{ color: hot ? ACCENT : DIM, marginBottom: 18 }}>{label}</Mono> : null}
+      <div style={{ fontSize: size, lineHeight: 1.4, fontWeight: 450 }}><Type at={s} text={text} cps={cps} caret /></div>
+    </div>
+  </Pop>
+);
+
+/**
+ * Steps in a row, joined by lines that draw as each step lands. `on` lights one
+ * step in the accent and dims the rest. Frames are shot-local.
+ */
+export const Steps: React.FC<{ steps: { t: string; at: number }[]; on?: number; top?: number; size?: number }> = ({ steps, on, top = 470, size = 36 }) => {
+  const f = useCurrentFrame();
+  const gap = (1920 - 320) / steps.length;
+  return (
+    <>
+      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
+        {steps.slice(1).map((s, i) => (
+          <line key={s.t} x1={160 + gap * (i + 0.5)} y1={top} x2={160 + gap * (i + 1.5)} y2={top} stroke={ACCENT} strokeWidth={4} opacity={0.5} pathLength={1} strokeDasharray={1}
+            strokeDashoffset={1 - interpolate(f, [s.at - 10, s.at + 4], [0, 1], { ...clamp, easing: springy })} />
+        ))}
+      </svg>
+      {steps.map((s, i) => (
+        <Pop key={s.t} at={s.at} style={{ position: "absolute", left: 160 + gap * (i + 0.5), top, translate: "-50% -50%" }}>
+          <div style={{ padding: "18px 26px", borderRadius: 999, fontSize: size, fontWeight: 500, whiteSpace: "nowrap",
+            background: on === i ? ACCENT : INK, color: on === i ? INK : "#fff", border: on === i ? "none" : "1.5px solid rgba(255,255,255,.2)",
+            opacity: on !== undefined && on !== i ? 0.55 : 1 }}>{s.t}</div>
+        </Pop>
+      ))}
+    </>
+  );
+};

@@ -1,0 +1,113 @@
+{
+  "lesson": "Week 2, Lesson 3: Workflows over prompts, the six roles",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "This lesson is about prompt chaining, and it's simpler than it sounds. Instead of one conversation that does everything, you run a sequence where each step does one job and hands its output to the next."
+        },
+        {
+          "id": "open-2",
+          "text": "Think of it as running a team of six, one at a time."
+        }
+      ]
+    },
+    {
+      "id": "six",
+      "label": "The six roles",
+      "beats": [
+        {
+          "id": "six-1",
+          "text": "The Researcher gathers the raw material: what's already out there, what people are saying, what the numbers are. It doesn't give opinions or write anything yet."
+        },
+        {
+          "id": "six-2",
+          "text": "The Strategist takes the research and decides the angle, who it's for, and what you're leaving out. This is the step people skip, and skipping it is why the writing later feels like it could be about anything."
+        },
+        {
+          "id": "six-3",
+          "text": "The Storyteller turns that decision into a shape: the order, where the tension sits, and what the reader needs to believe first."
+        },
+        {
+          "id": "six-4",
+          "text": "The Writer drafts. By now the draft is mostly assembly, because the thinking is done."
+        },
+        {
+          "id": "six-5",
+          "text": "The Skeptic works in a fresh conversation, told to disagree with everything written so far. It catches what you were too close to see."
+        },
+        {
+          "id": "six-6",
+          "text": "And the Editor cuts repetition, tightens sentences, and removes the parts that were only there because you liked writing them."
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "label": "Why the order matters",
+      "beats": [
+        {
+          "id": "order-1",
+          "text": "Each role has one job and only what it needs. The Writer isn't also trying to remember the research, and the Skeptic has no attachment to the draft because it wasn't there when it was written."
+        },
+        {
+          "id": "order-2",
+          "text": "The answers improve because each step asks a smaller question."
+        }
+      ]
+    },
+    {
+      "id": "chain",
+      "label": "One chain, start to finish",
+      "beats": [
+        {
+          "id": "chain-1",
+          "text": "Amaka wants a post that fills her Christmas pre-order list. Here's the whole chain, with each output pasted into the next step."
+        },
+        {
+          "id": "chain-2",
+          "text": "The Researcher lists what people in Lagos worry about when ordering a Christmas cake: delivery in Christmas traffic, cakes arriving damaged, and bakers who stop replying in December."
+        },
+        {
+          "id": "chain-3",
+          "text": "The Strategist weighs that against her edge, which is same-day delivery in Lekki and a reply to every WhatsApp within an hour. It picks one worry: bakers who stop replying."
+        },
+        {
+          "id": "chain-4",
+          "text": "The Storyteller sets the order: last year's disappointment, then her one-hour reply promise, then the pre-order deadline."
+        },
+        {
+          "id": "chain-5",
+          "text": "The Writer drafts it in under 80 words, with pre-orders closing on 15 December and ₦25,000 for an 8 inch cake."
+        },
+        {
+          "id": "chain-6",
+          "text": "In a new chat, the Skeptic plays a customer who's been let down before. It flags we never let you down as a claim anyone could make, so she swaps it for a real number: 212 orders delivered this year."
+        },
+        {
+          "id": "chain-7",
+          "text": "Then the Editor cuts it by a third and keeps the deadline and the price. That's six short conversations, about half an hour in total."
+        }
+      ]
+    },
+    {
+      "id": "turn",
+      "label": "Your turn",
+      "beats": [
+        {
+          "id": "turn-1",
+          "text": "Take something you need to make this week and run all six steps. Keep every output along the way."
+        },
+        {
+          "id": "turn-2",
+          "text": "You'll notice that four of the six steps are the same every time. Those four belong in a skill, the way you built one in week one."
+        }
+      ]
+    }
+  ]
+}

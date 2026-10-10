@@ -1,0 +1,98 @@
+{
+ "open-1": {
+  "key": "f4a12d4cec6b",
+  "seconds": 8.939
+ },
+ "open-2": {
+  "key": "3d16612d614f",
+  "seconds": 12.928
+ },
+ "pos-1": {
+  "key": "38da02597c6d",
+  "seconds": 5.589
+ },
+ "pos-2": {
+  "key": "0920970c2d90",
+  "seconds": 9.899
+ },
+ "pos-3": {
+  "key": "683cfab6a486",
+  "seconds": 10.219
+ },
+ "pos-4": {
+  "key": "fd54a4a75019",
+  "seconds": 8.32
+ },
+ "pos-5": {
+  "key": "7b6af4751710",
+  "seconds": 3.904
+ },
+ "offer-1": {
+  "key": "5662088cd215",
+  "seconds": 12.395
+ },
+ "offer-2": {
+  "key": "aa13cc23d82e",
+  "seconds": 9.664
+ },
+ "land-1": {
+  "key": "a06020e02925",
+  "seconds": 11.797
+ },
+ "land-2": {
+  "key": "d9f30601572e",
+  "seconds": 8.043
+ },
+ "land-3": {
+  "key": "e63d1eaf0a31",
+  "seconds": 6.357
+ },
+ "launch-1": {
+  "key": "b4ce1cb7ffbd",
+  "seconds": 4.416
+ },
+ "launch-2": {
+  "key": "ac48fa42b323",
+  "seconds": 9.579
+ },
+ "launch-3": {
+  "key": "c9bb215757e7",
+  "seconds": 8.533
+ },
+ "launch-4": {
+  "key": "db5b6e8a348d",
+  "seconds": 8.341
+ },
+ "facts-1": {
+  "key": "85ef9abcb4b0",
+  "seconds": 12.651
+ },
+ "facts-2": {
+  "key": "44ce5c302ac8",
+  "seconds": 12.011
+ },
+ "facts-3": {
+  "key": "c64022339a20",
+  "seconds": 9.408
+ },
+ "facts-4": {
+  "key": "42003366a2e7",
+  "seconds": 13.035
+ },
+ "facts-5": {
+  "key": "c6c6d4f011f4",
+  "seconds": 4.864
+ },
+ "cust-1": {
+  "key": "e28e523d6f8b",
+  "seconds": 6.144
+ },
+ "cust-2": {
+  "key": "1d77a7cc5c0a",
+  "seconds": 7.872
+ },
+ "cust-3": {
+  "key": "78ad02020a4b",
+  "seconds": 6.485
+ }
+}

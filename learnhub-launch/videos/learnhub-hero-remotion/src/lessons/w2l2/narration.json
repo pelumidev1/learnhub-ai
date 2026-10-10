@@ -1,0 +1,103 @@
+{
+  "lesson": "Week 2, Lesson 2: Why prompting stops working",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "You've probably done this. You ask for something, the answer isn't right, so you ask again with more words. Then again."
+        },
+        {
+          "id": "open-2",
+          "text": "Twenty minutes later you're arguing with a text box, and you have a worse version of what you started with."
+        },
+        {
+          "id": "open-3",
+          "text": "It's tempting to think the right words exist somewhere if you keep trying. Usually they don't."
+        }
+      ]
+    },
+    {
+      "id": "process",
+      "label": "Better work comes from a better process",
+      "beats": [
+        {
+          "id": "process-1",
+          "text": "Think about how a real piece of work gets made. Somebody researches the market. Somebody decides the angle. Somebody writes it, somebody tears it apart, and somebody edits."
+        },
+        {
+          "id": "process-2",
+          "text": "Nobody expects one person to do all five jobs at once and do them all well. But that's exactly what a single prompt asks the model to do."
+        }
+      ]
+    },
+    {
+      "id": "change",
+      "label": "Give it something to change",
+      "beats": [
+        {
+          "id": "change-1",
+          "text": "This habit improves people's output more than any prompt trick. Instead of asking AI to create something from nothing, give it your rough material and ask it to change it."
+        },
+        {
+          "id": "change-2",
+          "text": "A blank page is the worst input you can give it, because the model has nothing to work from except the average of everything it has read. It isn't being lazy. It just has nothing of yours."
+        },
+        {
+          "id": "change-3",
+          "text": "Amaka needs an about paragraph for her Instagram page. She asks: write a bio for my cake business."
+        },
+        {
+          "id": "change-4",
+          "text": "She gets: passionate baker creating delicious memories one cake at a time. It could belong to any bakery on earth."
+        },
+        {
+          "id": "change-5",
+          "text": "So she records a one-minute voice note on her phone, the way she'd explain it to a friend, and pastes the transcript in."
+        },
+        {
+          "id": "change-6",
+          "text": "Then she asks: turn this into a three sentence bio. Keep my words where you can, and don't add anything I didn't say."
+        },
+        {
+          "id": "change-7",
+          "text": "The result has her mum's kitchen in it, her cousin's wedding, and the red velvet people actually praise. The model tidied it up, but everything in it came from her."
+        },
+        {
+          "id": "change-8",
+          "text": "A voice note is the quickest rough draft you can make, so start there."
+        }
+      ]
+    },
+    {
+      "id": "grade",
+      "label": "Never let one AI grade its own homework",
+      "beats": [
+        {
+          "id": "grade-1",
+          "text": "When you ask the same conversation to check its own work, it defends what it wrote. It has the whole thread behind it, and it has already committed to a position."
+        },
+        {
+          "id": "grade-2",
+          "text": "So open a new chat. Paste the output with no history and no hint of who made it, and ask what's weak. You'll usually get a different answer, and it's usually the more useful one."
+        },
+        {
+          "id": "grade-3",
+          "text": "Amaka's words, in a fresh chat, ideally in a different tool: someone sent me this bio for a cake business. I'm a customer deciding whether to order. What's weak, unclear or unconvincing? Most important first. Don't rewrite it."
+        },
+        {
+          "id": "grade-4",
+          "text": "Don't rewrite it matters. You want to know what's wrong, and a new draft just starts the argument again."
+        },
+        {
+          "id": "grade-5",
+          "text": "Notice when you're arguing with a model instead of directing it, and stop. The next lesson shows you what to do instead."
+        }
+      ]
+    }
+  ]
+}

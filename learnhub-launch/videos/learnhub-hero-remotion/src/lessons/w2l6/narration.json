@@ -1,0 +1,145 @@
+{
+  "lesson": "Week 2, Lesson 6: Prompts for marketing: offers, landing pages and launch copy",
+  "voice": "af_heart",
+  "speed": 0.96,
+  "chapters": [
+    {
+      "id": "open",
+      "label": null,
+      "beats": [
+        {
+          "id": "open-1",
+          "text": "Next week you build a website or a web app, and it needs words: what it is, who it's for, and why anyone should care. This lesson writes those words."
+        },
+        {
+          "id": "open-2",
+          "text": "Marketing copy fails the same way AI writing fails. It says things that could be true of anyone, like quality service and affordable prices. These prompts force the model, and you, to be specific."
+        }
+      ]
+    },
+    {
+      "id": "pos",
+      "label": "Positioning before copy",
+      "beats": [
+        {
+          "id": "pos-1",
+          "text": "Decide what you're saying before you ask for sentences. Use the Strategist step from lesson three."
+        },
+        {
+          "id": "pos-2",
+          "text": "Tell it what you're building, who it's for, what they use today, and what you do differently. Then ask it for five questions that would make this sharper, and no copy yet."
+        },
+        {
+          "id": "pos-3",
+          "text": "Answer the questions. Then ask for one sentence each: who it's for, the problem they have, and why yours is the better choice, in plain words a customer would use."
+        },
+        {
+          "id": "pos-4",
+          "text": "Amaka's answers pointed somewhere she hadn't expected. Her best customers turned out to be people who forgot a birthday and need a cake today."
+        },
+        {
+          "id": "pos-5",
+          "text": "That became her positioning: the cake you can still get this afternoon."
+        }
+      ]
+    },
+    {
+      "id": "offer",
+      "label": "Your offer in one line",
+      "beats": [
+        {
+          "id": "offer-1",
+          "text": "An offer says what someone gets, what it costs, and what to do next. Ask for ten one-line versions, each under 15 words with the price, and make them ten different ideas rather than ten rewordings."
+        },
+        {
+          "id": "offer-2",
+          "text": "Pick the one you'd say out loud to a customer. Amaka's: order by 2pm, get a ₦25,000 red velvet anywhere in Lekki today."
+        }
+      ]
+    },
+    {
+      "id": "land",
+      "label": "Landing page copy",
+      "beats": [
+        {
+          "id": "land-1",
+          "text": "A simple landing page has five parts. A headline under ten words, one line under it, three short reasons to choose you with a real detail in each, one line of proof, and a button label."
+        },
+        {
+          "id": "land-2",
+          "text": "Paste your positioning and offer above the prompt, and add this: use only facts I've given you, and mark anything you had to guess with CHECK."
+        },
+        {
+          "id": "land-3",
+          "text": "That catches invented claims before they go live. Replace every CHECK with a true detail, or cut it."
+        }
+      ]
+    },
+    {
+      "id": "launch",
+      "label": "Launch copy",
+      "beats": [
+        {
+          "id": "launch-1",
+          "text": "Launch copy tells people the thing now exists. You need three short pieces."
+        },
+        {
+          "id": "launch-2",
+          "text": "An announcement post with what it is, who it's for, the offer and the link. Then a WhatsApp broadcast to people who already know you, shorter and more personal."
+        },
+        {
+          "id": "launch-3",
+          "text": "And a follow-up three days later, with one new reason to act: a deadline, a first customer's reaction, or a detail you didn't mention."
+        },
+        {
+          "id": "launch-4",
+          "text": "Run each one through your voice skill. Launch copy is where writing drifts back into we are thrilled to announce, and no customer cares about that."
+        }
+      ]
+    },
+    {
+      "id": "facts",
+      "label": "Check the facts",
+      "beats": [
+        {
+          "id": "facts-1",
+          "text": "Marketing copy is where invented facts do the most damage: a statistic nobody can find, or a study that doesn't exist. A customer who catches one stops trusting everything else on the page."
+        },
+        {
+          "id": "facts-2",
+          "text": "When your copy leans on a fact you didn't supply, ask for the source. Claude and ChatGPT can both search the web and show you links. Tell it: if you can't find a real source, say so."
+        },
+        {
+          "id": "facts-3",
+          "text": "Then open the links yourself. Check that the page exists, and that it says what the model claims it says. Research tools like Perplexity work the same way."
+        },
+        {
+          "id": "facts-4",
+          "text": "Amaka's first draft said Nigerians spend over ₦50 billion on cakes every year. The model found nothing it could link to, so she cut the line and used her own number: 212 orders delivered this year."
+        },
+        {
+          "id": "facts-5",
+          "text": "Your rule: every number on the page is either yours, or has a source you've opened."
+        }
+      ]
+    },
+    {
+      "id": "cust",
+      "label": "Check it like a customer",
+      "beats": [
+        {
+          "id": "cust-1",
+          "text": "Last, open a fresh chat, ideally in a different tool, and paste the landing page with no history."
+        },
+        {
+          "id": "cust-2",
+          "text": "Say: I'm a customer who's never heard of this business. What would make me leave? What don't I believe? Most important first. Don't rewrite it."
+        },
+        {
+          "id": "cust-3",
+          "text": "Fix what it finds. Your week three site will use this copy, and your week four video will sell the same offer."
+        }
+      ]
+    }
+  ]
+}

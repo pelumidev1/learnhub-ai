@@ -54,6 +54,9 @@ SAY = [
     ("github.com", "git hub dot com"), ("hello.md", "hello dot M D"), ("gh auth login", "G H auth login"),
     ("pwd shows", "P W D shows"), ("ls lists", "L S lists"), ("mkdir makes", "make dir makes"), ("cd moves", "C D moves"),
     ("cd dot dot", "C D dot dot"), ("slash init", "slash in it"), (".claude/skills", "dot claude slash skills"),
+    ("₦25,000", "twenty-five thousand naira"), ("₦5,000", "five thousand naira"), ("₦1,500", "fifteen hundred naira"),
+    ("₦50 billion", "fifty billion naira"), ("2pm", "two P M"), ("8 inch", "eight inch"), ("15 December", "the fifteenth of December"),
+    ("Lekki and VI", "Lekki and V I"),
     ("Gemini CLI", "Gemini C L I"), ("October 2025", "October twenty twenty-five"), ("11 December 2026", "the eleventh of December, twenty twenty-six"),
 ]
 

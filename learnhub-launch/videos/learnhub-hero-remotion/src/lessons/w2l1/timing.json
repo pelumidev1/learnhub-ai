@@ -1,0 +1,98 @@
+{
+ "open-1": {
+  "key": "eeb43364f79c",
+  "seconds": 8.363
+ },
+ "open-2": {
+  "key": "d177cd56c8c6",
+  "seconds": 4.16
+ },
+ "brief-1": {
+  "key": "c7a14d9e0e9e",
+  "seconds": 5.312
+ },
+ "brief-2": {
+  "key": "81b332aa5d23",
+  "seconds": 9.749
+ },
+ "context-1": {
+  "key": "466ee6185afb",
+  "seconds": 10.24
+ },
+ "context-2": {
+  "key": "d4fd2158c2e3",
+  "seconds": 5.867
+ },
+ "context-3": {
+  "key": "0bdae72606c6",
+  "seconds": 7.125
+ },
+ "context-4": {
+  "key": "8a4a858c8c26",
+  "seconds": 6.315
+ },
+ "role-1": {
+  "key": "90a17c16285f",
+  "seconds": 9.365
+ },
+ "role-2": {
+  "key": "7e3e8198a889",
+  "seconds": 8.256
+ },
+ "con-1": {
+  "key": "630e15d29f42",
+  "seconds": 6.08
+ },
+ "con-2": {
+  "key": "f2b66eb3e987",
+  "seconds": 7.36
+ },
+ "con-3": {
+  "key": "fdc101724d14",
+  "seconds": 8.853
+ },
+ "con-4": {
+  "key": "36addd3ebdd7",
+  "seconds": 5.184
+ },
+ "ex-1": {
+  "key": "8f809d26fb1e",
+  "seconds": 4.309
+ },
+ "ex-2": {
+  "key": "7ff8542c6c68",
+  "seconds": 11.712
+ },
+ "ex-3": {
+  "key": "8fc47aae847c",
+  "seconds": 10.816
+ },
+ "ex-4": {
+  "key": "d15fa3fd6c6b",
+  "seconds": 10.731
+ },
+ "ex-5": {
+  "key": "03af36434d75",
+  "seconds": 5.632
+ },
+ "good-1": {
+  "key": "8517b796a5a1",
+  "seconds": 6.635
+ },
+ "good-2": {
+  "key": "93e950d27385",
+  "seconds": 9.664
+ },
+ "fresh-1": {
+  "key": "de78218b8af0",
+  "seconds": 7.595
+ },
+ "fresh-2": {
+  "key": "93e6a95f929d",
+  "seconds": 6.997
+ },
+ "fresh-3": {
+  "key": "87f7a31050a8",
+  "seconds": 10.901
+ }
+}

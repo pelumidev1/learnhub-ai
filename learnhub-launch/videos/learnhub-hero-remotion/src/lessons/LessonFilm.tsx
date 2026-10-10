@@ -6,7 +6,7 @@ import { fade } from "@remotion/transitions/fade";
 import { slide } from "@remotion/transitions/slide";
 import "../lib/brand";
 import { Sfx } from "./sfx";
-import { ACCENT, ChapterCard, Corner, LessonIntro, Voice } from "./kit";
+import { ACCENT, ChapterCard, Corner, LessonIntro, SerifHeadings, Voice } from "./kit";
 import type { S } from "./screens";
 import { buildTimeline, Narration, Timing, TITLE_LEN } from "./timeline";
 
@@ -39,6 +39,8 @@ export type LessonSpec = {
   narration: unknown;
   timing: Timing;
   scenes: Record<string, React.FC<S>>;
+  /** Headlines in Instrument Serif, as on learnhub.dev. Week 2 onwards. */
+  serif?: boolean;
 };
 
 /** A thin line along the bottom showing how far through the lesson you are. */
@@ -111,11 +113,13 @@ export const makeLesson = (spec: LessonSpec) => {
       );
     }
     return (
-      <AbsoluteFill>
-        <TransitionSeries>{items}</TransitionSeries>
-        {MUSIC ? <Audio src={staticFile(MUSIC)} loop volume={musicVolume} /> : null}
-        <Progress />
-      </AbsoluteFill>
+      <SerifHeadings.Provider value={spec.serif ?? false}>
+        <AbsoluteFill>
+          <TransitionSeries>{items}</TransitionSeries>
+          {MUSIC ? <Audio src={staticFile(MUSIC)} loop volume={musicVolume} /> : null}
+          <Progress />
+        </AbsoluteFill>
+      </SerifHeadings.Provider>
     );
   };
   return { Film, length, chapters: t.chapters };
