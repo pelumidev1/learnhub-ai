@@ -2,7 +2,7 @@
 title: Workflows over prompts, the six roles
 duration_minutes: 16
 published: true
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/5m3W4C646XA?rel=0
 chapters: [{"label":"The six roles","at":22},{"label":"Why the order matters","at":75},{"label":"One chain, start to finish","at":93},{"label":"Your turn","at":164}]
 resources: [{"label":"Anthropic Academy, building with Claude","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free"}]
 resources_checked_on: 2026-08-22

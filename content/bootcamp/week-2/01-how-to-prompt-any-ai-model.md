@@ -2,7 +2,7 @@
 title: How to prompt any AI model: context, roles and constraints
 duration_minutes: 14
 published: false
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/evQFx2IGdiE?rel=0
 chapters: [{"label":"No magic words","at":19},{"label":"Context: what it can't know","at":37},{"label":"Role: who is answering","at":70},{"label":"Constraints: the shape of done","at":90},{"label":"An example to copy","at":121},{"label":"Show one example of good","at":168},{"label":"When to start a fresh chat","at":187}]
 resources: [{"label":"Prompt engineering overview, Anthropic docs","url":"https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview","kind":"doc","cost":"Free"},{"label":"Anthropic's interactive prompt engineering tutorial","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free"}]
 resources_checked_on: 2026-09-29

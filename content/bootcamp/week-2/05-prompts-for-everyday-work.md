@@ -2,7 +2,7 @@
 title: Prompts for everyday work: posts, emails, proposals and captions
 duration_minutes: 15
 published: false
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/DqiGofIJJ_g?rel=0
 chapters: [{"label":"Start from something rough","at":24},{"label":"Posts","at":38},{"label":"Emails and replies","at":65},{"label":"Proposals","at":102},{"label":"Captions and statuses","at":141},{"label":"Save what works","at":162}]
 resources: [{"label":"Prompting best practices, Anthropic docs","url":"https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29

@@ -2,7 +2,7 @@
 title: Teaching AI your voice, so the writing sounds like you
 duration_minutes: 16
 published: false
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/iRbC7pRMdc8?rel=0
 chapters: [{"label":"Collect your real writing","at":25},{"label":"Have the model describe your voice","at":54},{"label":"Turn it into a voice skill","at":84},{"label":"The tells readers spot","at":121},{"label":"Test it on one paragraph","at":164}]
 resources: [{"label":"Agent Skills, Anthropic docs","url":"https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29

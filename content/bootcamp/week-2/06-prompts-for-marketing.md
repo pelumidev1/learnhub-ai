@@ -2,7 +2,7 @@
 title: Prompts for marketing: offers, landing pages and launch copy
 duration_minutes: 20
 published: false
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/V4A1STTKSjY?rel=0
 chapters: [{"label":"Positioning before copy","at":28},{"label":"Your offer in one line","at":70},{"label":"Landing page copy","at":95},{"label":"Launch copy","at":124},{"label":"Check the facts","at":159},{"label":"Check it like a customer","at":214}]
 resources: [{"label":"Prompt engineering overview, Anthropic docs","url":"https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview","kind":"doc","cost":"Free"}]
 resources_checked_on: 2026-09-29

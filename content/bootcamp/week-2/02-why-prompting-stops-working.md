@@ -2,7 +2,7 @@
 title: Why prompting stops working
 duration_minutes: 11
 published: true
-video_url:
+video_url: https://www.youtube-nocookie.com/embed/XevY-zSYIPw?rel=0
 chapters: [{"label":"Better work comes from a better process","at":25},{"label":"Give it something to change","at":47},{"label":"Never let one AI grade its own homework","at":114}]
 resources: [{"label":"Anthropic's interactive prompt engineering tutorial","url":"https://www.anthropic.com/learn","kind":"course","cost":"Free"}]
 resources_checked_on: 2026-08-22
